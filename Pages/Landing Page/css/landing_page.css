@@ -1,0 +1,42 @@
+.marcellus-regular 
+{
+    font-family: "Marcellus", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body
+{
+    font-family: "Marcellus", serif;
+    margin: 0px;
+
+}
+
+header
+{
+    display: flex;
+    flex-direction: column;
+}
+
+#navbar
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+#navbar-left
+{
+    display: flex;
+}
+
+#navbar-right
+{
+    display: flex;
+
+}
+
+#find-career-section
+{
+    display: flex;
+}
+
