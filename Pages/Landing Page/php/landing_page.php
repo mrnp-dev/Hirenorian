@@ -57,21 +57,21 @@
             <section id="headline-right-section">
                 <h1 id="headline">Headline</h1>
                 <h2 id="sub-headline">sub headline</h2>
-                <p id="headline-info">This text serves as a placeholder while no actual text or information is posted yet.</p>
+                <p id="headline-info">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
             </section>
         </section>
 
         <section id="socmed-bar">
 
             <section id="socmed-left-bar">
-                <button id="fb"></button>
-                <button id="in"></button>
-                <button id="yt"></button>
-                <button id="ig"></button>
+               <button class="icon" onclick="window.open('https://www.facebook.com', '_blank')"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
+               <button class="icon" onclick="window.open('https://www.linkedin.com', '_blank')"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+               <button class="icon" onclick="window.open('https://www.youtube.com', '_blank')"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+               <button class="icon" onclick="window.open('https://www.instagram.com', '_blank')"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
             </section>
 
-            <section id="socmed-right-bar">
-                <p id="hirenorian.com">hirenorian.com</p>
+            <section>
+                <p id="hirenoriantext">hirenorian.com</p>
             </section>
 
         </section>
