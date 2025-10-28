@@ -4,8 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Styles -->
     <link href="..\css\landing_page.css" rel="stylesheet">
 
+    <!-- Fonts links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -31,21 +36,22 @@
 
         <section id="find-career-section">
 
-            <section id="find-career-left-section">
+            <section id="find-your-career-left-section">
                 <h1 id="get-hired-today">GET HIRED<br>TODAY</h1>
                 <p id="hirenorian-info">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
-                <button id="find-your-career-button">Find your Career</button>
+                <div id="find-your-career-div"><button id="find-your-career-button">Find your Career</button></div>
+                <div></div>
             </section>
 
             <section id="find-your-career-right-section">
                 <div id="circle-left"></div>
                 <div id="circle-right"></div>
-                <img src="..\Images\gradpic.png" id="gradpic" alt="">
+                <img src="..\Images\gradpic2.png" id="gradpic" alt="">
             </section>
 
-            <div id="left-circle-yellow"></div>
 
         </section>
+        <div id="left-circle-yellow"></div>
 
     </header>
 
@@ -64,10 +70,10 @@
         <section id="socmed-bar">
 
             <section id="socmed-left-bar">
-               <button class="icon" onclick="window.open('https://www.facebook.com', '_blank')"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
-               <button class="icon" onclick="window.open('https://www.linkedin.com', '_blank')"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-               <button class="icon" onclick="window.open('https://www.youtube.com', '_blank')"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-               <button class="icon" onclick="window.open('https://www.instagram.com', '_blank')"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                <button class="icon" onclick="window.open('https://www.facebook.com', '_blank')"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
+                <button class="icon" onclick="window.open('https://www.linkedin.com', '_blank')"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+                <button class="icon" onclick="window.open('https://www.youtube.com', '_blank')"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+                <button class="icon" onclick="window.open('https://www.instagram.com', '_blank')"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
             </section>
 
             <section>

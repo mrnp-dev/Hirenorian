@@ -4,9 +4,26 @@
     font-style: normal;
 }
 
+
+.montserrat-bold {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: "Marcellus", serif;
-    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 header {
@@ -14,140 +31,159 @@ header {
     width: 100vw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    margin-left: 30px;
-    margin-right: 15px;
+    align-items: center;
+    position: relative;
 }
 
 #navbar {
-    height: 10vh;
+    height: 200px;
+    width: 100%;
+    max-width: 1920px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    z-index: 2;
+    overflow: hidden;
 }
 
 #navbar-left {
     display: flex;
-    position: relative;
-    z-index: 2;
+    height: 100%;
+    width: 50%;
+    justify-content: start;
+    align-items: center;
 }
 
 #imglogo {
-    width: 70px;
-    height: 70px;
+    height: 80%;
+    margin-left: 10%;
     object-fit: cover;
 
 }
 
 #navbar-title {
     margin-left: 10px;
-    font-size: auto;
+    font-size: 3rem;
     color: #990000;
 }
 
 #navbar-right {
     display: flex;
+    width: 50%;
+    justify-content: end;
 }
 
 #sign-in {
-    font-size: 16px;
+    font-size: 20px;
     color: white;
     background-color: #eabb00;
     border: none;
-    padding: 12px 30px;
+    padding: 10px 50px;
     border-radius: 18px;
-    align-items: center;
+    margin-right: 10%;
+    text-align: center;
+}
+
+#left-circle-yellow {
+    position: absolute;
+    height: 600px;
+    width: 700px;
+    background-color: #eabb00;
+    border-bottom-right-radius: 1000px;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
 }
 
 #find-career-section {
+    height: 100%;
+    width: 100%;
+    max-width: 1920px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 50px;
 }
 
+
 #find-your-career-left-section {
-    height: auto;
+    height: 100%;
     width: 50%;
-    margin-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
+    align-items: start;
+    font-family: 'Montserrat';
 }
 
 #get-hired-today {
-    font-size: 40px;
-    font-weight: 0;
+    margin-left: 10%;
+    font-size: 5rem;
+    font-weight: bold;
     position: relative;
     z-index: 2;
 }
 
 #hirenorian-info {
+    margin-left: 10%;
+    font-size: 2rem;
+}
+
+#find-your-career-div
+{
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 29;
-    line-height: 1.5;
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 2;
+    justify-content: start;
 }
 
 #find-your-career-button {
-    font-size: 16px;
+    margin-left: 10%;
+    font-size: 2rem;
     color: white;
     background-color: #eabb00;
     border: none;
-    padding: 12px 30px;
+    padding: 5px 50px;
     border-radius: 18px;
     align-items: center;
     margin-top: 20px;
 }
 
-#find-your-career-right-section {}
+#find-your-career-right-section
+{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
 
 #gradpic {
-    position: relative;
-    width: 370px;
-    margin-right: 220px;
+    height: 100%;
     z-index: 2;
 }
 
+
 #circle-left {
     position: absolute;
-    height: 370px;
-    width: 380px;
-    background-color: #811a1a;
-    border-radius: 50%;
-    bottom: 0px;
-    left: 660px;
-    z-index: 1;
-
+    bottom: 0;
+    left: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
+    background-color: #730000;
 }
 
 #circle-right {
     position: absolute;
-    height: 370px;
-    width: 380px;
+    top: 0;
+    right: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
     background-color: #a51a23;
-    border-radius: 50%;
-    top: 90px;
-    right: 20px;
-    z-index: 1;
 
 }
 
-#left-circle-yellow {
-    position: absolute;
-    height: 350px;
-    width: 350px;
-    background-color: #eabb00;
-    border-bottom-right-radius: 1000px;
-    top: 0px;
-    left: 0px;
-    z-index: 1;
-}
 
 #headline-section {
     display: flex;
@@ -187,6 +223,9 @@ header {
 }
 
 #sub-headline {
+    font-size: 60px;
+    font-weight: 300;
+    margin: 0;
     font-size: 40px;
     font-weight: 300;
     margin: 0;
@@ -219,29 +258,25 @@ header {
     display: flex;
 }
 
-#fb
-{
+#fb {
     height: 20px;
     width: 30px;
     margin-left: 10px;
 
 }
 
-#in
-{
+#in {
     height: 20px;
     width: 20px;
 }
 
-#yt
-{
+#yt {
     height: 20px;
     width: 20px;
     margin-left: 5px;
 }
 
-#ig
-{
+#ig {
     height: 30px;
     width: 30px;
 }
