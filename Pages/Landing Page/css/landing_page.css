@@ -4,9 +4,26 @@
     font-style: normal;
 }
 
+
+.montserrat-bold {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: "Marcellus", serif;
-    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 header {
@@ -21,6 +38,7 @@ header {
 #navbar {
     height: 200px;
     width: 100%;
+    max-width: 1920px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,15 +49,16 @@ header {
 #navbar-left {
     display: flex;
     height: 100%;
-    width: 30%;
-    justify-content: center;
+    width: 50%;
+    justify-content: start;
     align-items: center;
 }
 
 #imglogo {
     height: 80%;
+    margin-left: 10%;
     object-fit: cover;
-    
+
 }
 
 #navbar-title {
@@ -50,8 +69,8 @@ header {
 
 #navbar-right {
     display: flex;
-    justify-content: center;
-    width: 30%;
+    width: 50%;
+    justify-content: end;
 }
 
 #sign-in {
@@ -61,13 +80,14 @@ header {
     border: none;
     padding: 10px 50px;
     border-radius: 18px;
+    margin-right: 10%;
     text-align: center;
 }
 
 #left-circle-yellow {
     position: absolute;
-    height: 500px;
-    width: 500px;
+    height: 600px;
+    width: 700px;
     background-color: #eabb00;
     border-bottom-right-radius: 1000px;
     top: 0px;
@@ -78,85 +98,93 @@ header {
 #find-career-section {
     height: 100%;
     width: 100%;
+    max-width: 1920px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
 }
 
 
 #find-your-career-left-section {
     height: 100%;
     width: 50%;
-    margin-left: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: start;
+    font-family: 'Montserrat';
 }
 
 #get-hired-today {
-    font-size: 40px;
-    font-weight: 0;
+    margin-left: 10%;
+    font-size: 5rem;
+    font-weight: bold;
     position: relative;
     z-index: 2;
 }
 
 #hirenorian-info {
+    margin-left: 10%;
+    font-size: 2rem;
+}
+
+#find-your-career-div
+{
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    font-size: 29;
-    line-height: 1.5;
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 2;
+    justify-content: start;
 }
 
 #find-your-career-button {
-    font-size: 16px;
+    margin-left: 10%;
+    font-size: 2rem;
     color: white;
     background-color: #eabb00;
     border: none;
-    padding: 12px 30px;
+    padding: 5px 50px;
     border-radius: 18px;
     align-items: center;
     margin-top: 20px;
 }
 
-#gradpic {
+#find-your-career-right-section
+{
+    height: 100%;
+    width: 50%;
+    display: flex;
     position: relative;
-    width: 370px;
-    margin-right: 220px;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+#gradpic {
+    height: 100%;
     z-index: 2;
 }
 
-/*
+
 #circle-left {
     position: absolute;
-    height: 370px;
-    width: 380px;
-    background-color: #811a1a;
-    border-radius: 50%;
-    bottom: 0px;
-    left: 660px;
-    z-index: 1;
-
+    bottom: 0;
+    left: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
+    background-color: #730000;
 }
 
 #circle-right {
     position: absolute;
-    height: 370px;
-    width: 380px;
+    top: 0;
+    right: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
     background-color: #a51a23;
-    border-radius: 50%;
-    top: 90px;
-    right: 20px;
-    z-index: 1;
 
 }
 
 
-*/
 #headline-section {
     display: flex;
     height: 100vh;
@@ -230,29 +258,25 @@ header {
     display: flex;
 }
 
-#fb
-{
+#fb {
     height: 20px;
     width: 30px;
     margin-left: 10px;
 
 }
 
-#in
-{
+#in {
     height: 20px;
     width: 20px;
 }
 
-#yt
-{
+#yt {
     height: 20px;
     width: 20px;
     margin-left: 5px;
 }
 
-#ig
-{
+#ig {
     height: 30px;
     width: 30px;
 }
