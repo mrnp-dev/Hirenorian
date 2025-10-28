@@ -43,9 +43,9 @@
                 <img src="..\Images\gradpic.png" id="gradpic" alt="">
             </section>
 
-            <div id="left-circle-yellow"></div>
-
+            
         </section>
+        <div id="left-circle-yellow"></div>
 
     </header>
 
