@@ -19,12 +19,12 @@
         <nav id="navbar">
 
             <section id="navbar-left">
-                <img src="..\Images\dhvsulogo.jpg" id="imglogo" alt="hirenorian-logo">
+                <img src="..\Images\dhvsulogo.png" id="imglogo" alt="hirenorian-logo">
                 <h1 id="navbar-title">Hirenorian</h1>
             </section>
 
             <section id="navbar-right">
-                <button class="buttons">Sign In</button>
+                <button id="sign-in">Sign In</button>
             </section>
 
         </nav>
@@ -32,15 +32,15 @@
         <section id="find-career-section">
 
             <section id="find-career-left-section">
-                <h1 id="get-hired-today">Get Hired Today</h1>
-                <p id="hirenorian-info">Hirenorian is a career hub designed for DHVSU students to explore job postings and internship opportunities. Discover openings tailored to your skills, connect with employers, and take the next step toward your future career—all in one place.</p>
-                <button class="buttons">Find your Career</button>
+                <h1 id="get-hired-today">GET HIRED<br>TODAY</h1>
+                <p id="hirenorian-info">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
+                <button id="find-your-career-button">Find your Career</button>
             </section>
 
             <section id="find-your-career-right-section">
                 <div id="circle-left"></div>
-                <div id="circle right"></div>
-                <img src="" alt="girl-model">
+                <div id="circle-right"></div>
+                <img src="..\Images\gradpic.png" id="gradpic" alt="">
             </section>
 
             <div id="left-circle-yellow"></div>
@@ -52,19 +52,13 @@
     <main>
 
         <section id="headline-section">
-
-            <img src="" alt="background-image">
-
-            <section id="headline-left-section">
-                <button id="left-button"></button>
-            </section>
+            <section id="headline-left-section"></section>
 
             <section id="headline-right-section">
                 <h1 id="headline">Headline</h1>
                 <h2 id="sub-headline">sub headline</h2>
                 <p id="headline-info">This text serves as a placeholder while no actual text or information is posted yet.</p>
             </section>
-
         </section>
 
         <section id="socmed-bar">
