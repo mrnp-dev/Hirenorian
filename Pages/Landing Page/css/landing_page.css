@@ -1,0 +1,289 @@
+.marcellus-regular {
+    font-family: "Marcellus", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.montserrat-bold {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Marcellus", serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+#navbar {
+    height: 200px;
+    width: 100%;
+    max-width: 1920px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    overflow: hidden;
+}
+
+#navbar-left {
+    display: flex;
+    height: 100%;
+    width: 50%;
+    justify-content: start;
+    align-items: center;
+}
+
+#imglogo {
+    height: 80%;
+    margin-left: 10%;
+    object-fit: cover;
+
+}
+
+#navbar-title {
+    margin-left: 10px;
+    font-size: 3rem;
+    color: #990000;
+}
+
+#navbar-right {
+    display: flex;
+    width: 50%;
+    justify-content: end;
+}
+
+#sign-in {
+    font-size: 20px;
+    color: white;
+    background-color: #eabb00;
+    border: none;
+    padding: 10px 50px;
+    border-radius: 18px;
+    margin-right: 10%;
+    text-align: center;
+}
+
+#left-circle-yellow {
+    position: absolute;
+    height: 600px;
+    width: 700px;
+    background-color: #eabb00;
+    border-bottom-right-radius: 1000px;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+}
+
+#find-career-section {
+    height: 100%;
+    width: 100%;
+    max-width: 1920px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+#find-your-career-left-section {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    font-family: 'Montserrat';
+}
+
+#get-hired-today {
+    margin-left: 10%;
+    font-size: 5rem;
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
+}
+
+#hirenorian-info {
+    margin-left: 10%;
+    font-size: 2rem;
+}
+
+#find-your-career-div
+{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+}
+
+#find-your-career-button {
+    margin-left: 10%;
+    font-size: 2rem;
+    color: white;
+    background-color: #eabb00;
+    border: none;
+    padding: 5px 50px;
+    border-radius: 18px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#find-your-career-right-section
+{
+    height: 100%;
+    width: 50%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+#gradpic {
+    height: 100%;
+    z-index: 2;
+}
+
+
+#circle-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
+    background-color: #730000;
+}
+
+#circle-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
+    background-color: #a51a23;
+
+}
+
+
+#headline-section {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+#headline-left-section {
+    flex: 1;
+    height: 100vh;
+    width: 100%;
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0) 40%, white 100%),
+        url("../Images/dhvsu-bg-image.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    display: block;
+}
+
+#headline-right-section {
+    flex: 1;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#headline {
+    font-size: 80px;
+    color: #b50e0e;
+    font-weight: 300;
+    letter-spacing: 0.5;
+    margin: 0;
+}
+
+#sub-headline {
+    font-size: 60px;
+    font-weight: 300;
+    margin: 0;
+    font-size: 40px;
+    font-weight: 300;
+    margin: 0;
+}
+
+#headline-info {
+    font-size: 20px;
+    text-align: center;
+    color: #eabb00;
+    margin-top: 50px;
+}
+
+#socmed-bar {
+    width: 100vw;
+    background-color: #454444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.icon {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+#socmed-left-bar {
+    display: flex;
+}
+
+#fb {
+    height: 20px;
+    width: 30px;
+    margin-left: 10px;
+
+}
+
+#in {
+    height: 20px;
+    width: 20px;
+}
+
+#yt {
+    height: 20px;
+    width: 20px;
+    margin-left: 5px;
+}
+
+#ig {
+    height: 30px;
+    width: 30px;
+}
+
+
+#hirenoriantext {
+    color: white;
+    font-size: 12px;
+    margin-right: 20px;
+}
