@@ -70,10 +70,10 @@
         <section id="socmed-bar">
 
             <section id="socmed-left-bar">
-                <button class="icon" onclick="window.open('https://www.facebook.com', '_blank')"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
-                <button class="icon" onclick="window.open('https://www.linkedin.com', '_blank')"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-                <button class="icon" onclick="window.open('https://www.youtube.com', '_blank')"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-                <button class="icon" onclick="window.open('https://www.instagram.com', '_blank')"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
+                <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+                <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+                <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
             </section>
 
             <section>
