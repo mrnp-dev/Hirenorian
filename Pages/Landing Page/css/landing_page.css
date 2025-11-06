@@ -290,176 +290,81 @@ main
     margin-right: 20px;
 }
 
-#whole-section {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-left: 50px;
-}
-
 #job-section {
+      width: 100%;
+      max-width: 1100px; 
+      flex-direction: column;
+      gap: 28px;
+      align-items: center;
+    }
 
-  
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-    margin-left: 50px;
-    margin-top: 50px;
+ 
+    #job-top-section {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap; 
+      padding: 12px;
+    }
 
-}
+    .job-numbers {
+      width: 300px;           
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(30,30,30,0.08);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: left;      
+    }
 
-
-.job {
-
-display: flex;
-flex-direction: column;
-justify-content: center;
-margin-right: 10px;
-}
-
-.job-one-right {
-    font-size: 55px;
-
-}
-
-.job-image{
-    height: 500px;
-    width: 400px;
-    display: flex;
-    justify-content: center;
-    justify-content: space-between;
-    margin-top: 30px;
-
-}
-
-.info {
- font-size: 27px;
- margin-top: 16px;
- text-align: left;
- justify-content: space-evenly;
-}
-
-#job-more {
-    display: flex;
-    justify-content: center;
     
-    
-}
+    .job-titles {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #151515;
+      padding-left: 4px; 
+    }
 
+    .job-image {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      margin-bottom: 14px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
 
-#more-button {
-   font-size: 20px;
-    padding: 8px 50px;
-    border-radius: 18px;
-    align-items: center;
-    margin-top: 20px;
-    
-}
+    .job-infos {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      padding-left: 4px; 
+    }
 
-#whole {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    
-    margin-left: 50px;}
-
-#top-employers {
    
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    
-    margin-left: 50px;
-    margin-top: 50px;
-    
-}
+    #job-bottom-section {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
+    #more-button {
+      padding: 8px 22px;
+      border-radius: 20px;
+      border: 1px solid #111;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 160ms ease;
+    }
 
-#top-employer {
-
-font-size: 40px;
-justify-content: center;
-
-}
-
-#dicover {
-font-size: 20px;
-justify-content: center;
-margin-bottom: 50px;
-
-}
-
-.employer-container {
-  display: flex;
-justify-items: center;
-justify-content: space-between;
-
-}
-
-
-.employer-card {
-  background-color: #000000;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  padding: 30px 20px;
-  width: 600px;
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  justify-content: center;
-}
-
-
-
-.rank {
-  position: absolute;
-  top: -15px;
-  left: 20px;
-  background-color: #ffd54f;
-  color: #fff;
-
-  font-size: 50px;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
-.employer-card img {
-  width: 350px;
-  height: 250px;
-}
-
-
-.employer-card h3 {
-  font-size: 40px;
-  color: #222;
-  margin: 10px 0 5px;
-}
-
-
-.employer-card p {
-  font-size: 30px;
-  color: #777;
-  margin-bottom: 25px;
-}
-
-
-.employer-card button {
-  background-color: #f1c40f;
-  border: none;
-  color: #ffffff;
-  padding: 20px 70px;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 600;
- 
- 
-}
+    #more-button:hover {
+      background: #111;
+      color: #fff;
+    }

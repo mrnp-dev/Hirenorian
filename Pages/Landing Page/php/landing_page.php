@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Styles -->
-    <link href="..\css\landing_page.css" rel="stylesheet">
+    <link href="../css/landing_page.css" rel="stylesheet">
 
     <!-- Fonts links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
         <nav id="navbar">
 
             <section id="navbar-left">
-                <img src="..\Images\dhvsulogo.png" id="imglogo" alt="hirenorian-logo">
+                <img src="../Images/dhvsulogo.png" id="imglogo" alt="hirenorian-logo">
                 <h1 id="navbar-title">Hirenorian</h1>
             </section>
 
@@ -46,7 +46,7 @@
             <section id="find-your-career-right-section">
                 <div id="circle-left"></div>
                 <div id="circle-right"></div>
-                <img src="..\Images\gradpic2.png" id="gradpic" alt="">
+                <img src="../Images/gradpic2.png" id="gradpic" alt="">
             </section>
 
 
@@ -82,75 +82,39 @@
 
         </section>
 
+        <section id="job-section">
 
-        <section id=whole-section>
+            <section id="job-top-section">
 
-            <section id="job-section">
-
-                <section class="job">
-
-                    <h3 class="job-one-right"> Job Number One</h3>
-                    <img src="..\Images\job.png" class="job-image">
-                    <p class="info">Body text for whatever you’d like<br>to add more to the subheading. </p>
-
-                </section>
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number Two</h3>
-                    <img src="..\Images\job.png" class="job-image">
-                    <p class="info">Body text for whatever you’d like<br>to add more to the subheading. </p>
+                <section class="job-numbers">
+                    <h1 class="job-titles">Job Number One</h1>
+                    <img src="../Images/cloudstaff.jpg" alt="job-image" class="job-image">
+                    <p class="job-infos">Experience an extraordinary global career at Cloudstaff,<br> the #1 workplace everywhere. Join our talented team and<br> be part of something bigger. Apply now!</p>
                 </section>
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number Three </h3>
-                    <img src="..\Images\job.png" class="job-image">
-                    <p class="info">Body text for whatever you’d like<br>to add more to the subheading. </p>
+                <section class="job-numbers">
+                    <h1 class="job-titles">Job Number Two</h1>
+                    <img src="../Images/cloudstaff.jpg" alt="job-image" class="job-image">
+                    <p class="job-infos">Experience an extraordinary global career at Cloudstaff,<br> the #1 workplace everywhere. Join our talented team and<br> be part of something bigger. Apply now!</p>
+                </section>
+
+                <section class="job-numbers">
+                    <h1 class="job-titles">Job Number Three</h1>
+                    <img src="../Images/cloudstaff.jpg" alt="job-image" class="job-image">
+                    <p class="job-infos">Experience an extraordinary global career at Cloudstaff,<br> the #1 workplace everywhere. Join our talented team and<br> be part of something bigger. Apply now!</p>
                 </section>
 
             </section>
 
-            <section id="job-more">
+            <section id="job-bottom-section">
+
                 <button id="more-button">More</button>
-            </section>
-
-        </section>
-
-
-
-
-        <section id="whole">
-            <section id="top-employers">
-                <h2 id="top-employer">TOP EMPLOYERS</h2>
-                <p id="dicover">Discover companies offering great opportunities for students and graduates</p>
-            </section>
-            <section class="employer-container">
-
-                <section class="employer-card">
-                    <section class="rank">1</section>
-                    <img src="../Images/hyundai-removebg-preview.png " id="Hyundai Logo">
-                    <h3>Hyundai</h3>
-                    <p>Car company</p>
-                    <button id="button-job-one"> View Job</button>
-                </section>
-
-                <section class="employer-card">
-                    <section class="rank">2</section>
-                    <img src="../Images/samsung-removebg-preview.png" id="Samsung Logo">
-                    <h3>Samsung</h3>
-                    <p>Technology</p>
-                    <button id="button-job-two"> View Job </button>
-                </section>
-
-                <section class="employer-card">
-                    <section class="rank">3</section>
-                    <img src="../Images/google-removebg-preview.png" id="Google Logo">
-                    <h3>Google</h3>
-                    <p>Technology</p>
-                    <button id="button-job-three"> View Job </button>
-                </section>
 
             </section>
 
         </section>
+
+    
     </main>
 
 
