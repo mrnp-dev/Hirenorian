@@ -181,18 +181,17 @@ header {
 
 }
 
-main
-{
+main {
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     align-items: center;
 }
 
-#headline-section{
+#headline-section {
     display: flex;
     height: 720px;
     width: 1440px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 #headline-left-section {
@@ -261,26 +260,28 @@ main
 }
 
 #fb {
-    height: 20px;
-    width: 30px;
-    margin-left: 10px;
+    height: 30px;
+    width: 40px;
+    margin-left: 30px;
 
 }
 
 #in {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
+    margin-left: 10px;
 }
 
 #yt {
-    height: 20px;
-    width: 20px;
-    margin-left: 5px;
+    height: 30px;
+    width: 30px;
+    margin-left: 20px;
 }
 
 #ig {
-    height: 30px;
-    width: 30px;
+    height: 50px;
+    width: 50px;
+    margin-left: 10px;
 }
 
 
@@ -290,81 +291,328 @@ main
     margin-right: 20px;
 }
 
+#whole-section {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 50px;
+}
+
 #job-section {
-      width: 100%;
-      max-width: 1100px; 
-      flex-direction: column;
-      gap: 28px;
-      align-items: center;
-    }
 
- 
-    #job-top-section {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 28px;
-      flex-wrap: wrap; 
-      padding: 12px;
-    }
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-left: 50px;
+    margin-top: 50px;
 
-    .job-numbers {
-      width: 300px;           
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(30,30,30,0.08);
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: left;      
-    }
+}
 
+.job {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.job-one-right {
+    font-size: 45px;
+
+}
+
+.job-image {
+    height: 500px;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-top: 30px;
+
+}
+
+.info {
+    font-size: 26px;
+    margin-top: 25px;
+    text-align: left;
+    justify-content: space-evenly;
+}
+
+#job-more {
+    display: flex;
+    justify-content: center;
+
+
+}
+
+#more-button {
+    font-size: 25px;
+    padding: 10px 70px;
+    border-radius: 18px;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}
+
+#employers-section {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: #eeeeee;
     
-    .job-titles {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #151515;
-      padding-left: 4px; 
-    }
+}
 
-    .job-image {
-      width: 100%;
-      height: 190px;
-      object-fit: cover;
-      border-radius: 8px;
-      display: block;
-      margin-bottom: 14px;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
+#top-employers-section {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    
 
-    .job-infos {
-      font-size: 13px;
-      color: #666;
-      line-height: 1.5;
-      margin-bottom: 16px;
-      padding-left: 4px; 
-    }
+}
 
+
+#top-employer {
+
+    font-size: 60px;
+    font-weight: 900;
+    letter-spacing: 2px;
+
+}
+
+#discover {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #828282;
+    letter-spacing: 1px;
+
+}
+
+.employer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    margin-right: 50px;
+  
+}
+
+
+.employer-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(252, 243, 243, 0.08);
+    padding: 10px 30px;
+    width: 500px;
+    height: 650px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 50px;
+    
+}
+
+
+
+#rank1 {
+    position: absolute;
+    top: -25px;
+    left: -20px;
+    background-color: #ffd700;
+    color: #fff;
+
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rank2 {
+    position: absolute;
+    top: -25px;
+    left: -20px;
+    background-color: #c0c0c0;
+    color: #fff;
+
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rank3 {
+    position: absolute;
+    top: -25px;
+    left: -20px;
+    background-color: #ce8946;
+    color: #fff;
+
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.employer-card img {
+    width: 400px;
+    height: 350px;
+    align-self: center;
+}
+
+
+.employer-card h3 {
+    font-size: 40px;
+    color: #222;
+    margin: 10px 0 5px;
+}
+
+
+.employer-card p {
+    font-size: 30px;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+
+.employer-card button {
+    background-color: #f1c40f;
+    border: none;
+    color: #ffffff;
+    padding: 20px 110px;
+    border-radius: 6px;
+    font-size: 23px;
+    font-weight: 600;
+
+
+}
+
+#footer-section
+{
+    height: 30vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    background-color: #212529;
+  
+ 
+}
+
+#footer-top-redbar
+{
+    height: 20%;
+    background-color: #212529;
+    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.6), rgba(31, 31, 31, 1));
+    margin-bottom: 10px;
+
+}
+
+#footer-bottom-section
+{
+    display: flex;
+    margin: 0;
+}
+
+#bottom-left
+{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    
+    
    
-    #job-bottom-section {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-    }
+    
+}
 
-    #more-button {
-      padding: 8px 22px;
-      border-radius: 20px;
-      border: 1px solid #111;
-      background: #fff;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 160ms ease;
-    }
+#footer-Hirenorian
+{
+    font-weight: 200;
+    font-size: 45px;
+    color: white;
+    margin-top: 20px;
+    margin-bottom: 60px;
+    margin-left: 90px;
+}
 
-    #more-button:hover {
-      background: #111;
-      color: #fff;
-    }
+#footer-buttons
+{
+    display: flex;
+    margin-left: 60px;
+    
+}
+
+.icon2 {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+}
+
+#fb2 {
+    height: 30px;
+    width: 40px;
+    margin-left: 30px;
+
+}
+
+#in2 {
+    height: 30px;
+    width: 30px;
+    
+}
+
+#yt2 {
+    height: 30px;
+    width: 30px;
+    
+}
+
+#ig2 {
+    height: 50px;
+    width: 50px;
+    
+}
+
+#bottom-right
+{
+    display: flex;
+    width: 50%;
+    justify-content: space-evenly;
+   
+
+}
+
+.topics-section
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.topic
+{
+    color: #eabb00;
+    font-size: 20px;
+}
+
+.pages
+{
+    color: white;
+    font-size: 20px;
+}
