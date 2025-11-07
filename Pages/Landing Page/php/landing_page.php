@@ -82,41 +82,123 @@
 
         </section>
 
-        <section id="job-section">
+        <section id=whole-section>
 
-            <section id="job-top-section">
+            <section id="job-section">
 
-                <section class="job-numbers">
-                    <h1 class="job-titles">Job Number One</h1>
-                    <img src="../Images/cloudstaff.jpg" alt="job-image" class="job-image">
-                    <p class="job-infos">Experience an extraordinary global career at Cloudstaff,<br> the #1 workplace everywhere. Join our talented team and<br> be part of something bigger. Apply now!</p>
+                <section class="job">
+                    <h3 class="job-one-right"> Job Number One</h3>
+                    <img src="..\Images\cloudstaff.jpg" class="job-image">
+                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
                 </section>
 
-                <section class="job-numbers">
-                    <h1 class="job-titles">Job Number Two</h1>
-                    <img src="../Images/cloudstaff.jpg" alt="job-image" class="job-image">
-                    <p class="job-infos">Experience an extraordinary global career at Cloudstaff,<br> the #1 workplace everywhere. Join our talented team and<br> be part of something bigger. Apply now!</p>
+                <section class="job">
+                    <h3 class="job-one-right"> Job Number Two</h3>
+                    <img src="..\Images\cloudstaff.jpg" class="job-image">
+                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
                 </section>
 
-                <section class="job-numbers">
-                    <h1 class="job-titles">Job Number Three</h1>
-                    <img src="../Images/cloudstaff.jpg" alt="job-image" class="job-image">
-                    <p class="job-infos">Experience an extraordinary global career at Cloudstaff,<br> the #1 workplace everywhere. Join our talented team and<br> be part of something bigger. Apply now!</p>
+                <section class="job">
+                    <h3 class="job-one-right"> Job Number Three </h3>
+                    <img src="..\Images\cloudstaff.jpg" class="job-image">
+                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
                 </section>
 
             </section>
 
-            <section id="job-bottom-section">
-
+            <section id="job-more">
                 <button id="more-button">More</button>
-
             </section>
 
         </section>
 
+        <section id="employers-section">
+
+            <section id="top-employers-section">
+                <h2 id="top-employer">TOP EMPLOYERS</h2>
+                <p id="discover">Discover companies offering great opportunities for students and graduates</p>
+            </section>
+
+            <section class="employer-container">
+                <section class="employer-card">
+                    <section id="rank1">1</section>
+                    <img src="../Images/hyundai.jpg" id="Hyundai">
+                    <h3>Hyundai</h3>
+                    <p>Car company</p>
+                    <button id="button-job-one"> View Job</button>
+                </section>
+
+                <section class="employer-card">
+                    <section id="rank2">2</section>
+                    <img src="../Images/samsung.jpg" id="Samsung">
+                    <h3>Samsung</h3>
+                    <p>Technology</p>
+                    <button id="button-job-two"> View Job </button>
+                </section>
+
+                <section class="employer-card">
+                    <section id="rank3">3</section>
+                    <img src="../Images/google.jpg" id="Google">
+                    <h3>Google</h3>
+                    <p>Technology</p>
+                    <button id="button-job-three"> View Job </button>
+                </section>
+
+            </section>
+
+        </section>
     
     </main>
 
+    <footer>
+
+        <section id="footer-section">
+
+            <div id="footer-top-redbar"></div>
+
+            <section id="footer-bottom-section">
+                
+                <section id="bottom-left">
+                    <p id="footer-Hirenorian">Hirenorian</p>
+
+                    <section id="footer-buttons">
+                        <button class="icon2"><img src="../Images/fbicon.png" alt="Facebook" class="icon2" id="fb2"></button>
+                        <button class="icon2"><img src="../Images/linkedin.png" alt="Youtube" class="icon2" id="in2"></button>
+                        <button class="icon2"><img src="../Images/yticon.png" alt="Youtube" class="icon2" id="yt2"></button>
+                        <button class="icon2"><img src="../Images/igicon.png" alt="Instagram" class="icon2" id="ig2"></button>
+                    </section>
+                </section>
+
+                <section id="bottom-right">
+                    <section class="topics-section">
+                        <p class="topic">Topic</p>
+                        <p class="pages">Page</p>
+                        <p class="pages">Page</p>
+                        <p class="pages">Page</p>
+                    </section>
+
+                    <section class="topics-section">
+                        <p class="topic">Topic</p>
+                        <p class="pages">Page</p>
+                        <p class="pages">Page</p>
+                        <p class="pages">Page</p>
+                    </section>
+
+                    <section class="topics-section">
+                        <p class="topic">Topic</p>
+                        <p class="pages">Page</p>
+                        <p class="pages">Page</p>
+                        <p class="pages">Page</p>
+                    </section>
+                </section>    
+
+                
+
+            </section>
+
+        </section>
+        
+    </footer>
 
 </body>
 
