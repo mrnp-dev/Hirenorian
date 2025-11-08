@@ -1,0 +1,67 @@
+#whole-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+#job-section {
+
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-top: 50px;
+
+}
+
+.job {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.job-one-right {
+    font-size: 45px;
+
+}
+
+.job-image {
+    height: 450px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-top: 30px;
+
+}
+
+.info {
+    font-size: 26px;
+    margin-top: 25px;
+    text-align: left;
+    justify-content: space-evenly;
+}
+
+#job-more {
+    display: flex;
+    justify-content: center;
+
+
+}
+
+#more-button {
+    font-size: 25px;
+    padding: 10px 70px;
+    border-radius: 18px;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}

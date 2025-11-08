@@ -1,0 +1,143 @@
+#employers-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #eeeeee;
+    
+}
+
+#top-employers-section {
+    height: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    
+
+}
+
+
+#top-employer {
+
+    font-size: 60px;
+    font-weight: 900;
+    letter-spacing: 2px;
+
+}
+
+#discover {
+    font-size: 22px;
+    margin-top: 20px;
+    color: #828282;
+    letter-spacing: 1px;
+
+}
+
+.employer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    margin-right: 50px;
+  
+}
+
+
+.employer-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(252, 243, 243, 0.08);
+    padding: 10px 30px;
+    width: 500px;
+    height: 650px;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 80px;
+    
+}
+
+
+
+#rank1 {
+    position: absolute;
+    top: -25px;
+    left: -20px;
+    background-color: #ffd700;
+    color: #fff;
+
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rank2 {
+    position: absolute;
+    top: -25px;
+    left: -20px;
+    background-color: #c0c0c0;
+    color: #fff;
+
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#rank3 {
+    position: absolute;
+    top: -25px;
+    left: -20px;
+    background-color: #ce8946;
+    color: #fff;
+
+    font-size: 40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.employer-card img {
+    width: 400px;
+    height: 350px;
+    align-self: center;
+}
+
+
+.employer-card h3 {
+    font-size: 40px;
+    color: #222;
+    margin: 10px 0 5px;
+}
+
+
+.employer-card p {
+    font-size: 30px;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+
+.employer-card button {
+    background-color: #f1c40f;
+    border: none;
+    color: #ffffff;
+    padding: 20px 110px;
+    border-radius: 6px;
+    font-size: 23px;
+    font-weight: 600;
+}

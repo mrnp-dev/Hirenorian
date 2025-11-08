@@ -1,0 +1,156 @@
+#header-section {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    background-image: url("../Images/Backgrounds/white-curvy-bg.webp");
+
+    z-index: 2;
+}
+
+#navbar {
+    height: 200px;
+    width: 100%;
+    max-width: 1920px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    overflow: hidden;
+}
+
+#navbar-left {
+    display: flex;
+    height: 100%;
+    width: 50%;
+    justify-content: start;
+    align-items: center;
+}
+
+#imglogo {
+    height: 80%;
+    margin-left: 10%;
+    object-fit: cover;
+
+}
+
+#navbar-title {
+    margin-left: 10px;
+    font-size: 3rem;
+    color: #990000;
+}
+
+#navbar-right {
+    display: flex;
+    width: 50%;
+    justify-content: end;
+}
+
+#sign-in {
+    font-size: 20px;
+    color: white;
+    background-color: #eabb00;
+    border: none;
+    padding: 10px 50px;
+    border-radius: 18px;
+    margin-right: 10%;
+    text-align: center;
+}
+
+#left-circle-yellow {
+    position: absolute;
+    height: 600px;
+    width: 700px;
+    background-color: #eabb00;
+    border-bottom-right-radius: 1000px;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+}
+
+#find-career-section {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+#find-your-career-left-section {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: start;
+    font-family: 'Montserrat';
+}
+
+#get-hired-today {
+    margin-left: 10%;
+    font-size: 5rem;
+    font-weight: bold;
+    position: relative;
+    z-index: 2;
+}
+
+#hirenorian-info {
+    margin-left: 10%;
+    font-size: 2rem;
+}
+
+#find-your-career-div {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+}
+
+#find-your-career-button {
+    margin-left: 10%;
+    font-size: 2rem;
+    color: white;
+    background-color: #eabb00;
+    border: none;
+    padding: 5px 50px;
+    border-radius: 18px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#find-your-career-right-section {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+#gradpic {
+    height: 100%;
+    z-index: 2;
+}
+
+#circle-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
+    background-color: #730000;
+}
+
+#circle-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 500px;
+    width: 500px;
+    border-radius: 500px;
+    background-color: #a51a23;
+
+}
