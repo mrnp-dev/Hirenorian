@@ -4,15 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Styles -->
-    <link href="../css/landing_page.css" rel="stylesheet">
-    <link href="../css/landing_header.css" rel="stylesheet">
-    <link href="../css/landing_main_section1.css" rel="stylesheet">
-    <link href="../css/landing_main_section2.css" rel="stylesheet">
-    <link href="../css/landing_main_section3.css" rel="stylesheet">
-    <link href="../css/main_footer.css" rel="stylesheet">
-    <script type="module" src="../js/ElementInitializer.js"></script>
-    
     <!-- Fonts links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,13 +11,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Styles -->
+
+    <link href="../css/landing_page.css" rel="stylesheet">
+    <link href="../css/landing_header.css" rel="stylesheet">
+    <link href="../css/landing_main_section1.css" rel="stylesheet">
+    <link href="../css/landing_main_section2.css" rel="stylesheet">
+    <link href="../css/landing_main_section3.css" rel="stylesheet">
+    <link href="../css/main_footer.css" rel="stylesheet">
+
+    <script type="module" src="../js/ElementInitializer.js"></script>
     <title>Document</title>
-    
+
 </head>
 
 <body>
     <header id="header-section">
-        <nav id="navbar">   
+        <nav id="navbar">
 
             <section id="navbar-left">
                 <img src="../Images/dhvsulogo.png" id="imglogo" alt="hirenorian-logo">
@@ -62,29 +63,33 @@
 
     <main>
 
-        <section id="headline-section">
-            <section id="headline-left-section"></section>
+        <section id="main-section-1">
+            <section id="headline-section">
+                <section id="headline-section-top">
+                    <section id="headline-left-section"></section>
 
-            <section id="headline-right-section">
-                <h1 id="headline">Headline</h1>
-                <h2 id="sub-headline">sub headline</h2>
-                <p id="headline-info">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
+                    <section id="headline-right-section">
+                        <h1 id="headline">Headline</h1>
+                        <h2 id="sub-headline">sub headline</h2>
+                        <p id="headline-info">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
+                    </section>
+                </section>
+
+                <section id="socmed-bar">
+
+                    <section id="socmed-left-bar">
+                        <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
+                        <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+                        <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+                        <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                    </section>
+
+                    <section>
+                        <p id="hirenoriantext">hirenorian.com</p>
+                    </section>
+
+                </section>
             </section>
-        </section>
-
-        <section id="socmed-bar">
-
-            <section id="socmed-left-bar">
-                <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
-                <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-                <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-                <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
-            </section>
-
-            <section>
-                <p id="hirenoriantext">hirenorian.com</p>
-            </section>
-
         </section>
 
         <section id=whole-section>
@@ -152,7 +157,7 @@
             </section>
 
         </section>
-    
+
     </main>
 
     <footer>
@@ -162,7 +167,7 @@
             <div id="footer-top-redbar"></div>
 
             <section id="footer-bottom-section">
-                
+
                 <section id="bottom-left">
                     <p id="footer-Hirenorian">Hirenorian</p>
 
@@ -195,11 +200,11 @@
                         <p class="pages">Page</p>
                         <p class="pages">Page</p>
                     </section>
-                </section>    
+                </section>
             </section>
 
         </section>
-        
+
     </footer>
 
 </body>

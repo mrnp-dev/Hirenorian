@@ -5,8 +5,9 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    background-image: url("../Images/Backgrounds/white-curvy-bg.webp");
-
+    /*background-image: url("../Images/Backgrounds/white-curvy-bg.webp");*/
+    background-image: url("../Images/Backgrounds/ethnic-pattern3-bg.jpg");
+    background-size: cover;
     z-index: 2;
 }
 
@@ -153,3 +154,4 @@
     background-color: #a51a23;
 
 }
+
