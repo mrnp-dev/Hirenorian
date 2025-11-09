@@ -5,10 +5,12 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    /*background-image: url("../Images/Backgrounds/white-curvy-bg.webp");*/
-    background-image: url("../Images/Backgrounds/ethnic-pattern3-bg.jpg");
+    background-image: url("../Images/Backgrounds/white-hexagon-bg.jpg");
+    /* background-image: url("../Images/Backgrounds/ethnic-pattern3-bg.jpg"); */
     background-size: cover;
     z-index: 2;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 #navbar {
@@ -99,6 +101,7 @@
 #hirenorian-info {
     margin-left: 10%;
     font-size: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
 }
 
 #find-your-career-div {

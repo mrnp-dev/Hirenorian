@@ -5,7 +5,11 @@
     align-items: center;
     height: 85vh;
     width: 100vw;
-    background-image: url("../Images/Backgrounds/white-curvy-bg.webp");
+    /* background-image: url("../Images/Backgrounds/white-curvy-bg.webp"); */
+    background-image: url("../Images/Backgrounds/ethnic-pattern3-bg.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 #headline-section
