@@ -92,26 +92,30 @@
             </section>
         </section>
 
-        <section id=whole-section>
+        <section id="main-section-2">
 
-            <section id="job-section">
+            <section id="companies-section">
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number One</h3>
-                    <img src="..\Images\cloudstaff.jpg" class="job-image">
-                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
-                </section>
+                <section class="company-card">
+                    <div class="company-card-top">
+                        <img src="../Images/cloudstaff.jpg" class="company-logo" alt="Cloudstaff logo">
+                    </div>
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number Two</h3>
-                    <img src="..\Images\cloudstaff.jpg" class="job-image">
-                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
-                </section>
+                    <div class="company-card-middle">
+                        <h3 class="company-name">Cloudstaff</h3>
+                        <h2 class="company-position">UI/UX Web Designer</h2>
+                        <p class="company-tagline">Join the #1 workplace in the Philippines and design experiences that matter.</p>
+                    </div>
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number Three </h3>
-                    <img src="..\Images\cloudstaff.jpg" class="job-image">
-                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
+                    <div class="company-card-info">
+                        <p><strong>Location:</strong> Angeles City, Pampanga</p>
+                        <p><strong>Job Type:</strong> Full-time</p>
+                        <p><strong>Salary:</strong> ₱30,000 – ₱45,000/month</p>
+                    </div>
+
+                    <div class="company-card-bottom">
+                        <button>Apply Now</button>
+                    </div>
                 </section>
 
             </section>
