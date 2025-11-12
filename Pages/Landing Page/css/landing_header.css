@@ -59,6 +59,13 @@
     border-radius: 18px;
     margin-right: 10%;
     text-align: center;
+    cursor: pointer;
+}
+
+
+#sign-in:hover {
+    background-color: #f0ce56;
+    transform: scale(1.05); 
 }
 
 #left-circle-yellow {
@@ -120,7 +127,14 @@
     border-radius: 18px;
     align-items: center;
     margin-top: 20px;
+    cursor: pointer;
 }
+
+#find-your-career-button:hover {
+    background-color: #f0ce56; 
+    transform: scale(1.05); 
+}
+
 
 #find-your-career-right-section {
     height: 100%;

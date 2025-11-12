@@ -103,10 +103,18 @@
 
 }
 
+#fb:hover {
+    transform: scale(1.25); 
+}
+
 #in {
     height: 30px;
     width: 30px;
     margin-left: 10px;
+}
+
+#in:hover {
+    transform: scale(1.25); 
 }
 
 #yt {
@@ -115,12 +123,20 @@
     margin-left: 20px;
 }
 
+#yt:hover {
+    transform: scale(1.25);
+}
+
 #ig {
     height: 50px;
     width: 50px;
     margin-left: 10px;
 }
 
+#ig:hover {
+    transform: scale(1.25);
+
+}
 
 #hirenoriantext {
     color: white;
