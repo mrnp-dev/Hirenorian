@@ -63,10 +63,18 @@
 
 }
 
+#fb2:hover {
+    transform: scale(1.25);
+}
+
 #in2 {
     height: 30px;
     width: 30px;
     
+}
+
+#in2:hover {
+    transform: scale(1.25);
 }
 
 #yt2 {
@@ -75,10 +83,18 @@
     
 }
 
+#yt2:hover {
+    transform: scale(1.25);
+}
+
 #ig2 {
     height: 50px;
     width: 50px;
     
+}
+
+#ig2:hover {
+    transform: scale(1.25);
 }
 
 #bottom-right
@@ -107,4 +123,9 @@
 {
     color: white;
     font-size: 20px;
+    cursor: pointer;
+}
+
+.pages:hover {
+    transform: scale(1.25);
 }

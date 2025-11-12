@@ -58,8 +58,14 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-bottom: 80px;
     
+    
 }
 
+
+.employer-card:hover {
+     box-shadow: 0 10px 24px rgba(0,0,0,0.15);   
+    transform: scale(1.02); 
+}
 
 
 #rank1 {
@@ -140,4 +146,10 @@
     border-radius: 6px;
     font-size: 23px;
     font-weight: 600;
+    cursor: pointer;
+}
+
+.employer-card button:hover {
+    background-color: #f0ce56;
+    transform: scale(1.05); 
 }
