@@ -20,9 +20,9 @@
         <div class="left">
             <h2>“Connecting students with<br>real-world opportunities”</h2>
             <div class="steps">
-                <div class="step">
-                    <div class="step-icon"><img src="../images/1User_White.png" alt="Logo"></div>
-                    <span class="step-text">Personal Information</span>
+                <div class="step active-step">
+                    <div class="step-icon left-active-icon"><img src="../images/1User_White.png" alt="Logo"></div>
+                    <span class="step-text left-active-text">Personal Information</span>
                 </div>
                 <div class="step">
                     <div class="step-icon"><img src="../images/1Book_White.png" alt="Logo"></div>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-row">
                         <div class="input-wrapper">
-                            <input type="text" id="email-input" name="Email" placeholder="Email *">
+                            <input type="text" id="email-input" name="Email" placeholder="Personal Email *">
                             <p>error</p>
                         </div>
 
@@ -76,13 +76,13 @@
                     <div class="input-wrapper">
                         <input type="password" id="password-input" name="Password" placeholder="Password *">
                         <p>error</p>
-                        <button type="button" class="toggle_show_hide" id="togglePassword" onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
+                        <button type="button" class="toggle_show_hide" id="togglePassword" onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
                     </div>
 
                     <div class="input-wrapper">
                         <input type="password" id="confirmPass-input" name="Confirm Password" placeholder="Confirm Password *">
                         <p>error</p>
-                        <button type="button" class="toggle_show_hide" id="toggleConfirmPassword" onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
+                        <button type="button" class="toggle_show_hide" id="toggleConfirmPassword" onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
                     </div>
 
                     <div class="button-container">
@@ -122,7 +122,7 @@
                     </div>
 
                     <div class="input-wrapper">
-                        <input type="text" id="org-input" name="Organization" placeholder="Organization">
+                        <input type="text" id="org-input" name="Organization" placeholder="Organization (optional)">
                         <div class="suggestions"></div>
                         <p>error</p>
                     </div>
