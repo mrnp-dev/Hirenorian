@@ -26,6 +26,25 @@ let thirdInputs_Validation = [];
 
 let userInformation = {};
 
+const steps = document.querySelectorAll('.step');
+const step_text = document.querySelectorAll('.step-text');
+const step_icon = document.querySelectorAll('.step-icon');
+let currentStep = 0;
+
+function manageSteps(action){
+    step_text[currentStep].classList.remove('left-active-text');
+    step_icon[currentStep].classList.remove('left-active-icon');
+    steps[currentStep].classList.remove('active-step');
+    if(action == 'next'){
+        currentStep++;
+    }else{
+        currentStep--;
+    }
+    steps[currentStep].classList.add('active-step');
+    step_text[currentStep].classList.add('left-active-text');
+    step_icon[currentStep].classList.add('left-active-icon');
+}
+
 firstInputs_Container.addEventListener('animationend', e =>{
     if(e.animationName == 'slideRight'){
         firstInputs_Container.classList.remove('slide-right');
@@ -46,7 +65,22 @@ firstInputs.forEach(input =>{
         removeError(input);
     });
     input.addEventListener('input', async ()=>{
-        removeError(input);
+        if(input.name == "Password"){
+            const confirmPass_field = document.querySelector('#confirmPass-input');
+            if(input.value.trim().length >= 12){
+                if(confirmPass_field.value.trim()){
+                    confirmPassword(confirmPass_field);
+                }
+                checkPassword(input);
+            }else{
+                removeError(confirmPass_field);
+                removeError(input);
+            }
+        }else if(input.name == "Confirm Password"){
+            confirmPassword(input);
+        }else{
+            removeError(input);
+        }
     });
 });
 
@@ -64,6 +98,7 @@ async function goNext(){
         firstInputs_Container.classList.remove('slide-left');
         firstInputs_Container.classList.add('slide-right');
         console.log(userInformation);
+        manageSteps('next');
     }
 }
 
@@ -99,6 +134,7 @@ function showError(input, errorMessage){
     const section = input.closest(".input-wrapper");
     const errorElement = section.querySelector("p");
     errorElement.textContent = errorMessage;
+    errorElement.style.color = 'red'; 
     errorElement.style.visibility = 'visible'; 
 }
 function removeError(input){
@@ -149,10 +185,13 @@ function checkFirst_Last_Name(input){
         return true;
     }
 }
+
 function capitalizeFirstLetter(input){
     const parts = input.value.split(" ");
-    return parts.map(part =>{
-        return part[0].toUpperCase() + part.slice(1).toLowerCase();}).join(' ');
+    if(!parts.includes('')){
+        return parts.map(part =>{
+                return part[0].toUpperCase() + part.slice(1).toLowerCase();}).join(' ');
+    }
 }
 
 function checkNameLength(input){
@@ -220,14 +259,28 @@ function checkEmail(input){
             showError(input, `Invalid Email`);
             return false;
         }else{
+            if(validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())){
+                showError(input, `Not your School Email`);
+                return false;
+            }
             userInformation[input.name] = input.value;
             return true;
         }
     }else{
-        if(!validSchoolEmail_RegEx.test(input.value.trim())){
+        if(!validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())){
             return false;
         }else{
-            return true;
+             const studentNumber_Input = document.querySelector('#studNum-input');
+             const studentNumber_substr = input.value.trim().toLowerCase().slice(0, 10);
+            if(studentNumber_Input.value.trim()){
+                if(studentNumber_Input.value.trim() == studentNumber_substr){
+                    userInformation[input.name] = input.value.toLowerCase();
+                    return true;
+                }else{
+                    showError(input, `Use your own school email address`);
+                    return true;
+                }
+            }
         }
     }
 }
@@ -253,45 +306,94 @@ async function checkPassword(input){
         showError(input, `${input.name} must not exceed 64 characters.`);
         return false;
     }else{
-        try{
-            const response = await fetch('../JSON/weakPasswords.json');
-            const data = await response.json();
-            if(data.weakPasswords.includes(input.value.toLowerCase())){
-                showError(input, `Please choose a more secure password.`);
-                return false;
-            }else{
-                return true;
-            }
-        }catch(error){
-            console.error("Error loading WeakPasswords:", error);
-            return false;
-        }
+        // try{
+        //     const response = await fetch('../JSON/weakPasswords.json');
+        //     const data = await response.json();
+        //     if(data.weakPasswords.includes(input.value.toLowerCase())){
+        //         showError(input, `Please choose a more secure password.`);
+        //         return false;
+        //     }else{
+        //         return true;
+        //     }
+        // }catch(error){
+        //     console.error("Error loading WeakPasswords:", error);
+        //     return false;
+        // }
+        
+        checkPasswordStrength(input);
+        return true;
     }
 }
 
+function checkPasswordStrength(input) {
+    const password = input.value;
+    const hasLetters = /[a-zA-Z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSpecials = /[^a-zA-Z0-9]/.test(password);
+
+    const typesCount = [hasLetters, hasNumbers, hasSpecials].filter(Boolean).length;
+    changePasswordStrength_text(input, typesCount);
+    
+}
+function changePasswordStrength_text(element, strength){
+    const section = element.closest(".input-wrapper");
+    const strength_P = section.querySelector("p");
+    const span = document.createElement('span');
+    strength_P.textContent = "strength: ";
+    strength_P.style.color = "white";
+
+    switch (strength) {
+        case 1: 
+            span.textContent = "weak";
+            span.style.color = "red";
+            break;
+        case 2: 
+            span.textContent = "medium";
+            span.style.color = "orange";
+            break;
+        case 3: 
+            span.textContent = "strong";
+            span.style.color = "green";
+            break;
+    }
+    strength_P.append(span);
+    strength_P.style.visibility = 'visible'; 
+}
+
+
+
 function confirmPassword(input){
+    
     const password = document.querySelector('#password-input').value;
     if(input.value !== password){
         showError(input, `Passwords do not match.`);
         return false;
     }else{
+        input.classList.remove('input_InvalidInput');
+        const section = input.closest(".input-wrapper");
+        const p = section.querySelector("p");
+        p.textContent = "Passwords matched";
+        p.style.color = "green";
+        p.style.visibility = 'visible'; 
         userInformation[`Password`] = input.value;
         return true;
     }
 }
 
-function toggleShow_Hide_Password(button){
-    const input_wrapper = button.closest('.input-wrapper');
-    const eye = input_wrapper.querySelector('i');
-    const passwordField = input_wrapper.querySelector('input');
-    if(passwordField.type == 'password'){
-        passwordField.type = 'text';
-    }else{
-        passwordField.type = 'password';
-    }
-    eye.classList.toggle('fa-eye');
-    eye.classList.toggle('fa-eye-slash');
-
+function toggleShow_Hide_Password(){
+    const toggleButtons = document.querySelectorAll('.toggle_show_hide');
+    toggleButtons.forEach(button => {
+        const input_wrapper = button.closest('.input-wrapper');
+        const eye = input_wrapper.querySelector('i');
+        const passwordField = input_wrapper.querySelector('input');
+        if(passwordField.type == 'password'){
+            passwordField.type = 'text';
+        }else{
+            passwordField.type = 'password';
+        }
+        eye.classList.toggle('fa-eye');
+        eye.classList.toggle('fa-eye-slash');
+    });
 }
 
 function checkWhiteSpaces(input){
@@ -309,6 +411,7 @@ function goToPreviousSection(button){
     formSection.classList.remove('slide-left');
     formSection.classList.add('slide-right');
     secondBackButton_Action = button.textContent;
+    manageSteps('back');
 }
 
 document.addEventListener('click', (e) => {
@@ -367,6 +470,7 @@ function goToLast(button){
         secondInputs_Container.classList.remove('slide-left');
         secondInputs_Container.classList.add('slide-right');
         console.log(userInformation);
+        manageSteps('next');
     }
 }
 
@@ -465,20 +569,23 @@ function checkIfEmpty_General(input){
     }
 }
 
-function checkStudentNumber(input){
+function checkStudentNumber(input) {
     const studentNumber_RegEx = /^(19|20)\d{2}\d{6}$/;
-
-    const year = parseInt(input.value.slice(0, 4), 10);
-    const currentYear = new Date().getFullYear();
-    const maxInternYear = currentYear - 3;
-
-    if (!studentNumber_RegEx.test(input.value)) {
+    const value = input.value.trim();
+    if (!studentNumber_RegEx.test(value)) {
         return false;
-    }else if(year > maxInternYear){
-        return false;
-    }else{
-        return true;
     }
+
+    const year = parseInt(value.slice(0, 4), 10);
+    const currentYear = new Date().getFullYear();
+    if (year > currentYear) {
+        return false;
+    }
+    if (year < currentYear - 15) {
+        return false;
+    }
+
+    return true;
 }
 
 function LoadList(input, list){
@@ -685,8 +792,6 @@ function submitTheForm(button){
     if(Object.values(thirdInputs_Validation).every(Boolean)){
         // form.submit();
         console.log(userInformation);
-    }else{
-        console.log(thirdInputs_Validation);
     }
 }
 function validateThirdInputs(input){
@@ -823,7 +928,6 @@ window.addEventListener('DOMContentLoaded', async e => {
                     break;
             }
             LoadList(e.target, list);
-            validateSecondInputs(input);
             inputValidation_SecondSection(input)
         });
     });

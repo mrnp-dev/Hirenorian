@@ -1,4 +1,8 @@
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+  :root{
+    --inactive-color: rgb(145, 141, 141);
+    --active-color: #ffb800;
+  }
   * {
     margin: 0;
     padding: 0;
@@ -84,11 +88,12 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    transform: translateX(0);
+    transition: all ease-in-out .5s;
 }
 
 .step-icon {
-    background: #ffb800;
-    color: #9b0000;
+    background: var(--inactive-color);
     font-size: 1.2rem;
     font-weight: bold;
     width: 45px;
@@ -97,11 +102,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all ease-in-out .125s;
 }
 
 .step-text {
     font-size: 1rem;
-    color: #ffb800;
+    color: var(--inactive-color);
+    transition: all ease-in-out .125s;
 }
 
 .right {
@@ -305,3 +312,50 @@ input.input_InvalidInput{
     font-size: 1.2rem;
 }
 
+.input-wrapper span{
+    font-weight: bold;
+}
+
+.left-active-text{
+    color: var(--active-color);
+    font-size: 1.2rem;
+}
+.left-active-icon{
+    background-color: var(--active-color);
+}
+
+.active-step{
+
+    background-color: #f0f0f03b;
+    padding: .3rem;
+    border-radius: 1rem;
+    animation: active-step-animation .5s ease-in-out forwards;
+}
+
+.inactive-step{
+    animation: inactive-step-animation .5s ease-in-out forwards;
+}
+
+@keyframes active-step-animation {
+  from {
+    transform: translateX(0);
+  }
+  60% {
+    transform: translateX(-1.5rem); 
+  }
+  to {
+    transform: translateX(-1rem);  
+  }
+}
+
+@keyframes inactive-step-animation {
+  from {
+    transform: translateX(-1rem);
+  }
+  60% {
+    transform: translateX(-1.5rem); 
+  }
+  to {
+    transform: translateX(0);  
+  }
+}
