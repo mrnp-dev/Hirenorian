@@ -43,7 +43,7 @@
         <section id="find-career-section">
 
             <section id="find-your-career-left-section">
-                <h1 id="get-hired-today" class="fade-up">GET HIRED<br>TODAY</h1>
+                <h1 id="get-hired-today" class="fade-up" >GET HIRED<br>TODAY</h1>
                 <p id="hirenorian-info" class="fade-up" style="animation-delay: .2s;">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
                 <div id="find-your-career-div" class="fade-up" style="animation-delay: .4s;"><button id="find-your-career-button">Find your Career</button></div>
                 <div></div>
@@ -69,9 +69,9 @@
                     <section id="headline-left-section"></section>
 
                     <section id="headline-right-section">
-                        <h1 id="headline">Headline</h1>
-                        <h2 id="sub-headline">sub headline</h2>
-                        <p id="headline-info">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
+                        <h1 id="headline" class="fade-up">Headline</h1>
+                        <h2 id="sub-headline" class="fade-up" style="animation-delay: .2s;">sub headline</h2>
+                        <p id="headline-info" class="fade-up" style="animation-delay: .4s;">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
                     </section>
                 </section>
 
@@ -211,7 +211,9 @@
 
     </footer>
 
-    <script>
+   
+
+<script>
         document.addEventListener("mousemove", (e) => {
         document.querySelectorAll(".parallax").forEach(el => {
         const speed = parseFloat(el.getAttribute("data-speed"));
@@ -220,6 +222,9 @@
         el.style.transform = `translate(${x}px, ${y}px)`;
     });
 });
+
+
+
 </script>
 
 </body>

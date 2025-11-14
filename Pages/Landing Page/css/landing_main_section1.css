@@ -100,6 +100,7 @@
     height: 30px;
     width: 40px;
     margin-left: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
 }
 
@@ -111,6 +112,7 @@
     height: 30px;
     width: 30px;
     margin-left: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #in:hover {
@@ -121,6 +123,7 @@
     height: 30px;
     width: 30px;
     margin-left: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #yt:hover {
@@ -131,6 +134,7 @@
     height: 50px;
     width: 50px;
     margin-left: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #ig:hover {
