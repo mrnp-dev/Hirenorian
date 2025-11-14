@@ -50,8 +50,8 @@
             </section>
 
             <section id="find-your-career-right-section">
-                <div id="circle-left"  class="floating parallax" data-speed="3"></div>
-                <div id="circle-right"  class="floating parallax" data-speed="2"></div>
+                <div id="circle-left" class="floating parallax" data-speed="3"></div>
+                <div id="circle-right" class="floating parallax" data-speed="2"></div>
                 <img src="../Images/gradpic2.png" id="gradpic" class="floating parallax" data-speed="1.5" alt="">
             </section>
 
@@ -213,14 +213,14 @@
 
     <script>
         document.addEventListener("mousemove", (e) => {
-        document.querySelectorAll(".parallax").forEach(el => {
-        const speed = parseFloat(el.getAttribute("data-speed"));
-        const x = (window.innerWidth - e.pageX * speed) / 120;
-        const y = (window.innerHeight - e.pageY * speed) / 120;
-        el.style.transform = `translate(${x}px, ${y}px)`;
-    });
-});
-</script>
+            document.querySelectorAll(".parallax").forEach(el => {
+                const speed = parseFloat(el.getAttribute("data-speed"));
+                const x = (window.innerWidth - e.pageX * speed) / 120;
+                const y = (window.innerHeight - e.pageY * speed) / 120;
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
 
 </body>
 
