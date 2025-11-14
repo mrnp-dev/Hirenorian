@@ -63,7 +63,7 @@
 
 
 .employer-card:hover {
-     box-shadow: 0 10px 24px rgba(0,0,0,0.15);   
+    box-shadow: 0 10px 24px rgba(0,0,0,0.15);   
     transform: scale(1.02); 
 }
 
@@ -139,7 +139,7 @@
 
 
 .employer-card button {
-    background-color: #f1c40f;
+    background-color: #eabb00;
     border: none;
     color: #ffffff;
     padding: 20px 110px;
@@ -150,6 +150,6 @@
 }
 
 .employer-card button:hover {
-    background-color: #f0ce56;
+    background-color: #c99a00;
     transform: scale(1.05); 
 }

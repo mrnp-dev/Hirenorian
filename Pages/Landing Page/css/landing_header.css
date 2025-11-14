@@ -60,11 +60,13 @@
     margin-right: 10%;
     text-align: center;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+
 }
 
 
 #sign-in:hover {
-    background-color: #f0ce56;
+    background-color: #c99a00;
     transform: scale(1.05); 
 }
 
@@ -128,10 +130,11 @@
     align-items: center;
     margin-top: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #find-your-career-button:hover {
-    background-color: #f0ce56; 
+    background-color: #c99a00; 
     transform: scale(1.05); 
 }
 
@@ -171,7 +174,6 @@
     background-color: #a51a23;
 
 }
-
 
 .floating {
     position: absolute;
@@ -227,4 +229,5 @@
         transform: translateY(0);
     }
 }
+
 
