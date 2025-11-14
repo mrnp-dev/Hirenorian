@@ -45,7 +45,7 @@
 {
     display: flex;
     margin-left: 60px;
-    
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .icon2 {
@@ -60,6 +60,7 @@
     height: 30px;
     width: 40px;
     margin-left: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
 }
 
@@ -70,6 +71,7 @@
 #in2 {
     height: 30px;
     width: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     
 }
 
@@ -80,6 +82,7 @@
 #yt2 {
     height: 30px;
     width: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     
 }
 
@@ -90,6 +93,7 @@
 #ig2 {
     height: 50px;
     width: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     
 }
 
@@ -124,6 +128,7 @@
     color: white;
     font-size: 20px;
     cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .pages:hover {
