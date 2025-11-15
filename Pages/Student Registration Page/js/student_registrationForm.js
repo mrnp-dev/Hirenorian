@@ -187,7 +187,7 @@ function checkFirst_Last_Name(input){
 }
 
 function capitalizeFirstLetter(input){
-    const parts = input.value.split(" ");
+    const parts = input.value.trim().split(" ");
     if(!parts.includes('')){
         return parts.map(part =>{
                 return part[0].toUpperCase() + part.slice(1).toLowerCase();}).join(' ');
@@ -252,7 +252,7 @@ function checkSuffix(input){
 }
 
 function checkEmail(input){
-    const validSchoolEmail_RegEx = /^20[0-9]{2}[0-9]*@pampangastateu\.edu\.ph$/;
+    const validSchoolEmail_RegEx = /^20[0-9]{2}[0-9]{6}@pampangastateu\.edu\.ph$/;
     const validEmail_RegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(input.name == 'Email'){
         if(!validEmail_RegEx.test(input.value.trim())){
@@ -268,17 +268,26 @@ function checkEmail(input){
         }
     }else{
         if(!validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())){
+            showError(input, `Invalid ${input.name}`);
             return false;
         }else{
-             const studentNumber_Input = document.querySelector('#studNum-input');
-             const studentNumber_substr = input.value.trim().toLowerCase().slice(0, 10);
+            const year = parseInt(input.value.substring(0, 4), 10);
+            const currentYear = new Date().getFullYear();
+            
+            if (year < currentYear - 15 || year > currentYear) {
+                showError(input, `Invalid ${input.name}`);
+                return false;
+            }
+
+            const studentNumber_Input = document.querySelector('#studNum-input');
+            const studentNumber_substr = input.value.trim().toLowerCase().slice(0, 10);
             if(studentNumber_Input.value.trim()){
                 if(studentNumber_Input.value.trim() == studentNumber_substr){
                     userInformation[input.name] = input.value.toLowerCase();
                     return true;
                 }else{
                     showError(input, `Use your own school email address`);
-                    return true;
+                    return false;
                 }
             }
         }
@@ -540,7 +549,6 @@ function validateSecondInputs(input){
                 if(!checkIfEmpty_General(input)){
                     secondInputs_Validation['isSchoolEmailValid'] = false;
                 }else if(!checkEmail(input)){
-                    showError(input, `Invalid ${input.name}`);
                     secondInputs_Validation['isSchoolEmailValid'] = false;
                 }
                 else{
@@ -584,7 +592,7 @@ function checkStudentNumber(input) {
     if (year < currentYear - 15) {
         return false;
     }
-
+    userInformation[input.name] = input.value.trim();
     return true;
 }
 
