@@ -50,9 +50,9 @@
             </section>
 
             <section id="find-your-career-right-section">
-                <div id="circle-left"  class="floating parallax" data-speed="3"></div>
-                <div id="circle-right"  class="floating parallax" data-speed="2"></div>
-                <img src="../Images/gradpic2.png" id="gradpic"  alt="">
+                <div id="circle-left" class="floating parallax" data-speed="3"></div>
+                <div id="circle-right" class="floating parallax" data-speed="2"></div>
+                <img src="../Images/gradpic2.png" id="gradpic" class="floating parallax" data-speed="1.5" alt="">
             </section>
 
 

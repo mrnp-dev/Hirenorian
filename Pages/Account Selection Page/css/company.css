@@ -1,0 +1,19 @@
+.company-card {
+  background: linear-gradient(135deg, #FFBD00, #BD8C00);
+}
+
+.company-card .btn {
+  background-color: #FFBD00;
+  color: #fff;
+  /* Added more padding for a wider button look */
+  padding: 20px 30px;
+  font-size: 20px;
+}
+
+.company-card .btn:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.card ul {
+  padding-left: 10px;
+}
