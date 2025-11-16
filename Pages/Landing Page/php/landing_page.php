@@ -52,7 +52,7 @@
             <section id="find-your-career-right-section">
                 <div id="circle-left" class="floating parallax" data-speed="3"></div>
                 <div id="circle-right" class="floating parallax" data-speed="2"></div>
-                <img src="../Images/gradpic2.png" id="gradpic" class="floating parallax" data-speed="1.5" alt="">
+                <img src="../Images/gradpic2.png" class="fade-up" id="gradpic"  alt="">
             </section>
 
 
@@ -133,7 +133,7 @@
                 <p id="discover">Discover companies offering great opportunities for students and graduates</p>
             </section>
 
-            <section class="employer-container">
+            <section class="employer-container" >
                 <section class="employer-card">
                     <section id="rank1">1</section>
                     <img src="../Images/hyundai.jpg" id="Hyundai">
@@ -142,7 +142,7 @@
                     <button id="button-job-one"> View Job</button>
                 </section>
 
-                <section class="employer-card">
+                <section class="employer-card" >
                     <section id="rank2">2</section>
                     <img src="../Images/samsung.jpg" id="Samsung">
                     <h3>Samsung</h3>
@@ -150,7 +150,7 @@
                     <button id="button-job-two"> View Job </button>
                 </section>
 
-                <section class="employer-card">
+                <section class="employer-card" >
                     <section id="rank3">3</section>
                     <img src="../Images/google.jpg" id="Google">
                     <h3>Google</h3>
@@ -213,29 +213,6 @@
 
    
 
-<script>
-        document.addEventListener("mousemove", (e) => {
-        document.querySelectorAll(".parallax").forEach(el => {
-        const speed = parseFloat(el.getAttribute("data-speed"));
-        const x = (window.innerWidth - e.pageX * speed) / 120;
-        const y = (window.innerHeight - e.pageY * speed) / 120;
-        el.style.transform = `translate(${x}px, ${y}px)`;
-    });
-});
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-        }
-    });
-});
-
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-
-
-</script>
 
 </body>
 
