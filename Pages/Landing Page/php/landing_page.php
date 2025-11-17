@@ -63,9 +63,9 @@
 
     <main>
 
-        <section id="main-section-1">
+        <section id="main-section-1" class="fade-up" style="animation-delay: .1s;">
             <section id="headline-section">
-                <section id="headline-section-top">
+                <section id="headline-section-top" >
                     <section id="headline-left-section"></section>
 
                     <section id="headline-right-section">
@@ -75,13 +75,13 @@
                     </section>
                 </section>
 
-                <section id="socmed-bar">
+                <section id="socmed-bar" class="fade-up" style="animation-delay: .1s;">
 
                     <section id="socmed-left-bar">
-                        <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
-                        <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-                        <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-                        <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.2s;" ><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb" ></button>
+                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.3s;"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.4s;"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.5s;"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
                     </section>
 
                     <section>
@@ -94,17 +94,17 @@
 
         <section id="main-section-2">
 
-            <section id="companies-section">
+            <section id="companies-section" ">
 
                 <section class="company-card">
                     <div class="company-card-top">
-                        <img src="../Images/cloudstaff.jpg" class="company-logo" alt="Cloudstaff logo">
+                        <img src="../Images/cloudstaff.jpg" class="company-logo" style="animation-delay: .1s;" alt="Cloudstaff logo">
                     </div>
 
                     <div class="company-card-middle">
-                        <h3 class="company-name">Cloudstaff</h3>
-                        <h2 class="company-position">UI/UX Web Designer</h2>
-                        <p class="company-tagline">Join the #1 workplace in the Philippines and design experiences that matter.</p>
+                        <h3 class="company-name" style="animation-delay: .2s;">Cloudstaff</h3>
+                        <h2 class="company-position" style="animation-delay: .3s;">UI/UX Web Designer</h2>
+                        <p class="company-tagline" style="animation-delay: .4s;">Join the #1 workplace in the Philippines and design experiences that matter.</p>
                     </div>
 
                     <div class="company-card-info">
@@ -129,8 +129,8 @@
         <section id="employers-section">
 
             <section id="top-employers-section">
-                <h2 id="top-employer">TOP EMPLOYERS</h2>
-                <p id="discover">Discover companies offering great opportunities for students and graduates</p>
+                <h2 id="top-employer" class="fade-up">TOP EMPLOYERS</h2>
+                <p id="discover" class="fade-up">Discover companies offering great opportunities for students and graduates</p>
             </section>
 
             <section class="employer-container" >
@@ -173,9 +173,9 @@
             <section id="footer-bottom-section">
 
                 <section id="bottom-left">
-                    <p id="footer-Hirenorian">Hirenorian</p>
+                    <p id="footer-Hirenorian" class="fade-up">Hirenorian</p>
 
-                    <section id="footer-buttons">
+                    <section id="footer-buttons" class="fade-up">
                         <button class="icon2"><img src="../Images/fbicon.png" alt="Facebook" class="icon2" id="fb2"></button>
                         <button class="icon2"><img src="../Images/linkedin.png" alt="Youtube" class="icon2" id="in2"></button>
                         <button class="icon2"><img src="../Images/yticon.png" alt="Youtube" class="icon2" id="yt2"></button>

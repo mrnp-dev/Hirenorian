@@ -57,7 +57,10 @@
     position: relative;
     transition: transform .3s ease, box-shadow .3s ease;
     margin-bottom: 80px;
-    
+
+    opacity: 0;
+    transform: translateY(25px);
+    animation: cardFadeUp 0.8s ease-out forwards;
     
 }
 
@@ -82,6 +85,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 #rank2 {
@@ -98,6 +102,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 #rank3 {
@@ -114,6 +119,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10;
 }
 
 
@@ -124,6 +130,8 @@
     opacity: 0;
     transform: scale(0.95);
     animation: imgPop 0.8s ease forwards;
+    z-index: 1;
+    position: relative;
 }
 
 
@@ -157,11 +165,7 @@
     transform: scale(1.05); 
 }
 
-.employer-card {
-    opacity: 0;
-    transform: translateY(25px);
-    animation: cardFadeUp 0.8s ease-out forwards;
-}
+
 
 .employer-container > .employer-card:nth-of-type(1) { animation-delay: 0.1s; }
 .employer-container > .employer-card:nth-of-type(2) { animation-delay: 0.25s; }
@@ -174,14 +178,6 @@
     }
 }
 
-.employer-card img {
-    width: 400px;
-    height: 350px;
-    opacity: 0;
-    transform: scale(0.95);
-    animation: imgPop 0.8s ease forwards;
-}
-
 .employer-container > .employer-card:nth-of-type(1) img { animation-delay: .3s; }
 .employer-container > .employer-card:nth-of-type(2) img { animation-delay: .5s; }
 .employer-container > .employer-card:nth-of-type(3) img { animation-delay: .7s; }
@@ -192,3 +188,4 @@
         transform: scale(1);
     }
 }
+
