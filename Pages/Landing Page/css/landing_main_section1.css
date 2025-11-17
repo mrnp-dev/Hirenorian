@@ -162,14 +162,3 @@
         transform: translateY(0);
     }
 }
-
-@keyframes bounceIn {
-    0% { transform: scale(.5); opacity: 0; }
-    60% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.icon.fade-in-bounce {
-    opacity: 0;
-    animation: bounceIn .6s ease-out forwards;
-}
