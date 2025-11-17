@@ -63,7 +63,7 @@
 
     <main>
 
-        <section id="main-section-1" class="fade-up" style="animation-delay: .1s;">
+        <section id="main-section-1" >
             <section id="headline-section">
                 <section id="headline-section-top" >
                     <section id="headline-left-section"></section>
@@ -78,10 +78,10 @@
                 <section id="socmed-bar" class="fade-up" style="animation-delay: .1s;">
 
                     <section id="socmed-left-bar">
-                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.2s;" ><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb" ></button>
-                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.3s;"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.4s;"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-                        <button class="icon" class="icon fade-in-bounce" style="animation-delay:.5s;"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                        <button class="icon" ><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb" ></button>
+                        <button class="icon" ><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+                        <button class="icon" ><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+                        <button class="icon" ><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
                     </section>
 
                     <section>
