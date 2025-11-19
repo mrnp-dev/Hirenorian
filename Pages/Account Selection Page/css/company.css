@@ -1,5 +1,6 @@
 .company-card {
   background: linear-gradient(135deg, #FFBD00, #BD8C00);
+  padding-right: 50px;
 }
 
 .company-card .btn {
