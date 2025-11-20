@@ -6,42 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
     <link rel="stylesheet" href="style.css" />
+    <link href="../css/sidebar.css" rel="stylesheet">
 </head>
 
 <body>
 
-    <aside class="sidebar">
-        <figure class="profile">
-        <img src="profile.jpg" alt="User profile photo">
-        <figcaption>Isabella Sicat</figcaption>
-        </figure>
+    <aside id="student-dashboard-sidebar">
+        <div id="student-profile">
+            <img src="../images/sidebar_profile.jpg" id="student-profile-image" alt="User profile photo">
+            <h1 id="student-profile-name">Ashanti Garcia</h1>
+        </div>
 
-        <nav class="menu">
-            <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Internship</a></li>
-                <li><a href="#">Help</a></li>
-            </ul>
+        <nav id="sidebar-menu">
+           <section id="sidebar-menu-button-dashboard">
+                <img src="../images/dashboard_icon.png" class="sidebar-button-icons" alt="">
+                <p id="menu-texts-dashboard">Dashboard</p>
+           </section>
+           <section class="sidebar-menu-buttons">
+                <img src="../images/prof_icon.png" class="sidebar-button-icons" alt="">
+                <p class="menu-texts">Profile</p>
+           </section>
+           <section class="sidebar-menu-buttons">
+                <img src="../images/internship_icon.png" class="sidebar-button-icons" alt="">
+                <p class="menu-texts">Internship</p>
+           </section>
+           <section class="sidebar-menu-buttons">
+                <img src="../images/questionmark_icon.png" class="sidebar-button-icons" alt="">
+                <p class="menu-texts">Help</p>
+           </section>
         </nav>
 
-        <figure class="logo">
-            <img src="logo.png" alt="School logo">
-        </figure>
 
     </aside>
  
     <main>
         
+        <h1 id="dashboard-title">Dashboard</h1>
         <section id="dashboard-section">
-            <h1>Dashboard</h1>
             <div id="yellow-welcome-banner">
-                <p>Hi Isabella Sicat! Wecome Back!</p>
-                <h1>Check your Job Applications</h1>
-                <div id="girl-in-toga">
-                    <img src="" alt="">
+                <div id="welcome-texts">
+                <p id="hi-text">Hi Isabella Sicat! Welcome Back!</p>
+                <h1 id="check-job-text">Check your Job Applications</h1>
                 </div>
-
+                <div id="college-girl-container">
+                        <img src="../images/collegegirl_icon.png" alt="college-girl">
+                </div>
             </div>
         </section>
 
@@ -206,8 +215,56 @@
 
         </section>
 
-        <section>
+        <section id="status">
+                <h1>Status</h1>
             
+            <section id="status-cards">
+                <section class="card">
+                    <section class="left-side-card">
+                        <h1>0</h1>
+                        <p>Sent</p>
+                    </section>
+                    <section class="right-side-card">
+                        <a href="">View All</a>
+                    </section> 
+                </section>
+
+                <section class="card">
+                    <section class="left-side-card">
+                        <h1>0</h1>
+                        <p>Sent</p>
+                    </section>
+                    <section class="right-side-card">
+                        <a href="">View All</a>
+                    </section> 
+                </section>
+
+                <section class="card">
+                    <section class="left-side-card">
+                        <h1>0</h1>
+                        <p>Sent</p>
+                    </section>
+                    <section class="right-side-card">
+                        <a href="">View All</a>
+                    </section> 
+                </section>
+
+                <section class="card">
+                    <section class="left-side-card">
+                        <h1>0</h1>
+                        <p>Sent</p>
+                    </section>
+                    <section class="right-side-card">
+                        <a href="">View All</a>
+                    </section> 
+                </section>
+
+            </section>
+
+            
+
+
+
         </section>
 
     </main>
