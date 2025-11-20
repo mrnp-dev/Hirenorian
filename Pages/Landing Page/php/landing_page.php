@@ -94,18 +94,25 @@
 
         <section id="main-section-2">
 
+            <div class="main-section-2-overlay" aria-hidden="true"></div>
+
             <section id="companies-section">
+                <div id="internships-header">
+                    <h2 id="internships-title">Internships</h2>
+                    <p id="internships-subheading">Explore fresh opportunities from trusted employer partners.</p>
+                </div>
+
                 <section class="companies-cards-holder">
                     <article class="company-card">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Cloudstaff workplace" class="company-card__image">
                         </div>
                         <div class="company-card__logo">
-                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Cloudstaff logo">
                         </div>
                         <div class="company-card__content">
-                            <h3 class="company-card__name">Company Name</h3>
-                            <p class="company-card__position">Internship Position Title</p>
+                            <h3 class="company-card__name">Cloudstaff</h3>
+                            <p class="company-card__position">Creative Design Intern</p>
                         </div>
                         <button class="company-card__footer">
                             View Internship
@@ -113,14 +120,14 @@
                     </article>
                     <article class="company-card">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                            <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="company-card__image">
                         </div>
                         <div class="company-card__logo">
-                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                            <img src="../Images/Companies/samsung_logo.png" alt="Samsung logo">
                         </div>
                         <div class="company-card__content">
-                            <h3 class="company-card__name">Company Name</h3>
-                            <p class="company-card__position">Internship Position Title</p>
+                            <h3 class="company-card__name">Samsung</h3>
+                            <p class="company-card__position">Software Engineering Intern</p>
                         </div>
                         <button class="company-card__footer">
                             View Internship
@@ -128,31 +135,14 @@
                     </article>
                     <article class="company-card">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Google workplace" class="company-card__image">
                         </div>
                         <div class="company-card__logo">
-                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                            <img src="../Images/google.jpg" alt="Google logo">
                         </div>
                         <div class="company-card__content">
-                            <h3 class="company-card__name">Company Name</h3>
-                            <p class="company-card__position">Internship Position Title</p>
-                        </div>
-                        <button class="company-card__footer">
-                            View Internship
-                        </button>
-                    </article>
-                </section>
-                <section class="companies-cards-holder">
-                    <article class="company-card">
-                        <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
-                        </div>
-                        <div class="company-card__logo">
-                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
-                        </div>
-                        <div class="company-card__content">
-                            <h3 class="company-card__name">Company Name</h3>
-                            <p class="company-card__position">Internship Position Title</p>
+                            <h3 class="company-card__name">Google</h3>
+                            <p class="company-card__position">UX Research Intern</p>
                         </div>
                         <button class="company-card__footer">
                             View Internship
@@ -160,14 +150,14 @@
                     </article>
                     <article class="company-card">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Hyundai workplace" class="company-card__image">
                         </div>
                         <div class="company-card__logo">
-                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                            <img src="../Images/hyundai.jpg" alt="Hyundai logo">
                         </div>
                         <div class="company-card__content">
-                            <h3 class="company-card__name">Company Name</h3>
-                            <p class="company-card__position">Internship Position Title</p>
+                            <h3 class="company-card__name">Hyundai</h3>
+                            <p class="company-card__position">Mechanical Intern</p>
                         </div>
                         <button class="company-card__footer">
                             View Internship
@@ -175,14 +165,14 @@
                     </article>
                     <article class="company-card">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Accenture workplace" class="company-card__image">
                         </div>
                         <div class="company-card__logo">
-                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                            <img src="../Images/google.jpg" alt="Accenture logo">
                         </div>
                         <div class="company-card__content">
-                            <h3 class="company-card__name">Company Name</h3>
-                            <p class="company-card__position">Internship Position Title</p>
+                            <h3 class="company-card__name">Vertex Labs</h3>
+                            <p class="company-card__position">Data Analyst Intern</p>
                         </div>
                         <button class="company-card__footer">
                             View Internship
@@ -190,10 +180,9 @@
                     </article>
                 </section>
 
-            </section>
-
-            <section id="job-more">
-                <button id="more-button">More</button>
+                <section id="job-more">
+                    <button id="more-button">More</button>
+                </section>
             </section>
 
         </section>
