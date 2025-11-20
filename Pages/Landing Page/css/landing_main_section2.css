@@ -8,6 +8,10 @@
     justify-content: center;
     gap: 2rem;
     box-sizing: border-box;
+    background-image: url("../Images/Backgrounds/workplace-1-bg.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 /* Companies section */
@@ -38,7 +42,7 @@
     max-width: 320px;
     background: #ffffff;
     border-radius: 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     position: relative;
     display: flex;
@@ -111,7 +115,7 @@
 .company-card__footer {
     margin-top: auto;
     width: 100%;
-    background: linear-gradient(90deg, #ef4444, #f97316);
+    background: linear-gradient(90deg, #9B000A, #FFBD00);
     color: #ffffff;
     text-align: center;
     padding: 0.9rem 0;
