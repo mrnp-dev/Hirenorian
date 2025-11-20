@@ -97,12 +97,97 @@
             <section id="companies-section">
                 <section class="companies-cards-holder">
                     <article class="company-card">
-                        <
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
                     </article>
-
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
                 </section>
                 <section class="companies-cards-holder">
-
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
                 </section>
 
             </section>
