@@ -97,14 +97,7 @@
             <section id="companies-section">
                 <section class="companies-cards-holder">
                     <article class="company-card">
-                        <div class="company-information">
-                            <img src="../Images/cloudstaff.jpg" class="company-logo" alt="Company Logo">
-                            <h2 class="company-name">Cloudstaff</h2>
-                        </div>
-                        <div class="company-position">
-                            <h2 class="company-job-position">Internship Position</h2>
-                        </div>
-                        <button class="company-view-internship-button">View Internship</button>
+                        <
                     </article>
 
                 </section>
