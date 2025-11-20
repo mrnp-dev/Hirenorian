@@ -1,187 +1,184 @@
-#whole-section {
-    height: 100vh;
-    width: 100%;
+/* Main container for section 2 */
+#main-section-2 {
+    width: 100vw;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    
-    margin-left: 80px;
-    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    box-sizing: border-box;
 }
 
+/* Companies section */
 #companies-section {
-
-    height: 70vh;
     width: 100vw;
+    height: 80%;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0 5vw;
+    box-sizing: border-box;
+}
+
+/* Each row that holds 3 cards horizontally */
+.companies-cards-holder {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* Company card base style */
+.company-card {
+    flex: 1 1 0;
+    max-width: 320px;
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-.company-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 320px;
-  margin: 20px;
+/* Top image area (workplace photo) */
+.company-card__image-wrapper {
+    width: 100%;
+    height: 35%;
+    min-height: 120px;
+    max-height: 160px;
+    overflow: hidden;
+    position: relative;
 }
 
-.company-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+.company-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.company-card-top {
-  background: #f9f9f9;
-  padding: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Circle company logo overlapping image and body */
+.company-card__logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    position: absolute;
+    left: 50%;
+    top: calc(35% - 45px); /* half of the logo height (90 / 2) */
+    transform: translateX(-50%);
+    overflow: hidden;
+    background: #ffffff;
 }
 
-.company-logo {
-  max-width: 100%;
-  max-height: 80px;
-  object-fit: contain;
+.company-card__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.company-card-middle {
-  padding: 18px;
-  text-align: center;
+/* Content area below image/logo */
+.company-card__content {
+    width: 100%;
+    padding: 70px 1.2rem 1.2rem; /* extra top padding so text clears the logo */
+    box-sizing: border-box;
+    text-align: center;
 }
 
-.company-name {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 6px;
+.company-card__name {
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #111827;
+    margin-bottom: 0.25rem;
 }
 
-.company-position {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 10px;
+.company-card__position {
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #4b5563;
+    margin-bottom: 1.4rem;
 }
 
-.company-tagline {
-  font-size: 0.9rem;
-  color: #777;
-  font-style: italic;
+/* Footer acts as "View Internship" button */
+.company-card__footer {
+    margin-top: auto;
+    width: 100%;
+    background: linear-gradient(90deg, #ef4444, #f97316);
+    color: #ffffff;
+    text-align: center;
+    padding: 0.9rem 0;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    outline: none;
 }
 
-.company-card-info {
-  padding: 0 18px 18px;
-  font-size: 0.9rem;
-  color: #444;
-  line-height: 1.4;
+.company-card__footer:hover {
+    filter: brightness(1.05);
 }
 
-.company-card-info strong {
-  color: #222;
-}
-
-.company-card-bottom {
-  padding: 16px;
-  text-align: center;
-}
-
-.company-card-bottom button {
-  background-color: #eabb00;
-  color: #fff;
-  border: none;
-  padding: 10px 26px;
-  border-radius: 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.company-card-bottom button:hover {
-  background-color: #c99a00;
-}
-
-#job-more
-{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+/* "More" button container vertically below the companies section */
+#job-more {
+    display: flex;
+    justify-content: center;
 }
 
 #more-button {
-    font-size: 25px;
-    padding: 10px 70px;
-    border-radius: 18px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-
-    opacity: 0;
-    transform: translateY(20px);
-    animation: buttonFadeUp 0.8s ease forwards;
-    animation-delay: 0.5s;
-
+    padding: 0.8rem 2.4rem;
+    border-radius: 999px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #111827;
+    color: #ffffff;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.35);
 }
 
-
-.company-card {
-    opacity: 0;
-    transform: translateY(25px);
-    animation: cardFadeUp 0.8s ease-out forwards;
+#more-button:hover {
+    transform: translateY(-2px);
+    background: #9B000A;
+    box-shadow: 0 16px 30px rgba(248, 113, 113, 0.55);
 }
 
-@keyframes cardFadeUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+    .companies-cards-holder {
+        gap: 1.5rem;
     }
 }
 
-/* stagger for multiple cards 
-#companies-section .company-card:nth-of-type(1) { animation-delay: 0.1s; }
-#companies-section .company-card:nth-of-type(2) { animation-delay: 0.25s; }
-#companies-section .company-card:nth-of-type(3) { animation-delay: 0.4s; }
-*/
+@media (max-width: 768px) {
+    #companies-section {
+        height: auto;
+        padding: 2rem 6vw;
+    }
 
-.company-card-top img {
-    opacity: 0;
-    transform: scale(0.95);
-    animation: imgPop 0.6s ease forwards;
-}
+    .companies-cards-holder {
+        flex-direction: column;
+        align-items: center;
+    }
 
-@keyframes imgPop {
-    to {
-        opacity: 1;
-        transform: scale(1);
+    .company-card {
+        max-width: 360px;
+        width: 100%;
     }
 }
 
-.company-name, .company-position, .company-tagline {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: textFadeUp 0.6s ease forwards;
-}
-
-@keyframes textFadeUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* stagger each text element */
-.company-name { animation-delay: 0.2s; }
-.company-position { animation-delay: 0.3s; }
-.company-tagline { animation-delay: 0.4s; }
-
-@keyframes buttonFadeUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
