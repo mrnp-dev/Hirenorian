@@ -43,7 +43,7 @@
         <section id="find-career-section">
 
             <section id="find-your-career-left-section">
-                <h1 id="get-hired-today" class="fade-up" >GET HIRED<br>TODAY</h1>
+                <h1 id="get-hired-today" class="fade-up">GET HIRED<br>TODAY</h1>
                 <p id="hirenorian-info" class="fade-up" style="animation-delay: .2s;">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
                 <div id="find-your-career-div" class="fade-up" style="animation-delay: .4s;"><button id="find-your-career-button">Find your Career</button></div>
                 <div></div>
@@ -52,7 +52,7 @@
             <section id="find-your-career-right-section">
                 <div id="circle-left" class="floating parallax" data-speed="3"></div>
                 <div id="circle-right" class="floating parallax" data-speed="2"></div>
-                <img src="../Images/gradpic2.png" class="fade-up" id="gradpic"  alt="">
+                <img src="../Images/gradpic2.png" class="fade-up" id="gradpic" alt="">
             </section>
 
 
@@ -63,9 +63,9 @@
 
     <main>
 
-        <section id="main-section-1" >
+        <section id="main-section-1">
             <section id="headline-section">
-                <section id="headline-section-top" >
+                <section id="headline-section-top">
                     <section id="headline-left-section"></section>
 
                     <section id="headline-right-section">
@@ -78,10 +78,10 @@
                 <section id="socmed-bar" class="fade-up" style="animation-delay: .1s;">
 
                     <section id="socmed-left-bar">
-                        <button class="icon" ><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb" ></button>
-                        <button class="icon" ><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-                        <button class="icon" ><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-                        <button class="icon" ><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                        <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
+                        <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
+                        <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
+                        <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
                     </section>
 
                     <section>
@@ -94,28 +94,100 @@
 
         <section id="main-section-2">
 
-            <section id="companies-section" ">
-
-                <section class="company-card">
-                    <div class="company-card-top">
-                        <img src="../Images/cloudstaff.jpg" class="company-logo" style="animation-delay: .1s;" alt="Cloudstaff logo">
-                    </div>
-
-                    <div class="company-card-middle">
-                        <h3 class="company-name" style="animation-delay: .2s;">Cloudstaff</h3>
-                        <h2 class="company-position" style="animation-delay: .3s;">UI/UX Web Designer</h2>
-                        <p class="company-tagline" style="animation-delay: .4s;">Join the #1 workplace in the Philippines and design experiences that matter.</p>
-                    </div>
-
-                    <div class="company-card-info">
-                        <p><strong>Location:</strong> Angeles City, Pampanga</p>
-                        <p><strong>Job Type:</strong> Full-time</p>
-                        <p><strong>Salary:</strong> ₱30,000 – ₱45,000/month</p>
-                    </div>
-
-                    <div class="company-card-bottom">
-                        <button>Apply Now</button>
-                    </div>
+            <section id="companies-section">
+                <section class="companies-cards-holder">
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                </section>
+                <section class="companies-cards-holder">
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
+                    <article class="company-card">
+                        <div class="company-card__image-wrapper">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Company workplace" class="company-card__image">
+                        </div>
+                        <div class="company-card__logo">
+                            <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Company logo">
+                        </div>
+                        <div class="company-card__content">
+                            <h3 class="company-card__name">Company Name</h3>
+                            <p class="company-card__position">Internship Position Title</p>
+                        </div>
+                        <button class="company-card__footer">
+                            View Internship
+                        </button>
+                    </article>
                 </section>
 
             </section>
@@ -133,7 +205,7 @@
                 <p id="discover" class="fade-up">Discover companies offering great opportunities for students and graduates</p>
             </section>
 
-            <section class="employer-container" >
+            <section class="employer-container">
                 <section class="employer-card">
                     <section id="rank1">1</section>
                     <img src="../Images/hyundai.jpg" id="Hyundai">
@@ -142,7 +214,7 @@
                     <button id="button-job-one"> View Job</button>
                 </section>
 
-                <section class="employer-card" >
+                <section class="employer-card">
                     <section id="rank2">2</section>
                     <img src="../Images/samsung.jpg" id="Samsung">
                     <h3>Samsung</h3>
@@ -150,7 +222,7 @@
                     <button id="button-job-two"> View Job </button>
                 </section>
 
-                <section class="employer-card" >
+                <section class="employer-card">
                     <section id="rank3">3</section>
                     <img src="../Images/google.jpg" id="Google">
                     <h3>Google</h3>
@@ -211,7 +283,7 @@
 
     </footer>
 
-   
+
 
 
 </body>
