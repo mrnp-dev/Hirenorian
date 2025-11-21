@@ -187,39 +187,83 @@
 
         </section>
 
-        <section id="employers-section">
+        <section id="main-section-3">
+            <div class="main-section-3-overlay"></div>
 
-            <section id="top-employers-section">
-                <h2 id="top-employer" class="fade-up">TOP EMPLOYERS</h2>
-                <p id="discover" class="fade-up">Discover companies offering great opportunities for students and graduates</p>
-            </section>
+            <div id="top-employers-header">
+                <h2 id="top-employers-title">Top Employers</h2>
+                <p id="top-employers-subheading">Discover leading companies offering exceptional career opportunities</p>
+            </div>
 
-            <section class="employer-container">
-                <section class="employer-card">
-                    <section id="rank1">1</section>
-                    <img src="../Images/hyundai.jpg" id="Hyundai">
-                    <h3>Hyundai</h3>
-                    <p>Car company</p>
-                    <button id="button-job-one"> View Job</button>
-                </section>
+            <div id="employer-cards-holder">
+                
+                <!-- Employer Card 1 -->
+                <article class="employer-card">
+                    <div class="employer-card__image-section">
+                        <img src="../Images/Companies/hyundai_workplace.avif" alt="Hyundai workplace" class="employer-card__workplace-image">
+                        <div class="employer-card__logo">
+                            <img src="../Images/hyundai.jpg" alt="Hyundai logo">
+                        </div>
+                    </div>
+                    <div class="employer-card__details">
+                        <h3 class="employer-card__company-name">Hyundai</h3>
+                        <p class="employer-card__company-type">Automotive Manufacturing</p>
+                        <div class="employer-card__positions">
+                            <div class="employer-card__position-item">Mechanical Engineer Intern</div>
+                            <div class="employer-card__position-item">Automotive Designer</div>
+                            <div class="employer-card__position-item">Quality Assurance Specialist</div>
+                            <div class="employer-card__position-item">Supply Chain Analyst</div>
+                            <div class="employer-card__position-item">Manufacturing Technician</div>
+                        </div>
+                        <button class="employer-card__button">View Company</button>
+                    </div>
+                </article>
 
-                <section class="employer-card">
-                    <section id="rank2">2</section>
-                    <img src="../Images/samsung.jpg" id="Samsung">
-                    <h3>Samsung</h3>
-                    <p>Technology</p>
-                    <button id="button-job-two"> View Job </button>
-                </section>
+                <!-- Employer Card 2 -->
+                <article class="employer-card">
+                    <div class="employer-card__image-section">
+                        <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="employer-card__workplace-image">
+                        <div class="employer-card__logo">
+                            <img src="../Images/samsung.jpg" alt="Samsung logo">
+                        </div>
+                    </div>
+                    <div class="employer-card__details">
+                        <h3 class="employer-card__company-name">Samsung</h3>
+                        <p class="employer-card__company-type">Technology & Electronics</p>
+                        <div class="employer-card__positions">
+                            <div class="employer-card__position-item">Software Developer Intern</div>
+                            <div class="employer-card__position-item">UX/UI Designer</div>
+                            <div class="employer-card__position-item">Data Analyst</div>
+                            <div class="employer-card__position-item">Product Manager</div>
+                            <div class="employer-card__position-item">Hardware Engineer</div>
+                        </div>
+                        <button class="employer-card__button">View Company</button>
+                    </div>
+                </article>
 
-                <section class="employer-card">
-                    <section id="rank3">3</section>
-                    <img src="../Images/google.jpg" id="Google">
-                    <h3>Google</h3>
-                    <p>Technology</p>
-                    <button id="button-job-three"> View Job </button>
-                </section>
+                <!-- Employer Card 3 -->
+                <article class="employer-card">
+                    <div class="employer-card__image-section">
+                        <img src="../Images/Companies/google_workplace.jpeg" alt="Google workplace" class="employer-card__workplace-image">
+                        <div class="employer-card__logo">
+                            <img src="../Images/google.jpg" alt="Google logo">
+                        </div>
+                    </div>
+                    <div class="employer-card__details">
+                        <h3 class="employer-card__company-name">Google</h3>
+                        <p class="employer-card__company-type">Technology & Internet Services</p>
+                        <div class="employer-card__positions">
+                            <div class="employer-card__position-item">Software Engineering Intern</div>
+                            <div class="employer-card__position-item">Cloud Solutions Architect</div>
+                            <div class="employer-card__position-item">Marketing Specialist</div>
+                            <div class="employer-card__position-item">Business Analyst</div>
+                            <div class="employer-card__position-item">Technical Support Engineer</div>
+                        </div>
+                        <button class="employer-card__button">View Company</button>
+                    </div>
+                </article>
 
-            </section>
+            </div>
 
         </section>
 
