@@ -20,6 +20,7 @@
     <link href="../css/landing_main_section3.css" rel="stylesheet">
     <link href="../css/landing_main_section4.css" rel="stylesheet">
     <link href="../css/main_footer.css" rel="stylesheet">
+    <link href="../css/responsive_landing.css" rel="stylesheet">
 
     <script type="module" src="../js/ElementInitializer.js"></script>
     <title>Document</title>
