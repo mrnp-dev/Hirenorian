@@ -95,9 +95,10 @@
 
 #table-header-container {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    margin-left: 30px;
-    margin-right: 90px;
+    margin-left: 100px;
+    margin-right: 100px;
 
 }
 
@@ -107,13 +108,16 @@
 
 .row-containers {
     height: 90px;
+    width: 95%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-top: 30px;
     margin-left: 30px;
-    margin-right: 60px;
     background-color: #F3EFD0;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 30px;
 }
 
 .name-section {
@@ -124,4 +128,11 @@
 .name-images {
     height: 50px;
     width: 50px;
+    margin-right: 20px;
 }
+
+.name-section {
+    display: flex;
+    align-items: center;
+}
+

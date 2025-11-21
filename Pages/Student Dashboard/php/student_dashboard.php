@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css" />
     <link href="../css/sidebar.css" rel="stylesheet">
     <link href="../css/welcome_banner.css" rel="stylesheet">
+    <link href="../css/recommended-section.css" rel="stylesheet">
 </head>
 
 <body>
@@ -121,155 +122,153 @@
 
                 </section>
 
+        <section id="recommended-status-section">        
+            <section id="recommended-for-you-section">
+                <h1>Recommended For You</h1>
                 
-        <section id="recommended-for-you">
-            <h1>Recommended For You</h1>
-            
-            <section id="top-section">
+                <section id="top-section">
 
-                <section class="left-cards">
-                    <div class="image-section" >
-                        <img src="" alt="">
-                    </div>
-                    <section class="information-section">
-                            <section class="title-container">
-                                <h1 class="title">Architecture</h1>
-                                <h1 class="sub-title">Archi Corporation</h1>
-                             </section>
-                             <section class="button-container">
-                                <button>Internship</button>
-                             </section>                   
-                    </section>
+                    <section class="left-cards">
+                        <div class="image-section" >
+                            <img src="" alt="">
+                        </div>
+                        <section class="information-section">
+                                <section class="title-container">
+                                    <h1 class="title">Architecture</h1>
+                                    <h1 class="sub-title">Archi Corporation</h1>
+                                </section>
+                                <section class="button-container">
+                                    <button>Internship</button>
+                                </section>                   
+                        </section>
 
-                    </section>
-                        <section class="info">
-                            <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>
+                            <section class="info">
+                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                            </section>
                         </section>
                     </section>
-                </section>
 
-                <section class="right-cards">
-                    <div class="image-section" >
-                        <img src="" alt="">
-                    </div>
-                    <section class="information-section">
-                            <section class="title-container">
-                                <h1 class="title">Architecture</h1>
-                                <h1 class="sub-title">Archi Corporation</h1>
-                             </section>
-                             <section class="button-container">
-                                <button>Internship</button>
-                             </section>                   
-                    </section>
+                    <section class="right-cards">
+                        <div class="image-section" >
+                            <img src="" alt="">
+                        </div>
+                        <section class="information-section">
+                                <section class="title-container">
+                                    <h1 class="title">Architecture</h1>
+                                    <h1 class="sub-title">Archi Corporation</h1>
+                                </section>
+                                <section class="button-container">
+                                    <button>Internship</button>
+                                </section>                   
+                        </section>
 
-                    </section>
-                        <section class="info">
-                            <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>
+                            <section class="info">
+                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                            </section>
                         </section>
                     </section>
+
+    
                 </section>
 
-  
-            </section>
+                <section class="bottom-section">
 
-            <section class="bottom-section">
+                    <section class="left-cards">
+                        <div class="image-section" >
+                            <img src="" alt="">
+                        </div>
+                        <section class="information-section">
+                                <section class="title-container">
+                                    <h1 class="title">Architecture</h1>
+                                    <h1 class="sub-title">Archi Corporation</h1>
+                                </section>
+                                <section class="button-container">
+                                    <button>Internship</button>
+                                </section>                   
+                        </section>
 
-                <section class="left-cards">
-                    <div class="image-section" >
-                        <img src="" alt="">
-                    </div>
-                    <section class="information-section">
-                            <section class="title-container">
-                                <h1 class="title">Architecture</h1>
-                                <h1 class="sub-title">Archi Corporation</h1>
-                             </section>
-                             <section class="button-container">
-                                <button>Internship</button>
-                             </section>                   
-                    </section>
-
-                    </section>
-                        <section class="info">
-                            <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>
+                            <section class="info">
+                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                            </section>
                         </section>
                     </section>
-                </section>
 
-                <section class="right-cards">
-                    <div class="image-section" >
-                        <img src="" alt="">
-                    </div>
-                    <section class="information-section">
-                            <section class="title-container">
-                                <h1 class="title">Architecture</h1>
-                                <h1 class="sub-title">Archi Corporation</h1>
-                             </section>
-                             <section class="button-container">
-                                <button>Internship</button>
-                             </section>                   
-                    </section>
+                    <section class="right-cards">
+                        <div class="image-section" >
+                            <img src="" alt="">
+                        </div>
+                        <section class="information-section">
+                                <section class="title-container">
+                                    <h1 class="title">Architecture</h1>
+                                    <h1 class="sub-title">Archi Corporation</h1>
+                                </section>
+                                <section class="button-container">
+                                    <button>Internship</button>
+                                </section>                   
+                        </section>
 
-                    </section>
-                        <section class="info">
-                            <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>
+                            <section class="info">
+                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
+                            </section>
                         </section>
                     </section>
-                </section>
 
-  
-            </section>
-
-        </section>
-
-        <section id="status">
-                <h1>Status</h1>
-            
-            <section id="status-cards">
-                <section class="card">
-                    <section class="left-side-card">
-                        <h1>0</h1>
-                        <p>Sent</p>
-                    </section>
-                    <section class="right-side-card">
-                        <a href="">View All</a>
-                    </section> 
-                </section>
-
-                <section class="card">
-                    <section class="left-side-card">
-                        <h1>0</h1>
-                        <p>Sent</p>
-                    </section>
-                    <section class="right-side-card">
-                        <a href="">View All</a>
-                    </section> 
-                </section>
-
-                <section class="card">
-                    <section class="left-side-card">
-                        <h1>0</h1>
-                        <p>Sent</p>
-                    </section>
-                    <section class="right-side-card">
-                        <a href="">View All</a>
-                    </section> 
-                </section>
-
-                <section class="card">
-                    <section class="left-side-card">
-                        <h1>0</h1>
-                        <p>Sent</p>
-                    </section>
-                    <section class="right-side-card">
-                        <a href="">View All</a>
-                    </section> 
+    
                 </section>
 
             </section>
 
-            
+            <section id="status">
+                    <h1>Status</h1>
+                
+                <section id="status-cards">
+                    <section class="card">
+                        <section class="left-side-card">
+                            <h1>0</h1>
+                            <p>Sent</p>
+                        </section>
+                        <section class="right-side-card">
+                            <a href="">View All</a>
+                        </section> 
+                    </section>
 
+                    <section class="card">
+                        <section class="left-side-card">
+                            <h1>0</h1>
+                            <p>Sent</p>
+                        </section>
+                        <section class="right-side-card">
+                            <a href="">View All</a>
+                        </section> 
+                    </section>
 
+                    <section class="card">
+                        <section class="left-side-card">
+                            <h1>0</h1>
+                            <p>Sent</p>
+                        </section>
+                        <section class="right-side-card">
+                            <a href="">View All</a>
+                        </section> 
+                    </section>
+
+                    <section class="card">
+                        <section class="left-side-card">
+                            <h1>0</h1>
+                            <p>Sent</p>
+                        </section>
+                        <section class="right-side-card">
+                            <a href="">View All</a>
+                        </section> 
+                    </section>
+
+                </section>
+
+            </section>
 
         </section>
 
