@@ -20,7 +20,7 @@
     position: absolute;
     inset: 0;
     background: #ffffff;
-    opacity: 0.4;
+    opacity: 0.55;
     pointer-events: none;
     z-index: 0;
 }
@@ -46,13 +46,13 @@
 }
 
 #internships-title {
-    font-family: "Poppins", serif;
+    font-family: "Marcellus", "Poppins", serif;
     font-size: 4em;
-    font-weight: 800;
+    font-weight: 600;
     margin-bottom: 0.35rem;
     letter-spacing: 0.05em;
     color: #9B000A;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    
 }
 
 #internships-subheading {
@@ -76,7 +76,7 @@
 /* Company card base style */
 .company-card {
     flex: 1 1 calc(20% - 1rem);
-    max-width: 260px;
+    max-width: 300px;
     background: #ffffff;
     border-radius: 5px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
