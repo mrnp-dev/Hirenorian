@@ -18,6 +18,7 @@
     <link href="../css/landing_main_section1.css" rel="stylesheet">
     <link href="../css/landing_main_section2.css" rel="stylesheet">
     <link href="../css/landing_main_section3.css" rel="stylesheet">
+    <link href="../css/landing_main_section4.css" rel="stylesheet">
     <link href="../css/main_footer.css" rel="stylesheet">
 
     <script type="module" src="../js/ElementInitializer.js"></script>
@@ -263,6 +264,39 @@
                     </div>
                 </article>
 
+            </div>
+
+        </section>
+
+        <section id="main-section-4">
+            
+            <div id="cta-content">
+                <h2 id="cta-title">Ready to Launch Your Career?</h2>
+                <p id="cta-description">
+                    Join thousands of DHVSU students who have already discovered their dream careers. 
+                    Whether you're looking for internships, part-time opportunities, or full-time positions, 
+                    Hirenorian connects you with top employers ready to welcome fresh talent.
+                </p>
+                
+                <div id="cta-buttons">
+                    <button class="cta-button cta-button-primary">Get Started Now</button>
+                    <button class="cta-button cta-button-secondary">Learn More</button>
+                </div>
+            </div>
+
+            <div id="cta-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Job Postings</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Partner Companies</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Students Hired</div>
+                </div>
             </div>
 
         </section>
