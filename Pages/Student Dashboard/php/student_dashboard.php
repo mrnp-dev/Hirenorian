@@ -7,6 +7,7 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="style.css" />
     <link href="../css/sidebar.css" rel="stylesheet">
+    <link href="../css/welcome_banner.css" rel="stylesheet">
 </head>
 
 <body>
@@ -35,87 +36,92 @@
                 <p class="menu-texts">Help</p>
            </section>
         </nav>
-
-
     </aside>
  
     <main>
-        
-        <h1 id="dashboard-title">Dashboard</h1>
-        <section id="dashboard-section">
-            <div id="yellow-welcome-banner">
-                <div id="welcome-texts">
-                <p id="hi-text">Hi Isabella Sicat! Welcome Back!</p>
-                <h1 id="check-job-text">Check your Job Applications</h1>
+
+        <section id="dashboard-application-section">
+            <h1 id="dashboard-title">Dashboard</h1>
+            <section id="dashboard-section">
+                <div id="yellow-welcome-banner">
+                    <div id="welcome-texts">
+                    <p id="hi-text">Hi Isabella Sicat! Welcome Back!</p>
+                    <h1 id="check-job-text">Check your Job Applications</h1>
+                    </div>
+                    <div id="college-girl-container">
+                            <img src="../images/collegegirl_icon.png" alt="college-girl">
+                    </div>
                 </div>
-                <div id="college-girl-container">
-                        <img src="../images/collegegirl_icon.png" alt="college-girl">
+            </section>
+
+            <section id="applications-section">
+                
+                <div id="application-see-all-container">
+                    <h1 id="applications-title">Applications</h1>
+                    <a href="" id="see-all-text">See All</a>
                 </div>
-            </div>
-        </section>
+                
+                <section id="table-header-container">
+                    <h1 class="header-titles">Name</h1>
+                    <h1 class="header-titles">Position</h1>
+                    <h1 class="header-titles">Date</h1>
+                    <h1 class="header-titles">Status</h1>
+                </section>
 
-        <section id="applications-section">
-            <div id="section-header">
-                <h1>Applications</h1>
-                <a href="">See All</a>
-            </div>
+                <section class="row-containers">
+                    <div class="name-section">
+                        <img src="../images/google.png" class="name-images" alt="">
+                        <div class="jobtitle-companyname-container">
+                            <h4 class="job-title">Job Title</h4>
+                            <p class="company-name">Company Name</p>
+                        </div>
+                    </div>
+                    <h3 class="position-section">Software Engineer</h3>
+                    <h3 class="date-section">12/24/25</h3>
+                    <h3 class="status-section">Accepted</h3>
+                </section>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
+                <section class="row-containers">
+                    <div class="name-section">
+                        <img src="../images/google.png" class="name-images" alt="">
+                        <div class="jobtitle-companyname-container">
+                            <h4 class="job-title">Job Title</h4>
+                            <p class="company-name">Company Name</p>
+                        </div>
+                    </div>
+                    <h3 class="position-section">Software Engineer</h3>
+                    <h3 class="date-section">12/24/25</h3>
+                    <h3 class="status-section">Accepted</h3>
+                </section>
 
-                <tbody>
-                    <tr>
-                        <td>
-                            <strong>Job Title</strong>
-                            <small>Company Name</small>
-                        </td>
-                        <td>Position</td>
-                        <td>12/24/25</td>
-                        <td>Accepted</td>
-                    </tr>
+                <section class="row-containers">
+                    <div class="name-section">
+                        <img src="../images/google.png" class="name-images" alt="">
+                        <div class="jobtitle-companyname-container">
+                            <h4 class="job-title">Job Title</h4>
+                            <p class="company-name">Company Name</p>
+                        </div>
+                    </div>
+                    <h3 class="position-section">Software Engineer</h3>
+                    <h3 class="date-section">12/24/25</h3>
+                    <h3 class="status-section">Accepted</h3>
+                </section>
 
-                    <tr>
-                        <td>
-                            <strong>Job Title</strong>
-                            <small>Company Name</small>
-                        </td>
-                        <td>Position</td>
-                        <td>12/24/25</td>
-                        <td>Accepted</td>
-                    </tr>
+                <section class="row-containers">
+                    <div class="name-section">
+                        <img src="../images/google.png" class="name-images" alt="">
+                        <div class="jobtitle-companyname-container">
+                            <h4 class="job-title">Job Title</h4>
+                            <p class="company-name">Company Name</p>
+                        </div>
+                    </div>
+                    <h3 class="position-section">Software Engineer</h3>
+                    <h3 class="date-section">12/24/25</h3>
+                    <h3 class="status-section">Accepted</h3>
 
-                    <tr>
-                        <td>
-                            <strong>Job Title</strong>
-                            <small>Company Name</small>
-                        </td>
-                        <td>Position</td>
-                        <td>12/24/25</td>
-                        <td>Accepted</td>
-                    </tr>
+                </section>
 
-                    <tr>
-                        <td>
-                            <strong>Job Title</strong>
-                            <small>Company Name</small>
-                        </td>
-                        <td>Position</td>
-                        <td>12/24/25</td>
-                        <td>Accepted</td>
-                    </tr>
-
-                </tbody>
-            </table>
-
-        </section>
-
+                
         <section id="recommended-for-you">
             <h1>Recommended For You</h1>
             
