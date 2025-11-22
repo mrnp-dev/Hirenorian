@@ -9,6 +9,7 @@
     <link href="../css/sidebar.css" rel="stylesheet">
     <link href="../css/welcome_banner.css" rel="stylesheet">
     <link href="../css/recommended-section.css" rel="stylesheet">
+    <link href="../css/status-section.css" rel="stylesheet">
 </head>
 
 <body>
@@ -122,154 +123,140 @@
 
                 </section>
 
-        <section id="recommended-status-section">        
+               
+        
+              
+        <section id="recommended-status-section">
             <section id="recommended-for-you-section">
-                <h1>Recommended For You</h1>
-                
+                <h1 id="recommended-for-you-title">Recommended For You</h1>
                 <section id="top-section">
-
                     <section class="left-cards">
-                        <div class="image-section" >
-                            <img src="" alt="">
-                        </div>
+                        <img src="../images/microsoft.jpg" class="image-section" alt="">
                         <section class="information-section">
                                 <section class="title-container">
-                                    <h1 class="title">Architecture</h1>
-                                    <h1 class="sub-title">Archi Corporation</h1>
+                                    <p class="title">Architecture</p>
+                                    <p class="sub-title">Archi Corporation</p>
                                 </section>
                                 <section class="button-container">
-                                    <button>Internship</button>
+                                    <button class="internship-button">Internship</button>
                                 </section>                   
                         </section>
 
-                        </section>
-                            <section class="info">
-                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
-                            </section>
-                        </section>
+                            
+                        <section class="info">
+                                <p>Super brief description. Lorem ipsum<br> dolor sit amet, consectetur adipiscing <br>elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>   
                     </section>
-
+                        
                     <section class="right-cards">
-                        <div class="image-section" >
-                            <img src="" alt="">
-                        </div>
+                        <img src="../images/microsoft.jpg" class="image-section" alt="">
                         <section class="information-section">
                                 <section class="title-container">
-                                    <h1 class="title">Architecture</h1>
-                                    <h1 class="sub-title">Archi Corporation</h1>
+                                    <p class="title">Architecture</p>
+                                    <p class="sub-title">Archi Corporation</p>
                                 </section>
                                 <section class="button-container">
-                                    <button>Internship</button>
+                                    <button class="internship-button">Internship</button>
                                 </section>                   
                         </section>
 
-                        </section>
-                            <section class="info">
-                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
-                            </section>
-                        </section>
-                    </section>
-
-    
+                            
+                        <section class="info">
+                                <p>Super brief description. Lorem ipsum<br> dolor sit amet, consectetur adipiscing <br>elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>   
+                    </section>    
                 </section>
 
-                <section class="bottom-section">
-
+                <section id="bottom-section">
                     <section class="left-cards">
-                        <div class="image-section" >
-                            <img src="" alt="">
-                        </div>
+                        <img src="../images/microsoft.jpg" class="image-section" alt="">
                         <section class="information-section">
                                 <section class="title-container">
-                                    <h1 class="title">Architecture</h1>
-                                    <h1 class="sub-title">Archi Corporation</h1>
+                                    <p class="title">Architecture</p>
+                                    <p class="sub-title">Archi Corporation</p>
                                 </section>
                                 <section class="button-container">
-                                    <button>Internship</button>
+                                    <button class="internship-button">Internship</button>
                                 </section>                   
                         </section>
 
-                        </section>
-                            <section class="info">
-                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
-                            </section>
-                        </section>
+                            
+                        <section class="info">
+                                <p>Super brief description. Lorem ipsum<br> dolor sit amet, consectetur adipiscing <br>elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>   
                     </section>
-
+                    
                     <section class="right-cards">
-                        <div class="image-section" >
-                            <img src="" alt="">
-                        </div>
+                        <img src="../images/microsoft.jpg" class="image-section" alt="">
                         <section class="information-section">
                                 <section class="title-container">
-                                    <h1 class="title">Architecture</h1>
-                                    <h1 class="sub-title">Archi Corporation</h1>
+                                    <p class="title">Architecture</p>
+                                    <p class="sub-title">Archi Corporation</p>
                                 </section>
                                 <section class="button-container">
-                                    <button>Internship</button>
+                                    <button class="internship-button">Internship</button>
                                 </section>                   
                         </section>
 
-                        </section>
-                            <section class="info">
-                                <p>Super brief description. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ut est tincidunt, suscipit</p>
-                            </section>
-                        </section>
-                    </section>
-
-    
+                            
+                        <section class="info">
+                                <p>Super brief description. Lorem ipsum<br> dolor sit amet, consectetur adipiscing <br>elit. Quisque ut est tincidunt, suscipit</p>
+                        </section>   
+                    </section>    
                 </section>
 
             </section>
+            
 
+        
             <section id="status">
-                    <h1>Status</h1>
+                <h1 id="status-title">Status</h1>
                 
                 <section id="status-cards">
                     <section class="card">
                         <section class="left-side-card">
-                            <h1>0</h1>
-                            <p>Sent</p>
+                            <h1 class="numbers">0</h1>
+                            <p class="status-text">Sent</p>
                         </section>
                         <section class="right-side-card">
-                            <a href="">View All</a>
+                            <a href="" class="view-all-text">View All</a>
                         </section> 
                     </section>
 
                     <section class="card">
                         <section class="left-side-card">
-                            <h1>0</h1>
-                            <p>Sent</p>
+                            <h1 class="numbers">0</h1>
+                            <p class="status-text">Processing</p>
                         </section>
                         <section class="right-side-card">
-                            <a href="">View All</a>
+                            <a href="" class="view-all-text" >View All</a>
                         </section> 
                     </section>
 
                     <section class="card">
                         <section class="left-side-card">
-                            <h1>0</h1>
-                            <p>Sent</p>
+                            <h1 class="numbers">0</h1>
+                            <p class="status-text">Responded</p>
                         </section>
                         <section class="right-side-card">
-                            <a href="">View All</a>
+                            <a href="" class="view-all-text">View All</a>
                         </section> 
                     </section>
 
                     <section class="card">
                         <section class="left-side-card">
-                            <h1>0</h1>
-                            <p>Sent</p>
+                            <h1 class="numbers">0</h1>
+                            <p class="status-text">Draft</p>
                         </section>
                         <section class="right-side-card">
-                            <a href="">View All</a>
+                            <a href="" class="view-all-text">View All</a>
                         </section> 
                     </section>
 
                 </section>
 
             </section>
-
+            
         </section>
 
     </main>
