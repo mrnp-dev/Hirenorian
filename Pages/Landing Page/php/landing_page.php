@@ -18,7 +18,10 @@
     <link href="../css/landing_main_section1.css" rel="stylesheet">
     <link href="../css/landing_main_section2.css" rel="stylesheet">
     <link href="../css/landing_main_section3.css" rel="stylesheet">
+    <link href="../css/landing_main_section4.css" rel="stylesheet">
     <link href="../css/main_footer.css" rel="stylesheet">
+    <link href="../css/responsive_landing.css" rel="stylesheet">
+    <link href="../css/animations.css" rel="stylesheet">
 
     <script type="module" src="../js/ElementInitializer.js"></script>
     <title>Landing Page</title>
@@ -69,9 +72,9 @@
                     <section id="headline-left-section"></section>
 
                     <section id="headline-right-section">
-                        <h1 id="headline" class="fade-up">Headline</h1>
-                        <h2 id="sub-headline" class="fade-up" style="animation-delay: .2s;">sub headline</h2>
-                        <p id="headline-info" class="fade-up" style="animation-delay: .4s;">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
+                        <h1 id="headline" class="fade-up animate-on-scroll">Headline</h1>
+                        <h2 id="sub-headline" class="fade-up animate-on-scroll delay-200">sub headline</h2>
+                        <p id="headline-info" class="fade-up animate-on-scroll delay-300">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
                     </section>
                 </section>
 
@@ -98,12 +101,12 @@
 
             <section id="companies-section">
                 <div id="internships-header">
-                    <h2 id="internships-title">Internships</h2>
-                    <p id="internships-subheading">Explore fresh opportunities from trusted employer partners.</p>
+                    <h2 id="internships-title" class="slide-up animate-on-scroll">Internships</h2>
+                    <p id="internships-subheading" class="slide-up animate-on-scroll delay-200">Explore fresh opportunities from trusted employer partners.</p>
                 </div>
 
                 <section class="companies-cards-holder">
-                    <article class="company-card">
+                    <article class="company-card slide-left animate-on-scroll delay-100">
                         <div class="company-card__image-wrapper">
                             <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Cloudstaff workplace" class="company-card__image">
                         </div>
@@ -118,7 +121,7 @@
                             View Internship
                         </button>
                     </article>
-                    <article class="company-card">
+                    <article class="company-card slide-left animate-on-scroll delay-200">
                         <div class="company-card__image-wrapper">
                             <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="company-card__image">
                         </div>
@@ -133,7 +136,7 @@
                             View Internship
                         </button>
                     </article>
-                    <article class="company-card">
+                    <article class="company-card slide-right animate-on-scroll delay-300">
                         <div class="company-card__image-wrapper">
                             <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Google workplace" class="company-card__image">
                         </div>
@@ -148,7 +151,7 @@
                             View Internship
                         </button>
                     </article>
-                    <article class="company-card">
+                    <article class="company-card slide-right animate-on-scroll delay-400">
                         <div class="company-card__image-wrapper">
                             <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Hyundai workplace" class="company-card__image">
                         </div>
@@ -163,7 +166,7 @@
                             View Internship
                         </button>
                     </article>
-                    <article class="company-card">
+                    <article class="company-card slide-right animate-on-scroll delay-500">
                         <div class="company-card__image-wrapper">
                             <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Accenture workplace" class="company-card__image">
                         </div>
@@ -187,39 +190,116 @@
 
         </section>
 
-        <section id="employers-section">
+        <section id="main-section-3">
+            <div class="main-section-3-overlay"></div>
 
-            <section id="top-employers-section">
-                <h2 id="top-employer" class="fade-up">TOP EMPLOYERS</h2>
-                <p id="discover" class="fade-up">Discover companies offering great opportunities for students and graduates</p>
-            </section>
+            <div id="top-employers-header">
+                <h2 id="top-employers-title" class="slide-up animate-on-scroll">Top Employers</h2>
+                <p id="top-employers-subheading" class="slide-up animate-on-scroll delay-200">Discover leading companies offering exceptional career opportunities</p>
+            </div>
 
-            <section class="employer-container">
-                <section class="employer-card">
-                    <section id="rank1">1</section>
-                    <img src="../Images/hyundai.jpg" id="Hyundai">
-                    <h3>Hyundai</h3>
-                    <p>Car company</p>
-                    <button id="button-job-one"> View Job</button>
-                </section>
+            <div id="employer-cards-holder">
+                
+                <!-- Employer Card 1 -->
+                <article class="employer-card fade-slide-up animate-on-scroll delay-100">
+                    <div class="employer-card__image-section">
+                        <img src="../Images/Companies/hyundai_workplace.avif" alt="Hyundai workplace" class="employer-card__workplace-image">
+                        <div class="employer-card__logo">
+                            <img src="../Images/hyundai.jpg" alt="Hyundai logo">
+                        </div>
+                    </div>
+                    <div class="employer-card__details">
+                        <h3 class="employer-card__company-name">Hyundai</h3>
+                        <p class="employer-card__company-type">Automotive Manufacturing</p>
+                        <div class="employer-card__positions">
+                            <div class="employer-card__position-item">Mechanical Engineer Intern</div>
+                            <div class="employer-card__position-item">Automotive Designer</div>
+                            <div class="employer-card__position-item">Quality Assurance Specialist</div>
+                            <div class="employer-card__position-item">Supply Chain Analyst</div>
+                            <div class="employer-card__position-item">Manufacturing Technician</div>
+                        </div>
+                        <button class="employer-card__button">View Company</button>
+                    </div>
+                </article>
 
-                <section class="employer-card">
-                    <section id="rank2">2</section>
-                    <img src="../Images/samsung.jpg" id="Samsung">
-                    <h3>Samsung</h3>
-                    <p>Technology</p>
-                    <button id="button-job-two"> View Job </button>
-                </section>
+                <!-- Employer Card 2 -->
+                <article class="employer-card fade-slide-up animate-on-scroll delay-300">
+                    <div class="employer-card__image-section">
+                        <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="employer-card__workplace-image">
+                        <div class="employer-card__logo">
+                            <img src="../Images/samsung.jpg" alt="Samsung logo">
+                        </div>
+                    </div>
+                    <div class="employer-card__details">
+                        <h3 class="employer-card__company-name">Samsung</h3>
+                        <p class="employer-card__company-type">Technology & Electronics</p>
+                        <div class="employer-card__positions">
+                            <div class="employer-card__position-item">Software Developer Intern</div>
+                            <div class="employer-card__position-item">UX/UI Designer</div>
+                            <div class="employer-card__position-item">Data Analyst</div>
+                            <div class="employer-card__position-item">Product Manager</div>
+                            <div class="employer-card__position-item">Hardware Engineer</div>
+                        </div>
+                        <button class="employer-card__button">View Company</button>
+                    </div>
+                </article>
 
-                <section class="employer-card">
-                    <section id="rank3">3</section>
-                    <img src="../Images/google.jpg" id="Google">
-                    <h3>Google</h3>
-                    <p>Technology</p>
-                    <button id="button-job-three"> View Job </button>
-                </section>
+                <!-- Employer Card 3 -->
+                <article class="employer-card fade-slide-up animate-on-scroll delay-500">
+                    <div class="employer-card__image-section">
+                        <img src="../Images/Companies/google_workplace.jpeg" alt="Google workplace" class="employer-card__workplace-image">
+                        <div class="employer-card__logo">
+                            <img src="../Images/google.jpg" alt="Google logo">
+                        </div>
+                    </div>
+                    <div class="employer-card__details">
+                        <h3 class="employer-card__company-name">Google</h3>
+                        <p class="employer-card__company-type">Technology & Internet Services</p>
+                        <div class="employer-card__positions">
+                            <div class="employer-card__position-item">Software Engineering Intern</div>
+                            <div class="employer-card__position-item">Cloud Solutions Architect</div>
+                            <div class="employer-card__position-item">Marketing Specialist</div>
+                            <div class="employer-card__position-item">Business Analyst</div>
+                            <div class="employer-card__position-item">Technical Support Engineer</div>
+                        </div>
+                        <button class="employer-card__button">View Company</button>
+                    </div>
+                </article>
 
-            </section>
+            </div>
+
+        </section>
+
+        <section id="main-section-4">
+            
+            <div id="cta-content">
+                <h2 id="cta-title">Ready to Launch Your Career?</h2>
+                <p id="cta-description">
+                    Join thousands of DHVSU students who have already discovered their dream careers. 
+                    Whether you're looking for internships, part-time opportunities, or full-time positions, 
+                    Hirenorian connects you with top employers ready to welcome fresh talent.
+                </p>
+                
+                <div id="cta-buttons">
+                    <button class="cta-button cta-button-primary">Get Started Now</button>
+                    <button class="cta-button cta-button-secondary">Learn More</button>
+                </div>
+            </div>
+
+            <div id="cta-stats">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Job Postings</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Partner Companies</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Students Hired</div>
+                </div>
+            </div>
 
         </section>
 
