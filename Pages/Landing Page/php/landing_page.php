@@ -24,7 +24,7 @@
     <link href="../css/animations.css" rel="stylesheet">
 
     <script type="module" src="../js/ElementInitializer.js"></script>
-    <title>Document</title>
+    <title>Landing Page</title>
 
 </head>
 
