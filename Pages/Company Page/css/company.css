@@ -42,7 +42,8 @@ body {
     max-width: 1100px;
     height: 590px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-    display: flex; 
+    display: flex;
+    margin-top: 100px; 
 }
 
 /* DARK GRAY LEFT FORM PANEL */
@@ -146,6 +147,17 @@ form {
     gap: 1.5rem;
 }
 
+/* --- FIELDS --- */
+.fields {
+    position: relative;
+}
+.fields p {
+    margin-top: 2px;
+    font-size: 12px;
+    color: red;
+    display: none;
+}
+
 input {
     flex: 1;
     padding: 0.6rem 0.1rem;
@@ -155,11 +167,37 @@ input {
     color: white;
     outline: none;
     font-size: 0.9rem;
+    width: 100%;
 }
 
 input:focus {
     border-color: #ffb800;
 }
+
+/* --- DROP DOWN --- */  
+.dropdown {
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+    color: #1f1f1f;
+    height: 150px;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+.dropdown:active {
+    display: block;
+}
+
+.itemDropdown {
+    font-size: 10px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.itemDropdown:hover {
+    background-color: #f0f0f0;
+}
+
 
 /* --- BUTTON STYLES --- */
 .buttons {
