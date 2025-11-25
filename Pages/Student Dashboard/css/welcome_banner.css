@@ -1,0 +1,138 @@
+#dashboard-application-section {
+    height: 100vh;
+    
+}
+
+#dashboard-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#dashboard-title {
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    font-size: 33px;
+    font-weight: 600;
+}
+
+#yellow-welcome-banner {
+    height: 50%;
+    width: 95%;
+    display: flex;
+    background-color: #FFBD00;
+    border-radius: 40px;
+    padding-top: 10px;
+    padding-bottom: 60px;
+}
+
+#welcome-texts {
+    display: flex;
+    flex-direction: column;
+}
+
+#hi-text {
+    font-size: 28px;
+    color: white;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+#check-job-text {
+    font-size: 50px;
+    color: white;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+
+#college-girl-container {
+    width: 280px;
+    height: 290px;
+    overflow: hidden;
+    border-radius: 20px;
+    position: absolute;
+    top: 20px;
+    right: 65px;
+}
+
+#college-girl-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* keeps it nice & filled */
+    display: block;
+
+}
+
+#applications-section {
+    display: flex;
+    flex-direction: column;
+}
+
+#application-see-all-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+#applications-title {
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    font-size: 33px;
+    font-weight: 600;
+}
+
+#see-all-text {
+    font-size: 20px;
+    color: #FFBD00;
+    margin-top: 30px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+}
+
+#table-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 100px;
+    margin-right: 100px;
+
+}
+
+.header-titles {
+    font-size: 25px;
+}
+
+.row-containers {
+    height: 90px;
+    width: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-left: 30px;
+    background-color: #F3EFD0;
+    padding-left: 50px;
+    padding-right: 50px;
+    border-radius: 30px;
+}
+
+.name-section {
+    display: flex;
+    
+}
+
+.name-images {
+    height: 50px;
+    width: 50px;
+    margin-right: 20px;
+}
+
+.name-section {
+    display: flex;
+    align-items: center;
+}
+

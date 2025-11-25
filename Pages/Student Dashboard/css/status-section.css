@@ -1,0 +1,54 @@
+#status {
+    display: flex;
+    flex-direction: column;
+}
+
+#status-title {
+    margin-top: 50px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+    font-size: 33px;
+    font-weight: 600;
+}
+
+#status-cards {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card {
+    display: flex;
+    height: 150px;
+    width: 350px;
+    background-color: #EEEEEE;
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 30px;
+    justify-content: space-between;
+
+}
+
+.left-side-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.numbers {
+    font-size: 33px;
+}
+
+.status-text {
+    font-size: 27px;
+}
+
+.right-side-card {
+    display: flex;
+    
+}
+
+.view-all-text {
+    color: #FFBD00;
+    font-size: 18px;
+}
