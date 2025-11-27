@@ -153,6 +153,11 @@
                     <span class="page-path">Student Pages/.../student_profile.php</span>
                     <span class="badge badge-student">Profile</span>
                 </a>
+                <a href="Student Pages/Student Edit Profile Page/php/edit_profile.php" class="page-link">
+                    <span class="page-name">Edit Profile</span>
+                    <span class="page-path">Student Pages/.../edit_profile.php</span>
+                    <span class="badge badge-student">Edit Profile</span>
+                </a>
             </div>
         </div>
     </div>
