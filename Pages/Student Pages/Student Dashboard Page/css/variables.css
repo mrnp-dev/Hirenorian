@@ -1,0 +1,22 @@
+:root {
+    --primary-maroon: #7b1113;
+    --secondary-yellow: #f1c40f;
+    --text-dark: #333;
+    --text-light: #fff;
+    --bg-light: #f4f6f9;
+    --sidebar-width: 250px;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
