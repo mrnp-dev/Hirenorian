@@ -5,10 +5,15 @@
 
 /* Main Content */
 .main-content {
-    margin-left: var(--sidebar-width);
+    margin-left: var(--sidebar-collapsed-width);
     flex: 1;
     display: flex;
     flex-direction: column;
+    transition: margin-left var(--transition-speed) ease;
+    background-image: url("../../../Landing Page/Images/Backgrounds/white-hexagon-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 /* Dashboard Body */
@@ -105,5 +110,18 @@ td {
 @media (max-width: 768px) {
     .main-content {
         margin-left: 70px;
+    }
+}
+
+/* Shared Entrance Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

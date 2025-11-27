@@ -27,7 +27,7 @@
                     <i class="fa-solid fa-table-columns"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="../../Student Profile Page/php/student_profile.php" class="nav-item">
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>

@@ -1,6 +1,6 @@
 /* Sidebar */
 .sidebar {
-    width: var(--sidebar-width);
+    width: var(--sidebar-collapsed-width);
     background-color: var(--primary-maroon);
     color: var(--text-light);
     display: flex;
@@ -10,6 +10,13 @@
     left: 0;
     top: 0;
     z-index: 100;
+    transition: width var(--transition-speed) ease;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sidebar:hover {
+    width: var(--sidebar-width);
 }
 
 .logo-container {
@@ -18,17 +25,30 @@
     align-items: center;
     gap: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    height: 70px;
+    /* Fixed height to match topbar */
+    overflow: hidden;
 }
 
 .logo {
     width: 40px;
     height: auto;
+    min-width: 40px;
+    /* Prevent shrinking */
 }
 
 .logo-text {
     font-size: 1.2rem;
     font-weight: 700;
     color: var(--secondary-yellow);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+}
+
+.sidebar:hover .logo-text {
+    opacity: 1;
+    transition-delay: 0.1s;
 }
 
 .sidebar-nav {
@@ -45,6 +65,17 @@
     transition: var(--transition-speed);
     gap: 15px;
     font-size: 1rem;
+    overflow: hidden;
+}
+
+.nav-item span {
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.sidebar:hover .nav-item span {
+    opacity: 1;
+    transition-delay: 0.1s;
 }
 
 .nav-item:hover,
@@ -57,6 +88,9 @@
 .nav-item i {
     width: 20px;
     text-align: center;
+    min-width: 20px;
+    /* Prevent shrinking */
+    font-size: 1.2rem;
 }
 
 /* Responsive Sidebar */
