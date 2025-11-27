@@ -158,11 +158,7 @@
                     <span class="page-path">Student Pages/.../edit_profile.php</span>
                     <span class="badge badge-student">Edit Profile</span>
                 </a>
-                <a href="Student Pages/Student Profile Page V2/php/student_profile_v2.php" class="page-link">
-                    <span class="page-name">Student Profile V2</span>
-                    <span class="page-path">Student Pages/.../student_profile_v2.php</span>
-                    <span class="badge badge-student">Profile V2</span>
-                </a>
+
             </div>
         </div>
     </div>
