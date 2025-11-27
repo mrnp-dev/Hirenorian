@@ -79,7 +79,10 @@
                                 <p class="profile-university">Don Honorio Ventura State University</p>
                             </div>
                             <div class="profile-contact">
-                                <h3>Contact Information</h3>
+                                <div class="contact-header">
+                                    <h3>Contact Information</h3>
+                                    <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                                </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-envelope"></i>
                                     <span>juan.delacruz@email.com</span>

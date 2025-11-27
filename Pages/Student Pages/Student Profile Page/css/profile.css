@@ -74,9 +74,17 @@
     padding-top: 20px;
 }
 
-.profile-contact h3 {
-    font-size: 1rem;
+.contact-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
+    width: 100%;
+}
+
+.contact-header h3 {
+    font-size: 1rem;
+    margin-bottom: 0;
     color: var(--text-dark);
 }
 
