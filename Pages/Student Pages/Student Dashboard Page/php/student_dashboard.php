@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../css/topbar.css">
     <link rel="stylesheet" href="../css/stats.css">
     <link rel="stylesheet" href="../css/recommendations.css">
-    <link rel="stylesheet" href="../css/popups.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -70,7 +69,7 @@
                     <div class="card application-summary">
                         <div class="card-header">
                             <h2>Application Summary</h2>
-                            <a href="#" class="view-more" id="viewAllApplicationsBtn">View All</a>
+                            <a href="#" class="view-more">View All</a>
                         </div>
                         <div class="table-responsive">
                             <table>
@@ -234,7 +233,7 @@
         </div>
     </div>
 
-    <?php include '../popups/application_summary.php'; ?>
+
 
     <script src="../js/dashboard.js"></script>
 </body>
