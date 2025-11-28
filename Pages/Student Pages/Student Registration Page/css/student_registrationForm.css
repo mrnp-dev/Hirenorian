@@ -264,7 +264,7 @@ input.input_InvalidInput{
 }
 
 .slide-right {
-  animation: slideRight .5s forwards,
+  animation: slideRight .5s forwards;
 }
 
 @keyframes slideRight {
