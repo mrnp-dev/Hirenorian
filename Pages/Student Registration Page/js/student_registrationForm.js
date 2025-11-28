@@ -1,4 +1,62 @@
+const tagPool = [
+    'Web Development', 'Mobile Apps', 'UI/UX Design', 'Data Science',
+    'Machine Learning', 'DevOps', 'Cloud Computing', 'Cybersecurity',
+    'Blockchain', 'Game Development', 'Digital Marketing', 'Content Writing',
+    'Graphic Design', 'Video Editing', 'Project Management', 'Business Analysis',
+    'Quality Assurance', 'Database Admin', 'Network Engineering', 'AI Research',
+    'Frontend Development', 'Backend Development', 'Full Stack', 'iOS Development',
+    'Android Development', 'Product Design', 'SEO Specialist', '3D Modeling',
+    'Animation', 'Technical Writing', 'Sales', 'Customer Support',
+    'HR Management', 'Financial Analysis', 'Legal Services', 'Teaching'
+];
+let selectedTags = [];
+const maxSelection = 3;
 
+const tagsContainer = document.querySelector('.tags-container');
+const selectedCount = document.querySelector('.selected-count');
+function getRandomTags(count = 5) {
+    const shuffled = [...tagPool].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+}
+
+function renderTags() {
+    const tags = getRandomTags();
+    tagsContainer.innerHTML = '';
+
+    tags.forEach(tag => {
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag';
+        tagElement.textContent = tag;
+        tagElement.addEventListener('click', () => toggleTag(tag, tagElement));
+        tagsContainer.appendChild(tagElement);
+    });
+}
+function toggleTag(tag, element) {
+    const index = selectedTags.indexOf(tag);
+
+    if (index > -1) {
+        selectedTags.splice(index, 1);
+        element.classList.remove('chosen');
+    } else {
+        if (selectedTags.length < maxSelection) {
+            selectedTags.push(tag);
+            element.classList.add('chosen');
+        } else {
+            selectedCount.classList.add("shake");
+            setTimeout(() => {
+                selectedCount.classList.remove("shake");
+                }, 500);
+        }
+    }
+    updateSelectedCount();
+}
+function updateSelectedCount() {
+    selectedCount.textContent = `Selected: ${selectedTags.length}/${maxSelection}`;
+}
+
+renderTags();
+
+/////////////////////////////////////////////////////////////////////////////////////
 const signUp_Inputs = document.querySelectorAll('.sign-in-container input');
 
 signUp_Inputs.forEach(input=>{
@@ -90,11 +148,13 @@ let lastFocusedElement = null;
 let secondInputs_Validation = [];
 
 let thirdInputs_Container = document.querySelector('#thirdInputs');
-const thirdInputs = document.querySelectorAll('#thirdInputs input');
+// const thirdInputs = document.querySelectorAll('#thirdInputs input');
+const idealLocation_Input = document.querySelector('#location-input');
 let jobclassifications = [];
 let jobclassifications_before = [];
 let locations = [];
-let thirdInputs_Validation = [];
+// let thirdInputs_Validation = [];
+let idealLocation_Valid = true;
 
 
 let userInformation = {};
@@ -518,9 +578,10 @@ document.addEventListener('click', (e) => {
         secondInputs.forEach(input => {
             input.nextElementSibling.classList.remove('active');
         });
-        thirdInputs.forEach(input => {
-            input.nextElementSibling.classList.remove('active');
-        });
+        // thirdInputs.forEach(input => {
+        //     input.nextElementSibling.classList.remove('active');
+        // });
+        idealLocation_Input.nextElementSibling.classList.remove('active');
         validateSecondInputs(lastFocusedElement);
     }
 });
@@ -805,13 +866,13 @@ async function inputValidation_SecondSection(input){
         const value = input.value.trim().toLowerCase();
         const depIndex = departments.findIndex(dep => dep.trim().toLowerCase() == value);
 
-        thirdInputs.forEach((input, index) => {
-            if(index <=2 ){
-                input.value = '';
-                jobclassifications = [];
-                input.nextElementSibling.innerHTML = '';
-            }
-        });
+        // thirdInputs.forEach((input, index) => {
+        //     if(index <=2 ){
+        //         input.value = '';
+        //         jobclassifications = [];
+        //         input.nextElementSibling.innerHTML = '';
+        //     }
+        // });
     
 
         if(depIndex !== -1){
@@ -948,61 +1009,62 @@ async function getJobClassificationList(selectedDepartment){
 
 }
 function submitTheForm(button){
-    thirdInputs.forEach(input => {
-        validateThirdInputs(input);
-    });
-    if(Object.values(thirdInputs_Validation).every(Boolean)){
-        // form.submit();
-        console.log(userInformation);
-    }
+    // thirdInputs.forEach(input => {
+    //     validateThirdInputs(input);
+    // });
+    // if(Object.values(thirdInputs_Validation).every(Boolean)){
+    //     // form.submit();
+    //     console.log(userInformation);
+    // }
 }
-function validateThirdInputs(input){
+// function validateThirdInputs(input){
+    function validateIdeal_Location(input){
     if(input !== null){
-        switch(input.name){
-            case 'Job Classification 1':
-                if(!checkIfEmpty_General(input)){
-                    thirdInputs_Validation[`is${input.name}Valid`] = false;
-                }else{
-                    autoCorrect_Suggestions(input, jobclassifications_before, thirdInputs_Validation);
-                }
-                break;
-            case 'Job Classification 2':
-                if(!checkIfEmpty_General(input)){
-                    thirdInputs_Validation[`is${input.name}Valid`] = false;
-                }else{
-                    autoCorrect_Suggestions(input, jobclassifications_before, thirdInputs_Validation);
-                }
-                break;
-            case 'Job Classification 3':
-                if(!checkIfEmpty_General(input)){
-                    thirdInputs_Validation[`is${input.name}Valid`] = false;
-                }else{
-                    autoCorrect_Suggestions(input, jobclassifications_before, thirdInputs_Validation);
-                }
-                break;  
+        // switch(input.name){
+        //     case 'Job Classification 1':
+        //         if(!checkIfEmpty_General(input)){
+        //             thirdInputs_Validation[`is${input.name}Valid`] = false;
+        //         }else{
+        //             autoCorrect_Suggestions(input, jobclassifications_before, thirdInputs_Validation);
+        //         }
+        //         break;
+        //     case 'Job Classification 2':
+        //         if(!checkIfEmpty_General(input)){
+        //             thirdInputs_Validation[`is${input.name}Valid`] = false;
+        //         }else{
+        //             autoCorrect_Suggestions(input, jobclassifications_before, thirdInputs_Validation);
+        //         }
+        //         break;
+        //     case 'Job Classification 3':
+        //         if(!checkIfEmpty_General(input)){
+        //             thirdInputs_Validation[`is${input.name}Valid`] = false;
+        //         }else{
+        //             autoCorrect_Suggestions(input, jobclassifications_before, thirdInputs_Validation);
+        //         }
+        //         break;  
 
-            case 'Ideal Location':
+        //     case 'Ideal Location':
                 if(!checkIfEmpty_General(input)){
-                    thirdInputs_Validation[`is${input.name}Valid`] = false;
+                    idealLocation_Valid = false;
                 }else{
-                    autoCorrect_Suggestions(input, locations,thirdInputs_Validation);
+                    autoCorrect_Suggestions(input, locations,idealLocation_Valid);
                 }
-                break;
-        }
+    //             break;
+    //     }
     }
 }
 
-thirdInputs.forEach(input =>{
-    input.addEventListener('blur', async ()=>{
-        validateThirdInputs(input);
+// thirdInputs.forEach(input =>{
+    idealLocation_Input.addEventListener('blur', async ()=>{
+        validateIdeal_Location(idealLocation_Input);
     });
-    input.addEventListener('focus', async ()=>{
-        removeError(input);
+    idealLocation_Input.addEventListener('focus', async ()=>{
+        removeError(idealLocation_Input);
     });
-    input.addEventListener('input', async ()=>{
-        removeError(input);
+    idealLocation_Input.addEventListener('input', async ()=>{
+        removeError(idealLocation_Input);
     });
-});
+// });
 
 window.addEventListener('DOMContentLoaded', async e => {
     
@@ -1050,13 +1112,13 @@ window.addEventListener('DOMContentLoaded', async e => {
                 organizationField.nextElementSibling.innerHTML = '';
                 organizations_byDepartment = [];
 
-                thirdInputs.forEach((input, index) => {
-                    if(index <=2 ){
-                        input.value = '';
-                        jobclassifications = [];
-                        input.nextElementSibling.innerHTML = '';
-                    }
-                });
+                // thirdInputs.forEach((input, index) => {
+                //     if(index <=2 ){
+                //         input.value = '';
+                //         jobclassifications = [];
+                //         input.nextElementSibling.innerHTML = '';
+                //     }
+                // });
                 
                 if(depIndex !== -1){
                     courses = await getCoursesList(departments[depIndex]);
@@ -1095,25 +1157,25 @@ window.addEventListener('DOMContentLoaded', async e => {
         });
     });
 
-    thirdInputs.forEach(async (input,index)=>{
+    // thirdInputs.forEach(async (input,index)=>{
         let list = [];
-        if(index <= 2){
-            input.addEventListener('focus', (e) => {
-                list = jobclassifications;
-                suggestionsContainer.forEach(container => {
-                    container.classList.remove('active');
-                });
-                LoadList(e.target, list);
-            });
+        // if(index <= 2){
+        //     input.addEventListener('focus', (e) => {
+        //         list = jobclassifications;
+        //         suggestionsContainer.forEach(container => {
+        //             container.classList.remove('active');
+        //         });
+        //         LoadList(e.target, list);
+        //     });
 
-            input.addEventListener('input', async (e) => {
-                list = jobclassifications;
-                LoadList(e.target, list);
-                validateThirdInputs(input);
-                inputValidation_SecondSection(input);
-            });
-        }else{
-            input.addEventListener('focus', (e) => {
+        //     input.addEventListener('input', async (e) => {
+        //         list = jobclassifications;
+        //         LoadList(e.target, list);
+        //         validateThirdInputs(input);
+        //         inputValidation_SecondSection(input);
+        //     });
+        // }else{
+            idealLocation_Input.addEventListener('focus', (e) => {
                 list = locations;
                 suggestionsContainer.forEach(container => {
                     container.classList.remove('active');
@@ -1121,15 +1183,16 @@ window.addEventListener('DOMContentLoaded', async e => {
                 LoadList(e.target, list);
             });
 
-            input.addEventListener('input', async (e) => {
+            idealLocation_Input.addEventListener('input', async (e) => {
                 list = locations;
                 LoadList(e.target, list);
-                validateThirdInputs(input);
-                inputValidation_SecondSection(input);
+                // validateThirdInputs(input);
+                validateIdeal_Location(idealLocation_Input)
+                inputValidation_SecondSection(idealLocation_Input);
             });
-        }
+    //     }
         
-    })
+    // })
     const form_container = document.querySelector('.form-container');
     const form_children = document.querySelectorAll('.form-container  > div');
     const toggle_container = document.querySelector('.toggle-container');

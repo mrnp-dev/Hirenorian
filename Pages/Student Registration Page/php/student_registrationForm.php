@@ -37,7 +37,7 @@
             <div class="sign-up-container shift_inactive">
                 <h1 id="title">Personalize your Profile</h1>
                 <form action="" id="signUp-Form">
-                    <div class="form-section" id="firstInputs">
+                    <div class="form-section" id="firstInputs" style="display:none;">
                         <div class="form-row">
                             <div class="input-wrapper">
                                 <input type="text" id="firstName-input" name="First Name" placeholder="First Name *">
@@ -90,7 +90,7 @@
                         </div>
                     </div>
 
-                    <div class="form-section" id="secondInputs">
+                    <div class="form-section" id="secondInputs" style="display:none;">
                         <div class="input-wrapper">
                             <input type="text" id="univ-input" name="University/Campus" placeholder="University / Campus *">
                             <div class="suggestions"></div>
@@ -131,8 +131,8 @@
                             <button type="button" id="second_nextBtn" class="btn btn-next" onclick="goToLast(this)">Next</button>
                         </div>
                     </div>
-                    <div class="form-section" id="thirdInputs">
-                        <div class="input-wrapper">
+                    <div class="form-section" id="thirdInputs" style="display:flex;">
+                        <!-- <div class="input-wrapper">
                             <input type="text" id="job1-input" name="Job Classification 1" placeholder="Job Classification 1 *">
                             <div class="suggestions"></div>
                             <p>error</p>
@@ -148,12 +148,22 @@
                             <input type="text" id="job3-input" name="Job Classification 3" placeholder="Job Classification 3 *">
                             <div class="suggestions"></div>
                             <p>error</p>
-                        </div>
+                        </div> -->
 
                         <div class="input-wrapper">
                             <input type="text" id="location-input" name="Ideal Location" placeholder="Ideal Location *">
                             <div class="suggestions"></div>
                             <p>error</p>
+                        </div>
+
+                        <div class="tag-wrapper">
+                            <div class="tag-header">
+                                <h3>Choose 3 prefered Working Field <span class="optional-text">(optional)</span></h3>
+                            </div>
+                            <div class="selected-count" id="selectedCount">Selected: 0/3</div>
+                            <div class="tags-container">
+
+                            </div>
                         </div>
 
                         <div class="button-container">
