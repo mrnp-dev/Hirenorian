@@ -103,6 +103,7 @@
         .badge-main { background: #e3f2fd; color: #0d47a1; }
         .badge-auth { background: #fff3e0; color: #e65100; }
         .badge-student { background: #e8f5e9; color: #1b5e20; }
+        .badge-company { background: #fff8e1; color: #f57f17; }
 
     </style>
 </head>
@@ -137,6 +138,11 @@
                     <span class="page-path">Student Pages/.../student_registrationForm.php</span>
                     <span class="badge badge-auth">Auth</span>
                 </a>
+                <a href="Account Registration Pages/Company Registration Page/php/company.php" class="page-link">
+                    <span class="page-name">Company Registration</span>
+                    <span class="page-path">Account Registration Pages/.../company.php</span>
+                    <span class="badge badge-company">Company</span>
+                </a>
             </div>
         </div>
 
@@ -161,6 +167,8 @@
 
             </div>
         </div>
+
+
     </div>
 </body>
 </html>

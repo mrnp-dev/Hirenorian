@@ -353,8 +353,22 @@
     </footer>
 
 
+<<<<<<< HEAD
+    <script>
+        document.addEventListener("mousemove", (e) => {
+            document.querySelectorAll(".parallax").forEach(el => {
+                const speed = parseFloat(el.getAttribute("data-speed"));
+                const x = (window.innerWidth - e.pageX * speed) / 120;
+                const y = (window.innerHeight - e.pageY * speed) / 120;
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+    <script src='/Hirenorian/Pages/Student%20Registration%20Page/js/toast.js'></script>
+=======
 
 
+>>>>>>> Mark's-Commits
 </body>
 
 </html>

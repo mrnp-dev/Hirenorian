@@ -18,7 +18,7 @@
 
 <body>
   <div class="selection-container">
-    <div class="card student-card active" id="studentCard">
+    <div class="card student-card" id="studentCard">
       <h2><img src="../images/grad_hat (1) 1.png"> For Students</h2>
       <ul>
         <li><img src="../images/access 1.png">Access to university-approved companies</li>
