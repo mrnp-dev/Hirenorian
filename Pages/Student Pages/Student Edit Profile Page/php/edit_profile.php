@@ -20,8 +20,10 @@
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
-                <span class="logo-text">Hirenorian</span>
+                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <span class="logo-text">Hirenorian</span>
+                </a>
             </div>
             <nav class="sidebar-nav">
                 <a href="../../Student Dashboard Page/php/student_dashboard.php" class="nav-item">

@@ -20,12 +20,8 @@
     <link href="../css/landing_main_section3.css" rel="stylesheet">
     <link href="../css/landing_main_section4.css" rel="stylesheet">
     <link href="../css/main_footer.css" rel="stylesheet">
-<<<<<<< HEAD
-    <link rel="stylesheet" href='/Hirenorian/Pages/Student%20Registration%20Page/css/toast.css'>
-=======
     <link href="../css/responsive_landing.css" rel="stylesheet">
     <link href="../css/animations.css" rel="stylesheet">
->>>>>>> Mark's-Commits
 
     <script type="module" src="../js/ElementInitializer.js"></script>
     <title>Landing Page</title>

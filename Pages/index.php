@@ -166,9 +166,9 @@
         <div class="section">
             <h2 class="section-title">Company Portal</h2>
             <div class="link-grid">
-                <a href="Company Page/php/company.php" class="page-link">
-                    <span class="page-name">Company Dashboard</span>
-                    <span class="page-path">Company Page/php/company.php</span>
+                <a href="Company Pages/Company Registration Page/php/company.php" class="page-link">
+                    <span class="page-name">Company Registration</span>
+                    <span class="page-path">Company Pages/.../company.php</span>
                     <span class="badge badge-company">Company</span>
                 </a>
             </div>
