@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Profile - Hirenorian</title>
+    <title>My Profile - Hirenorian</title>
     <!-- Shared CSS -->
     <link rel="stylesheet" href="../../Student Dashboard Page/css/variables.css">
     <link rel="stylesheet" href="../../Student Dashboard Page/css/layout.css">
@@ -62,146 +62,126 @@
 
             <!-- Profile Content -->
             <main class="dashboard-body">
-                <h1 class="page-title">My Profile</h1>
+                <!-- Cover Banner -->
+                <div class="profile-banner"></div>
 
-                <div class="profile-grid">
-                    <!-- Left Column: Profile Card & Contact -->
-                    <div class="profile-left">
-                        <!-- Profile Card -->
-                        <div class="card profile-card">
-                            <div class="profile-header">
-                                <div class="profile-img-container">
-                                    <img src="../../../Landing Page/Images/gradpic2.png" alt="Profile Picture">
-                                    <button class="edit-photo-btn"><i class="fa-solid fa-camera"></i></button>
-                                </div>
-                                <h2 class="profile-name">Juan Dela Cruz</h2>
-                                <p class="profile-role">BS Information Technology</p>
-                                <p class="profile-university">Don Honorio Ventura State University</p>
+                <div class="profile-container">
+                    <!-- Profile Header Card -->
+                    <div class="profile-header-card">
+                        <div class="profile-header-content">
+                            <div class="profile-avatar-wrapper">
+                                <img src="../../../Landing Page/Images/gradpic2.png" alt="Profile Picture" class="profile-avatar">
                             </div>
-                            <div class="profile-contact">
-                                <div class="contact-header">
-                                    <h3>Contact Information</h3>
-                                    <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-                                </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-envelope"></i>
-                                    <span>juan.delacruz@email.com</span>
-                                </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-phone"></i>
-                                    <span>+63 912 345 6789</span>
-                                </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span>San Fernando, Pampanga</span>
-                                </div>
+                            <div class="profile-info">
+                                <h1 class="profile-name">Juan Dela Cruz</h1>
+                                <p class="profile-headline">BS Information Technology Student at DHVSU</p>
+                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> San Fernando, Pampanga</p>
                             </div>
-                        </div>
-
-                        <!-- Skills Section -->
-                        <div class="card skills-section">
-                            <div class="card-header">
-                                <h2>Skills</h2>
-                                <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
-                            </div>
-                            <div class="skills-category">
-                                <h3>Technical</h3>
-                                <div class="tags">
-                                    <span>HTML/CSS</span>
-                                    <span>JavaScript</span>
-                                    <span>PHP</span>
-                                    <span>MySQL</span>
-                                    <span>React</span>
-                                </div>
-                            </div>
-                            <div class="skills-category">
-                                <h3>Soft Skills</h3>
-                                <div class="tags">
-                                    <span>Communication</span>
-                                    <span>Teamwork</span>
-                                    <span>Problem Solving</span>
-                                    <span>Time Management</span>
-                                </div>
+                            <div class="profile-actions">
+                                <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-primary">
+                                    <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+                                </a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: Details -->
-                    <div class="profile-right">
-                        <!-- About Me -->
-                        <div class="card about-section">
-                            <div class="card-header">
+                    <div class="profile-grid-v2">
+                        <!-- Left Sidebar (Sticky) -->
+                        <div class="profile-sidebar">
+                            <!-- Contact Info -->
+                            <div class="card info-card">
+                                <h3>Contact Information</h3>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-envelope"></i>
+                                    <span>juan.delacruz@email.com</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-phone"></i>
+                                    <span>+63 912 345 6789</span>
+                                </div>
+                            </div>
+
+                            <!-- Skills -->
+                            <div class="card skills-card">
+                                <h3>Skills</h3>
+                                <div class="skill-category">
+                                    <h4>Technical</h4>
+                                    <div class="tags">
+                                        <span>HTML/CSS</span>
+                                        <span>JavaScript</span>
+                                        <span>PHP</span>
+                                        <span>MySQL</span>
+                                        <span>React</span>
+                                    </div>
+                                </div>
+                                <div class="skill-category">
+                                    <h4>Soft Skills</h4>
+                                    <div class="tags">
+                                        <span>Communication</span>
+                                        <span>Teamwork</span>
+                                        <span>Problem Solving</span>
+                                        <span>Time Management</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Main Content -->
+                        <div class="profile-main">
+                            <!-- About Me -->
+                            <div class="card section-card">
                                 <h2>About Me</h2>
-                                <button class="icon-btn"><i class="fa-solid fa-pen"></i></button>
+                                <p class="section-text">
+                                    I am a motivated 3rd-year Information Technology student with a passion for web development and software engineering. 
+                                    I am currently looking for an internship opportunity where I can apply my skills in building user-friendly applications 
+                                    and learn from experienced professionals in the industry. I am a quick learner and eager to contribute to real-world projects.
+                                </p>
                             </div>
-                            <p class="about-text">
-                                I am a motivated 3rd-year Information Technology student with a passion for web development and software engineering. 
-                                I am currently looking for an internship opportunity where I can apply my skills in building user-friendly applications 
-                                and learn from experienced professionals in the industry. I am a quick learner and eager to contribute to real-world projects.
-                            </p>
-                        </div>
 
-                        <!-- Account Manager -->
-                        <div class="card account-manager-section">
-                            <div class="card-header">
-                                <h2>Account Manager</h2>
-                            </div>
-                            <div class="account-actions">
-                                <button class="btn-outline">Change Password</button>
-                                <button class="btn-outline">Privacy Settings</button>
-                                <button class="btn-danger">Deactivate Account</button>
-                            </div>
-                        </div>
-
-                        <!-- Educational Background -->
-                        <div class="card education-section">
-                            <div class="card-header">
-                                <h2>Educational Background</h2>
-                                <button class="icon-btn"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <h3>Bachelor of Science in Information Technology</h3>
-                                        <p class="institution">Don Honorio Ventura State University</p>
-                                        <p class="date">2021 - Present</p>
+                            <!-- Experience -->
+                            <div class="card section-card">
+                                <h2>Experience</h2>
+                                <div class="timeline-v2">
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                        <div class="timeline-content">
+                                            <h3>Web Development Lead</h3>
+                                            <p class="institution">DHVSU Computer Society</p>
+                                            <p class="date">2023 - Present</p>
+                                            <p class="description">Led a team of 5 students in developing the organization's official website. Organized coding workshops for freshmen.</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <h3>Senior High School (STEM Strand)</h3>
-                                        <p class="institution">Pampanga High School</p>
-                                        <p class="date">2019 - 2021</p>
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                                        <div class="timeline-content">
+                                            <h3>Volunteer</h3>
+                                            <p class="institution">Community Tech Outreach</p>
+                                            <p class="date">2022</p>
+                                            <p class="description">Assisted in teaching basic computer literacy to senior citizens in the local community.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Experience & Achievements -->
-                        <div class="card experience-section">
-                            <div class="card-header">
-                                <h2>Experience & Achievements</h2>
-                                <button class="icon-btn"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                            <div class="timeline">
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <h3>Web Development Lead</h3>
-                                        <p class="institution">DHVSU Computer Society</p>
-                                        <p class="date">2023 - Present</p>
-                                        <p class="description">Led a team of 5 students in developing the organization's official website. Organized coding workshops for freshmen.</p>
+                            <!-- Education -->
+                            <div class="card section-card">
+                                <h2>Education</h2>
+                                <div class="timeline-v2">
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                        <div class="timeline-content">
+                                            <h3>Bachelor of Science in Information Technology</h3>
+                                            <p class="institution">Don Honorio Ventura State University</p>
+                                            <p class="date">2021 - Present</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <h3>Volunteer</h3>
-                                        <p class="institution">Community Tech Outreach</p>
-                                        <p class="date">2022</p>
-                                        <p class="description">Assisted in teaching basic computer literacy to senior citizens in the local community.</p>
+                                    <div class="timeline-item">
+                                        <div class="timeline-icon"><i class="fa-solid fa-school"></i></div>
+                                        <div class="timeline-content">
+                                            <h3>Senior High School (STEM Strand)</h3>
+                                            <p class="institution">Pampanga High School</p>
+                                            <p class="date">2019 - 2021</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
