@@ -103,6 +103,7 @@
         .badge-main { background: #e3f2fd; color: #0d47a1; }
         .badge-auth { background: #fff3e0; color: #e65100; }
         .badge-student { background: #e8f5e9; color: #1b5e20; }
+        .badge-company { background: #fff8e1; color: #f57f17; }
 
     </style>
 </head>
@@ -159,6 +160,17 @@
                     <span class="badge badge-student">Edit Profile</span>
                 </a>
 
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Company Portal</h2>
+            <div class="link-grid">
+                <a href="Company Page/php/company.php" class="page-link">
+                    <span class="page-name">Company Dashboard</span>
+                    <span class="page-path">Company Page/php/company.php</span>
+                    <span class="badge badge-company">Company</span>
+                </a>
             </div>
         </div>
     </div>
