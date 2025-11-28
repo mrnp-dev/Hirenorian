@@ -169,7 +169,7 @@ let jobclassifications = [];
 let jobclassifications_before = [];
 let locations = [];
 // let thirdInputs_Validation = [];
-let idealLocation_Valid = true;
+let idealLocation_Valid = false;
 
 
 let userInformation = {};
@@ -244,7 +244,6 @@ firstInputs.forEach(input => {
 });
 
 async function initialFirstInputs_Validations(input) {
-    console.log(input.name)
     if (input.name !== 'Suffix') {
         return checkIfEmpty(input);
     } else {
@@ -257,7 +256,6 @@ async function goNext() {
     if (await firstInputsValidation()) {
         firstInputs_Container.classList.remove('slide-left');
         firstInputs_Container.classList.add('slide-right');
-        console.log(userInformation);
         manageSteps('next');
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
@@ -300,7 +298,6 @@ async function checkIfEmpty(input) {
 function showError(input, errorMessage) {
     input.classList.add('input_InvalidInput');
     const section = input.closest(".input-wrapper");
-    console.log(input.classList);
     const errorElement = section.querySelector("p");
     errorElement.textContent = errorMessage;
     errorElement.style.color = 'red';
@@ -643,13 +640,11 @@ function goToLast(button) {
     secondInputs.forEach(input => {
         validateSecondInputs(input);
     });
-    console.log(secondInputs_Validation);
     if (Object.values(secondInputs_Validation).every(Boolean)) {
         secondInputs_Container.classList.remove('slide-left');
         secondInputs_Container.classList.add('slide-right');
         updateTagsForSelectedCourse();
         manageSteps('next');
-        // Register_Student();
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
@@ -679,6 +674,7 @@ async function ifStudentNumber_Exist() {
 }
 
 async function Register_Student() {
+    console.log(userInformation);
     fetch("http://158.69.205.176:8080/add_student_process.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -686,6 +682,7 @@ async function Register_Student() {
     })
         .then(response => response.json())
         .then(data => {
+            console.log("Server Response:", data);
             if (data.status === "success") {
                 ToastSystem.show("You’ve been registered successfully", "success");
                 setTimeout(() => {
@@ -728,9 +725,15 @@ function autoCorrect_Suggestions(input, list, validation) {
         input.value = list[index]
         validation[`is${input.name}Valid`] = true;
         userInformation[input.name] = input.value;
+        if (input.name == "Ideal Location") {
+            idealLocation_Valid = true;
+        }
     } else {
         showError(input, `Invalid ${input.name}`);
         validation[`is${input.name}Valid`] = false;
+        if (input.name == "Ideal Location") {
+            idealLocation_Valid = false;
+        }
     }
 }
 
@@ -916,6 +919,8 @@ async function inputValidation_SecondSection(input) {
             const jobIndex = jobclassifications.indexOf(input.value);
             jobclassifications.splice(jobIndex, 1);
         }
+    } else if (input.name == 'Ideal Location') {
+        validateIdeal_Location(input);
     }
 }
 
@@ -1033,6 +1038,11 @@ function submitTheForm(button) {
     //     // form.submit();
     //     console.log(userInformation);
     // }
+
+    if (idealLocation_Valid) userInformation['Ideal Location'] = idealLocation_Input.value.trim();
+    if (selectedTags) userInformation['Tags'] = [...selectedTags];
+    console.log(userInformation);
+    Register_Student();
 }
 // function validateThirdInputs(input){
 function validateIdeal_Location(input) {
@@ -1217,7 +1227,6 @@ window.addEventListener('DOMContentLoaded', async e => {
     const signIn_Btn = document.getElementById('toggle-signIn-Btn');
     const signUp_Btn = document.getElementById('toggle-signUp-Btn');
 
-    console.log(toggle_children)
     signUp_Btn.addEventListener('click', () => {
         panelSwap();
     });
