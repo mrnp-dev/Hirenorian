@@ -19,6 +19,7 @@
     <link href="../css/landing_main_section2.css" rel="stylesheet">
     <link href="../css/landing_main_section3.css" rel="stylesheet">
     <link href="../css/main_footer.css" rel="stylesheet">
+    <link rel="stylesheet" href='/Hirenorian/Pages/Student%20Registration%20Page/css/toast.css'>
 
     <script type="module" src="../js/ElementInitializer.js"></script>
     <title>Document</title>
@@ -43,7 +44,7 @@
         <section id="find-career-section">
 
             <section id="find-your-career-left-section">
-                <h1 id="get-hired-today" class="fade-up" >GET HIRED<br>TODAY</h1>
+                <h1 id="get-hired-today" class="fade-up">GET HIRED<br>TODAY</h1>
                 <p id="hirenorian-info" class="fade-up" style="animation-delay: .2s;">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
                 <div id="find-your-career-div" class="fade-up" style="animation-delay: .4s;"><button id="find-your-career-button">Find your Career</button></div>
                 <div></div>
@@ -211,22 +212,18 @@
 
     </footer>
 
-   
 
-<script>
+    <script>
         document.addEventListener("mousemove", (e) => {
-        document.querySelectorAll(".parallax").forEach(el => {
-        const speed = parseFloat(el.getAttribute("data-speed"));
-        const x = (window.innerWidth - e.pageX * speed) / 120;
-        const y = (window.innerHeight - e.pageY * speed) / 120;
-        el.style.transform = `translate(${x}px, ${y}px)`;
-    });
-});
-
-
-
-</script>
-
+            document.querySelectorAll(".parallax").forEach(el => {
+                const speed = parseFloat(el.getAttribute("data-speed"));
+                const x = (window.innerWidth - e.pageX * speed) / 120;
+                const y = (window.innerHeight - e.pageY * speed) / 120;
+                el.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+    <script src='/Hirenorian/Pages/Student%20Registration%20Page/js/toast.js'></script>
 </body>
 
 </html>
