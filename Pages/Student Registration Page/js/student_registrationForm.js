@@ -632,7 +632,7 @@ function goToLast(button){
         secondInputs_Container.classList.remove('slide-left');
         secondInputs_Container.classList.add('slide-right');
         manageSteps('next');
-        Register_Student();
+        // Register_Student();
     }else{
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
