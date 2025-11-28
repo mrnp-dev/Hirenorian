@@ -1,11 +1,84 @@
-const form = document.querySelector('form');
+
+const signUp_Inputs = document.querySelectorAll('.sign-in-container input');
+
+signUp_Inputs.forEach(input=>{
+    input.addEventListener('focus', async ()=>{
+        removeError(input);
+    });
+    input.addEventListener('input', async ()=>{
+        removeError(input);
+    });
+    input.addEventListener('blur', async ()=>{
+        if(!checkIfEmpty_General(input)){
+            showError(input, `${input.name} cannot empty.`);
+        }else if(input.name == 'Student Email'){
+            if(!checkLogged_Email(input)) showError(input, `${input.name} is invalid.`);
+        }
+    });
+})
+
+async function check_LogIn_Fields(){
+    let isValid = true;
+    signUp_Inputs.forEach(input=>{
+        if(input.value.trim() == ""){
+           isValid =  showError(input, `${input.name} cannot empty.`);
+        }else if(input.name == "Student Email"){    
+            isValid = checkLogged_Email(input);
+        }else{
+            isValid = true;
+        }
+    });
+
+    if(isValid){
+        const email = document.querySelector('#signup-email').value.trim();
+        const password = document.querySelector('#signup-password').value.trim();
+        try {
+            const response = await fetch("http://158.69.205.176:8080/student_login_process.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password
+                })
+            });
+            const data = await response.json();
+            if (response.ok && data.status === "success") {
+                ToastSystem.show('Login Successfully', "success");
+            } else {
+                ToastSystem.show('Login Failed', "error");
+            }
+        } catch (err) {
+            console.error("Network error:", err);
+            alert("Unable to connect to server");
+        }
+    }else{
+        ToastSystem.show("Please correct the highlighted fields.", "error");
+    }
+}
+
+function checkLogged_Email(input){
+    const validSchoolEmail_RegEx = /^20[0-9]{2}[0-9]{6}@pampangastateu\.edu\.ph$/;
+    if(validSchoolEmail_RegEx.test(input.value.trim())){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+
+
+
+const form = document.querySelector('#signUp-Form');
 const title = document.querySelector('#title');
 const firstInputs = document.querySelectorAll('#firstInputs input');
 const firstInputs_Container = document.querySelector('#firstInputs');
 const first_nextBtn = document.querySelector('#first_nextBtn');
 
 const secondInputs_Container = document.querySelector('#secondInputs');
-const secondInputs = document.querySelectorAll('#secondInputs input')
+const secondInputs = document.querySelectorAll('#secondInputs input');
+const studentNumber_Input = document.querySelector('#studNum-input');
 let campuses = [];
 let departments = [];
 let courses = [];
@@ -30,6 +103,14 @@ const steps = document.querySelectorAll('.step');
 const step_text = document.querySelectorAll('.step-text');
 const step_icon = document.querySelectorAll('.step-icon');
 let currentStep = 0;
+
+function goBackToLandingPage(){
+    ToastSystem.show("Redirecting to the landing page.", "info")
+    ToastSystem.storeForNextPage('You’ve returned to the landing page.', 'success');
+    setTimeout(()=>{
+        window.location.href = '/Hirenorian/Pages/Landing%20Page/php/landing_page.php';
+    }, 1500)
+}
 
 function manageSteps(action){
     step_text[currentStep].classList.remove('left-active-text');
@@ -60,6 +141,9 @@ firstInputs_Container.addEventListener('animationend', e =>{
 firstInputs.forEach(input =>{
     input.addEventListener('blur', async ()=>{
         initialFirstInputs_Validations(input);
+        if(input.name === "Password" && input.dataset.strength == "weak"){
+            showError(input, `${input.name}'s strength must be atleast medium.`);
+        }
     });
     input.addEventListener('focus', async ()=>{
         removeError(input);
@@ -85,6 +169,7 @@ firstInputs.forEach(input =>{
 });
 
 async function initialFirstInputs_Validations(input){
+    console.log(input.name)
     if(input.name !== 'Suffix'){
         return checkIfEmpty(input);
     }else{
@@ -99,6 +184,8 @@ async function goNext(){
         firstInputs_Container.classList.add('slide-right');
         console.log(userInformation);
         manageSteps('next');
+    }else{
+        ToastSystem.show("Please correct the highlighted fields.", "error");
     }
 }
 
@@ -106,7 +193,13 @@ async function firstInputsValidation() {
   const validations = await Promise.all(
                             Array.from(firstInputs).map(input => {
                                 if(input.name !== 'Suffix'){
-                                    return checkIfEmpty(input);
+                                    if(input.name == "Password" && input.dataset.strength == "weak"){
+                                        showError(input, `${input.name}'s strength must be atleast medium.`);
+                                        return false;
+                                    }else{
+                                        return checkIfEmpty(input);
+                                    }
+                                    
                                 }else{
                                     return checkIfValid(input);
                                 }     
@@ -132,6 +225,7 @@ async function checkIfEmpty(input){
 function showError(input, errorMessage){
     input.classList.add('input_InvalidInput');
     const section = input.closest(".input-wrapper");
+    console.log(input.classList);
     const errorElement = section.querySelector("p");
     errorElement.textContent = errorMessage;
     errorElement.style.color = 'red'; 
@@ -158,6 +252,7 @@ async function checkIfValid(input){
             break;
         case 'suffix':
             isValid = checkSuffix(input);
+            if(input.value.trim() == "") userInformation[input.name] = "";
             break;
         case 'email':
             isValid = checkEmail(input);
@@ -279,7 +374,7 @@ function checkEmail(input){
                 return false;
             }
 
-            const studentNumber_Input = document.querySelector('#studNum-input');
+            
             const studentNumber_substr = input.value.trim().toLowerCase().slice(0, 10);
             if(studentNumber_Input.value.trim()){
                 if(studentNumber_Input.value.trim() == studentNumber_substr){
@@ -315,22 +410,8 @@ async function checkPassword(input){
         showError(input, `${input.name} must not exceed 64 characters.`);
         return false;
     }else{
-        // try{
-        //     const response = await fetch('../JSON/weakPasswords.json');
-        //     const data = await response.json();
-        //     if(data.weakPasswords.includes(input.value.toLowerCase())){
-        //         showError(input, `Please choose a more secure password.`);
-        //         return false;
-        //     }else{
-        //         return true;
-        //     }
-        // }catch(error){
-        //     console.error("Error loading WeakPasswords:", error);
-        //     return false;
-        // }
-        
-        checkPasswordStrength(input);
-        return true;
+
+        return checkPasswordStrength(input);
     }
 }
 
@@ -341,10 +422,12 @@ function checkPasswordStrength(input) {
     const hasSpecials = /[^a-zA-Z0-9]/.test(password);
 
     const typesCount = [hasLetters, hasNumbers, hasSpecials].filter(Boolean).length;
-    changePasswordStrength_text(input, typesCount);
+    return changePasswordStrength_text(input, typesCount);
     
 }
+
 function changePasswordStrength_text(element, strength){
+    let valid = true;
     const section = element.closest(".input-wrapper");
     const strength_P = section.querySelector("p");
     const span = document.createElement('span');
@@ -355,18 +438,25 @@ function changePasswordStrength_text(element, strength){
         case 1: 
             span.textContent = "weak";
             span.style.color = "red";
+            element.dataset.strength = "weak";
+            valid = false;
             break;
         case 2: 
             span.textContent = "medium";
             span.style.color = "orange";
+            element.dataset.strength = "medium";
             break;
         case 3: 
             span.textContent = "strong";
             span.style.color = "green";
+            element.dataset.strength = "strong";
             break;
     }
+    
     strength_P.append(span);
     strength_P.style.visibility = 'visible'; 
+ 
+    return valid;
 }
 
 
@@ -471,16 +561,75 @@ secondInputs_Container.addEventListener('animationend', e =>{
     }
 });
 
+
 function goToLast(button){
     secondInputs.forEach(input => {
         validateSecondInputs(input);
     });
+    console.log(secondInputs_Validation);
     if(Object.values(secondInputs_Validation).every(Boolean)){
         secondInputs_Container.classList.remove('slide-left');
         secondInputs_Container.classList.add('slide-right');
-        console.log(userInformation);
         manageSteps('next');
+        Register_Student();
+    }else{
+        ToastSystem.show("Please correct the highlighted fields.", "error");
     }
+}
+
+async function ifStudentNumber_Exist(){
+    return fetch("http://158.69.205.176:8080/check_student_number.php",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(userInformation)
+    })
+    .then(response => response.json())
+    .then(data =>{
+        if(data.status === "error"){
+            showError(studentNumber_Input,"This Student ID is already registered");
+            return  false;
+        }else{
+            removeError(studentNumber_Input);
+            return true;
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        ToastSystem.show("Something went wrong, try again later.", "error");
+        return false;
+    });
+}
+
+async function Register_Student(){
+        fetch("http://158.69.205.176:8080/add_student_process.php",{
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(userInformation)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                ToastSystem.show("You’ve been registered successfully", "success");
+                setTimeout(()=>{
+                    ToastSystem.show("Redirecting to the landing page", "info");
+                    setTimeout(()=>{
+                        firstInputs.forEach(input => {
+                            input.value = "";
+                        });
+                        secondInputs.forEach(input => {
+                            input.value = "";
+                        })
+                         window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
+                    },2000);
+                },1500);
+            } else {
+                ToastSystem.show("Something went wrong, try again later.", "error");
+                console.log(data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+        });
 }
 
 thirdInputs_Container.addEventListener('animationend', e =>{
@@ -507,7 +656,7 @@ function autoCorrect_Suggestions(input, list, validation){
     }
 }
 
-function validateSecondInputs(input){
+async function validateSecondInputs(input){
     if(input !== null){
         switch(input.name){
             case 'University/Campus':
@@ -540,9 +689,14 @@ function validateSecondInputs(input){
                 }else if(!checkStudentNumber(input)){
                     showError(input, `Invalid ${input.name}`);
                     secondInputs_Validation['isStudentNumberValid'] = false;
-                }
-                else{
-                    secondInputs_Validation['isStudentNumberValid'] = true;
+                }else {
+                    ifStudentNumber_Exist().then(exists => {
+                        if(!exists){
+                            secondInputs_Validation['isStudentNumberValid'] = false;
+                        }else{
+                            secondInputs_Validation['isStudentNumberValid'] = true;
+                        }
+                    })
                 }
                 break;
             case 'School Email':
@@ -560,7 +714,7 @@ function validateSecondInputs(input){
                 if(input.value.trim() !== ''){
                     autoCorrect_Suggestions(input, organizations, secondInputs_Validation);
                 }else{
-                    userInformation[input.name] = input.value;
+                    userInformation[input.name] = '';
                 }
                 break;
         }
@@ -851,6 +1005,7 @@ thirdInputs.forEach(input =>{
 });
 
 window.addEventListener('DOMContentLoaded', async e => {
+    
     const suggestionsContainer = document.querySelectorAll('.suggestions');
     campuses = await loadCampuses();
     departments = await loadDepartments();
@@ -975,5 +1130,36 @@ window.addEventListener('DOMContentLoaded', async e => {
         }
         
     })
+    const form_container = document.querySelector('.form-container');
+    const form_children = document.querySelectorAll('.form-container  > div');
+    const toggle_container = document.querySelector('.toggle-container');
+    const toggle_children = document.querySelectorAll('.toggle  > div');
+    const signIn_Btn = document.getElementById('toggle-signIn-Btn');
+    const signUp_Btn = document.getElementById('toggle-signUp-Btn');
+
+    console.log(toggle_children)
+    signUp_Btn.addEventListener('click', ()=>{
+        panelSwap();
+    });
+
+    signIn_Btn.addEventListener('click', ()=>{
+        panelSwap();
+    });
+
+    function panelSwap(){
+        form_container.classList.toggle('signUp');
+        form_container.classList.toggle('signIn');
+        toggle_container.classList.toggle('signUp');
+        toggle_container.classList.toggle('signIn');
+        form_children.forEach(child=>{
+            child.classList.toggle('shift_active');
+            child.classList.toggle('shift_inactive');
+        });
+        toggle_children.forEach(child=>{
+            child.classList.toggle('shift_active');
+            child.classList.toggle('shift_inactive');
+        });   
+    }
+
 });
 
