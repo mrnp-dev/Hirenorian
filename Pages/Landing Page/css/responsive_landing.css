@@ -1,0 +1,980 @@
+/* ==========================================
+   RESPONSIVE STYLES FOR LANDING PAGE
+   Breakpoints:
+   - Large tablets: max-width 1024px
+   - Tablets: max-width 768px
+   - Mobile: max-width 480px
+   ========================================== */
+
+/* ==========================================
+   LARGE TABLETS AND SMALL LAPTOPS (≤1024px)
+   ========================================== */
+@media (max-width: 1024px) {
+    
+    /* Header Section */
+    #navbar-title {
+        font-size: 2.5rem;
+    }
+    
+    #get-hired-today {
+        font-size: 4rem;
+    }
+    
+    #hirenorian-info {
+        font-size: 1.6rem;
+    }
+    
+    #find-your-career-button {
+        font-size: 1.6rem;
+        padding: 5px 40px;
+    }
+    
+    /* Main Section 1 */
+    #headline {
+        font-size: 65px;
+    }
+    
+    #sub-headline {
+        font-size: 50px;
+    }
+    
+    #headline-info {
+        font-size: 18px;
+    }
+    
+    /* Main Section 2 - Internships */
+    #internships-title {
+        font-size: 3.5rem;
+    }
+    
+    #internships-subheading {
+        font-size: 1.8rem;
+    }
+    
+    .companies-cards-holder {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .company-card {
+        flex: 1 1 calc(33.333% - 1rem);
+        min-width: 250px;
+    }
+    
+    /* Main Section 3 - Top Employers */
+    #top-employers-title {
+        font-size: 2.8rem;
+    }
+    
+    #top-employers-subheading {
+        font-size: 1rem;
+    }
+    
+    #employer-cards-holder {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+    
+    .employer-card {
+        flex: 1 1 calc(50% - 1rem);
+        min-width: 400px;
+    }
+    
+    /* Main Section 4 - CTA */
+    #cta-title {
+        font-size: 3rem;
+    }
+    
+    #cta-description {
+        font-size: 1.15rem;
+    }
+    
+    #cta-stats {
+        gap: 3rem;
+    }
+}
+
+/* ==========================================
+   TABLETS (≤768px)
+   ========================================== */
+@media (max-width: 768px) {
+    
+    /* Header Section */
+    #navbar {
+        height: 100px;
+        flex-direction: row;
+        padding: 0.75rem 1.5rem;
+        justify-content: space-between;
+    }
+    
+    #navbar-left {
+        width: auto;
+        height: 100%;
+        justify-content: flex-start;
+        margin-bottom: 0;
+    }
+    
+    #navbar-right {
+        width: auto;
+        justify-content: flex-end;
+    }
+    
+    #imglogo {
+        height: 70px;
+        width: 70px;
+        margin-left: 0;
+    }
+    
+    #navbar-title {
+        font-size: 1.8rem;
+        margin-left: 10px;
+    }
+    
+    #sign-in {
+        font-size: 16px;
+        padding: 10px 30px;
+        margin-right: 0;
+    }
+    
+    /* Find Career Section */
+    #find-career-section {
+        flex-direction: column;
+        padding: 2rem 0;
+        justify-content: flex-start;
+    }
+    
+    #find-your-career-left-section {
+        width: 100%;
+        height: auto;
+        align-items: center;
+        text-align: center;
+        padding: 1rem 2rem;
+        order: 1;
+    }
+    
+    #find-your-career-right-section {
+        width: 100%;
+        height: 350px;
+        order: 2;
+        margin-top: 1.5rem;
+    }
+    
+    #get-hired-today {
+        font-size: 3.5rem;
+        margin-left: 0;
+        text-align: center;
+        line-height: 1.2;
+    }
+    
+    #hirenorian-info {
+        font-size: 1.3rem;
+        margin-left: 0;
+        text-align: center;
+        padding: 0;
+        margin-top: 1rem;
+    }
+    
+    #find-your-career-div {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+    
+    #find-your-career-button {
+        font-size: 1.4rem;
+        padding: 10px 40px;
+        margin-left: 0;
+    }
+    
+    /* Background circles */
+    #left-circle-yellow {
+        height: 350px;
+        width: 450px;
+    }
+    
+    #circle-left {
+        height: 250px;
+        width: 250px;
+    }
+    
+    #circle-right {
+        height: 250px;
+        width: 250px;
+    }
+    
+    #gradpic {
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+    }
+    
+    /* Main Section 1 */
+    #main-section-1 {
+        height: auto;
+        min-height: 70vh;
+        padding: 2rem 0;
+    }
+    
+    #headline-section {
+        width: 90%;
+        height: auto;
+        min-height: 500px;
+    }
+    
+    #headline-section-top {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    #headline-left-section {
+        width: 100%;
+        min-height: 200px;
+        background-image:
+            linear-gradient(to bottom, rgba(255, 255, 255, 0) 40%, white 100%),
+            url("../Images/dhvsu-bg-image.jpg");
+    }
+    
+    #headline-right-section {
+        width: 100%;
+        padding: 2rem 1rem;
+    }
+    
+    #headline {
+        font-size: 50px;
+    }
+    
+    #sub-headline {
+        font-size: 35px;
+    }
+    
+    #headline-info {
+        font-size: 16px;
+        margin-top: 30px;
+    }
+    
+    #socmed-bar {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem 0;
+        gap: 0.5rem;
+    }
+    
+    #socmed-left-bar {
+        justify-content: center;
+    }
+    
+    /* Main Section 2 - Internships */
+    #main-section-2 {
+        min-height: auto;
+        padding: 3rem 0;
+    }
+    
+    #internships-title {
+        font-size: 2.8rem;
+    }
+    
+    #internships-subheading {
+        font-size: 1.4rem;
+    }
+    
+    #companies-section {
+        height: auto;
+        gap: 2rem;
+        padding: 2rem 3vw;
+    }
+    
+    .companies-cards-holder {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .company-card {
+        max-width: 400px;
+        width: 100%;
+    }
+    
+    #more-button {
+        padding: 0.7rem 2rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Main Section 3 - Top Employers */
+    #main-section-3 {
+        height: auto;
+        min-height: 70vh;
+        padding: 3rem 0 4rem 0;
+    }
+    
+    #top-employers-title {
+        font-size: 2.5rem;
+    }
+    
+    #top-employers-subheading {
+        font-size: 0.95rem;
+    }
+    
+    #employer-cards-holder {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        padding: 0 4vw;
+    }
+    
+    .employer-card {
+        max-width: 500px;
+        width: 100%;
+        min-width: auto;
+        height: auto;
+        min-height: 300px;
+    }
+    
+    .employer-card__company-name {
+        font-size: 1.5rem;
+    }
+    
+    .employer-card__company-type {
+        font-size: 0.9rem;
+    }
+    
+    .employer-card__position-item {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.65rem;
+    }
+    
+    /* Main Section 4 - CTA */
+    #main-section-4 {
+        min-height: 70vh;
+        padding: 3rem 1.5rem;
+    }
+    
+    #cta-title {
+        font-size: 2.5rem;
+    }
+    
+    #cta-description {
+        font-size: 1.1rem;
+    }
+    
+    #cta-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+        gap: 1rem;
+    }
+    
+    .cta-button {
+        width: 100%;
+    }
+    
+    #cta-stats {
+        flex-direction: row;
+        gap: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+    }
+    
+    /* Footer Section - Tablet */
+    #footer-section {
+        height: auto;
+        min-height: 35vh;
+    }
+    
+    #footer-top-redbar {
+        height: 18%;
+        min-height: 60px;
+    }
+    
+    #footer-bottom-section {
+        flex-direction: column;
+        gap: 2.5rem;
+        padding: 2rem 3rem;
+    }
+    
+    #bottom-left {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+    
+    #footer-Hirenorian {
+        font-size: 38px;
+        margin: 0 0 1.5rem 0;
+    }
+    
+    #footer-buttons {
+        margin-left: 0;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    
+    #fb2 {
+        margin-left: 0;
+    }
+    
+    #bottom-right {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+    }
+    
+    .topics-section {
+        align-items: center;
+        text-align: center;
+        min-width: 150px;
+    }
+    
+    .topic {
+        font-size: 19px;
+        margin-bottom: 0.75rem;
+    }
+    
+    .pages {
+        font-size: 17px;
+    }
+}
+
+/* ==========================================
+   MOBILE DEVICES (≤480px)
+   ========================================== */
+@media (max-width: 480px) {
+    
+    /* Header Section */
+    #navbar {
+        height: 80px;
+        flex-direction: row;
+        padding: 0.5rem 1rem;
+        justify-content: space-between;
+    }
+    
+    #navbar-left {
+        width: auto;
+        height: 100%;
+        justify-content: flex-start;
+        margin-bottom: 0;
+    }
+    
+    #navbar-right {
+        width: auto;
+        justify-content: flex-end;
+    }
+    
+    #imglogo {
+        height: 60px;
+        width: 60px;
+        margin-left: 0;
+    }
+    
+    #navbar-title {
+        font-size: 1.4rem;
+        margin-left: 8px;
+        white-space: nowrap;
+    }
+    
+    #sign-in {
+        font-size: 14px;
+        padding: 8px 20px;
+        border-radius: 12px;
+        margin-right: 0;
+    }
+    
+    /* Find Career Section */
+    #find-career-section {
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 2rem;
+    }
+    
+    #find-your-career-left-section {
+        width: 100%;
+        height: auto;
+        align-items: center;
+        justify-content: flex-start;
+        text-align: center;
+        padding: 0 1.5rem;
+        order: 1;
+    }
+    
+    #find-your-career-right-section {
+        width: 100%;
+        height: 300px;
+        order: 2;
+        margin-top: 1rem;
+    }
+    
+    #get-hired-today {
+        font-size: 2.5rem;
+        margin-left: 0;
+        text-align: center;
+        line-height: 1.2;
+    }
+    
+    #hirenorian-info {
+        font-size: 0.95rem;
+        line-height: 1.5;
+        margin-left: 0;
+        text-align: center;
+        padding: 0;
+        margin-top: 1rem;
+    }
+    
+    #find-your-career-div {
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+    
+    #find-your-career-button {
+        font-size: 1.1rem;
+        padding: 10px 30px;
+        margin-top: 0;
+        margin-left: 0;
+    }
+    
+    /* Background circles - make them smaller */
+    #left-circle-yellow {
+        height: 250px;
+        width: 300px;
+    }
+    
+    #circle-left {
+        height: 180px;
+        width: 180px;
+        bottom: 10px;
+        left: 10px;
+    }
+    
+    #circle-right {
+        height: 180px;
+        width: 180px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    /* Graduate picture - better positioning */
+    #gradpic {
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+        object-position: center;
+    }
+    
+    /* Main Section 1 */
+    #headline {
+        font-size: 40px;
+    }
+    
+    #sub-headline {
+        font-size: 28px;
+    }
+    
+    #headline-info {
+        font-size: 14px;
+        margin-top: 20px;
+    }
+    
+    #socmed-left-bar {
+        gap: 0.5rem;
+    }
+    
+    #fb {
+        height: 25px;
+        width: 35px;
+        margin-left: 0;
+    }
+    
+    #in,
+    #yt {
+        height: 25px;
+        width: 25px;
+        margin-left: 5px;
+    }
+    
+    #ig {
+        height: 40px;
+        width: 40px;
+        margin-left: 5px;
+    }
+    
+    #hirenoriantext {
+        font-size: 10px;
+    }
+    
+    /* Main Section 2 - Internships */
+    #main-section-2 {
+        padding: 2rem 0;
+    }
+    
+    #internships-title {
+        font-size: 2.2rem;
+    }
+    
+    #internships-subheading {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+    
+    #companies-section {
+        padding: 2rem 2vw;
+    }
+    
+    .company-card {
+        max-width: 100%;
+    }
+    
+    .company-card__name {
+        font-size: 1.15rem;
+    }
+    
+    .company-card__position {
+        font-size: 0.9rem;
+    }
+    
+    .company-card__footer {
+        padding: 0.8rem 0;
+        font-size: 0.9rem;
+    }
+    
+    #more-button {
+        padding: 0.6rem 1.8rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Main Section 3 - Top Employers */
+    #main-section-3 {
+        padding: 2rem 0 3rem 0;
+    }
+    
+    #top-employers-title {
+        font-size: 2rem;
+    }
+    
+    #top-employers-subheading {
+        font-size: 0.85rem;
+        padding: 0 1rem;
+    }
+    
+    #employer-cards-holder {
+        padding: 0 3vw;
+    }
+    
+    .employer-card {
+        flex-direction: column;
+        height: auto;
+        max-width: 100%;
+    }
+    
+    .employer-card__image-section {
+        width: 100%;
+        height: 200px;
+    }
+    
+    .employer-card__logo {
+        width: 60px;
+        height: 60px;
+        top: 0.75rem;
+        left: 0.75rem;
+        border-width: 3px;
+    }
+    
+    .employer-card__details {
+        width: 100%;
+        padding: 1.5rem 1.25rem 1.25rem;
+    }
+    
+    .employer-card__company-name {
+        font-size: 1.35rem;
+    }
+    
+    .employer-card__company-type {
+        font-size: 0.85rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .employer-card__position-item {
+        font-size: 0.8rem;
+        padding: 0.45rem 0.6rem;
+    }
+    
+    .employer-card__button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    /* Main Section 4 - CTA */
+    #main-section-4 {
+        padding: 2.5rem 1rem;
+    }
+    
+    #cta-title {
+        font-size: 2rem;
+        line-height: 1.3;
+    }
+    
+    #cta-description {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    #cta-buttons {
+        max-width: 100%;
+    }
+    
+    .cta-button {
+        padding: 0.9rem 2rem;
+        font-size: 0.95rem;
+    }
+    
+    #cta-stats {
+        gap: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.85rem;
+    }
+    
+    /* Footer Section */
+    #footer-section {
+        height: auto;
+        min-height: 40vh;
+        padding: 1rem 0;
+    }
+    
+    #footer-top-redbar {
+        height: 15%;
+        min-height: 50px;
+    }
+    
+    #footer-bottom-section {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1.5rem 2rem;
+    }
+    
+    #bottom-left {
+        width: 100%;
+        align-items: center;
+        text-align: center;
+    }
+    
+    #footer-Hirenorian {
+        font-size: 32px;
+        margin: 0 0 1.5rem 0;
+    }
+    
+    #footer-buttons {
+        margin-left: 0;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    #fb2 {
+        margin-left: 0;
+    }
+    
+    #bottom-right {
+        width: 100%;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: center;
+    }
+    
+    .topics-section {
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+    }
+    
+    .topic {
+        font-size: 18px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .pages {
+        font-size: 16px;
+    }
+}
+
+/* ==========================================
+   SMALL MOBILE DEVICES (≤375px)
+   ========================================== */
+@media (max-width: 375px) {
+    
+    /* Additional Mobile Footer Adjustments */
+    #footer-section {
+        min-height: 45vh;
+    }
+    
+    #footer-Hirenorian {
+        font-size: 26px;
+        margin: 0 0 1rem 0;
+    }
+    
+    #footer-buttons {
+        gap: 0.25rem;
+    }
+    
+    #fb2,
+    #in2,
+    #yt2 {
+        height: 22px;
+        width: 22px;
+    }
+    
+    #fb2 {
+        width: 28px;
+    }
+    
+    #ig2 {
+        height: 38px;
+        width: 38px;
+    }
+    
+    #bottom-right {
+        gap: 1.5rem;
+    }
+    
+    .topic {
+        font-size: 15px;
+    }
+    
+    .pages {
+        font-size: 13px;
+    }
+    
+    /* Original small mobile styles continue below */
+    
+    #navbar {
+        height: 75px;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    #imglogo {
+        height: 50px;
+        width: 50px;
+    }
+    
+    #navbar-title {
+        font-size: 1.2rem;
+        margin-left: 6px;
+    }
+    
+    #sign-in {
+        font-size: 12px;
+        padding: 6px 16px;
+    }
+    
+    #get-hired-today {
+        font-size: 2rem;
+    }
+    
+    #hirenorian-info {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+    
+    #find-your-career-button {
+        font-size: 1rem;
+        padding: 8px 25px;
+    }
+    
+    #find-your-career-right-section {
+        height: 250px;
+    }
+    
+    #circle-left,
+    #circle-right {
+        height: 150px;
+        width: 150px;
+    }
+    
+    #left-circle-yellow {
+        height: 200px;
+        width: 250px;
+    }
+    
+    #headline {
+        font-size: 35px;
+    }
+    
+    #sub-headline {
+        font-size: 24px;
+    }
+    
+    #internships-title {
+        font-size: 2rem;
+    }
+    
+    #internships-subheading {
+        font-size: 1rem;
+    }
+    
+    #top-employers-title {
+        font-size: 1.8rem;
+    }
+    
+    #top-employers-subheading {
+        font-size: 0.8rem;
+    }
+    
+    #cta-title {
+        font-size: 1.8rem;
+    }
+    
+    #cta-description {
+        font-size: 0.95rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+}
+
+/* ==========================================
+   LANDSCAPE ORIENTATION FOR MOBILE
+   ========================================== */
+@media (max-height: 600px) and (orientation: landscape) {
+    
+    #header-section {
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    #find-career-section {
+        padding: 2rem 0;
+    }
+    
+    #get-hired-today {
+        font-size: 2.5rem;
+    }
+    
+    #hirenorian-info {
+        font-size: 1rem;
+    }
+    
+    #circle-left,
+    #circle-right {
+        height: 200px;
+        width: 200px;
+    }
+    
+    #main-section-1,
+    #main-section-2,
+    #main-section-3 {
+        height: auto;
+        min-height: 100vh;
+    }
+}
+
