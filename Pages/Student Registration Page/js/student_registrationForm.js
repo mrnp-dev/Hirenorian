@@ -1,27 +1,29 @@
-const tagPool = [
-    'Web Development', 'Mobile Apps', 'UI/UX Design', 'Data Science',
-    'Machine Learning', 'DevOps', 'Cloud Computing', 'Cybersecurity',
-    'Blockchain', 'Game Development', 'Digital Marketing', 'Content Writing',
-    'Graphic Design', 'Video Editing', 'Project Management', 'Business Analysis',
-    'Quality Assurance', 'Database Admin', 'Network Engineering', 'AI Research',
-    'Frontend Development', 'Backend Development', 'Full Stack', 'iOS Development',
-    'Android Development', 'Product Design', 'SEO Specialist', '3D Modeling',
-    'Animation', 'Technical Writing', 'Sales', 'Customer Support',
-    'HR Management', 'Financial Analysis', 'Legal Services', 'Teaching'
-];
 let selectedTags = [];
 const maxSelection = 3;
+let courseTagsData = {};
 
 const tagsContainer = document.querySelector('.tags-container');
 const selectedCount = document.querySelector('.selected-count');
-function getRandomTags(count = 5) {
-    const shuffled = [...tagPool].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
+
+async function fetchCourseTags() {
+    try {
+        const response = await fetch('../JSON/courses_tags.json');
+        const data = await response.json();
+        courseTagsData = data.tags;
+    } catch (error) {
+        console.error('Error fetching course tags:', error);
+    }
 }
 
-function renderTags() {
-    const tags = getRandomTags();
+fetchCourseTags();
+
+function renderTags(tags) {
     tagsContainer.innerHTML = '';
+
+    if (!tags || tags.length === 0) {
+        tagsContainer.innerHTML = '<p>No tags available for this course.</p>';
+        return;
+    }
 
     tags.forEach(tag => {
         const tagElement = document.createElement('div');
@@ -45,7 +47,7 @@ function toggleTag(tag, element) {
             selectedCount.classList.add("shake");
             setTimeout(() => {
                 selectedCount.classList.remove("shake");
-                }, 500);
+            }, 500);
         }
     }
     updateSelectedCount();
@@ -54,40 +56,53 @@ function updateSelectedCount() {
     selectedCount.textContent = `Selected: ${selectedTags.length}/${maxSelection}`;
 }
 
-renderTags();
+function updateTagsForSelectedCourse() {
+    const courseInput = document.querySelector('#course-input');
+    const selectedCourse = courseInput.value.trim();
+
+    // Clear previous selection when course changes
+    selectedTags = [];
+    updateSelectedCount();
+
+    if (courseTagsData[selectedCourse]) {
+        renderTags(courseTagsData[selectedCourse]);
+    } else {
+        renderTags([]); // Or handle default/fallback tags
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////////////////
 const signUp_Inputs = document.querySelectorAll('.sign-in-container input');
 
-signUp_Inputs.forEach(input=>{
-    input.addEventListener('focus', async ()=>{
+signUp_Inputs.forEach(input => {
+    input.addEventListener('focus', async () => {
         removeError(input);
     });
-    input.addEventListener('input', async ()=>{
+    input.addEventListener('input', async () => {
         removeError(input);
     });
-    input.addEventListener('blur', async ()=>{
-        if(!checkIfEmpty_General(input)){
+    input.addEventListener('blur', async () => {
+        if (!checkIfEmpty_General(input)) {
             showError(input, `${input.name} cannot empty.`);
-        }else if(input.name == 'Student Email'){
-            if(!checkLogged_Email(input)) showError(input, `${input.name} is invalid.`);
+        } else if (input.name == 'Student Email') {
+            if (!checkLogged_Email(input)) showError(input, `${input.name} is invalid.`);
         }
     });
 })
 
-async function check_LogIn_Fields(){
+async function check_LogIn_Fields() {
     let isValid = true;
-    signUp_Inputs.forEach(input=>{
-        if(input.value.trim() == ""){
-           isValid =  showError(input, `${input.name} cannot empty.`);
-        }else if(input.name == "Student Email"){    
+    signUp_Inputs.forEach(input => {
+        if (input.value.trim() == "") {
+            isValid = showError(input, `${input.name} cannot empty.`);
+        } else if (input.name == "Student Email") {
             isValid = checkLogged_Email(input);
-        }else{
+        } else {
             isValid = true;
         }
     });
 
-    if(isValid){
+    if (isValid) {
         const email = document.querySelector('#signup-email').value.trim();
         const password = document.querySelector('#signup-password').value.trim();
         try {
@@ -111,16 +126,16 @@ async function check_LogIn_Fields(){
             console.error("Network error:", err);
             alert("Unable to connect to server");
         }
-    }else{
+    } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
 }
 
-function checkLogged_Email(input){
+function checkLogged_Email(input) {
     const validSchoolEmail_RegEx = /^20[0-9]{2}[0-9]{6}@pampangastateu\.edu\.ph$/;
-    if(validSchoolEmail_RegEx.test(input.value.trim())){
+    if (validSchoolEmail_RegEx.test(input.value.trim())) {
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -164,21 +179,21 @@ const step_text = document.querySelectorAll('.step-text');
 const step_icon = document.querySelectorAll('.step-icon');
 let currentStep = 0;
 
-function goBackToLandingPage(){
+function goBackToLandingPage() {
     ToastSystem.show("Redirecting to the landing page.", "info")
     ToastSystem.storeForNextPage('You’ve returned to the landing page.', 'success');
-    setTimeout(()=>{
+    setTimeout(() => {
         window.location.href = '/Hirenorian/Pages/Landing%20Page/php/landing_page.php';
     }, 1500)
 }
 
-function manageSteps(action){
+function manageSteps(action) {
     step_text[currentStep].classList.remove('left-active-text');
     step_icon[currentStep].classList.remove('left-active-icon');
     steps[currentStep].classList.remove('active-step');
-    if(action == 'next'){
+    if (action == 'next') {
         currentStep++;
-    }else{
+    } else {
         currentStep--;
     }
     steps[currentStep].classList.add('active-step');
@@ -186,8 +201,8 @@ function manageSteps(action){
     step_icon[currentStep].classList.add('left-active-icon');
 }
 
-firstInputs_Container.addEventListener('animationend', e =>{
-    if(e.animationName == 'slideRight'){
+firstInputs_Container.addEventListener('animationend', e => {
+    if (e.animationName == 'slideRight') {
         firstInputs_Container.classList.remove('slide-right');
         firstInputs_Container.style.display = 'none';
         secondInputs_Container.style.display = 'flex';
@@ -195,114 +210,114 @@ firstInputs_Container.addEventListener('animationend', e =>{
         secondInputs_Container.classList.add('form-section');
         title.textContent = 'Display your Achievements';
     }
-    
+
 });
 
-firstInputs.forEach(input =>{
-    input.addEventListener('blur', async ()=>{
+firstInputs.forEach(input => {
+    input.addEventListener('blur', async () => {
         initialFirstInputs_Validations(input);
-        if(input.name === "Password" && input.dataset.strength == "weak"){
+        if (input.name === "Password" && input.dataset.strength == "weak") {
             showError(input, `${input.name}'s strength must be atleast medium.`);
         }
     });
-    input.addEventListener('focus', async ()=>{
+    input.addEventListener('focus', async () => {
         removeError(input);
     });
-    input.addEventListener('input', async ()=>{
-        if(input.name == "Password"){
+    input.addEventListener('input', async () => {
+        if (input.name == "Password") {
             const confirmPass_field = document.querySelector('#confirmPass-input');
-            if(input.value.trim().length >= 12){
-                if(confirmPass_field.value.trim()){
+            if (input.value.trim().length >= 12) {
+                if (confirmPass_field.value.trim()) {
                     confirmPassword(confirmPass_field);
                 }
                 checkPassword(input);
-            }else{
+            } else {
                 removeError(confirmPass_field);
                 removeError(input);
             }
-        }else if(input.name == "Confirm Password"){
+        } else if (input.name == "Confirm Password") {
             confirmPassword(input);
-        }else{
+        } else {
             removeError(input);
         }
     });
 });
 
-async function initialFirstInputs_Validations(input){
+async function initialFirstInputs_Validations(input) {
     console.log(input.name)
-    if(input.name !== 'Suffix'){
+    if (input.name !== 'Suffix') {
         return checkIfEmpty(input);
-    }else{
+    } else {
         return checkIfValid(input);
-    } 
-    
+    }
+
 }
 
-async function goNext(){
-    if(await firstInputsValidation()){
+async function goNext() {
+    if (await firstInputsValidation()) {
         firstInputs_Container.classList.remove('slide-left');
         firstInputs_Container.classList.add('slide-right');
         console.log(userInformation);
         manageSteps('next');
-    }else{
+    } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
 }
 
 async function firstInputsValidation() {
-  const validations = await Promise.all(
-                            Array.from(firstInputs).map(input => {
-                                if(input.name !== 'Suffix'){
-                                    if(input.name == "Password" && input.dataset.strength == "weak"){
-                                        showError(input, `${input.name}'s strength must be atleast medium.`);
-                                        return false;
-                                    }else{
-                                        return checkIfEmpty(input);
-                                    }
-                                    
-                                }else{
-                                    return checkIfValid(input);
-                                }     
-                            })
-                            );
-  if(validations.every(Boolean)){
-    return true;
-  }else{
-    return false;
-  }
+    const validations = await Promise.all(
+        Array.from(firstInputs).map(input => {
+            if (input.name !== 'Suffix') {
+                if (input.name == "Password" && input.dataset.strength == "weak") {
+                    showError(input, `${input.name}'s strength must be atleast medium.`);
+                    return false;
+                } else {
+                    return checkIfEmpty(input);
+                }
+
+            } else {
+                return checkIfValid(input);
+            }
+        })
+    );
+    if (validations.every(Boolean)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-async function checkIfEmpty(input){
+async function checkIfEmpty(input) {
     const trimmedValue = input.value.trim();
-    if(trimmedValue == ''){
+    if (trimmedValue == '') {
         showError(input, `${input.name} cannot be empty`);
         return false;
-    }else{
+    } else {
         return await checkIfValid(input);
     }
 }
 
-function showError(input, errorMessage){
+function showError(input, errorMessage) {
     input.classList.add('input_InvalidInput');
     const section = input.closest(".input-wrapper");
     console.log(input.classList);
     const errorElement = section.querySelector("p");
     errorElement.textContent = errorMessage;
-    errorElement.style.color = 'red'; 
-    errorElement.style.visibility = 'visible'; 
+    errorElement.style.color = 'red';
+    errorElement.style.visibility = 'visible';
 }
-function removeError(input){
+function removeError(input) {
     input.classList.remove('input_InvalidInput');
     const section = input.closest(".input-wrapper");
     const errorElement = section.querySelector("p");
     errorElement.style.visibility = 'hidden';
 }
 
-async function checkIfValid(input){
+async function checkIfValid(input) {
     let isValid = true;
-    switch(input.name.trim().toLowerCase()){
+    switch (input.name.trim().toLowerCase()) {
         case 'first name':
-            isValid =  checkFirst_Last_Name(input);
+            isValid = checkFirst_Last_Name(input);
             break;
         case 'last name':
             isValid = checkFirst_Last_Name(input);
@@ -312,7 +327,7 @@ async function checkIfValid(input){
             break;
         case 'suffix':
             isValid = checkSuffix(input);
-            if(input.value.trim() == "") userInformation[input.name] = "";
+            if (input.value.trim() == "") userInformation[input.name] = "";
             break;
         case 'email':
             isValid = checkEmail(input);
@@ -333,26 +348,27 @@ async function checkIfValid(input){
     return isValid;
 }
 
-function checkFirst_Last_Name(input){
-    if(!checkNameLength(input)){
+function checkFirst_Last_Name(input) {
+    if (!checkNameLength(input)) {
         return false;
-    }else{
+    } else {
         return true;
     }
 }
 
-function capitalizeFirstLetter(input){
+function capitalizeFirstLetter(input) {
     const parts = input.value.trim().split(" ");
-    if(!parts.includes('')){
-        return parts.map(part =>{
-                return part[0].toUpperCase() + part.slice(1).toLowerCase();}).join(' ');
+    if (!parts.includes('')) {
+        return parts.map(part => {
+            return part[0].toUpperCase() + part.slice(1).toLowerCase();
+        }).join(' ');
     }
 }
 
-function checkNameLength(input){
+function checkNameLength(input) {
     const trimmedName = input.value.trim();
-    if(trimmedName.length < 2 && trimmedName.length > 50){
-        switch(input.name.trim().toLowerCase()){
+    if (trimmedName.length < 2 && trimmedName.length > 50) {
+        switch (input.name.trim().toLowerCase()) {
             case 'first name':
                 showError(input, `${input.name} must be between 2 and 50 characters.`);
                 break;
@@ -362,85 +378,85 @@ function checkNameLength(input){
         }
         return false;
 
-    }else{
-        if(checkWhiteSpaces(input)) return validateFirst_Last_Name(input);
+    } else {
+        if (checkWhiteSpaces(input)) return validateFirst_Last_Name(input);
     }
 }
 
-function validateFirst_Last_Name(input){
+function validateFirst_Last_Name(input) {
     const first_last_Name_regex = /^[A-Za-zÀ-ÖØ-öø-ÿÑñ\s\-]{2,50}$/;
 
-    if(!first_last_Name_regex.test(input.value)){
+    if (!first_last_Name_regex.test(input.value)) {
         showError(input, `${input.name} contains invalid characters.`);
         return false;
-    }else{
+    } else {
         userInformation[input.name] = capitalizeFirstLetter(input);
         return true;
     }
 }
 
-function validateMiddleInitial(input){
-    const middleInitial_regex =  /^[A-Za-z]\.?$/
-    if(!middleInitial_regex.test(input.value)){
+function validateMiddleInitial(input) {
+    const middleInitial_regex = /^[A-Za-z]\.?$/
+    if (!middleInitial_regex.test(input.value)) {
         showError(input, `Invalid ${input.name}.`);
         return false;
-    }else{
-        userInformation[input.name] = input.value.includes(".") ? 
-                                                                input.value.toUpperCase() : 
-                                                                input.value.toUpperCase() + ".";
+    } else {
+        userInformation[input.name] = input.value.includes(".") ?
+            input.value.toUpperCase() :
+            input.value.toUpperCase() + ".";
         return true;
     }
 }
 
-function checkSuffix(input){
+function checkSuffix(input) {
     const suffix_regex = /^(Jr\.?|Sr\.?|[A-Za-z]\.?|II|III|IV|V|VI|VII|VIII|IX|X)$/i;
     let valid = true;
-    if(input.value.trim() !== ''){
-        if(!suffix_regex.test(input.value)){
+    if (input.value.trim() !== '') {
+        if (!suffix_regex.test(input.value)) {
             showError(input, `Invalid ${input.name}.`);
             valid = false;
-        }else{
+        } else {
             userInformation[input.name] = input.value.toUpperCase();
         }
     }
     return valid;
 }
 
-function checkEmail(input){
+function checkEmail(input) {
     const validSchoolEmail_RegEx = /^20[0-9]{2}[0-9]{6}@pampangastateu\.edu\.ph$/;
     const validEmail_RegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(input.name == 'Email'){
-        if(!validEmail_RegEx.test(input.value.trim())){
+    if (input.name == 'Email') {
+        if (!validEmail_RegEx.test(input.value.trim())) {
             showError(input, `Invalid Email`);
             return false;
-        }else{
-            if(validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())){
+        } else {
+            if (validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())) {
                 showError(input, `Not your School Email`);
                 return false;
             }
             userInformation[input.name] = input.value;
             return true;
         }
-    }else{
-        if(!validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())){
+    } else {
+        if (!validSchoolEmail_RegEx.test(input.value.trim().toLowerCase())) {
             showError(input, `Invalid ${input.name}`);
             return false;
-        }else{
+        } else {
             const year = parseInt(input.value.substring(0, 4), 10);
             const currentYear = new Date().getFullYear();
-            
+
             if (year < currentYear - 15 || year > currentYear) {
                 showError(input, `Invalid ${input.name}`);
                 return false;
             }
 
-            
+
             const studentNumber_substr = input.value.trim().toLowerCase().slice(0, 10);
-            if(studentNumber_Input.value.trim()){
-                if(studentNumber_Input.value.trim() == studentNumber_substr){
+            if (studentNumber_Input.value.trim()) {
+                if (studentNumber_Input.value.trim() == studentNumber_substr) {
                     userInformation[input.name] = input.value.toLowerCase();
                     return true;
-                }else{
+                } else {
                     showError(input, `Use your own school email address`);
                     return false;
                 }
@@ -449,27 +465,27 @@ function checkEmail(input){
     }
 }
 
-function checkPhoneNumber(input){
+function checkPhoneNumber(input) {
     const validPhoneNo_regex = /^(?:\+639\d{9}|09\d{9})$/;
-    if(!validPhoneNo_regex.test(input.value.trim())){
+    if (!validPhoneNo_regex.test(input.value.trim())) {
         showError(input, `Invalid Philippine phone number.`);
         return false;
-    }else{
-         userInformation[input.name] = input.value;
+    } else {
+        userInformation[input.name] = input.value;
         return true;
     }
 }
 
-async function checkPassword(input){ 
+async function checkPassword(input) {
     const password_minLength = 12,
-          password_maxLength = 64;
-    if(input.value.length < password_minLength){
+        password_maxLength = 64;
+    if (input.value.length < password_minLength) {
         showError(input, `${input.name} must contain atleast 12 characters.`);
         return false;
-    }else if(input.value.length > password_maxLength){
+    } else if (input.value.length > password_maxLength) {
         showError(input, `${input.name} must not exceed 64 characters.`);
         return false;
-    }else{
+    } else {
 
         return checkPasswordStrength(input);
     }
@@ -483,10 +499,10 @@ function checkPasswordStrength(input) {
 
     const typesCount = [hasLetters, hasNumbers, hasSpecials].filter(Boolean).length;
     return changePasswordStrength_text(input, typesCount);
-    
+
 }
 
-function changePasswordStrength_text(element, strength){
+function changePasswordStrength_text(element, strength) {
     let valid = true;
     const section = element.closest(".input-wrapper");
     const strength_P = section.querySelector("p");
@@ -495,59 +511,59 @@ function changePasswordStrength_text(element, strength){
     strength_P.style.color = "white";
 
     switch (strength) {
-        case 1: 
+        case 1:
             span.textContent = "weak";
             span.style.color = "red";
             element.dataset.strength = "weak";
             valid = false;
             break;
-        case 2: 
+        case 2:
             span.textContent = "medium";
             span.style.color = "orange";
             element.dataset.strength = "medium";
             break;
-        case 3: 
+        case 3:
             span.textContent = "strong";
             span.style.color = "green";
             element.dataset.strength = "strong";
             break;
     }
-    
+
     strength_P.append(span);
-    strength_P.style.visibility = 'visible'; 
- 
+    strength_P.style.visibility = 'visible';
+
     return valid;
 }
 
 
 
-function confirmPassword(input){
-    
+function confirmPassword(input) {
+
     const password = document.querySelector('#password-input').value;
-    if(input.value !== password){
+    if (input.value !== password) {
         showError(input, `Passwords do not match.`);
         return false;
-    }else{
+    } else {
         input.classList.remove('input_InvalidInput');
         const section = input.closest(".input-wrapper");
         const p = section.querySelector("p");
         p.textContent = "Passwords matched";
         p.style.color = "green";
-        p.style.visibility = 'visible'; 
+        p.style.visibility = 'visible';
         userInformation[`Password`] = input.value;
         return true;
     }
 }
 
-function toggleShow_Hide_Password(){
+function toggleShow_Hide_Password() {
     const toggleButtons = document.querySelectorAll('.toggle_show_hide');
     toggleButtons.forEach(button => {
         const input_wrapper = button.closest('.input-wrapper');
         const eye = input_wrapper.querySelector('i');
         const passwordField = input_wrapper.querySelector('input');
-        if(passwordField.type == 'password'){
+        if (passwordField.type == 'password') {
             passwordField.type = 'text';
-        }else{
+        } else {
             passwordField.type = 'password';
         }
         eye.classList.toggle('fa-eye');
@@ -555,17 +571,17 @@ function toggleShow_Hide_Password(){
     });
 }
 
-function checkWhiteSpaces(input){
+function checkWhiteSpaces(input) {
     const regExSpaces = /\s{2,}/;
     if (regExSpaces.test(input.value.trim())) {
         showError(input, `${input.name} contains to much spaces.`);
         return false;
-    }else{
+    } else {
         return true;
     }
-}  
+}
 
-function goToPreviousSection(button){
+function goToPreviousSection(button) {
     const formSection = button.closest('.form-section');
     formSection.classList.remove('slide-left');
     formSection.classList.add('slide-right');
@@ -574,7 +590,7 @@ function goToPreviousSection(button){
 }
 
 document.addEventListener('click', (e) => {
-    if(!e.target.closest('.input-wrapper' || !e.target.closest('button'))){
+    if (!e.target.closest('.input-wrapper' || !e.target.closest('button'))) {
         secondInputs.forEach(input => {
             input.nextElementSibling.classList.remove('active');
         });
@@ -586,22 +602,22 @@ document.addEventListener('click', (e) => {
     }
 });
 
-secondInputs.forEach(input =>{
-    input.addEventListener('blur', async ()=>{
+secondInputs.forEach(input => {
+    input.addEventListener('blur', async () => {
         validateSecondInputs(input);
     });
-    input.addEventListener('focus', async ()=>{
+    input.addEventListener('focus', async () => {
         removeError(input);
     });
-    input.addEventListener('input', async ()=>{
+    input.addEventListener('input', async () => {
         removeError(input);
     });
 });
 
 let secondBackButton_Action = '';
-secondInputs_Container.addEventListener('animationend', e =>{
-    if(!secondBackButton_Action){
-        if(e.animationName == 'slideRight'){
+secondInputs_Container.addEventListener('animationend', e => {
+    if (!secondBackButton_Action) {
+        if (e.animationName == 'slideRight') {
             secondInputs_Container.classList.remove('slide-right');
             secondInputs_Container.style.display = 'none';
             thirdInputs_Container.style.display = 'flex';
@@ -609,9 +625,9 @@ secondInputs_Container.addEventListener('animationend', e =>{
             thirdInputs_Container.classList.add('form-section');
             title.textContent = 'Where do you see yourself?';
         }
-    }else{
+    } else {
         secondBackButton_Action = '';
-        if(e.animationName == 'slideRight'){
+        if (e.animationName == 'slideRight') {
             secondInputs_Container.classList.remove('slide-right');
             secondInputs_Container.style.display = 'none';
             firstInputs_Container.style.display = 'flex';
@@ -623,66 +639,67 @@ secondInputs_Container.addEventListener('animationend', e =>{
 });
 
 
-function goToLast(button){
+function goToLast(button) {
     secondInputs.forEach(input => {
         validateSecondInputs(input);
     });
     console.log(secondInputs_Validation);
-    if(Object.values(secondInputs_Validation).every(Boolean)){
+    if (Object.values(secondInputs_Validation).every(Boolean)) {
         secondInputs_Container.classList.remove('slide-left');
         secondInputs_Container.classList.add('slide-right');
+        updateTagsForSelectedCourse();
         manageSteps('next');
         // Register_Student();
-    }else{
+    } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
 }
 
-async function ifStudentNumber_Exist(){
-    return fetch("http://158.69.205.176:8080/check_student_number.php",{
+async function ifStudentNumber_Exist() {
+    return fetch("http://158.69.205.176:8080/check_student_number.php", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInformation)
     })
-    .then(response => response.json())
-    .then(data =>{
-        if(data.status === "error"){
-            showError(studentNumber_Input,"This Student ID is already registered");
-            return  false;
-        }else{
-            removeError(studentNumber_Input);
-            return true;
-        }
-    })
-    .catch(err => {
-        console.error(err);
-        ToastSystem.show("Something went wrong, try again later.", "error");
-        return false;
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "error") {
+                showError(studentNumber_Input, "This Student ID is already registered");
+                return false;
+            } else {
+                removeError(studentNumber_Input);
+                return true;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            ToastSystem.show("Something went wrong, try again later.", "error");
+            return false;
+        });
 }
 
-async function Register_Student(){
-        fetch("http://158.69.205.176:8080/add_student_process.php",{
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(userInformation)
-        })
+async function Register_Student() {
+    fetch("http://158.69.205.176:8080/add_student_process.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInformation)
+    })
         .then(response => response.json())
         .then(data => {
             if (data.status === "success") {
                 ToastSystem.show("You’ve been registered successfully", "success");
-                setTimeout(()=>{
+                setTimeout(() => {
                     ToastSystem.show("Redirecting to the landing page", "info");
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         firstInputs.forEach(input => {
                             input.value = "";
                         });
                         secondInputs.forEach(input => {
                             input.value = "";
                         })
-                         window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
-                    },2000);
-                },1500);
+                        window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
+                    }, 2000);
+                }, 1500);
             } else {
                 ToastSystem.show("Something went wrong, try again later.", "error");
                 console.log(data.message);
@@ -693,8 +710,8 @@ async function Register_Student(){
         });
 }
 
-thirdInputs_Container.addEventListener('animationend', e =>{
-    if(e.animationName == 'slideRight'){
+thirdInputs_Container.addEventListener('animationend', e => {
+    if (e.animationName == 'slideRight') {
         thirdInputs_Container.classList.remove('slide-right');
         thirdInputs_Container.style.display = 'none';
         secondInputs_Container.style.display = 'flex';
@@ -702,10 +719,10 @@ thirdInputs_Container.addEventListener('animationend', e =>{
         secondInputs_Container.classList.add('form-section');
         title.textContent = 'Display your Achievements';
     }
-    
+
 });
 
-function autoCorrect_Suggestions(input, list, validation){
+function autoCorrect_Suggestions(input, list, validation) {
     const index = list.findIndex(item => item.toLowerCase() === input.value.trim().toLowerCase());
     if (index !== -1) {
         input.value = list[index]
@@ -717,64 +734,64 @@ function autoCorrect_Suggestions(input, list, validation){
     }
 }
 
-async function validateSecondInputs(input){
-    if(input !== null){
-        switch(input.name){
+async function validateSecondInputs(input) {
+    if (input !== null) {
+        switch (input.name) {
             case 'University/Campus':
-                if(!checkIfEmpty_General(input)){
+                if (!checkIfEmpty_General(input)) {
                     secondInputs_Validation['isUniversity/CampusValid'] = false;
-                }else{
+                } else {
                     autoCorrect_Suggestions(input, campuses, secondInputs_Validation);
                 }
                 break;
             case 'Department':
-                if(!checkIfEmpty_General(input)){
+                if (!checkIfEmpty_General(input)) {
                     secondInputs_Validation['isDepartmentValid'] = false;
-                }else{
+                } else {
                     autoCorrect_Suggestions(input, departments, secondInputs_Validation);
                 }
                 break;
             case 'Course':
-                if(!checkIfEmpty_General(input)){
+                if (!checkIfEmpty_General(input)) {
                     secondInputs_Validation['isCourseValid'] = false;
-                }else{
-                    if(courses != []){
+                } else {
+                    if (courses != []) {
                         autoCorrect_Suggestions(input, courses, secondInputs_Validation);
                     }
                 }
-                break;  
-  
+                break;
+
             case 'Student Number':
-                if(!checkIfEmpty_General(input)){
+                if (!checkIfEmpty_General(input)) {
                     secondInputs_Validation['isStudentNumberValid'] = false;
-                }else if(!checkStudentNumber(input)){
+                } else if (!checkStudentNumber(input)) {
                     showError(input, `Invalid ${input.name}`);
                     secondInputs_Validation['isStudentNumberValid'] = false;
-                }else {
+                } else {
                     ifStudentNumber_Exist().then(exists => {
-                        if(!exists){
+                        if (!exists) {
                             secondInputs_Validation['isStudentNumberValid'] = false;
-                        }else{
+                        } else {
                             secondInputs_Validation['isStudentNumberValid'] = true;
                         }
                     })
                 }
                 break;
             case 'School Email':
-                if(!checkIfEmpty_General(input)){
+                if (!checkIfEmpty_General(input)) {
                     secondInputs_Validation['isSchoolEmailValid'] = false;
-                }else if(!checkEmail(input)){
+                } else if (!checkEmail(input)) {
                     secondInputs_Validation['isSchoolEmailValid'] = false;
                 }
-                else{
+                else {
                     secondInputs_Validation['isSchoolEmailValid'] = true;
                 }
                 break;
 
             case 'Organization':
-                if(input.value.trim() !== ''){
+                if (input.value.trim() !== '') {
                     autoCorrect_Suggestions(input, organizations, secondInputs_Validation);
-                }else{
+                } else {
                     userInformation[input.name] = '';
                 }
                 break;
@@ -782,12 +799,12 @@ async function validateSecondInputs(input){
     }
 }
 
-function checkIfEmpty_General(input){
+function checkIfEmpty_General(input) {
     const trimmedValue = input.value.trim();
-    if(trimmedValue == ''){
+    if (trimmedValue == '') {
         showError(input, `${input.name} cannot be empty`);
         return false;
-    }else{
+    } else {
         return true;
     }
 }
@@ -811,48 +828,48 @@ function checkStudentNumber(input) {
     return true;
 }
 
-function LoadList(input, list){
+function LoadList(input, list) {
     const value = input.value.trim().toLowerCase();
 
-    if(value === ''){
+    if (value === '') {
         LoadSuggestions(input, list);
-    }else{
+    } else {
         const filteredList = list.filter(item => item.toLowerCase().includes(value));
         LoadSuggestions(input, filteredList);
     }
 }
-function LoadSuggestions(input, list){
+function LoadSuggestions(input, list) {
     const suggestionsContainer = input.nextElementSibling;
     suggestionsContainer.innerHTML = '';
 
-    if(list.length === 0 || !list){
+    if (list.length === 0 || !list) {
         const noItems = document.createElement('div');
         noItems.className = 'no-results';
         suggestionsContainer.append(noItems);
-    }else{
+    } else {
         list.forEach(item => {
             const itemObj = document.createElement('div');
             itemObj.className = 'suggestion-item';
             itemObj.textContent = item;
 
             itemObj.addEventListener('click', async () => {
-                
+
                 input.value = item;
                 suggestionsContainer.classList.remove('active');
                 inputValidation_SecondSection(input);
-                
+
                 removeError(input);
             });
-            
+
             suggestionsContainer.append(itemObj);
         });
         suggestionsContainer.classList.add('active');
     }
-    
+
 }
 
-async function inputValidation_SecondSection(input){
-    if(input.name == 'Department'){   
+async function inputValidation_SecondSection(input) {
+    if (input.name == 'Department') {
         const courseField = document.querySelector('#course-input');
         courseField.nextElementSibling.innerHTML = '';
         courseField.value = '';
@@ -862,7 +879,7 @@ async function inputValidation_SecondSection(input){
         organizationField.nextElementSibling.innerHTML = '';
         organizations_byDepartment = [];
         organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
-        
+
         const value = input.value.trim().toLowerCase();
         const depIndex = departments.findIndex(dep => dep.trim().toLowerCase() == value);
 
@@ -873,15 +890,15 @@ async function inputValidation_SecondSection(input){
         //         input.nextElementSibling.innerHTML = '';
         //     }
         // });
-    
 
-        if(depIndex !== -1){
+
+        if (depIndex !== -1) {
             removeError(input);
             getCoursesList(departments[depIndex]);
             getOrganizationsList(departments[depIndex]);
             getJobClassificationList(departments[depIndex]);
         };
-    }else if(input.name == 'University/Campus'){
+    } else if (input.name == 'University/Campus') {
         const value = input.value.trim().toLowerCase();
         const campusIndex = campuses.findIndex(campus => campus.toLowerCase() == value);
         const organizationField = document.querySelector('#org-input');
@@ -890,12 +907,12 @@ async function inputValidation_SecondSection(input){
         organizations_byCampus = [];
         organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
 
-        if(campusIndex !== -1){
+        if (campusIndex !== -1) {
             AdditionalOrganizationsList(campuses[campusIndex]);
         };
     }
-    else if(input.name.includes('Job Classification')){
-        if(jobclassifications.includes(input.value)){
+    else if (input.name.includes('Job Classification')) {
+        if (jobclassifications.includes(input.value)) {
             const jobIndex = jobclassifications.indexOf(input.value);
             jobclassifications.splice(jobIndex, 1);
         }
@@ -903,112 +920,112 @@ async function inputValidation_SecondSection(input){
 }
 
 async function loadCampuses() {
-    try{
+    try {
         const response = await fetch('../JSON/campuses.json');
         const data = await response.json();
         return data.campuses;
-    }catch(error){
+    } catch (error) {
         console.error("Failed to Load Campuses: ", error);
         return [];
     }
 }
 
 async function loadDepartments() {
-    try{
+    try {
         const response = await fetch('../JSON/departments.json');
         const data = await response.json();
         return Object.keys(data.departments);
-    }catch(error){
+    } catch (error) {
         console.error("Failed to Load Departments: ", error);
         return [];
     }
 }
 
-async function getCoursesList(selectedDepartment){
-    try{
+async function getCoursesList(selectedDepartment) {
+    try {
         const response = await fetch('../JSON/departments.json');
         const data = await response.json();
         courses = Object.values(data.departments[selectedDepartment]);
-    }catch(error){
+    } catch (error) {
         console.error('Failed to Load Courses: ', error);
         courses = [];
     }
 }
 
-async function getOrganizationsList(selectedDepartment){
-    try{
+async function getOrganizationsList(selectedDepartment) {
+    try {
         const response = await fetch('../JSON/organizations.json');
         const data = await response.json();
 
-        if(data.organizations && data.organizations[selectedDepartment]){
+        if (data.organizations && data.organizations[selectedDepartment]) {
             organizations_byDepartment = Object.values(data.organizations[selectedDepartment]);
             organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
         }
 
-    }catch(error){
+    } catch (error) {
         console.error('Failed to Load Organizations: ', error);
         organizations_byDepartment = [];
         organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
     }
 }
 
-async function AdditionalOrganizationsList(selectedCampus){
-    try{
-        
+async function AdditionalOrganizationsList(selectedCampus) {
+    try {
+
         const response = await fetch('../JSON/organizations.json');
         const data = await response.json();
-        if(data.organizations && data.organizations[selectedCampus]){
+        if (data.organizations && data.organizations[selectedCampus]) {
             organizations_byCampus = Object.values(data.organizations[selectedCampus]);
             organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
-        }else{
+        } else {
             organizations_byCampus = [];
             organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
         }
-    }catch(error){
+    } catch (error) {
         console.error('Failed to Load Organizations: ', error);
         organizations_byCampus = [];
     }
 }
 
-async function defaultOrganizations(){
-    try{
+async function defaultOrganizations() {
+    try {
         const response = await fetch('../JSON/organizations.json');
         const data = await response.json();
         return Object.values(data.organizations['University Wide Organizations']);
-    }catch(error){
+    } catch (error) {
         console.error("Failed to Load Organizations: ", error);
         return [];
     }
 }
 
-async function getLocationList(){
-    try{
+async function getLocationList() {
+    try {
         const response = await fetch('../JSON/city_province.json');
         const data = await response.json();
         return data.cities_provinces;
-    }catch(error){
+    } catch (error) {
         console.error("Failed to Load City/Provinces: ", error);
         return [];
     }
 }
 
-async function getJobClassificationList(selectedDepartment){
+async function getJobClassificationList(selectedDepartment) {
 
-        try{
-            const response = await fetch('../JSON/internPositions.json');
-            
-            const data = await response.json();
-            jobclassifications = Object.values(data.job_classifications_by_department[selectedDepartment]);
-            jobclassifications_before = [...jobclassifications];
+    try {
+        const response = await fetch('../JSON/internPositions.json');
 
-        }catch(error){
-            console.error('Failed to Load Courses: ', error);
-            jobclassifications = [];
-            jobclassifications_before = jobclassifications;
-        }
+        const data = await response.json();
+        jobclassifications = Object.values(data.job_classifications_by_department[selectedDepartment]);
+        jobclassifications_before = [...jobclassifications];
+
+    } catch (error) {
+        console.error('Failed to Load Courses: ', error);
+        jobclassifications = [];
+        jobclassifications_before = jobclassifications;
+    }
 
 }
-function submitTheForm(button){
+function submitTheForm(button) {
     // thirdInputs.forEach(input => {
     //     validateThirdInputs(input);
     // });
@@ -1018,8 +1035,8 @@ function submitTheForm(button){
     // }
 }
 // function validateThirdInputs(input){
-    function validateIdeal_Location(input){
-    if(input !== null){
+function validateIdeal_Location(input) {
+    if (input !== null) {
         // switch(input.name){
         //     case 'Job Classification 1':
         //         if(!checkIfEmpty_General(input)){
@@ -1044,30 +1061,30 @@ function submitTheForm(button){
         //         break;  
 
         //     case 'Ideal Location':
-                if(!checkIfEmpty_General(input)){
-                    idealLocation_Valid = false;
-                }else{
-                    autoCorrect_Suggestions(input, locations,idealLocation_Valid);
-                }
-    //             break;
-    //     }
+        if (!checkIfEmpty_General(input)) {
+            idealLocation_Valid = false;
+        } else {
+            autoCorrect_Suggestions(input, locations, idealLocation_Valid);
+        }
+        //             break;
+        //     }
     }
 }
 
 // thirdInputs.forEach(input =>{
-    idealLocation_Input.addEventListener('blur', async ()=>{
-        validateIdeal_Location(idealLocation_Input);
-    });
-    idealLocation_Input.addEventListener('focus', async ()=>{
-        removeError(idealLocation_Input);
-    });
-    idealLocation_Input.addEventListener('input', async ()=>{
-        removeError(idealLocation_Input);
-    });
+idealLocation_Input.addEventListener('blur', async () => {
+    validateIdeal_Location(idealLocation_Input);
+});
+idealLocation_Input.addEventListener('focus', async () => {
+    removeError(idealLocation_Input);
+});
+idealLocation_Input.addEventListener('input', async () => {
+    removeError(idealLocation_Input);
+});
 // });
 
 window.addEventListener('DOMContentLoaded', async e => {
-    
+
     const suggestionsContainer = document.querySelectorAll('.suggestions');
     campuses = await loadCampuses();
     departments = await loadDepartments();
@@ -1078,7 +1095,7 @@ window.addEventListener('DOMContentLoaded', async e => {
     secondInputs.forEach(async (input) => {
         let list = []
         input.addEventListener('focus', (e) => {
-            switch(input.name.toLowerCase()){
+            switch (input.name.toLowerCase()) {
                 case 'university/campus':
                     list = campuses;
                     break;
@@ -1100,7 +1117,7 @@ window.addEventListener('DOMContentLoaded', async e => {
         });
 
         input.addEventListener('input', async (e) => {
-            if(input.name == 'Department'){
+            if (input.name == 'Department') {
                 const value = input.value.trim().toLowerCase();
                 const depIndex = departments.findIndex(dep => dep.toLowerCase() == value);
                 const courseField = document.querySelector('#course-input');
@@ -1119,26 +1136,26 @@ window.addEventListener('DOMContentLoaded', async e => {
                 //         input.nextElementSibling.innerHTML = '';
                 //     }
                 // });
-                
-                if(depIndex !== -1){
+
+                if (depIndex !== -1) {
                     courses = await getCoursesList(departments[depIndex]);
                     organizations_byDepartment = await getOrganizationsList(departments[depIndex]);
                     await getJobClassificationList(departments[depIndex]);
                 };
             }
-            else if(input.name == 'University/Campus'){
+            else if (input.name == 'University/Campus') {
                 const organizationField = document.querySelector('#org-input');
                 organizationField.nextElementSibling.innerHTML = '';
                 organizations_byCampus = [];
 
                 const value = input.value.trim().toLowerCase();
                 const campusIndex = campuses.findIndex(campus => campus.toLowerCase() == value);
-                if(campusIndex !== -1){
+                if (campusIndex !== -1) {
                     organizations_byCampus = await AdditionalOrganizationsList(campuses[campusIndex]);
                 };
             };
             let list = [];
-            switch(input.name.toLowerCase()){
+            switch (input.name.toLowerCase()) {
                 case 'university/campus':
                     list = campuses;
                     break;
@@ -1158,40 +1175,40 @@ window.addEventListener('DOMContentLoaded', async e => {
     });
 
     // thirdInputs.forEach(async (input,index)=>{
-        let list = [];
-        // if(index <= 2){
-        //     input.addEventListener('focus', (e) => {
-        //         list = jobclassifications;
-        //         suggestionsContainer.forEach(container => {
-        //             container.classList.remove('active');
-        //         });
-        //         LoadList(e.target, list);
-        //     });
+    let list = [];
+    // if(index <= 2){
+    //     input.addEventListener('focus', (e) => {
+    //         list = jobclassifications;
+    //         suggestionsContainer.forEach(container => {
+    //             container.classList.remove('active');
+    //         });
+    //         LoadList(e.target, list);
+    //     });
 
-        //     input.addEventListener('input', async (e) => {
-        //         list = jobclassifications;
-        //         LoadList(e.target, list);
-        //         validateThirdInputs(input);
-        //         inputValidation_SecondSection(input);
-        //     });
-        // }else{
-            idealLocation_Input.addEventListener('focus', (e) => {
-                list = locations;
-                suggestionsContainer.forEach(container => {
-                    container.classList.remove('active');
-                });
-                LoadList(e.target, list);
-            });
+    //     input.addEventListener('input', async (e) => {
+    //         list = jobclassifications;
+    //         LoadList(e.target, list);
+    //         validateThirdInputs(input);
+    //         inputValidation_SecondSection(input);
+    //     });
+    // }else{
+    idealLocation_Input.addEventListener('focus', (e) => {
+        list = locations;
+        suggestionsContainer.forEach(container => {
+            container.classList.remove('active');
+        });
+        LoadList(e.target, list);
+    });
 
-            idealLocation_Input.addEventListener('input', async (e) => {
-                list = locations;
-                LoadList(e.target, list);
-                // validateThirdInputs(input);
-                validateIdeal_Location(idealLocation_Input)
-                inputValidation_SecondSection(idealLocation_Input);
-            });
+    idealLocation_Input.addEventListener('input', async (e) => {
+        list = locations;
+        LoadList(e.target, list);
+        // validateThirdInputs(input);
+        validateIdeal_Location(idealLocation_Input)
+        inputValidation_SecondSection(idealLocation_Input);
+    });
     //     }
-        
+
     // })
     const form_container = document.querySelector('.form-container');
     const form_children = document.querySelectorAll('.form-container  > div');
@@ -1201,27 +1218,27 @@ window.addEventListener('DOMContentLoaded', async e => {
     const signUp_Btn = document.getElementById('toggle-signUp-Btn');
 
     console.log(toggle_children)
-    signUp_Btn.addEventListener('click', ()=>{
+    signUp_Btn.addEventListener('click', () => {
         panelSwap();
     });
 
-    signIn_Btn.addEventListener('click', ()=>{
+    signIn_Btn.addEventListener('click', () => {
         panelSwap();
     });
 
-    function panelSwap(){
+    function panelSwap() {
         form_container.classList.toggle('signUp');
         form_container.classList.toggle('signIn');
         toggle_container.classList.toggle('signUp');
         toggle_container.classList.toggle('signIn');
-        form_children.forEach(child=>{
+        form_children.forEach(child => {
             child.classList.toggle('shift_active');
             child.classList.toggle('shift_inactive');
         });
-        toggle_children.forEach(child=>{
+        toggle_children.forEach(child => {
             child.classList.toggle('shift_active');
             child.classList.toggle('shift_inactive');
-        });   
+        });
     }
 
 });
