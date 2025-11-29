@@ -58,8 +58,11 @@ body {
     display: flex;
     align-items: center;
     padding: 0 15px;
-    background-color: #e0b020;
+
     white-space: nowrap;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
 }
 
 .logo-icon {
@@ -123,8 +126,8 @@ body {
 }
 
 .nav-item.active .nav-link {
-    background-color: rgba(0, 0, 0, 0.15);
-    border-left: 4px solid #333;
+    background-color: rgba(123, 17, 19, 0.2);
+    border-right: 4px solid #7B1113;
 }
 
 /* Main Content Styles */
