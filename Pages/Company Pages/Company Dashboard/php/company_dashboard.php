@@ -153,38 +153,49 @@
                         <!-- Questions Tab Content -->
                         <div class="tab-content" id="questions-content">
                             <div class="questions-list">
+                                <div class="question-row" style="padding-bottom: 0;">
+                                    <div style="flex: 1;"></div>
+                                    <div class="yes-no-options">
+                                        <div
+                                            style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">
+                                            Yes</div>
+                                        <div
+                                            style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">
+                                            No</div>
+                                    </div>
+                                </div>
                                 <div class="question-row">
                                     <input type="text" placeholder="Question 1" class="form-input question-input">
                                     <div class="yes-no-options">
                                         <div class="option-box"></div>
-                                        <div class="option-box checked"><i class="fa-solid fa-check"></i></div>
+                                        <div class="option-box"></div>
                                     </div>
                                 </div>
                                 <div class="question-row">
                                     <input type="text" placeholder="Question 2" class="form-input question-input">
                                     <div class="yes-no-options">
                                         <div class="option-box"></div>
-                                        <div class="option-box checked"><i class="fa-solid fa-check"></i></div>
+                                        <div class="option-box"></div>
                                     </div>
                                 </div>
                                 <div class="question-row">
                                     <input type="text" placeholder="Question 3" class="form-input question-input">
                                     <div class="yes-no-options">
                                         <div class="option-box"></div>
-                                        <div class="option-box checked"><i class="fa-solid fa-check"></i></div>
+                                        <div class="option-box"></div>
                                     </div>
                                 </div>
                                 <div class="question-row">
                                     <input type="text" placeholder="Question 4" class="form-input question-input">
                                     <div class="yes-no-options">
-                                        <div class="option-box checked"><i class="fa-solid fa-check"></i></div>
+                                        <div class="option-box"></div>
                                         <div class="option-box"></div>
                                     </div>
                                 </div>
                                 <div class="question-row">
                                     <input type="text" placeholder="Question 5" class="form-input question-input">
                                     <div class="yes-no-options">
-                                        <div class="option-box checked"><i class="fa-solid fa-check"></i></div>
+                                        <div class="option-box"></div>
                                         <div class="option-box"></div>
                                     </div>
                                 </div>
