@@ -673,6 +673,64 @@ async function ifStudentNumber_Exist() {
         });
 }
 
+function resetFormState() {
+    // 1. Reset Input Values
+    firstInputs.forEach(input => input.value = "");
+    secondInputs.forEach(input => input.value = "");
+    if (idealLocation_Input) idealLocation_Input.value = "";
+
+    // 2. Reset Global State
+    userInformation = {};
+    selectedTags = [];
+    updateSelectedCount();
+    idealLocation_Valid = false;
+    currentStep = 0; // Reset step counter
+
+    // 3. Reset Tags Container
+    const tagsContainer = document.querySelector('.tags-container');
+    if (tagsContainer) tagsContainer.innerHTML = '';
+
+    // 4. Reset Section Visibility
+    // Hide all sections first
+    firstInputs_Container.style.display = 'flex'; // Show first section
+    secondInputs_Container.style.display = 'none';
+    thirdInputs_Container.style.display = 'none';
+
+    // Remove any slide classes
+    firstInputs_Container.classList.remove('slide-left', 'slide-right');
+    secondInputs_Container.classList.remove('slide-left', 'slide-right');
+    thirdInputs_Container.classList.remove('slide-left', 'slide-right');
+
+    // Ensure first section has necessary classes
+    firstInputs_Container.classList.add('form-section');
+
+    // 5. Reset Steps Indicator
+    // Remove active classes from all steps
+    steps.forEach(step => step.classList.remove('active-step'));
+    step_text.forEach(text => text.classList.remove('left-active-text'));
+    step_icon.forEach(icon => icon.classList.remove('left-active-icon'));
+
+    // Activate first step
+    if (steps[0]) steps[0].classList.add('active-step');
+    if (step_text[0]) step_text[0].classList.add('left-active-text');
+    if (step_icon[0]) step_icon[0].classList.add('left-active-icon');
+
+    // 6. Reset Title
+    if (title) title.textContent = 'Personalize your Profile';
+
+    // 7. Reset Error Messages
+    const errorMessages = document.querySelectorAll('.input-wrapper p');
+    errorMessages.forEach(p => {
+        p.style.visibility = 'hidden';
+        p.textContent = 'error';
+        p.style.color = '';
+    });
+
+    // Remove invalid input classes
+    const allInputs = document.querySelectorAll('input');
+    allInputs.forEach(input => input.classList.remove('input_InvalidInput'));
+}
+
 async function Register_Student() {
     console.log(userInformation);
     fetch("http://158.69.205.176:8080/add_student_process.php", {
@@ -688,12 +746,7 @@ async function Register_Student() {
                 setTimeout(() => {
                     ToastSystem.show("Redirecting to the landing page", "info");
                     setTimeout(() => {
-                        firstInputs.forEach(input => {
-                            input.value = "";
-                        });
-                        secondInputs.forEach(input => {
-                            input.value = "";
-                        })
+                        resetFormState();
                         window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
                     }, 2000);
                 }, 1500);
