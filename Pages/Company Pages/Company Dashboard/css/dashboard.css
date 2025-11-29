@@ -611,6 +611,62 @@ td {
     font-weight: 700;
 }
 
+/* Section Transitions */
+.content-section {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.content-section.active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Placeholder Content Styles */
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #666;
+    text-align: center;
+    padding: 50px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    color: var(--primary-yellow);
+    margin-bottom: 20px;
+}
+
+.placeholder-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.placeholder-content p {
+    font-size: 1.1rem;
+    color: #888;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .bottom-section {

@@ -62,28 +62,50 @@ document.addEventListener('DOMContentLoaded', () => {
     questionRows.forEach(row => {
         const optionBoxes = row.querySelectorAll('.option-box');
 
-        optionBoxes.forEach((box, index) => {
+        optionBoxes.forEach((box) => {
             box.addEventListener('click', () => {
                 // Remove 'checked' class from all boxes in this row
-                optionBoxes.forEach(b => b.classList.remove('checked'));
+                optionBoxes.forEach(b => {
+                    b.classList.remove('checked');
+                    b.innerHTML = ''; // Clear icon
+                });
 
                 // Add 'checked' class to the clicked box
                 box.classList.add('checked');
-
-                // Optional: Add a checkmark icon if not already present
-                if (!box.querySelector('i')) {
-                    box.innerHTML = '<i class="fa-solid fa-check"></i>';
-                } else {
-                    // Re-add icon to all boxes
-                    optionBoxes.forEach(b => {
-                        if (!b.classList.contains('checked')) {
-                            b.innerHTML = '';
-                        } else {
-                            b.innerHTML = '<i class="fa-solid fa-check"></i>';
-                        }
-                    });
-                }
+                box.innerHTML = '<i class="fa-solid fa-check"></i>'; // Add icon
             });
+        });
+    });
+
+    // Section Navigation Logic
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.content-section');
+    const pageTitle = document.querySelector('.page-title h1');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const targetSectionId = item.getAttribute('data-section');
+            const sectionName = item.querySelector('.link-text').textContent;
+
+            // Remove active class from all nav items
+            navItems.forEach(navItem => navItem.classList.remove('active'));
+
+            // Add active class to clicked nav item
+            item.classList.add('active');
+
+            // Hide all sections
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Show target section
+            const targetSection = document.getElementById(targetSectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+
+            // Update page title
+            pageTitle.textContent = sectionName;
         });
     });
 });
