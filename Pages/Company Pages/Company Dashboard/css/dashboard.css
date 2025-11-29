@@ -140,16 +140,17 @@ body {
     height: 60px;
     background-color: var(--darker-bg);
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 0 30px;
     border-bottom: 1px solid #444;
 }
 
 .page-title h1 {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: var(--primary-yellow);
     font-weight: 600;
+    margin-bottom: 1rem;
 }
 
 .user-profile {
@@ -514,7 +515,6 @@ td {
 .profile-card {
     background-color: white;
     border-radius: 10px;
-    padding: 30px 20px;
     text-align: center;
     color: #333;
     display: flex;
@@ -523,6 +523,7 @@ td {
     justify-content: center;
     gap: 20px;
     flex: 1;
+    position: relative;
 }
 
 .profile-content h3 {
@@ -536,6 +537,7 @@ td {
 }
 
 .btn-apply {
+    position: absolute;
     background: linear-gradient(to right, #a01a1a, #e0b020);
     color: white;
     border: none;
@@ -545,6 +547,7 @@ td {
     font-weight: 700;
     cursor: pointer;
     text-transform: uppercase;
+    bottom: 0;
 }
 
 .stats-card {

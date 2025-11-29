@@ -17,7 +17,8 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="../../../../assets/logo.png" alt="Hirenorian Logo" class="logo-icon">
+                <img src="https://dhvsu.edu.ph/images/about_pampanga_state_u/pampanga-state-u-logo-small.png"
+                    alt="Pampanga State University" class="logo-icon">
                 <!-- Placeholder path -->
                 <span class="logo-text">Hirenorian</span>
             </div>
@@ -53,9 +54,6 @@
         <main class="main-content">
             <!-- Top Bar -->
             <header class="top-bar">
-                <div class="page-title">
-                    <h1>Dashboard</h1>
-                </div>
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar">
@@ -71,6 +69,9 @@
             </header>
 
             <div class="content-wrapper">
+                <div class="page-title">
+                    <h1>Dashboard</h1>
+                </div>
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
                     <!-- Applicants Section -->
@@ -145,7 +146,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group full-width">
-                                    <textarea placeholder="Job description" class="form-input textarea-large"></textarea>
+                                    <textarea placeholder="Job description"
+                                        class="form-input textarea-large"></textarea>
                                 </div>
                                 <div class="form-actions">
                                     <button class="btn-next">Next</button>
@@ -158,8 +160,12 @@
                                     <div class="question-row" style="padding-bottom: 0;">
                                         <div style="flex: 1;"></div>
                                         <div class="yes-no-options">
-                                            <div style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">Yes</div>
-                                            <div style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">No</div>
+                                            <div
+                                                style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">
+                                                Yes</div>
+                                            <div
+                                                style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">
+                                                No</div>
                                         </div>
                                     </div>
                                     <div class="question-row">
