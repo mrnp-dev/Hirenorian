@@ -138,6 +138,11 @@
                     <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
                     <span class="badge badge-auth">Auth</span>
                 </a>
+                <a href="Account Registration Pages/Main Account Register Page/php/main_registration.php" class="page-link">
+                    <span class="page-name">Main Account Registration</span>
+                    <span class="page-path">Account Registration Pages/.../main_registration.php</span>
+                    <span class="badge badge-auth">Auth</span>
+                </a>
                 <a href="Account Registration Pages/Company Registration Page/php/company.php" class="page-link">
                     <span class="page-name">Company Registration</span>
                     <span class="page-path">Account Registration Pages/.../company.php</span>
