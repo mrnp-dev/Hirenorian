@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -8,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/main_registration.css">
     <link rel="stylesheet" href="../css/toast.css">
-    <title>Student sign in 1</title>
+    <title>Main Account Registration</title>
 </head>
 
 <body>
@@ -52,7 +54,8 @@
 
                         <div class="form-row">
                             <div class="input-wrapper">
-                                <input type="text" id="middleInitial-input" name="Middle Initial" placeholder="Middle Initial *" minlength="1" maxlength="2">
+                                <input type="text" id="middleInitial-input" name="Middle Initial"
+                                    placeholder="Middle Initial *" minlength="1" maxlength="2">
                                 <p>error</p>
                             </div>
 
@@ -68,31 +71,38 @@
                             </div>
 
                             <div class="input-wrapper">
-                                <input type="text" id="phoneNumber-input" name="Phone Number" placeholder="Phone No *" minlength="11" maxlength="13">
+                                <input type="text" id="phoneNumber-input" name="Phone Number" placeholder="Phone No *"
+                                    minlength="11" maxlength="13">
                                 <p>error</p>
                             </div>
                         </div>
                         <div class="input-wrapper">
                             <input type="password" id="password-input" name="Password" placeholder="Password *">
                             <p>error</p>
-                            <button type="button" class="toggle_show_hide" id="togglePassword" onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
+                            <button type="button" class="toggle_show_hide" id="togglePassword"
+                                onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
                         </div>
 
                         <div class="input-wrapper">
-                            <input type="password" id="confirmPass-input" name="Confirm Password" placeholder="Confirm Password *">
+                            <input type="password" id="confirmPass-input" name="Confirm Password"
+                                placeholder="Confirm Password *">
                             <p>error</p>
-                            <button type="button" class="toggle_show_hide" id="toggleConfirmPassword" onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
+                            <button type="button" class="toggle_show_hide" id="toggleConfirmPassword"
+                                onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
                         </div>
 
                         <div class="button-container">
-                            <button type="button" class="btn btn-landing" onclick="goBackToLandingPage()">Back to Landing</button>
-                            <button type="button" id="first_nextBtn" onclick="goNext(this)" class="btn btn-next">Next</button>
+                            <button type="button" class="btn btn-landing" onclick="goBackToLandingPage()">Back to
+                                Landing</button>
+                            <button type="button" id="first_nextBtn" onclick="goNext(this)"
+                                class="btn btn-next">Next</button>
                         </div>
                     </div>
 
                     <div class="form-section" id="secondInputs">
                         <div class="input-wrapper">
-                            <input type="text" id="univ-input" name="University/Campus" placeholder="University / Campus *">
+                            <input type="text" id="univ-input" name="University/Campus"
+                                placeholder="University / Campus *">
                             <div class="suggestions"></div>
                             <p>error</p>
                         </div>
@@ -115,7 +125,8 @@
                                 <p>error</p>
                             </div>
                             <div class="input-wrapper">
-                                <input type="text" id="schoolEmail-input" name="School Email" placeholder="School Email *">
+                                <input type="text" id="schoolEmail-input" name="School Email"
+                                    placeholder="School Email *">
                                 <p>error</p>
                             </div>
                         </div>
@@ -127,12 +138,14 @@
                         </div>
 
                         <div class="button-container">
-                            <button type="button" class="btn btn-landing" onclick="goToPreviousSection(this)">Back</button>
-                            <button type="button" id="second_nextBtn" class="btn btn-next" onclick="goToLast(this)">Next</button>
+                            <button type="button" class="btn btn-landing"
+                                onclick="goToPreviousSection(this)">Back</button>
+                            <button type="button" id="second_nextBtn" class="btn btn-next"
+                                onclick="goToLast(this)">Next</button>
                         </div>
                     </div>
                     <div class="form-section" id="thirdInputs">
-                        <div class="input-wrapper">
+                        <!-- <div class="input-wrapper">
                             <input type="text" id="job1-input" name="Job Classification 1" placeholder="Job Classification 1 *">
                             <div class="suggestions"></div>
                             <p>error</p>
@@ -148,12 +161,22 @@
                             <input type="text" id="job3-input" name="Job Classification 3" placeholder="Job Classification 3 *">
                             <div class="suggestions"></div>
                             <p>error</p>
-                        </div>
+                        </div> -->
 
                         <div class="input-wrapper">
                             <input type="text" id="location-input" name="Ideal Location" placeholder="Ideal Location *">
                             <div class="suggestions"></div>
                             <p>error</p>
+                        </div>
+
+                        <div class="tag-wrapper">
+                            <div class="tag-header">
+                                <h3>Choose 3 prefered Working Field <span class="optional-text">(optional)</span></h3>
+                            </div>
+                            <div class="selected-count" id="selectedCount">Selected: 0/3</div>
+                            <div class="tags-container">
+
+                            </div>
                         </div>
 
                         <div class="button-container">
@@ -178,7 +201,8 @@
                     <h2>“Connecting students with<br>real-world opportunities”</h2>
                     <div class=" steps">
                         <div class="step active-step">
-                            <div class="step-icon left-active-icon"><img src="../images/1User_White.png" alt="Logo"></div>
+                            <div class="step-icon left-active-icon"><img src="../images/1User_White.png" alt="Logo">
+                            </div>
                             <span class="step-text left-active-text">Personal Information</span>
                         </div>
                         <div class="step">
