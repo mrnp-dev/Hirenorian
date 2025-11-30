@@ -1,0 +1,73 @@
+/* ============================================
+   SCROLL-TRIGGERED ANIMATIONS
+   ============================================ */
+
+/* Base class for all scroll animations */
+.animate-on-scroll {
+    opacity: 0;
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* When element is in view */
+.animate-on-scroll.in-view {
+    opacity: 1;
+    transform: translate(0, 0) scale(1) !important;
+}
+
+/* ============================================
+   ANIMATION TYPES
+   ============================================ */
+
+/* Slide Up - slides from bottom */
+.slide-up {
+    transform: translateY(60px);
+}
+
+/* Slide Left - slides from left */
+.slide-left {
+    transform: translateX(-80px);
+}
+
+/* Slide Right - slides from right */
+.slide-right {
+    transform: translateX(80px);
+}
+
+/* Fade Slide Up - combines fade, slide, and subtle scale */
+.fade-slide-up {
+    transform: translateY(50px) scale(0.95);
+}
+
+/* Fade Up - subtle upward movement */
+.fade-up {
+    transform: translateY(30px);
+}
+
+/* ============================================
+   STAGGERED DELAYS
+   ============================================ */
+
+.delay-100 {
+    transition-delay: 0.1s;
+}
+
+.delay-200 {
+    transition-delay: 0.2s;
+}
+
+.delay-300 {
+    transition-delay: 0.3s;
+}
+
+.delay-400 {
+    transition-delay: 0.4s;
+}
+
+.delay-500 {
+    transition-delay: 0.5s;
+}
+
+.delay-600 {
+    transition-delay: 0.6s;
+}

@@ -1,53 +1,89 @@
 <?php
 include 'dbconnect.php';
 
-$sql = "SELECT stu_id, full_name, stu_age FROM studentInfo";
-$result = $conn->query($sql);
+$studentQuery = "SELECT * FROM Students";
+$studentResult = $conn->query($studentQuery);
+
+$educationQuery = "SELECT * FROM Education";
+$educationResult = $conn->query($educationQuery);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Info</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 60%;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 8px 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-    <h2 style="text-align:center;">Student Information</h2>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Full Name</th>
-            <th>Age</th>
-        </tr>
-        <?php
-        if ($result->num_rows > 0) {
-            // Output each row
-            while($row = $result->fetch_assoc()) {
-                echo "<tr>";
-                echo "<td>" . $row["stu_id"] . "</td>";
-                echo "<td>" . $row["full_name"] . "</td>";
-                echo "<td>" . $row["stu_age"] . "</td>";
-                echo "</tr>";
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Account ID</th>
+                <th>Student ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Middle Initial</th>
+                <th>Suffix</th>
+                <th>Personal Email</th>
+                <th>Phone Number</th>
+                <th>Student Email</th>
+                <th>Password Hash</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($studentResult->num_rows > 0) {
+                while($row = $studentResult->fetch_assoc()) {
+                    echo "<tr>
+                            <td>".$row['account_id']."</td>
+                            <td>".$row['student_id']."</td>
+                            <td>".$row['first_name']."</td>
+                            <td>".$row['last_name']."</td>
+                            <td>".$row['middle_initial']."</td>
+                            <td>".$row['suffix']."</td>
+                            <td>".$row['personal_email']."</td>
+                            <td>".$row['phone_number']."</td>
+                            <td>".$row['student_email']."</td>
+                            <td>".$row['password_hash']."</td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='9'>No students found</td></tr>";
             }
-        } else {
-            echo "<tr><td colspan='3'>No records found</td></tr>";
-        }
-        $conn->close();
-        ?>
+            ?>
+        </tbody>
+    </table>
+    <br><br>
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Education ID</th>
+                <th>Student ID</th>
+                <th>University</th>
+                <th>Department</th>
+                <th>Course</th>
+                <th>Organization</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if ($educationResult->num_rows > 0) {
+                while($row = $educationResult->fetch_assoc()) {
+                    echo "<tr>
+                            <td>".$row['edu_id']."</td>
+                            <td>".$row['student_id']."</td>
+                            <td>".$row['university']."</td>
+                            <td>".$row['department']."</td>
+                            <td>".$row['course']."</td>
+                            <td>".$row['organization']."</td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6'>No education records found</td></tr>";
+            }
+            ?>
+        </tbody>
     </table>
 </body>
 </html>
