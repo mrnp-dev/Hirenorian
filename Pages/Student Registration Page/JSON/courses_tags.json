@@ -1,0 +1,204 @@
+{
+    "tags":{
+        "Bachelor of Elementary Education": [
+            "Basic Education",
+            "Curriculum & Instruction",
+            "Academic Support",
+            "Higher Education",
+            "E-Learning/Online Education"
+        ],
+        "Bachelor of Secondary Education – English": [
+            "Basic Education",
+            "Content Creation / Copywriting",
+            "Media & Communications",
+            "Curriculum & Instruction",
+            "Academic Support"
+        ],
+        "Bachelor of Secondary Education – Mathematics": [
+            "Basic Education",
+            "Data & Analytics",
+            "Curriculum & Instruction",
+            "Academic Support",
+            "Higher Education"
+        ],
+        "Bachelor of Secondary Education – Science": [
+            "Basic Education",
+            "Medical & Diagnostics (for science-related content)",
+            "Environmental Science",
+            "Academic Support",
+            "Curriculum & Instruction"
+        ],
+        "Bachelor of Physical Education": [
+            "Basic Education",
+            "Personal Services",
+            "Healthcare Support Services",
+            "Academic Support",
+            "Sports / Fitness (fits under Personal Services + Healthcare Support)"
+        ],
+
+        "Bachelor of Arts in English Language Studies": [
+            "Media & Communications",
+            "Content Creation / Copywriting",
+            "Public Relations",
+            "Marketing & Advertising",
+            "Academic Support"
+        ],
+        "Bachelor of Science in Biology": [
+            "Medical & Diagnostics",
+            "Allied Health",
+            "Environmental Science",
+            "Sustainability",
+            "Research / Academic Support (falls under Education & Training → Academic Support)"
+        ],
+        "Bachelor of Science in Mathematics": [
+            "Data & Analytics",
+            "Finance",
+            "Project Management",
+            "Quality Assurance",
+            "Consulting"
+        ],
+
+        "Bachelor of Science in Accountancy": [
+            "Finance",
+            "Business Management",
+            "Administration & Office Support",
+            "Consulting",
+            "Quality Assurance"
+        ],
+        "Bachelor of Science in Business Administration – Financial Management": [
+            "Finance",
+            "Business Management",
+            "Consulting",
+            "Administration & Office Support",
+            "Data & Analytics"
+        ],
+        "Bachelor of Science in Business Administration – Marketing Management": [
+            "Marketing & Advertising",
+            "Retail & Sales",
+            "Business Management",
+            "Customer Service",
+            "Media & Communications"
+        ],
+        "Bachelor of Science in Entrepreneurship": [
+            "Business Management",
+            "Marketing & Advertising",
+            "Consulting",
+            "Retail & Sales",
+            "Project Management"
+        ],
+
+        "Bachelor of Science in Information Technology": [
+            "IT Support & Networking",
+            "Software Development",
+            "Cybersecurity",
+            "Web Development",
+            "Cloud Computing"
+        ],
+        "Bachelor of Science in Computer Science": [
+            "Software Development",
+            "Artificial Intelligence / Machine Learning",
+            "Data & Analytics",
+            "Cybersecurity",
+            "Cloud Computing"
+        ],
+
+        "Bachelor of Science in Hospitality Management": [
+            "Hospitality & Tourism",
+            "Food & Beverage",
+            "Customer Support Services",
+            "Retail & Sales",
+            "Personal Services"
+        ],
+        "Bachelor of Science in Tourism Management": [
+            "Hospitality & Tourism",
+            "Media & Communications",
+            "Customer Support Services",
+            "Retail & Sales",
+            "Personal Services"
+        ],
+
+
+        "Bachelor of Science in Criminology": [
+            "Public Safety",
+            "Government Services",
+            "Social Services",
+            "Non-Profit & Community Development",
+            "Administration & Office Support"
+        ],
+
+        "Bachelor of Science in Agriculture": [
+            "Agriculture & Farming",
+            "Environmental Science",
+            "Sustainability",
+            "Forestry & Fisheries",
+            "Food & Beverage (because of agricultural food systems)"
+        ],
+
+        "Bachelor of Industrial Technology – Automotive Technology": [
+            "Vehicle Maintenance",
+            "Manufacturing Operations",
+            "Maintenance",
+            "Supply Chain & Logistics",
+            "Driving & Delivery"
+        ],
+        "Bachelor of Industrial Technology – Electrical Technology": [
+            "Electrical Engineering",
+            "Maintenance",
+            "Manufacturing Operations",
+            "Construction & Drafting",
+            "Quality Assurance"
+        ],
+        "Bachelor of Industrial Technology – Electronics Technology": [
+            "Industrial Engineering",
+            "Manufacturing Operations",
+            "Maintenance",
+            "Quality Assurance",
+            "Electrical Engineering"
+        ],
+        "Bachelor of Industrial Technology – Food Technology": [
+            "Food & Beverage",
+            "Manufacturing Operations",
+            "Quality Assurance",
+            "Supply Chain & Logistics",
+            "Environmental Science"
+        ],
+
+        "Bachelor of Public Administration": [
+            "Government Services",
+            "Public Sector & Non-Profit",
+            "Social Services",
+            "Administration & Office Support",
+            "Project Management"
+        ],
+
+        "Bachelor in Human Services": [
+            "Social Services",
+            "Non-Profit & Community Development",
+            "Mental Health Services",
+            "Public Sector & Non-Profit",
+            "Customer Service"
+        ],
+        "Bachelor of Science in Psychology": [
+            "Mental Health Services",
+            "Human Resources",
+            "Social Services",
+            "Academic Support",
+            "Research (via Academic Support or Data & Analytics)"
+        ],
+        "Bachelor of Science in Social Work": [
+            "Social Services",
+            "Non-Profit & Community Development",
+            "Government Services",
+            "Public Safety",
+            "Mental Health Services"
+        ],
+        "Bachelor of Arts in Sociology": [
+            "Social Services",
+            "Non-Profit & Community Development",
+            "Research (Academic Support)",
+            "Government Services",
+            "Public Sector & Non-Profit"
+        ]
+
+    }
+}
