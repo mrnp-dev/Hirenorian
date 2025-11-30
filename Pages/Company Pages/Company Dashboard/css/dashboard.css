@@ -252,182 +252,32 @@ body {
     }
 }
 
-/* --- NEW DASHBOARD STYLES --- */
+/* ========================================
+   MODERN DASHBOARD LAYOUT STYLES
+======================================== */
 
-/* Dashboard Top Section */
-.dashboard-top-section {
-    display: flex;
+/* Main Dashboard Container - 65% height constraint */
+.dashboard-main-container {
+    display: grid;
+    grid-template-columns: 75% 25%;
     gap: 20px;
-    height: 300px;
-    /* Fixed height for top section */
+    height: 65vh;
+    /* 65% of viewport height */
+    max-height: 65vh;
 }
 
-/* Recruitment Analytics */
-.analytics-container {
-    flex: 3;
-    background-color: var(--card-bg);
-    border-radius: 20px;
-    padding: 20px;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-}
-
-.analytics-container h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.analytics-cards {
-    display: flex;
-    gap: 20px;
-    flex: 1;
-}
-
-.analytics-card {
-    flex: 1;
-    border-radius: 10px;
-    padding: 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.analytics-card.total {
-    background-color: var(--blue-card);
-}
-
-.analytics-card.accepted {
-    background-color: var(--green-card);
-}
-
-.analytics-card.rejected {
-    background-color: var(--red-card);
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    font-weight: 600;
-    opacity: 0.9;
-}
-
-.card-header i {
-    font-size: 1.2rem;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-}
-
-.card-number {
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.card-label {
-    font-size: 0.85rem;
-    opacity: 0.9;
-}
-
-/* Pie Chart Container */
-.pie-chart-container {
-    flex: 1;
-    background-color: var(--card-bg);
-    border-radius: 20px;
-    padding: 20px;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
-
-.pie-chart-container h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-}
-
-.chart-wrapper {
-    flex: 1;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 150px;
-    /* Limit chart height */
-}
-
-/* --- FIXED: Added missing Legend Styles --- */
-.chart-legend {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    /* Increased gap to prevent overlap */
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #f8f9fa;
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-.legend-dot {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-}
-
-.legend-dot.active {
-    background-color: #10b981;
-    /* Green */
-}
-
-.legend-dot.closed {
-    background-color: #ef4444;
-    /* Red */
-}
-
-.legend-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-
-.legend-label {
-    font-size: 0.75rem;
-    color: #666;
-}
-
-.legend-value {
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-
-/* --- FIXED: Added missing Bottom Section Styles --- */
-/* Dashboard Bottom Section */
-.dashboard-bottom-section {
+/* ========================================
+   LEFT COLUMN: JOB LISTINGS PANEL (75%)
+======================================== */
+.job-listings-panel {
     background-color: var(--card-bg);
     border-radius: 20px;
     padding: 25px;
     color: #333;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: 300px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .section-header {
@@ -440,28 +290,38 @@ body {
 .section-header h2 {
     font-size: 1.5rem;
     font-weight: 700;
+    color: #333;
 }
 
 .btn-view-all {
-    background-color: #f3f4f6;
+    background: linear-gradient(135deg, var(--blue-card), #2563eb);
     border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    color: #666;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
     font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
 }
 
 .btn-view-all:hover {
-    background-color: #e5e7eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-view-all i {
+    font-size: 0.85rem;
 }
 
 .job-listing-container {
     flex: 1;
     overflow-y: auto;
-    max-height: 300px;
-    /* Scrollable area */
+    margin-top: 10px;
 }
 
 .job-listing-table {
@@ -473,14 +333,14 @@ body {
     text-align: left;
     padding: 15px;
     color: #9ca3af;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 2px solid #f3f4f6;
     position: sticky;
     top: 0;
     background-color: white;
-    /* Sticky header bg */
+    z-index: 10;
 }
 
 .job-listing-table td {
@@ -488,10 +348,19 @@ body {
     border-bottom: 1px solid #f3f4f6;
     font-size: 0.95rem;
     font-weight: 500;
+    color: #333;
+}
+
+.job-listing-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.job-listing-table tbody tr:hover {
+    background-color: #f9fafb;
 }
 
 .status-pill {
-    padding: 6px 16px;
+    padding: 6px 14px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 700;
@@ -500,25 +369,201 @@ body {
 }
 
 .status-pill.accepted {
-    background-color: rgba(16, 185, 129, 0.1);
+    background-color: rgba(16, 185, 129, 0.15);
     color: #10b981;
     border: 1px solid #10b981;
 }
 
 .status-pill.rejected {
-    background-color: rgba(239, 68, 68, 0.1);
+    background-color: rgba(239, 68, 68, 0.15);
     color: #ef4444;
     border: 1px solid #ef4444;
 }
 
 .status-pill.pending {
-    background-color: rgba(245, 158, 11, 0.1);
+    background-color: rgba(245, 158, 11, 0.15);
     color: #f59e0b;
     border: 1px solid #f59e0b;
 }
 
-/* --- FIXED: Added missing Modal Styles --- */
-/* Modal Styles */
+/* ========================================
+   RIGHT COLUMN: ANALYTICS PANEL (25%)
+======================================== */
+.analytics-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+/* PIE CHART SECTION - Top 35% */
+.pie-chart-section {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    height: 35%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pie-chart-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.chart-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 120px;
+    margin-bottom: 10px;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-dot.active {
+    background-color: #10b981;
+}
+
+.legend-dot.closed {
+    background-color: #ef4444;
+}
+
+.legend-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.legend-label {
+    font-size: 0.7rem;
+    color: #666;
+}
+
+.legend-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* RECRUITMENT METRICS SECTION - Bottom 65% */
+.recruitment-metrics-section {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    height: 65%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.recruitment-metrics-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.metrics-cards-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    flex: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.metric-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.metric-card.total {
+    background: linear-gradient(135deg, var(--blue-card), #2563eb);
+}
+
+.metric-card.accepted {
+    background: linear-gradient(135deg, var(--green-card), #059669);
+}
+
+.metric-card.rejected {
+    background: linear-gradient(135deg, var(--red-card), #dc2626);
+}
+
+.metric-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.metric-icon i {
+    font-size: 1.3rem;
+}
+
+.metric-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+.metric-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ========================================
+   MODAL STYLES
+======================================== */
 .modal {
     display: none;
     position: fixed;
@@ -528,46 +573,49 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 5% auto;
+    margin: 3% auto;
     padding: 0;
-    border-radius: 15px;
-    width: 80%;
-    max-width: 900px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    width: 85%;
+    max-width: 1000px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
 .modal-header {
-    padding: 20px 30px;
+    padding: 25px 30px;
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
 }
 
 .modal-header h2 {
     margin: 0;
     color: #333;
+    font-size: 1.5rem;
 }
 
 .close-modal {
     color: #aaa;
-    font-size: 28px;
+    font-size: 32px;
     font-weight: bold;
     cursor: pointer;
-    transition: color 0.2s;
+    transition: all 0.2s;
+    line-height: 1;
 }
 
 .close-modal:hover,
 .close-modal:focus {
-    color: #000;
-    text-decoration: none;
+    color: #333;
+    transform: rotate(90deg);
 }
 
 .modal-body {
@@ -576,7 +624,6 @@ body {
     overflow-y: auto;
 }
 
-/* --- FIXED: Forced dark text for modal table --- */
 .modal-body table {
     color: #333;
 }
@@ -594,7 +641,9 @@ body {
     width: 100%;
 }
 
-/* Placeholder Content Styles (Keep these for other sections) */
+/* ========================================
+   PLACEHOLDER CONTENT (Other Sections)
+======================================== */
 .placeholder-content {
     display: flex;
     flex-direction: column;
@@ -605,7 +654,8 @@ body {
     text-align: center;
     padding: 50px;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .placeholder-icon {
@@ -625,33 +675,65 @@ body {
     color: #888;
 }
 
-/* Responsive Design */
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+@media (max-width: 1400px) {
+    .dashboard-main-container {
+        grid-template-columns: 70% 30%;
+    }
+
+    .metric-number {
+        font-size: 1.5rem;
+    }
+
+    .metric-label {
+        font-size: 0.7rem;
+    }
+}
+
 @media (max-width: 1024px) {
-    .dashboard-top-section {
-        flex-direction: column;
+    .dashboard-main-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        height: auto;
+        max-height: none;
+    }
+
+    .analytics-panel {
+        grid-row: 1;
+        flex-direction: row;
         height: auto;
     }
 
-    .analytics-container {
-        flex: none;
+    .job-listings-panel {
+        grid-row: 2;
+        height: 400px;
     }
 
-    .pie-chart-container {
-        flex: none;
+    .pie-chart-section,
+    .recruitment-metrics-section {
+        flex: 1;
+        height: auto;
     }
 }
 
 @media (max-width: 768px) {
-    .analytics-cards {
-        flex-direction: column;
-    }
-
     .sidebar {
         position: absolute;
         height: 100%;
+        z-index: 1000;
     }
 
     .main-content {
         margin-left: var(--sidebar-width-collapsed);
+    }
+
+    .analytics-panel {
+        flex-direction: column;
+    }
+
+    .metric-card {
+        flex-direction: row;
     }
 }

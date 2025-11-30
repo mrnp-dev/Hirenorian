@@ -74,92 +74,96 @@
                 <div class="page-title">
                     <h1>Dashboard</h1>
                 </div>
+                
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
-                    <!-- Top Section: Analytics & Pie Chart -->
-                    <div class="dashboard-top-section">
-                        <!-- Recruitment Analytics -->
-                        <div class="analytics-container">
-                            <h2>Recruitment Analytics</h2>
-                            <div class="analytics-cards">
-                                <div class="analytics-card total">
-                                    <div class="card-header">
-                                        <i class="fa-solid fa-briefcase"></i>
-                                        <span>TOTAL</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <span class="card-number">2,450</span>
-                                        <span class="card-label">Applications Received</span>
-                                    </div>
-                                </div>
-                                <div class="analytics-card accepted">
-                                    <div class="card-header">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                        <span>ACCEPTED</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <span class="card-number">890</span>
-                                        <span class="card-label">Hired Candidates</span>
-                                    </div>
-                                </div>
-                                <div class="analytics-card rejected">
-                                    <div class="card-header">
-                                        <i class="fa-solid fa-circle-xmark"></i>
-                                        <span>REJECTED</span>
-                                    </div>
-                                    <div class="card-body">
-                                        <span class="card-number">1,560</span>
-                                        <span class="card-label">Candidates Not Selected</span>
-                                    </div>
-                                </div>
+                    <!-- Modern 2-Column Dashboard Layout -->
+                    <div class="dashboard-main-container">
+                        <!-- Left Column: Job Listings (75% width) -->
+                        <div class="job-listings-panel">
+                            <div class="section-header">
+                                <h2>Job Listing Summary</h2>
+                                <button class="btn-view-all" id="viewAllBtn">
+                                    <i class="fa-solid fa-list"></i>
+                                    View All Applicants
+                                </button>
+                            </div>
+                            <div class="job-listing-container">
+                                <table class="job-listing-table">
+                                    <thead>
+                                        <tr>
+                                            <th>JOB TITLE</th>
+                                            <th>APPLICANT'S NAME</th>
+                                            <th>DATE APPLIED</th>
+                                            <th>STATUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="jobListingBody">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <!-- Posts Status Pie Chart -->
-                        <div class="pie-chart-container">
-                            <h3>Posts Status</h3>
-                            <div class="chart-wrapper">
-                                <canvas id="postsChart"></canvas>
-                            </div>
-                            <div class="chart-legend">
-                                <div class="legend-item">
-                                    <span class="legend-dot active"></span>
-                                    <div class="legend-text">
-                                        <span class="legend-label">Active</span>
-                                        <span class="legend-value" id="activePostCount">1</span>
+                        <!-- Right Column: Analytics Panel (25% width) -->
+                        <div class="analytics-panel">
+                            <!-- Top Section: Pie Chart (35% height) -->
+                            <div class="pie-chart-section">
+                                <h3>Posts Status</h3>
+                                <div class="chart-wrapper">
+                                    <canvas id="postsChart"></canvas>
+                                </div>
+                                <div class="chart-legend">
+                                    <div class="legend-item">
+                                        <span class="legend-dot active"></span>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Active</span>
+                                            <span class="legend-value" id="activePostCount">1</span>
+                                        </div>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot closed"></span>
+                                        <div class="legend-text">
+                                            <span class="legend-label">Closed</span>
+                                            <span class="legend-value" id="closedPostCount">1</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="legend-item">
-                                    <span class="legend-dot closed"></span>
-                                    <div class="legend-text">
-                                        <span class="legend-label">Closed</span>
-                                        <span class="legend-value" id="closedPostCount">1</span>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Bottom Section: Job Listing Summary -->
-                    <div class="dashboard-bottom-section">
-                        <div class="section-header">
-                            <h2>Job Listing Summary</h2>
-                            <button class="btn-view-all" id="viewAllBtn">View All Applicants</button>
-                        </div>
-                        <div class="job-listing-container">
-                            <table class="job-listing-table">
-                                <thead>
-                                    <tr>
-                                        <th>JOB TITLE</th>
-                                        <th>APPLICANT'S NAME</th>
-                                        <th>DATE APPLIED</th>
-                                        <th>STATUS</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="jobListingBody">
-                                    <!-- Populated by JS -->
-                                </tbody>
-                            </table>
+                            <!-- Bottom Section: Recruitment Analytics (65% height) -->
+                            <div class="recruitment-metrics-section">
+                                <h3>Recruitment Analytics</h3>
+                                <div class="metrics-cards-vertical">
+                                    <div class="metric-card total">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-briefcase"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <span class="metric-label">Total Applications</span>
+                                            <span class="metric-number" id="totalApplications">2,450</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card accepted">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <span class="metric-label">Accepted</span>
+                                            <span class="metric-number" id="acceptedApplications">890</span>
+                                        </div>
+                                    </div>
+                                    <div class="metric-card rejected">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <span class="metric-label">Rejected</span>
+                                            <span class="metric-number" id="rejectedApplications">1,560</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
