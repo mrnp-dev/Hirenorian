@@ -1,119 +1,228 @@
-#whole-section {
-    height: 100vh;
+/* Main container for section 2 */
+#main-section-2 {
     width: 100%;
+    min-height: 70vh;
     display: flex;
     flex-direction: column;
-    
-    margin-left: 80px;
-    margin-right: 80px;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    background-image: url("../Images/Backgrounds/workplace-1-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 
-#companies-section {
+.main-section-2-overlay {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 0;
+}
 
-    height: 70vh;
-    width: 100vw;
+/* Companies section */
+#companies-section {
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 5vw;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+#internships-header {
+    text-align: center;
+    color: #ffffff;
+}
+
+#internships-title {
+    font-family: "Marcellus", "Poppins", serif;
+    font-size: 4em;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.05em;
+    color: #9B000A;
+    
+}
+
+#internships-subheading {
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: black;
+    opacity: 0.85;
+}
+
+/* Each row that holds 3 cards horizontally */
+.companies-cards-holder {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.25rem;
+    flex-wrap: nowrap;
+}
+
+/* Company card base style */
+.company-card {
+    flex: 1 1 calc(20% - 1rem);
+    max-width: 300px;
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-.company-card {
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  width: 320px;
-  margin: 20px;
+/* Top image area (workplace photo) */
+.company-card__image-wrapper {
+    width: 100%;
+    height: 35%;
+    min-height: 120px;
+    max-height: 160px;
+    overflow: hidden;
+    position: relative;
 }
 
-.company-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.15);
+.company-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-.company-card-top {
-  background: #f9f9f9;
-  padding: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Circle company logo overlapping image and body */
+.company-card__logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    position: absolute;
+    left: 50%;
+    top: calc(35% - 45px); /* half of the logo height (90 / 2) */
+    transform: translateX(-50%);
+    overflow: hidden;
+    background: #ffffff;
 }
 
-.company-logo {
-  max-width: 100%;
-  max-height: 80px;
-  object-fit: contain;
+.company-card__logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.company-card-middle {
-  padding: 18px;
-  text-align: center;
+/* Content area below image/logo */
+.company-card__content {
+    width: 100%;
+    padding: 70px 1.2rem 1.2rem; /* extra top padding so text clears the logo */
+    box-sizing: border-box;
+    text-align: center;
 }
 
-.company-name {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #222;
-  margin-bottom: 6px;
+.company-card__name {
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #111827;
+    margin-bottom: 0.25rem;
 }
 
-.company-position {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 10px;
+.company-card__position {
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: #4b5563;
+    margin-bottom: 1.4rem;
 }
 
-.company-tagline {
-  font-size: 0.9rem;
-  color: #777;
-  font-style: italic;
+/* Footer acts as "View Internship" button */
+.company-card__footer {
+    margin-top: auto;
+    width: 100%;
+    background: linear-gradient(90deg, #9B000A, #FFBD00);
+    color: #ffffff;
+    text-align: center;
+    padding: 0.9rem 0;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 600;
+    font-size: 0.98rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    outline: none;
 }
 
-.company-card-info {
-  padding: 0 18px 18px;
-  font-size: 0.9rem;
-  color: #444;
-  line-height: 1.4;
+.company-card__footer:hover {
+    filter: brightness(1.05);
 }
 
-.company-card-info strong {
-  color: #222;
+/* "More" button container vertically below the companies section */
+#job-more {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
 }
-
-.company-card-bottom {
-  padding: 16px;
-  text-align: center;
-}
-
-.company-card-bottom button {
-  background-color: #eabb00;
-  color: #fff;
-  border: none;
-  padding: 10px 26px;
-  border-radius: 20px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.company-card-bottom button:hover {
-  background-color: #c99a00;
-}
-
 
 #more-button {
-    font-size: 25px;
-    padding: 10px 70px;
-    border-radius: 18px;
-    align-items: center;
-    margin-top: 30px;
-    margin-bottom: 30px;
+    padding: 0.8rem 2.4rem;
+    border-radius: 999px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background: #111827;
+    color: #ffffff;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.35);
+}
 
+#more-button:hover {
+    transform: translateY(-2px);
+    background: #9B000A;
+    box-shadow: 0 16px 30px rgba(248, 113, 113, 0.55);
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+    .companies-cards-holder {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    #companies-section {
+        height: auto;
+        padding: 2rem 6vw;
+    }
+
+    .companies-cards-holder {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .company-card {
+        max-width: 360px;
+        width: 100%;
+    }
 }
 
