@@ -86,15 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const totalPosts = activePosts + closedPosts;
 
-        // Update stat card numbers
+        // Update legend counts
         document.getElementById('activePostCount').textContent = activePosts;
         document.getElementById('closedPostCount').textContent = closedPosts;
-
-        // Update center total
-        const totalElement = document.getElementById('totalPostsCount');
-        if (totalElement) {
-            totalElement.textContent = totalPosts;
-        }
 
         let chartData, chartColors;
 
@@ -120,35 +114,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     data: chartData,
                     backgroundColor: chartColors,
                     borderWidth: 0,
-                    hoverOffset: 8  // Increased for better hover effect
+                    hoverOffset: 4
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 cutout: '70%',
                 plugins: {
                     legend: {
                         display: false
                     },
                     tooltip: {
-                        enabled: totalPosts !== 0,
-                        callbacks: {
-                            label: function (context) {
-                                const label = context.label || '';
-                                const value = context.parsed || 0;
-                                const percentage = totalPosts > 0 ?
-                                    Math.round((value / totalPosts) * 100) : 0;
-                                return label + ': ' + value + ' (' + percentage + '%)';
-                            }
-                        }
+                        enabled: totalPosts !== 0
                     }
-                },
-                animation: {
-                    animateRotate: true,
-                    animateScale: true,
-                    duration: 1000,
-                    easing: 'easeInOutQuart'
                 }
             }
         });
@@ -161,33 +140,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. JOB LISTINGS & MODAL
     // ========================================
 
+    // ========================================
+    // 3. JOB LISTINGS & MODAL
+    // ========================================
+
     const jobListingBody = document.getElementById('jobListingBody');
     const modalJobListingBody = document.getElementById('modalJobListingBody');
     const viewAllBtn = document.getElementById('viewAllBtn');
     const modal = document.getElementById('applicantsModal');
     const closeModal = document.querySelector('.close-modal');
 
-    // Mock Data for Applicants (Replace this with your backend data)
-    let applicantsData = [
-        { title: 'Senior UX Designer', name: 'Alice Johnson', date: '2025-10-28', status: 'Accepted' },
-        { title: 'Full Stack Developer', name: 'Bob Smith', date: '2025-10-30', status: 'Rejected' },
-        { title: 'Data Scientist', name: 'Charlie Brown', date: '2025-11-01', status: 'Pending' },
-        { title: 'Frontend Developer', name: 'David Lee', date: '2025-11-02', status: 'Pending' },
-        { title: 'Backend Engineer', name: 'Eva Green', date: '2025-10-25', status: 'Rejected' },
-        { title: 'Product Manager', name: 'Frank White', date: '2025-11-03', status: 'Accepted' },
-        { title: 'QA Engineer', name: 'Grace Hall', date: '2025-11-04', status: 'Pending' },
-        { title: 'DevOps Engineer', name: 'Henry Wilson', date: '2025-11-05', status: 'Pending' },
-        { title: 'UI Designer', name: 'Isabel Martinez', date: '2025-11-06', status: 'Accepted' }
+    // Mock Data for Job Posts (Replace this with your backend data)
+    let jobPostsData = [
+        { title: 'Senior UX Designer', applicants: '8/10', datePosted: '2025-10-28', status: 'Active' },
+        { title: 'Full Stack Developer', applicants: '10/10', datePosted: '2025-10-30', status: 'Closed' },
+        { title: 'Data Scientist', applicants: '3/5', datePosted: '2025-11-01', status: 'Active' },
+        { title: 'Frontend Developer', applicants: '5/8', datePosted: '2025-11-02', status: 'Active' },
+        { title: 'Backend Engineer', applicants: '10/10', datePosted: '2025-10-25', status: 'Closed' },
+        { title: 'Product Manager', applicants: '2/5', datePosted: '2025-11-03', status: 'Active' },
+        { title: 'QA Engineer', applicants: '4/6', datePosted: '2025-11-04', status: 'Active' },
+        { title: 'DevOps Engineer', applicants: '1/3', datePosted: '2025-11-05', status: 'Active' },
+        { title: 'UI Designer', applicants: '6/6', datePosted: '2025-11-06', status: 'Closed' }
     ];
 
-    // Sorting Logic: Pending first, then Accepted, then Rejected
+    // Sorting Logic: Active first, then Closed
     const statusOrder = {
-        'Pending': 1,
-        'Accepted': 2,
-        'Rejected': 3
+        'Active': 1,
+        'Closed': 2
     };
 
-    function sortApplicants(data) {
+    function sortJobPosts(data) {
         return data.sort((a, b) => statusOrder[a.status] - statusOrder[b.status]);
     }
 
@@ -201,33 +183,36 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = `
                 <tr>
                     <td colspan="4" style="text-align: center; padding: 30px; color: #999;">
-                        No applicants found
+                        No job posts found
                     </td>
                 </tr>
             `;
             return;
         }
 
-        data.forEach(app => {
+        data.forEach(post => {
             const row = document.createElement('tr');
+            // Determine status class for styling
+            const statusClass = post.status.toLowerCase(); // 'active' or 'closed'
+
             row.innerHTML = `
-                <td>${app.title}</td>
-                <td>${app.name}</td>
-                <td>${app.date}</td>
-                <td><span class="status-pill ${app.status.toLowerCase()}">${app.status}</span></td>
+                <td>${post.title}</td>
+                <td>${post.applicants}</td>
+                <td>${post.datePosted}</td>
+                <td><span class="status-pill ${statusClass}">${post.status}</span></td>
             `;
             container.appendChild(row);
         });
     }
 
     // Initial render
-    const sortedApplicants = sortApplicants(applicantsData);
-    renderTable(sortedApplicants, jobListingBody);
+    const sortedPosts = sortJobPosts(jobPostsData);
+    renderTable(sortedPosts, jobListingBody);
 
     // Modal Logic
     if (viewAllBtn && modal) {
         viewAllBtn.addEventListener('click', () => {
-            renderTable(sortedApplicants, modalJobListingBody);
+            renderTable(sortedPosts, modalJobListingBody);
             modal.style.display = 'block';
         });
 
@@ -274,12 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Update Job Listings Table
-     * @param {Array} applicants - Array of applicant objects
-     * Example: updateJobListings([{ title: 'Developer', name: 'John', date: '2025-11-01', status: 'Pending' }])
+     * @param {Array} posts - Array of job post objects
+     * Example: updateJobListings([{ title: 'Developer', applicants: '3/10', datePosted: '2025-11-01', status: 'Active' }])
      */
-    window.updateJobListings = function (applicants) {
-        applicantsData = applicants;
-        const sorted = sortApplicants([...applicants]);
+    window.updateJobListings = function (posts) {
+        jobPostsData = posts;
+        const sorted = sortJobPosts([...posts]);
         renderTable(sorted, jobListingBody);
     };
 

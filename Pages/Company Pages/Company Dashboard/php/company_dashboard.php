@@ -85,7 +85,7 @@
                                 <h2>Job Listing Summary</h2>
                                 <button class="btn-view-all" id="viewAllBtn">
                                     <i class="fa-solid fa-list"></i>
-                                    View All Applicants
+                                    View All Posts
                                 </button>
                             </div>
                             <div class="job-listing-container">
@@ -93,8 +93,8 @@
                                     <thead>
                                         <tr>
                                             <th>JOB TITLE</th>
-                                            <th>APPLICANT'S NAME</th>
-                                            <th>DATE APPLIED</th>
+                                            <th>APPLICANTS</th>
+                                            <th>DATE POSTED</th>
                                             <th>STATUS</th>
                                         </tr>
                                     </thead>
@@ -213,7 +213,7 @@
     <div id="applicantsModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>All Applicants</h2>
+                <h2>All Job Posts</h2>
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
@@ -221,8 +221,8 @@
                     <thead>
                         <tr>
                             <th>JOB TITLE</th>
-                            <th>APPLICANT'S NAME</th>
-                            <th>DATE APPLIED</th>
+                            <th>APPLICANTS</th>
+                            <th>DATE POSTED</th>
                             <th>STATUS</th>
                         </tr>
                     </thead>
