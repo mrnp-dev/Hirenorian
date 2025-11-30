@@ -86,9 +86,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const totalPosts = activePosts + closedPosts;
 
-        // Update legend counts
+        // Update stat card numbers
         document.getElementById('activePostCount').textContent = activePosts;
         document.getElementById('closedPostCount').textContent = closedPosts;
+
+        // Update center total
+        const totalElement = document.getElementById('totalPostsCount');
+        if (totalElement) {
+            totalElement.textContent = totalPosts;
+        }
 
         let chartData, chartColors;
 
@@ -114,20 +120,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     data: chartData,
                     backgroundColor: chartColors,
                     borderWidth: 0,
-                    hoverOffset: 4
+                    hoverOffset: 8  // Increased for better hover effect
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
                 cutout: '70%',
                 plugins: {
                     legend: {
                         display: false
                     },
                     tooltip: {
-                        enabled: totalPosts !== 0
+                        enabled: totalPosts !== 0,
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const percentage = totalPosts > 0 ?
+                                    Math.round((value / totalPosts) * 100) : 0;
+                                return label + ': ' + value + ' (' + percentage + '%)';
+                            }
+                        }
                     }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true,
+                    duration: 1000,
+                    easing: 'easeInOutQuart'
                 }
             }
         });

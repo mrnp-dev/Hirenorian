@@ -74,7 +74,7 @@
                 <div class="page-title">
                     <h1>Dashboard</h1>
                 </div>
-                
+
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
                     <!-- Modern 2-Column Dashboard Layout -->
@@ -110,22 +110,33 @@
                             <!-- Top Section: Pie Chart (35% height) -->
                             <div class="pie-chart-section">
                                 <h3>Posts Status</h3>
-                                <div class="chart-wrapper">
-                                    <canvas id="postsChart"></canvas>
-                                </div>
-                                <div class="chart-legend">
-                                    <div class="legend-item">
-                                        <span class="legend-dot active"></span>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Active</span>
-                                            <span class="legend-value" id="activePostCount">1</span>
+                                <div class="chart-content-wrapper">
+                                    <!-- Left: Stats Cards -->
+                                    <div class="chart-stats">
+                                        <div class="stat-card active-card">
+                                            <div class="stat-indicator active-indicator"></div>
+                                            <div class="stat-details">
+                                                <span class="stat-label">Active Posts</span>
+                                                <span class="stat-number" id="activePostCount">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card closed-card">
+                                            <div class="stat-indicator closed-indicator"></div>
+                                            <div class="stat-details">
+                                                <span class="stat-label">Closed Posts</span>
+                                                <span class="stat-number" id="closedPostCount">1</span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="legend-item">
-                                        <span class="legend-dot closed"></span>
-                                        <div class="legend-text">
-                                            <span class="legend-label">Closed</span>
-                                            <span class="legend-value" id="closedPostCount">1</span>
+
+                                    <!-- Right: Donut Chart with Center Total -->
+                                    <div class="chart-display">
+                                        <div class="chart-container">
+                                            <canvas id="postsChart"></canvas>
+                                            <div class="chart-center-label">
+                                                <span class="center-number" id="totalPostsCount">2</span>
+                                                <span class="center-text">Total</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
