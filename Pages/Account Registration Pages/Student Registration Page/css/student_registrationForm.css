@@ -915,46 +915,50 @@
     flex: 1;
   }
 
-  /* Verify Button */
+  css
+
+  /* Verify Button - Side by side with input */
   .verify-btn {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(135deg, #ffb800 0%, #ff9500 100%);
-    color: #1f1f1f;
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: 8px;
+    background: transparent;
+    color: #ffb800;
+    border: 1.5px solid #ffb800;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.3rem;
-    box-shadow: 0 2px 8px rgba(255, 184, 0, 0.3);
-    z-index: 10;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: fit-content;
   }
 
   .verify-btn:hover {
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 184, 0, 0.5);
+    background: rgba(255, 184, 0, 0.15);
+    border-color: #ffc933;
+    color: #ffc933;
+    transform: translateY(-1px);
   }
 
   .verify-btn:active {
-    transform: translateY(-50%) scale(0.98);
+    transform: translateY(0);
+    background: rgba(255, 184, 0, 0.25);
   }
 
   .verify-btn:disabled {
-    background: linear-gradient(135deg, #666 0%, #555 100%);
+    background: transparent;
+    border-color: #666;
+    color: #666;
     cursor: not-allowed;
-    opacity: 0.6;
-    box-shadow: none;
+    opacity: 0.5;
   }
 
   .verify-btn i {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   /* Verified Badge */
