@@ -1168,6 +1168,11 @@ window.addEventListener('DOMContentLoaded', async e => {
     organizations = [...organizations_defaul, ...organizations_byDepartment, ...organizations_byCampus];
 
     secondInputs.forEach(async (input) => {
+        // Skip suggestions logic for school email input since it has a verify button as nextElementSibling
+        if (input.id === 'schoolEmail-input') {
+            return; // Exit early, no suggestions needed for school email
+        }
+
         let list = []
         input.addEventListener('focus', (e) => {
             switch (input.name.toLowerCase()) {
@@ -1192,6 +1197,11 @@ window.addEventListener('DOMContentLoaded', async e => {
         });
 
         input.addEventListener('input', async (e) => {
+            // Skip suggestions logic for school email input
+            if (input.id === 'schoolEmail-input') {
+                return;
+            }
+
             if (input.name == 'Department') {
                 const value = input.value.trim().toLowerCase();
                 const depIndex = departments.findIndex(dep => dep.toLowerCase() == value);
