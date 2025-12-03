@@ -2,6 +2,18 @@ let selectedTags = [];
 const maxSelection = 3;
 let courseTagsData = {};
 
+// ==================== EMAIL VERIFICATION STATE ====================
+let emailVerificationState = {
+    personalEmail: false,
+    schoolEmail: false
+};
+
+let currentVerifyingEmail = null;
+let currentVerifyingEmailType = null;
+let resendTimer = null;
+let resendCountdown = 60;
+
+
 const tagsContainer = document.querySelector('.tags-container');
 const selectedCount = document.querySelector('.selected-count');
 

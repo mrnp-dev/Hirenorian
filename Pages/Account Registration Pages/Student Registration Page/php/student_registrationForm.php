@@ -63,8 +63,15 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="input-wrapper">
+                            <div class="input-wrapper email-verification-wrapper">
                                 <input type="text" id="email-input" name="Email" placeholder="Personal Email *">
+                                <button type="button" class="verify-btn" id="verify-personal-email-btn"
+                                    onclick="initiateEmailVerification('personal')">
+                                    <i class="fa fa-shield-alt"></i> Verify
+                                </button>
+                                <div class="verified-badge" id="personal-email-verified" style="display: none;">
+                                    <i class="fa fa-check-circle"></i>
+                                </div>
                                 <p>error</p>
                             </div>
 
@@ -122,9 +129,16 @@
                                 <input type="text" id="studNum-input" name="Student Number" placeholder="Student No *">
                                 <p>error</p>
                             </div>
-                            <div class="input-wrapper">
+                            <div class="input-wrapper email-verification-wrapper">
                                 <input type="text" id="schoolEmail-input" name="School Email"
                                     placeholder="School Email *">
+                                <button type="button" class="verify-btn" id="verify-school-email-btn"
+                                    onclick="initiateEmailVerification('school')">
+                                    <i class="fa fa-shield-alt"></i> Verify
+                                </button>
+                                <div class="verified-badge" id="school-email-verified" style="display: none;">
+                                    <i class="fa fa-check-circle"></i>
+                                </div>
                                 <p>error</p>
                             </div>
                         </div>
@@ -143,24 +157,6 @@
                         </div>
                     </div>
                     <div class="form-section" id="thirdInputs">
-                        <!-- <div class="input-wrapper">
-                            <input type="text" id="job1-input" name="Job Classification 1" placeholder="Job Classification 1 *">
-                            <div class="suggestions"></div>
-                            <p>error</p>
-                        </div>
-
-                        <div class="input-wrapper">
-                            <input type="text" id="job2-input" name="Job Classification 2" placeholder="Job Classification 2 *">
-                            <div class="suggestions"></div>
-                            <p>error</p>
-                        </div>
-
-                        <div class="input-wrapper">
-                            <input type="text" id="job3-input" name="Job Classification 3" placeholder="Job Classification 3 *">
-                            <div class="suggestions"></div>
-                            <p>error</p>
-                        </div> -->
-
                         <div class="input-wrapper">
                             <input type="text" id="location-input" name="Ideal Location" placeholder="Ideal Location *">
                             <div class="suggestions"></div>
@@ -196,7 +192,7 @@
                     </div>
                 </div>
                 <div class="toggle-left shift_inactive">
-                    <h2>“Connecting students with<br>real-world opportunities”</h2>
+                    <h2>"Connecting students with<br>real-world opportunities"</h2>
                     <div class=" steps">
                         <div class="step active-step">
                             <div class="step-icon left-active-icon"><img src="../images/1User_White.png" alt="Logo">
@@ -221,7 +217,48 @@
         </div>
     </div>
 
+    <!-- OTP Verification Modal -->
+    <div class="otp-modal-overlay" id="otpModalOverlay" style="display: none;">
+        <div class="otp-modal-content">
+            <button type="button" class="otp-modal-close" onclick="closeOTPModal()">
+                <i class="fa fa-times"></i>
+            </button>
+
+            <div class="otp-modal-header">
+                <div class="otp-icon">
+                    <i class="fa fa-envelope"></i>
+                </div>
+                <h2>Verify Your Email</h2>
+                <p class="otp-instruction">We've sent a 6-digit code to <span id="verifying-email-display"></span></p>
+                <p class="otp-note">(For demo: Enter any 6-digit number)</p>
+            </div>
+
+            <div class="otp-input-container">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-1">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-2">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-3">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-4">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-5">
+                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-6">
+            </div>
+
+            <div class="otp-error-message" id="otpErrorMessage" style="display: none;">
+                <i class="fa fa-exclamation-circle"></i> <span id="otpErrorText"></span>
+            </div>
+
+            <div class="otp-modal-actions">
+                <button type="button" class="btn-verify-otp" onclick="verifyOTP()">
+                    <i class="fa fa-check"></i> Verify Code
+                </button>
+                <button type="button" class="btn-resend-otp" id="resendOtpBtn" onclick="resendOTP()">
+                    <i class="fa fa-redo"></i> <span id="resendText">Resend Code</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/student_registrationForm.js"></script>
+    <script src="../js/email_verification.js"></script>
     <script src="../js/toast.js"></script>
 </body>
 
