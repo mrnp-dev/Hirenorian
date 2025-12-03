@@ -1,0 +1,857 @@
+/* Global Styles */
+:root {
+    --primary-yellow: #f4c430;
+    --dark-bg: #2c2c2c;
+    --darker-bg: #1e1e1e;
+    --text-white: #ffffff;
+    --text-gray: #a0a0a0;
+    --input-bg: #e0e0e0;
+    --success-green: #d1e7dd;
+    --success-text: #0f5132;
+    --pending-yellow: #fff3cd;
+    --pending-text: #664d03;
+    --rejected-red: #f8d7da;
+    --rejected-text: #842029;
+    --sidebar-width-collapsed: 60px;
+    --sidebar-width-expanded: 250px;
+    --transition-speed: 0.3s;
+    --card-bg: #ffffff;
+    --blue-card: #3b82f6;
+    --green-card: #10b981;
+    --red-card: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: var(--text-white);
+    height: 100vh;
+    overflow: hidden;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100%;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: var(--sidebar-width-collapsed);
+    background-color: var(--primary-yellow);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition-speed) ease;
+    overflow: hidden;
+    z-index: 100;
+    position: relative;
+}
+
+.sidebar:hover {
+    width: var(--sidebar-width-expanded);
+}
+
+.logo-container {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    margin-right: 15px;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #333;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.sidebar:hover .logo-text {
+    opacity: 1;
+}
+
+.nav-menu {
+    list-style: none;
+    margin-top: 20px;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.nav-link i {
+    min-width: 30px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.link-text {
+    margin-left: 15px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.sidebar:hover .link-text {
+    opacity: 1;
+}
+
+.nav-item:hover .nav-link,
+.nav-item.active .nav-link {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-item.active .nav-link {
+    background-color: rgba(123, 17, 19, 0.2);
+    border-right: 4px solid #7B1113;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Top Bar */
+.top-bar {
+    height: 60px;
+    background-color: var(--darker-bg);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 30px;
+    border-bottom: 1px solid #444;
+}
+
+.page-title h1 {
+    font-size: 2rem;
+    color: var(--primary-yellow);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.user-profile {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-yellow);
+    background-color: #555;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    padding: 10px 0;
+    min-width: 150px;
+    display: none;
+    z-index: 1000;
+    margin-top: 10px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Section Transitions */
+.content-section {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.content-section.active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   MODERN DASHBOARD LAYOUT STYLES
+======================================== */
+
+/* Main Dashboard Container - 65% height constraint */
+.dashboard-main-container {
+    display: grid;
+    grid-template-columns: 75% 25%;
+    gap: 20px;
+    height: 65vh;
+    /* 65% of viewport height */
+    max-height: 65vh;
+}
+
+/* ========================================
+   LEFT COLUMN: JOB LISTINGS PANEL (75%)
+======================================== */
+.job-listings-panel {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 25px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.btn-view-all {
+    background: linear-gradient(135deg, var(--blue-card), #2563eb);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-view-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-view-all i {
+    font-size: 0.85rem;
+}
+
+.job-listing-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.job-listing-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.job-listing-table th {
+    text-align: left;
+    padding: 15px;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #f3f4f6;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+}
+
+.job-listing-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.job-listing-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.job-listing-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.status-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-pill.accepted {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid #10b981;
+}
+
+.status-pill.rejected {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+}
+
+.status-pill.pending {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid #f59e0b;
+}
+
+/* ========================================
+   RIGHT COLUMN: ANALYTICS PANEL (25%)
+======================================== */
+.analytics-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+/* PIE CHART SECTION - Top 35% */
+.pie-chart-section {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    height: 35%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pie-chart-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.chart-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 120px;
+    margin-bottom: 10px;
+}
+
+.chart-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #f8f9fa;
+    padding: 6px 10px;
+    border-radius: 8px;
+}
+
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.legend-dot.active {
+    background-color: #10b981;
+}
+
+.legend-dot.closed {
+    background-color: #ef4444;
+}
+
+.legend-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.legend-label {
+    font-size: 0.7rem;
+    color: #666;
+}
+
+.legend-value {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* RECRUITMENT METRICS SECTION - Bottom 65% */
+.recruitment-metrics-section {
+    background-color: var(--card-bg);
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Modern Horizontal Layout: Stats Left, Chart Right */
+.chart-content-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 15px;
+    min-height: 0;
+}
+
+/* Left Side: Stats Cards (40%) */
+.chart-stats {
+    flex: 0 0 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-card {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.stat-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.active-indicator {
+    background-color: #10b981;
+}
+
+.closed-indicator {
+    background-color: #ef4444;
+}
+
+.stat-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+}
+
+/* Right Side: Chart Display (60%) */
+.chart-display {
+    flex: 0 0 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container canvas {
+    max-width: 180px;
+    max-height: 180px;
+}
+
+/* Center Label in Donut Hole */
+.chart-center-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.center-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    line-height: 1;
+}
+
+.center-text {
+    display: block;
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* RECRUITMENT METRICS SECTION - Bottom 65% */
+.recruitment-metrics-section {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    height: 65%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.recruitment-metrics-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.metrics-cards-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    color: white;
+    flex: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.metric-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.metric-card.total {
+    background: linear-gradient(135deg, var(--blue-card), #2563eb);
+}
+
+.metric-card.accepted {
+    background: linear-gradient(135deg, var(--green-card), #059669);
+}
+
+.metric-card.rejected {
+    background: linear-gradient(135deg, var(--red-card), #dc2626);
+}
+
+.metric-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.metric-icon i {
+    font-size: 1.3rem;
+}
+
+.metric-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+.metric-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* ========================================
+   MODAL STYLES
+======================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 3% auto;
+    padding: 0;
+    border-radius: 20px;
+    width: 85%;
+    max-width: 1000px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 25px 30px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #f8f9fa, #ffffff);
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    color: #aaa;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: 30px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.modal-body table {
+    color: #333;
+}
+
+.modal-body table th {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+.modal-body table td {
+    color: #333;
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* ========================================
+   PLACEHOLDER CONTENT (Other Sections)
+======================================== */
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #666;
+    text-align: center;
+    padding: 50px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.placeholder-icon {
+    font-size: 4rem;
+    color: var(--primary-yellow);
+    margin-bottom: 20px;
+}
+
+.placeholder-content h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.placeholder-content p {
+    font-size: 1.1rem;
+    color: #888;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+@media (max-width: 1400px) {
+    .dashboard-main-container {
+        grid-template-columns: 70% 30%;
+    }
+
+    .metric-number {
+        font-size: 1.5rem;
+    }
+
+    .metric-label {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .dashboard-main-container {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        height: auto;
+        max-height: none;
+    }
+
+    .analytics-panel {
+        grid-row: 1;
+        flex-direction: row;
+        height: auto;
+    }
+
+    .job-listings-panel {
+        grid-row: 2;
+        height: 400px;
+    }
+
+    .pie-chart-section,
+    .recruitment-metrics-section {
+        flex: 1;
+        height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        height: 100%;
+        z-index: 1000;
+    }
+
+    .main-content {
+        margin-left: var(--sidebar-width-collapsed);
+    }
+
+    .analytics-panel {
+        flex-direction: column;
+    }
+
+    .metric-card {
+        flex-direction: row;
+    }
+}

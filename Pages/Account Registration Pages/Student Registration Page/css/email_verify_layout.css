@@ -1,0 +1,90 @@
+/* Email Verify Container - Side by side layout */
+.email-verify-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.email-verify-container .input-wrapper {
+  flex: 1;
+}
+
+/* Verify Button - Now beside input, not overlaying */
+.verify-btn {
+  background: transparent;
+  color: #ffb800;
+  border: 1.5px solid #ffb800;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 0;
+  height: fit-content;
+}
+
+.verify-btn:hover {
+  background: rgba(255, 184, 0, 0.15);
+  border-color: #ffc933;
+  color: #ffc933;
+  transform: translateY(-1px);
+}
+
+.verify-btn:active {
+  transform: translateY(0);
+  background: rgba(255, 184, 0, 0.25);
+}
+
+.verify-btn:disabled {
+  background: transparent;
+  border-color: #666;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.verify-btn i {
+  font-size: 0.75rem;
+}
+
+/* Verified Badge - now absolutely positioned within input-wrapper */
+.email-verify-container .verified-badge {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+  animation: verifiedPulse 0.6s ease-out;
+  z-index: 10;
+}
+
+@keyframes verifiedPulse {
+  0% {
+    transform: translateY(-50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-50%) scale(1.2);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+  }
+}

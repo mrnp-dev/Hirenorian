@@ -1,0 +1,20 @@
+{
+    "typesOfCompanies": [
+        "Sole Proprietorship",
+        "Partnership",
+        "Corporation",
+        "Limited Liability Company (LLC)",
+        "Cooperative",
+        "Joint Venture",
+        "Non-profit Organization",
+        "Public Company",
+        "Private Company",
+        "Holding Company",
+        "Subsidiary Company",
+        "Franchise",
+        "Government-owned Corporation",
+        "Multinational Company",
+        "Startup"
+    ]
+
+}
