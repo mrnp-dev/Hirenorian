@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -72,174 +74,104 @@
                 <div class="page-title">
                     <h1>Dashboard</h1>
                 </div>
+
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
-                    <!-- Applicants Section -->
-                    <section class="applicants-section">
-                        <div class="table-container">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Applicant</th>
-                                        <th>Job Title</th>
-                                        <th>Date Posted</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Juan Dela Cruz</td>
-                                        <td>Tech Solutions Inc.</td>
-                                        <td>Oct 24, 2023</td>
-                                        <td><span class="status-badge pending">Pending</span></td>
-                                        <td><button class="btn-view">View</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Juan Dela Cruz</td>
-                                        <td>Tech Solutions Inc.</td>
-                                        <td>Oct 20, 2023</td>
-                                        <td><span class="status-badge accepted">Accepted</span></td>
-                                        <td><button class="btn-view">View</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Juan Dela Cruz</td>
-                                        <td>Tech Solutions Inc.</td>
-                                        <td>Oct 15, 2023</td>
-                                        <td><span class="status-badge rejected">Rejected</span></td>
-                                        <td><button class="btn-view">View</button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </section>
-
-                    <!-- Bottom Section -->
-                    <div class="bottom-section">
-                        <!-- Post Creation Section -->
-                        <div class="post-creation">
-                            <div class="tabs">
-                                <button class="tab-btn active" data-tab="text">Text</button>
-                                <button class="tab-btn" data-tab="questions">Questions</button>
+                    <!-- Modern 2-Column Dashboard Layout -->
+                    <div class="dashboard-main-container">
+                        <!-- Left Column: Job Listings (75% width) -->
+                        <div class="job-listings-panel">
+                            <div class="section-header">
+                                <h2>Job Listing Summary</h2>
+                                <button class="btn-view-all" id="viewAllBtn">
+                                    <i class="fa-solid fa-list"></i>
+                                    View All Posts
+                                </button>
                             </div>
-
-                            <!-- Text Tab Content -->
-                            <div class="tab-content active" id="text-content">
-                                <div class="form-group full-width">
-                                    <input type="text" placeholder="Job title *" class="form-input">
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group half-width">
-                                        <div class="career-tags-input">
-                                            <input type="text" placeholder="Career tags" class="form-input">
-                                            <span class="tag-badge">Career Tag</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group half-width">
-                                        <input type="text" placeholder="Requirements" class="form-input">
-                                    </div>
-                                    <div class="form-group checkbox-group">
-                                        <label class="custom-checkbox">
-                                            <input type="checkbox">
-                                            <span class="checkmark"><i class="fa-solid fa-check"></i></span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="form-group full-width">
-                                    <textarea placeholder="Job description"
-                                        class="form-input textarea-large"></textarea>
-                                </div>
-                                <div class="form-actions">
-                                    <button class="btn-next">Next</button>
-                                </div>
-                            </div>
-
-                            <!-- Questions Tab Content -->
-                            <div class="tab-content" id="questions-content">
-                                <div class="questions-list">
-                                    <div class="question-row" style="padding-bottom: 0;">
-                                        <div style="flex: 1;"></div>
-                                        <div class="yes-no-options">
-                                            <div
-                                                style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">
-                                                Yes</div>
-                                            <div
-                                                style="width: 30px; text-align: center; font-weight: 600; font-size: 0.8rem;">
-                                                No</div>
-                                        </div>
-                                    </div>
-                                    <div class="question-row">
-                                        <input type="text" placeholder="Question 1" class="form-input question-input">
-                                        <div class="yes-no-options">
-                                            <div class="option-box"></div>
-                                            <div class="option-box"></div>
-                                        </div>
-                                    </div>
-                                    <div class="question-row">
-                                        <input type="text" placeholder="Question 2" class="form-input question-input">
-                                        <div class="yes-no-options">
-                                            <div class="option-box"></div>
-                                            <div class="option-box"></div>
-                                        </div>
-                                    </div>
-                                    <div class="question-row">
-                                        <input type="text" placeholder="Question 3" class="form-input question-input">
-                                        <div class="yes-no-options">
-                                            <div class="option-box"></div>
-                                            <div class="option-box"></div>
-                                        </div>
-                                    </div>
-                                    <div class="question-row">
-                                        <input type="text" placeholder="Question 4" class="form-input question-input">
-                                        <div class="yes-no-options">
-                                            <div class="option-box"></div>
-                                            <div class="option-box"></div>
-                                        </div>
-                                    </div>
-                                    <div class="question-row">
-                                        <input type="text" placeholder="Question 5" class="form-input question-input">
-                                        <div class="yes-no-options">
-                                            <div class="option-box"></div>
-                                            <div class="option-box"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-actions">
-                                    <button class="btn-next">Next</button>
-                                </div>
+                            <div class="job-listing-container">
+                                <table class="job-listing-table">
+                                    <thead>
+                                        <tr>
+                                            <th>JOB TITLE</th>
+                                            <th>APPLICANTS</th>
+                                            <th>DATE POSTED</th>
+                                            <th>STATUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="jobListingBody">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
-                        <!-- Company Status Section -->
-                        <div class="company-status">
-                            <div class="profile-card">
-                                <div class="profile-content">
-                                    <h3>DHVSU</h3>
-                                    <p>Student Assistant</p>
+                        <!-- Right Column: Analytics Panel (25% width) -->
+                        <div class="analytics-panel">
+                            <!-- Top Section: Pie Chart (35% height) -->
+                            <div class="pie-chart-section">
+                                <h3>Posts Status</h3>
+                                <div class="chart-content-wrapper">
+                                    <!-- Left: Stats Cards -->
+                                    <div class="chart-stats">
+                                        <div class="stat-card active-card">
+                                            <div class="stat-indicator active-indicator"></div>
+                                            <div class="stat-details">
+                                                <span class="stat-label">Active Posts</span>
+                                                <span class="stat-number" id="activePostCount">1</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card closed-card">
+                                            <div class="stat-indicator closed-indicator"></div>
+                                            <div class="stat-details">
+                                                <span class="stat-label">Closed Posts</span>
+                                                <span class="stat-number" id="closedPostCount">1</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Right: Donut Chart with Center Total -->
+                                    <div class="chart-display">
+                                        <div class="chart-container">
+                                            <canvas id="postsChart"></canvas>
+                                            <div class="chart-center-label">
+                                                <span class="center-number" id="totalPostsCount">2</span>
+                                                <span class="center-text">Total</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <button class="btn-apply">APPLY NOW</button>
                             </div>
-                            <div class="stats-card">
-                                <h4>Post Info</h4>
-                                <div class="stat-item">
-                                    <div class="stat-icon pending"><i class="fa-solid fa-clock"></i></div>
-                                    <div class="stat-details">
-                                        <span class="stat-label">Pending</span>
-                                        <span class="stat-value">1</span>
+
+                            <!-- Bottom Section: Recruitment Analytics (65% height) -->
+                            <div class="recruitment-metrics-section">
+                                <h3>Recruitment Analytics</h3>
+                                <div class="metrics-cards-vertical">
+                                    <div class="metric-card total">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-briefcase"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <span class="metric-label">Total Applications</span>
+                                            <span class="metric-number" id="totalApplications">2,450</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-icon accepted"><i class="fa-solid fa-circle-check"></i></div>
-                                    <div class="stat-details">
-                                        <span class="stat-label">Accepted</span>
-                                        <span class="stat-value">1</span>
+                                    <div class="metric-card accepted">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <span class="metric-label">Accepted</span>
+                                            <span class="metric-number" id="acceptedApplications">890</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-icon rejected"><i class="fa-solid fa-circle-xmark"></i></div>
-                                    <div class="stat-details">
-                                        <span class="stat-label">Rejected</span>
-                                        <span class="stat-value">1</span>
+                                    <div class="metric-card rejected">
+                                        <div class="metric-icon">
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                        </div>
+                                        <div class="metric-content">
+                                            <span class="metric-label">Rejected</span>
+                                            <span class="metric-number" id="rejectedApplications">1,560</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -275,6 +207,31 @@
                 </section>
             </div>
         </main>
+    </div>
+
+    <!-- View All Applicants Modal -->
+    <div id="applicantsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>All Job Posts</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <table class="job-listing-table full-width">
+                    <thead>
+                        <tr>
+                            <th>JOB TITLE</th>
+                            <th>APPLICANTS</th>
+                            <th>DATE POSTED</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalJobListingBody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="../js/dashboard.js"></script>
