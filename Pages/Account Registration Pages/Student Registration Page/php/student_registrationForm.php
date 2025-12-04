@@ -75,7 +75,7 @@
                                 <p>error</p>
                             </div>
 
-                            <div class="input-wrapper">
+                            <div class="input-wrapper phone-wrapper">
                                 <input type="text" id="phoneNumber-input" name="Phone Number" placeholder="Phone No *"
                                     minlength="11" maxlength="13">
                                 <p>error</p>
@@ -125,7 +125,7 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="input-wrapper">
+                            <div class="input-wrapper student-num-wrapper">
                                 <input type="text" id="studNum-input" name="Student Number" placeholder="Student No *">
                                 <p>error</p>
                             </div>

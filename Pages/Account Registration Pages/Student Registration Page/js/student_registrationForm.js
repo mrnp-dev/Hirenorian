@@ -266,6 +266,13 @@ async function initialFirstInputs_Validations(input) {
 
 async function goNext() {
     if (await firstInputsValidation()) {
+        // Check if personal email is verified
+        if (!emailVerificationState.personalEmail) {
+            const emailInput = document.querySelector('#email-input');
+            showError(emailInput, 'Please verify your email address');
+            return;
+        }
+
         firstInputs_Container.classList.remove('slide-left');
         firstInputs_Container.classList.add('slide-right');
         manageSteps('next');
@@ -653,6 +660,13 @@ function goToLast(button) {
         validateSecondInputs(input);
     });
     if (Object.values(secondInputs_Validation).every(Boolean)) {
+        // Check if school email is verified
+        if (!emailVerificationState.schoolEmail) {
+            const schoolEmailInput = document.querySelector('#schoolEmail-input');
+            showError(schoolEmailInput, 'Please verify your school email address');
+            return;
+        }
+
         secondInputs_Container.classList.remove('slide-left');
         secondInputs_Container.classList.add('slide-right');
         updateTagsForSelectedCourse();
@@ -1325,12 +1339,36 @@ window.addEventListener('DOMContentLoaded', async e => {
         });
     }
 
+    setupEmailEditListeners();
 });
+
+function setupEmailEditListeners() {
+    const personalEmailInput = document.querySelector('#email-input');
+    const schoolEmailInput = document.querySelector('#schoolEmail-input');
+
+    personalEmailInput.addEventListener('input', () => {
+        if (emailVerificationState.personalEmail) {
+            emailVerificationState.personalEmail = false;
+            document.querySelector('#verify-personal-email-btn').style.display = 'flex';
+            document.querySelector('#personal-email-verified').style.display = 'none';
+            delete userInformation['Email Verified'];
+        }
+    });
+
+    schoolEmailInput.addEventListener('input', () => {
+        if (emailVerificationState.schoolEmail) {
+            emailVerificationState.schoolEmail = false;
+            document.querySelector('#verify-school-email-btn').style.display = 'flex';
+            document.querySelector('#school-email-verified').style.display = 'none';
+            delete userInformation['School Email Verified'];
+        }
+    });
+}
 
 
 // ==================== EMAIL VERIFICATION FUNCTIONS ====================
 
-function initiateEmailVerification(emailType) {
+async function initiateEmailVerification(emailType) {
     if (emailType === 'personal') {
         const emailInput = document.querySelector('#email-input');
         const email = emailInput.value.trim();
@@ -1374,6 +1412,13 @@ function initiateEmailVerification(emailType) {
 
         // Check if matches student number
         const studentNumber = document.querySelector('#studNum-input').value.trim();
+
+        // Check availability first
+        const isStudentNumberAvailable = await ifStudentNumber_Exist();
+        if (!isStudentNumberAvailable) {
+            return;
+        }
+
         if (studentNumber) {
             const studentNumber_substr = email.toLowerCase().slice(0, 10);
             if (studentNumber !== studentNumber_substr) {
@@ -1543,7 +1588,7 @@ function markEmailAsVerified(emailType) {
 
         verifyBtn.style.display = 'none';
         verifiedBadge.style.display = 'flex';
-        emailInput.setAttribute('readonly', true);
+        // emailInput.setAttribute('readonly', true);
 
         userInformation['Email Verified'] = true;
 
@@ -1556,7 +1601,7 @@ function markEmailAsVerified(emailType) {
 
         verifyBtn.style.display = 'none';
         verifiedBadge.style.display = 'flex';
-        emailInput.setAttribute('readonly', true);
+        // emailInput.setAttribute('readonly', true);
 
         userInformation['School Email Verified'] = true;
     }
