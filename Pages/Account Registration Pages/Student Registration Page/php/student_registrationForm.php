@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/student_registrationForm.css">
     <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../Reset Password UI/css/reset_password.css">
     <title>Student sign in 1</title>
 </head>
 
@@ -34,7 +35,8 @@
                             onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
                     </div>
                     <!-- END MODIFICATION -->
-                    <span>Forgot password? <a href="" id="forgot-pass">Reset Password</a></span>
+                    <span>Forgot password? <a href="javascript:void(0)" id="forgot-pass"
+                            onclick="openResetPasswordUI()">Reset Password</a></span>
                     <button type="button" id="signIn_Btn" onclick="check_LogIn_Fields()">Login</button>
                 </form>
             </div>
@@ -223,6 +225,9 @@
         </div>
     </div>
 
+    <!-- Reset Password UI -->
+    <?php include '../Reset Password UI/php/reset_password.php'; ?>
+
     <!-- OTP Verification Modal -->
     <div class="otp-modal-overlay" id="otpModalOverlay" style="display: none;">
         <div class="otp-modal-content">
@@ -266,6 +271,7 @@
     <script src="../js/student_registrationForm.js"></script>
     <script src="../js/email_verification.js"></script>
     <script src="../js/toast.js"></script>
+    <script src="../Reset Password UI/js/reset_password.js"></script>
 </body>
 
 </html>
