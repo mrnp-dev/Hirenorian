@@ -143,6 +143,7 @@ async function check_LogIn_Fields() {
             const data = await response.json();
             if (response.ok && data.status === "success") {
                 ToastSystem.show('Login Successfully', "success");
+                resetFormState();
             } else {
                 ToastSystem.show('Login Failed', "error");
             }
@@ -818,9 +819,23 @@ function resetFormState() {
         input.classList.remove('input_InvalidInput');
     });
 
+    // Clear Sign In inputs
+    const allSignInInputs = document.querySelectorAll('.sign-in-container input');
+    allSignInInputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('input_InvalidInput');
+    });
+
     // 3. Reset error messages
     const errorMessages = document.querySelectorAll('.sign-up-container .input-wrapper p');
     errorMessages.forEach(p => {
+        p.style.visibility = 'hidden';
+        p.textContent = 'error';
+        p.style.color = 'red';
+    });
+
+    const signInErrorMessages = document.querySelectorAll('.sign-in-container .input-wrapper p');
+    signInErrorMessages.forEach(p => {
         p.style.visibility = 'hidden';
         p.textContent = 'error';
         p.style.color = 'red';
