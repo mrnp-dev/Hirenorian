@@ -104,19 +104,31 @@ signUp_Inputs.forEach(input => {
 
 async function check_LogIn_Fields() {
     let isValid = true;
-    signUp_Inputs.forEach(input => {
-        if (input.value.trim() == "") {
-            isValid = showError(input, `${input.name} cannot empty.`);
-        } else if (input.name == "Student Email") {
-            isValid = checkLogged_Email(input);
-        } else {
-            isValid = true;
-        }
-    });
+    const emailInput = document.querySelector('#signup-email');
+    const passwordInput = document.querySelector('#signup-password');
+
+    // Validate email
+    if (emailInput.value.trim() === "") {
+        showError(emailInput, `${emailInput.name} cannot be empty.`);
+        isValid = false;
+    } else if (!checkLogged_Email(emailInput)) {
+        showError(emailInput, `Please enter a valid student email.`);
+        isValid = false;
+    } else {
+        removeError(emailInput);
+    }
+
+    // Validate password
+    if (passwordInput.value.trim() === "") {
+        showError(passwordInput, `${passwordInput.name} cannot be empty.`);
+        isValid = false;
+    } else {
+        removeError(passwordInput);
+    }
 
     if (isValid) {
-        const email = document.querySelector('#signup-email').value.trim();
-        const password = document.querySelector('#signup-password').value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
         try {
             const response = await fetch("http://158.69.205.176:8080/student_login_process.php", {
                 method: "POST",
@@ -571,21 +583,53 @@ function confirmPassword(input) {
     }
 }
 
-function toggleShow_Hide_Password() {
-    const toggleButtons = document.querySelectorAll('.toggle_show_hide');
-    toggleButtons.forEach(button => {
+// MODIFIED: Password toggle function
+// - Sign In toggle: works independently
+// - Registration Password & Confirm Password toggles: linked together
+function toggleShow_Hide_Password(button) {
+    const buttonId = button.id;
+
+    // Check if this is a Registration section toggle (Password or Confirm Password)
+    if (buttonId === 'togglePassword' || buttonId === 'toggleConfirmPassword') {
+        // Toggle both Password and Confirm Password fields together
+        const passwordWrapper = document.querySelector('#togglePassword').closest('.input-wrapper');
+        const confirmPasswordWrapper = document.querySelector('#toggleConfirmPassword').closest('.input-wrapper');
+
+        const passwordField = passwordWrapper.querySelector('input');
+        const confirmPasswordField = confirmPasswordWrapper.querySelector('input');
+        const passwordEye = passwordWrapper.querySelector('i');
+        const confirmPasswordEye = confirmPasswordWrapper.querySelector('i');
+
+        // Toggle both fields
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            confirmPasswordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+            confirmPasswordField.type = 'password';
+        }
+
+        // Toggle both eye icons
+        passwordEye.classList.toggle('fa-eye');
+        passwordEye.classList.toggle('fa-eye-slash');
+        confirmPasswordEye.classList.toggle('fa-eye');
+        confirmPasswordEye.classList.toggle('fa-eye-slash');
+    } else {
+        // Sign In toggle - works independently
         const input_wrapper = button.closest('.input-wrapper');
         const eye = input_wrapper.querySelector('i');
         const passwordField = input_wrapper.querySelector('input');
-        if (passwordField.type == 'password') {
+
+        if (passwordField.type === 'password') {
             passwordField.type = 'text';
         } else {
             passwordField.type = 'password';
         }
         eye.classList.toggle('fa-eye');
         eye.classList.toggle('fa-eye-slash');
-    });
+    }
 }
+// END MODIFICATION
 
 function checkWhiteSpaces(input) {
     const regExSpaces = /\s{2,}/;

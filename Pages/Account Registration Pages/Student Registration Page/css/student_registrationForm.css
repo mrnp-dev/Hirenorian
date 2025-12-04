@@ -1364,3 +1364,27 @@
   .email-verification-wrapper {
     flex: 1;
   }
+  /* Override generic button styles for password toggle in Sign In section */
+  .sign-in-container .toggle_show_hide {
+    width: auto;
+    padding: 0;
+    background: #1f1f1f;
+    border-radius: 0;
+    border: none;
+    font-weight: normal;
+    font-size: 1.2rem;
+    color: white;
+    position: absolute;
+    right: 1rem;
+    cursor: pointer;
+  }
+
+  .sign-in-container .toggle_show_hide:hover {
+    transform: none;
+    background: #1f1f1f;
+  }
+
+  .sign-in-container .toggle_show_hide:active {
+    transform: none;
+    background: #1f1f1f;
+  }
