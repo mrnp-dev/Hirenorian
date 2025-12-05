@@ -21,7 +21,10 @@ function showResetStep(stepNumber) {
 
 function resetResetForm() {
     document.getElementById('reset-email-input').value = '';
-    document.querySelectorAll('.reset-otp').forEach(input => input.value = '');
+    document.querySelectorAll('.reset-otp').forEach(input => {
+        input.value = '';
+        input.classList.remove('filled', 'error');
+    });
     document.getElementById('reset-new-password').value = '';
     document.getElementById('reset-confirm-password').value = '';
     document.querySelectorAll('.error-msg').forEach(msg => msg.style.visibility = 'hidden');
@@ -51,7 +54,7 @@ async function initiateResetPasswordOTP() {
     hideResetError(errorMsg);
 
     // Simulate API call delay
-    const btn = document.querySelector('#resetStep1 .btn-reset-action');
+    const btn = document.querySelector('#resetStep1 .btn-reset-primary');
     const originalContent = btn.innerHTML;
     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
@@ -78,12 +81,16 @@ async function initiateResetPasswordOTP() {
 function showResetError(element, message) {
     element.textContent = message;
     element.style.visibility = 'visible';
-    element.previousElementSibling.classList.add('input_InvalidInput');
+    if (element.previousElementSibling) {
+        element.previousElementSibling.classList.add('input_InvalidInput');
+    }
 }
 
 function hideResetError(element) {
     element.style.visibility = 'hidden';
-    element.previousElementSibling.classList.remove('input_InvalidInput');
+    if (element.previousElementSibling) {
+        element.previousElementSibling.classList.remove('input_InvalidInput');
+    }
 }
 
 // Step 2: OTP Verification
@@ -95,9 +102,11 @@ function startResetOtpTimer() {
     resendBtn.disabled = true;
 
     clearInterval(resetOtpTimer);
+    updateTimerDisplay(); // Initial display
+
     resetOtpTimer = setInterval(() => {
         resetOtpCountdown--;
-        timerDisplay.textContent = `Resend in ${resetOtpCountdown}s`;
+        updateTimerDisplay();
 
         if (resetOtpCountdown <= 0) {
             clearInterval(resetOtpTimer);
@@ -105,6 +114,15 @@ function startResetOtpTimer() {
             resendBtn.disabled = false;
         }
     }, 1000);
+}
+
+function updateTimerDisplay() {
+    const timerDisplay = document.getElementById('resetResendTimer');
+    if (resetOtpCountdown > 0) {
+        timerDisplay.textContent = `(${resetOtpCountdown}s)`;
+    } else {
+        timerDisplay.textContent = "";
+    }
 }
 
 function resendResetOTP() {
@@ -120,27 +138,51 @@ function verifyResetOTP() {
     const errorMsg = document.getElementById('resetOtpError');
 
     if (otp.length !== 6) {
-        errorMsg.textContent = "Please enter 6 digits";
+        errorMsg.textContent = "Please enter all 6 digits";
         errorMsg.style.visibility = 'visible';
+        otpInputs.forEach(input => input.classList.add('error'));
         return;
     }
 
     // MODIFIED: Allow ANY 6-digit number for testing
     if (/^\d{6}$/.test(otp)) {
         errorMsg.style.visibility = 'hidden';
-        showResetStep(3);
+        otpInputs.forEach(input => {
+            input.classList.remove('error');
+            input.classList.add('filled');
+        });
+
+        // Simulate loading
+        const btn = document.querySelector('#resetStep2 .btn-reset-primary');
+        const originalContent = btn.innerHTML;
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Verifying...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+            btn.disabled = false;
+            showResetStep(3);
+        }, 1000);
+
     } else {
         errorMsg.textContent = "Invalid OTP Format";
         errorMsg.style.visibility = 'visible';
+        otpInputs.forEach(input => input.classList.add('error'));
     }
 }
 
-// OTP Input Logic (Auto-focus)
+// OTP Input Logic (Auto-focus & Styling)
 document.querySelectorAll('.reset-otp').forEach((input, index) => {
     input.addEventListener('input', (e) => {
+        // Remove error state on input
+        input.classList.remove('error');
+
         if (e.target.value.length === 1) {
+            input.classList.add('filled');
             const nextInput = document.querySelectorAll('.reset-otp')[index + 1];
             if (nextInput) nextInput.focus();
+        } else {
+            input.classList.remove('filled');
         }
     });
 
@@ -148,6 +190,23 @@ document.querySelectorAll('.reset-otp').forEach((input, index) => {
         if (e.key === 'Backspace' && e.target.value.length === 0) {
             const prevInput = document.querySelectorAll('.reset-otp')[index - 1];
             if (prevInput) prevInput.focus();
+        }
+    });
+
+    // Paste support
+    input.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData('text').slice(0, 6).split('');
+        if (pastedData.length > 0) {
+            const inputs = document.querySelectorAll('.reset-otp');
+            pastedData.forEach((char, i) => {
+                if (inputs[index + i]) {
+                    inputs[index + i].value = char;
+                    inputs[index + i].classList.add('filled');
+                }
+            });
+            const nextIndex = Math.min(index + pastedData.length, 5);
+            inputs[nextIndex].focus();
         }
     });
 });
