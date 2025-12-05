@@ -25,8 +25,13 @@ function resetResetForm() {
         input.value = '';
         input.classList.remove('filled', 'error');
     });
-    document.getElementById('reset-new-password').value = '';
-    document.getElementById('reset-confirm-password').value = '';
+    const newPassInput = document.getElementById('reset-new-password');
+    const confirmPassInput = document.getElementById('reset-confirm-password');
+    if (newPassInput) {
+        newPassInput.value = '';
+        delete newPassInput.dataset.strength;
+    }
+    if (confirmPassInput) confirmPassInput.value = '';
     document.querySelectorAll('.error-msg').forEach(msg => msg.style.visibility = 'hidden');
     clearInterval(resetOtpTimer);
 }
@@ -211,7 +216,7 @@ document.querySelectorAll('.reset-otp').forEach((input, index) => {
     });
 });
 
-// Step 3: New Password
+// Step 3: New Password with Strength Validation
 function toggleResetPasswordVisibility(btn) {
     const input = btn.previousElementSibling;
     const icon = btn.querySelector('i');
@@ -227,31 +232,170 @@ function toggleResetPasswordVisibility(btn) {
     }
 }
 
+// Password Strength Validation (matching sign-up logic)
+function checkResetPasswordStrength(input) {
+    const password = input.value;
+    const hasLetters = /[a-zA-Z]/.test(password);
+    const hasNumbers = /[0-9]/.test(password);
+    const hasSpecials = /[^a-zA-Z0-9]/.test(password);
+
+    const typesCount = [hasLetters, hasNumbers, hasSpecials].filter(Boolean).length;
+    return changeResetPasswordStrengthDisplay(input, typesCount);
+}
+
+function changeResetPasswordStrengthDisplay(element, strength) {
+    let valid = true;
+    const section = element.closest(".input-wrapper");
+    const strength_P = section.querySelector("p");
+
+    // Clear previous content
+    strength_P.innerHTML = '';
+
+    const span = document.createElement('span');
+    strength_P.textContent = "strength: ";
+    strength_P.style.color = "white";
+
+    switch (strength) {
+        case 1:
+            span.textContent = "weak";
+            span.style.color = "#ef4444";
+            element.dataset.strength = "weak";
+            valid = false;
+            break;
+        case 2:
+            span.textContent = "medium";
+            span.style.color = "#f59e0b";
+            element.dataset.strength = "medium";
+            break;
+        case 3:
+            span.textContent = "strong";
+            span.style.color = "#10b981";
+            element.dataset.strength = "strong";
+            break;
+    }
+
+    strength_P.append(span);
+    strength_P.style.visibility = 'visible';
+    strength_P.style.position = 'absolute';
+    strength_P.style.marginTop = '0';
+
+    return valid;
+}
+
+// Add blur listeners to password fields for validation (ONLY validate on blur and submit)
+document.addEventListener('DOMContentLoaded', function () {
+    const newPasswordInput = document.getElementById('reset-new-password');
+    const confirmPasswordInput = document.getElementById('reset-confirm-password');
+
+    if (newPasswordInput) {
+        // Only validate on blur (losing focus)
+        newPasswordInput.addEventListener('blur', function () {
+            const errorMsg = this.parentElement.querySelector('p');
+
+            if (this.value.length >= 12) {
+                checkResetPasswordStrength(this);
+            } else if (this.value.length > 0 && this.value.length < 12) {
+                errorMsg.textContent = "Must be at least 12 characters";
+                errorMsg.style.color = "#ef4444";
+                errorMsg.style.visibility = 'visible';
+                errorMsg.style.position = 'absolute';
+                errorMsg.style.marginTop = '0';
+                delete this.dataset.strength;
+            } else {
+                errorMsg.style.visibility = 'hidden';
+                delete this.dataset.strength;
+            }
+        });
+
+        // Clear error on focus
+        newPasswordInput.addEventListener('focus', function () {
+            // Don't clear if we have a strength indicator
+            if (!this.dataset.strength) {
+                const errorMsg = this.parentElement.querySelector('p');
+                errorMsg.style.visibility = 'hidden';
+            }
+        });
+    }
+
+    if (confirmPasswordInput) {
+        // Validate confirm password on blur
+        confirmPasswordInput.addEventListener('blur', function () {
+            const passInput = document.getElementById('reset-new-password');
+            const errorMsg = this.parentElement.querySelector('p');
+
+            if (this.value.length > 0 && this.value !== passInput.value) {
+                errorMsg.textContent = "Passwords do not match";
+                errorMsg.style.color = "#ef4444";
+                errorMsg.style.visibility = 'visible';
+                errorMsg.style.position = 'absolute';
+                errorMsg.style.marginTop = '0';
+            } else {
+                errorMsg.style.visibility = 'hidden';
+            }
+        });
+
+        // Clear error on focus
+        confirmPasswordInput.addEventListener('focus', function () {
+            const errorMsg = this.parentElement.querySelector('p');
+            errorMsg.style.visibility = 'hidden';
+        });
+    }
+});
+
 function submitNewPassword() {
     const passInput = document.getElementById('reset-new-password');
     const confirmInput = document.getElementById('reset-confirm-password');
 
-    const passError = passInput.parentElement.querySelector('.error-msg');
-    const confirmError = confirmInput.parentElement.querySelector('.error-msg');
+    const passError = passInput.parentElement.querySelector('p');
+    const confirmError = confirmInput.parentElement.querySelector('p');
 
     const password = passInput.value;
     const confirm = confirmInput.value;
 
     let isValid = true;
 
-    // Password Strength Validation
+    // Password Length Validation
     if (password.length < 12) {
-        showResetError(passError, "Must be at least 12 characters");
+        passError.textContent = "Must be at least 12 characters";
+        passError.style.color = "#ef4444";
+        passError.style.visibility = 'visible';
+        passError.style.position = 'absolute';
+        passError.style.marginTop = '0';
+        isValid = false;
+    } else if (password.length > 64) {
+        passError.textContent = "Must not exceed 64 characters";
+        passError.style.color = "#ef4444";
+        passError.style.visibility = 'visible';
+        passError.style.position = 'absolute';
+        passError.style.marginTop = '0';
+        isValid = false;
+    } else if (passInput.dataset.strength === "weak" || !passInput.dataset.strength) {
+        // Check strength - must be medium or strong
+        passError.textContent = "Password strength must be at least medium";
+        passError.style.color = "#ef4444";
+        passError.style.visibility = 'visible';
+        passError.style.position = 'absolute';
+        passError.style.marginTop = '0';
         isValid = false;
     } else {
-        hideResetError(passError);
+        // Password is valid, keep showing strength
+        // Do nothing, keep the strength indicator visible
     }
 
+    // Confirm Password Validation
     if (password !== confirm) {
-        showResetError(confirmError, "Passwords do not match");
+        confirmError.textContent = "Passwords do not match";
+        confirmError.style.color = "#ef4444";
+        confirmError.style.visibility = 'visible';
+        confirmError.style.position = 'absolute';
+        confirmError.style.marginTop = '0';
         isValid = false;
-    } else {
-        hideResetError(confirmError);
+    } else if (isValid) {
+        confirmError.textContent = "Passwords matched";
+        confirmError.style.color = "#10b981";
+        confirmError.style.visibility = 'visible';
+        confirmError.style.position = 'absolute';
+        confirmError.style.marginTop = '0';
     }
 
     if (isValid) {
