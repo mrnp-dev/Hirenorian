@@ -217,6 +217,8 @@
         </div>
     </div>
 
+
+
     <!-- OTP Verification Modal -->
     <div class="otp-modal-overlay" id="otpModalOverlay" style="display: none;">
         <div class="otp-modal-content">
@@ -257,9 +259,15 @@
         </div>
     </div>
 
-    <script src="../js/student_registrationForm.js"></script>
-    <script src="../js/email_verification.js"></script>
-    <script src="../js/email_otp.js"></script>
+    <script src="../js/modules/globals.js"></script>
+    <script src="../js/modules/utils.js"></script>
+    <script src="../js/modules/tags.js"></script>
+    <script src="../js/modules/api.js"></script>
+    <script src="../js/modules/validation.js"></script>
+    <script src="../js/modules/auth.js"></script>
+    <script src="../js/modules/otp.js"></script>
+    <script src="../js/modules/navigation.js"></script>
+    <script src="../js/modules/main.js"></script>
     <script src="../js/toast.js"></script>
 </body>
 
