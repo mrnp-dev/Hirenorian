@@ -218,17 +218,32 @@ document.querySelectorAll('.reset-otp').forEach((input, index) => {
 
 // Step 3: New Password with Strength Validation
 function toggleResetPasswordVisibility(btn) {
-    const input = btn.previousElementSibling;
-    const icon = btn.querySelector('i');
+    const newPassInput = document.getElementById('reset-new-password');
+    const confirmPassInput = document.getElementById('reset-confirm-password');
 
-    if (input.type === "password") {
-        input.type = "text";
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+    // Find the toggle buttons (siblings to the inputs)
+    const newPassBtn = newPassInput.nextElementSibling;
+    const confirmPassBtn = confirmPassInput.nextElementSibling;
+
+    const newPassIcon = newPassBtn.querySelector('i');
+    const confirmPassIcon = confirmPassBtn.querySelector('i');
+
+    if (newPassInput.type === "password") {
+        newPassInput.type = "text";
+        confirmPassInput.type = "text";
+
+        newPassIcon.classList.remove('fa-eye');
+        newPassIcon.classList.add('fa-eye-slash');
+        confirmPassIcon.classList.remove('fa-eye');
+        confirmPassIcon.classList.add('fa-eye-slash');
     } else {
-        input.type = "password";
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        newPassInput.type = "password";
+        confirmPassInput.type = "password";
+
+        newPassIcon.classList.remove('fa-eye-slash');
+        newPassIcon.classList.add('fa-eye');
+        confirmPassIcon.classList.remove('fa-eye-slash');
+        confirmPassIcon.classList.add('fa-eye');
     }
 }
 
