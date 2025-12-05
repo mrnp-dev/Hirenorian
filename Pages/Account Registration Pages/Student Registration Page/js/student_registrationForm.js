@@ -1676,7 +1676,7 @@ function resetOTPInputs() {
 }
 
 function setupOTPInputHandlers() {
-    const otpInputs = document.querySelectorAll('.otp-input');
+    const otpInputs = document.querySelectorAll('.otp-modal-content .otp-input');
 
     otpInputs.forEach((input, index) => {
         // Remove existing event listeners by cloning
@@ -1685,7 +1685,7 @@ function setupOTPInputHandlers() {
     });
 
     // Re-select after cloning
-    const freshInputs = document.querySelectorAll('.otp-input');
+    const freshInputs = document.querySelectorAll('.otp-modal-content .otp-input');
 
     freshInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
