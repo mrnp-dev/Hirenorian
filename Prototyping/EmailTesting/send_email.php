@@ -33,15 +33,15 @@ $mail = new PHPMailer(true);
 try {
     // Server settings
     $mail->isSMTP();
-    $mail->Host       = 'smtp.example.com';                     // Set the SMTP server to send through
+    $mail->Host       = 'mail.privateemail.com';                     // Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-    $mail->Username   = 'user@example.com';                     // SMTP username
-    $mail->Password   = 'secret';                               // SMTP password
+    $mail->Username   = 'mailbox_1@mrnp.site';                     // SMTP username
+    $mail->Password   = '@09Pampanga09';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
     $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
     // Sender info
-    $mail->setFrom('from@example.com', 'Mailer');
+    $mail->setFrom('mailbox_1@mrnp.site', 'Mailer');
     
     // Recipient
     $mail->addAddress($recipientEmail);     // Add a recipient
