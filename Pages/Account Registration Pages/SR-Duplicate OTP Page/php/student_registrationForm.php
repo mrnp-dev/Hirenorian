@@ -259,6 +259,7 @@
 
     <script src="../js/student_registrationForm.js"></script>
     <script src="../js/email_verification.js"></script>
+    <script src="../js/email_otp.js"></script>
     <script src="../js/toast.js"></script>
 </body>
 
