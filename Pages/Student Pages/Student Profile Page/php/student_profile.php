@@ -29,11 +29,11 @@ if(isset($_SESSION['email']))
 
     if ($data['status'] === "success") {
         echo "<script>console.log('Student ID: " . $data['student_id'] . "');</script>";
-        $student = $data['data'][0];
         
     } else {
         echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
+    $student = $data['data'][0];
 }
 else
 {
