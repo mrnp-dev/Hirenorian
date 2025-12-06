@@ -3,6 +3,7 @@ session_start();
 if(isset($_SESSION['email']))
 {
     $student_email = $_SESSION['email'];
+    echo "<script>console.log('Student Email: " . $student_email . "');</script>";
     $apiUrl = "http://158.69.205.176:8080/fetch_student_information.php";
 
     $ch = curl_init($apiUrl);
@@ -17,18 +18,39 @@ if(isset($_SESSION['email']))
     if ($response === false) {
         die("Curl error: " . curl_error($ch));
     }
+    else
+    {
+        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
+
+    }
     curl_close($ch);
 
     $data = json_decode($response, true);
 
     if ($data['status'] === "success") {
-        echo "Student ID: " . $data['student_id'] . "\n";
         echo "<script>console.log('Student ID: " . $data['student_id'] . "');</script>";
-        print_r($data['data']);
+        
     } else {
-        echo "Error: " . $data['message'];
-        echo "<script>console.log('Error: " . $data['message'] . "');</script>";
+        echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
+    $student = $data['data'][0];
+
+    // Students Table
+    $account_id     = $student['account_id'];
+    $student_id     = $student['student_id'];
+    $first_name     = $student['first_name'];
+    $last_name      = $student['last_name'];
+    $middle_initial = $student['middle_initial'];
+    $suffix         = $student['suffix'];
+    $personal_email = $student['personal_email'];
+    $phone_number   = $student['phone_number'];
+    $student_email  = $student['student_email'];
+
+    // Education Table
+    $university   = $student['university'];
+    $department   = $student['department'];
+    $course       = $student['course'];
+    $organization = $student['organization'];
 }
 else
 {
@@ -90,7 +112,7 @@ else
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img">
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo $first_name . " " . $last_name; ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -113,8 +135,8 @@ else
                                 <img src="../../../Landing Page/Images/gradpic2.png" alt="Profile Picture" class="profile-avatar">
                             </div>
                             <div class="profile-info">
-                                <h1 class="profile-name">Juan Dela Cruz</h1>
-                                <p class="profile-headline">BS Information Technology Student at DHVSU</p>
+                                <h1 class="profile-name"><?php echo $first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix; ?></h1>
+                                <p class="profile-headline"><?php echo $course; ?> Student at <?php echo $university; ?></p>
                                 <p class="profile-location"><i class="fa-solid fa-location-dot"></i> San Fernando, Pampanga</p>
                             </div>
                             <div class="profile-actions">
@@ -133,11 +155,11 @@ else
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span>juan.delacruz@email.com</span>
+                                    <span><?php echo $personal_email; ?></span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span>+63 912 345 6789</span>
+                                    <span><?php echo $phone_number; ?></span>
                                 </div>
                             </div>
 
@@ -210,8 +232,8 @@ else
                                     <div class="timeline-item">
                                         <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                                         <div class="timeline-content">
-                                            <h3>Bachelor of Science in Information Technology</h3>
-                                            <p class="institution">Don Honorio Ventura State University</p>
+                                            <h3><?php echo $course; ?></h3>
+                                            <p class="institution"><?php echo $university; ?></p>
                                             <p class="date">2021 - Present</p>
                                         </div>
                                     </div>
