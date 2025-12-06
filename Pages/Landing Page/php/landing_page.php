@@ -353,7 +353,6 @@
     </footer>
 
 
-<<<<<<< HEAD
     <script>
         document.addEventListener("mousemove", (e) => {
             document.querySelectorAll(".parallax").forEach(el => {
@@ -364,11 +363,7 @@
             });
         });
     </script>
-    <script src='/Hirenorian/Pages/Student%20Registration%20Page/js/toast.js'></script>
-=======
-
-
->>>>>>> Mark's-Commits
+    <script src='/Hirenorian/Pages/Account Registration Pages/Student Registration Page/js/toast.js'></script>
 </body>
 
 </html>
