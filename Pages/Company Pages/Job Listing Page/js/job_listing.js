@@ -398,16 +398,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDisplay() {
-        // Check if a job is selected
-        if (!selectedJobId) {
-            // Hide statistics sidebar
-            if (statisticsSidebar) statisticsSidebar.style.display = 'none';
+        const isJobSelected = !!selectedJobId;
 
-            // Hide the entire applicants container to prevent scattered UI elements
-            const applicantsContainer = document.querySelector('.applicants-container');
-            if (applicantsContainer) applicantsContainer.style.display = 'none';
+        // Always show the statistics sidebar and applicants container structure
+        if (statisticsSidebar) statisticsSidebar.style.display = 'block';
+        const applicantsContainer = document.querySelector('.applicants-container');
+        if (applicantsContainer) applicantsContainer.style.display = 'block';
 
-            // Show empty state in the applicants list area
+        if (!isJobSelected) {
+            //  Set all statistics to 0 when no job is selected
+            if (viewsCountEl) viewsCountEl.textContent = '0';
+            if (totalCountEl) totalCountEl.textContent = '0';
+            if (pendingCountEl) pendingCountEl.textContent = '0';
+            if (acceptedCountEl) acceptedCountEl.textContent = '0';
+            if (rejectedCountEl) rejectedCountEl.textContent = '0';
+
+            // Show empty state message in the list area
             if (applicantsList) applicantsList.innerHTML = '';
             if (emptyState) {
                 emptyState.style.display = 'block';
@@ -417,24 +423,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p>Please select a job title from the dropdown above to view applicants</p>
                 `;
             }
-            return;
+        } else {
+            // Job is selected, populate with real data
+            if (emptyState) emptyState.style.display = 'none';
+            const filteredData = getFilteredData();
+            renderApplicants(filteredData);
+            updateStatistics();
         }
-
-        // Show statistics sidebar
-        if (statisticsSidebar) statisticsSidebar.style.display = 'block';
-
-        // Show applicants container
-        const applicantsContainer = document.querySelector('.applicants-container');
-        if (applicantsContainer) applicantsContainer.style.display = 'block';
-
-        const filteredData = getFilteredData();
-        renderApplicants(filteredData);
-        updateStatistics();
     }
 
     // ========================================
     // SEARCH FUNCTIONALITY
-    // ========================================
+    // ======================================== 
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchTerm = e.target.value;
