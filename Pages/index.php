@@ -148,6 +148,22 @@
                     <span class="page-path">Account Registration Pages/.../company.php</span>
                     <span class="badge badge-company">Company</span>
                 </a>
+                <a href="Account Registration Pages/SR-Duplicate OTP Page/php/student_registrationForm.php" class="page-link">
+                    <span class="page-name">SR-Duplicate OTP Page</span>
+                    <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
+                    <span class="badge badge-auth">Dev</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Prototyping & Testing</h2>
+            <div class="link-grid">
+                <a href="../Prototyping/EmailTesting/index.html" class="page-link">
+                    <span class="page-name">Email Sending Test</span>
+                    <span class="page-path">Prototyping/EmailTesting/index.html</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
             </div>
         </div>
 

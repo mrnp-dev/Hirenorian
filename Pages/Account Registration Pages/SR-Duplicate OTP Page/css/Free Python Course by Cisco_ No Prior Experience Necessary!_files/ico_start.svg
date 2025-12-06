@@ -1,0 +1,23 @@
+<svg id="ico_completed" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="0 0 25 25">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M.212.233A.676.676,0,0,1,1.177.175l.059.058L5.288,4.688a.855.855,0,0,1,.053,1.06l-.053.065L1.235,10.267a.678.678,0,0,1-1.023,0,.855.855,0,0,1-.053-1.06l.053-.065L3.753,5.25.212,1.358A.855.855,0,0,1,.159.3Z" transform="translate(0 0)" fill="#6abf4b"/>
+    </clipPath>
+  </defs>
+  <g id="Component_2121" data-name="Component 2121">
+    <g id="Ellipse_567" data-name="Ellipse 567" fill="none" stroke="#20456f" stroke-width="1" opacity="0.4">
+      <circle cx="12.5" cy="12.5" r="12.5" stroke="none"/>
+      <circle cx="12.5" cy="12.5" r="12" fill="none"/>
+    </g>
+    <g id="Arrow" transform="translate(10 7)">
+      <g id="Colors_Green" data-name="Colors/Green" transform="translate(0 0)">
+        <path id="Mask-2" data-name="Mask" d="M.212.233A.676.676,0,0,1,1.177.175l.059.058L5.288,4.688a.855.855,0,0,1,.053,1.06l-.053.065L1.235,10.267a.678.678,0,0,1-1.023,0,.855.855,0,0,1-.053-1.06l.053-.065L3.753,5.25.212,1.358A.855.855,0,0,1,.159.3Z" transform="translate(0 0)" fill="#6abf4b"/>
+        <g id="Colors_Green-2" data-name="Colors/Green" clip-path="url(#clip-path)">
+          <g id="Colors_Green-3" data-name="Colors/Green" transform="translate(-82.066 -92.114)">
+            <rect id="Rectangle" width="185.263" height="203.636" fill="#6abf4b"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
