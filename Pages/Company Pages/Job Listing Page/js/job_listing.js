@@ -8,11 +8,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // MOCK DATA (Backend Integration Ready)
     // ========================================
 
-    // This data structure is ready for backend integration
-    // Simply replace with: fetch('/api/applicants').then(res => res.json()).then(data => {...})
+    // Job Posts Data - Replace with: fetch('/api/job-posts').then(res => res.json())
+    const jobPostsData = [
+        {
+            id: 1,
+            title: "Marketing Intern",
+            datePosted: "November 15, 2025",
+            status: "active",
+            views: 15
+        },
+        {
+            id: 2,
+            title: "Software Engineer",
+            datePosted: "October 20, 2025",
+            status: "active",
+            views: 42
+        },
+        {
+            id: 3,
+            title: "Data Analyst",
+            datePosted: "December 1, 2025",
+            status: "active",
+            views: 28
+        }
+    ];
+
+    // Applicants Data - Now linked to job posts via jobId
+    // Replace with: fetch('/api/applicants').then(res => res.json())
     const applicantsData = [
         {
             id: 1,
+            jobId: 1, // Marketing Intern
             name: "Jose E. Batumbakal",
             course: "Bachelor of Science in Computer Science",
             documentType: "Cover Letter",
@@ -27,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 2,
+            jobId: 1, // Marketing Intern
             name: "Pedro Dee Z. Nuts",
             course: "Bachelor of Science in Information and Communications Technology",
             documentType: "Resume",
@@ -41,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 3,
+            jobId: 1, // Marketing Intern
             name: "Jebron G. Lames",
             course: "Bachelor of Science in Accounting Technology",
             documentType: "None",
@@ -55,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 4,
+            jobId: 1, // Marketing Intern
             name: "Tobay D. Brown",
             course: "Bachelor of Science in Information Technology",
             documentType: "None",
@@ -69,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 5,
+            jobId: 2, // Software Engineer
             name: "Sakha M. Adibix",
             course: "Bachelor of Science in Information Systems",
             documentType: "Cover Letter",
@@ -83,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 6,
+            jobId: 2, // Software Engineer
             name: "Seyda Z. Elven",
             course: "Bachelor of Science in Computer Engineering",
             documentType: "Cover Letter",
@@ -97,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 7,
+            jobId: 2, // Software Engineer
             name: "DayMo N. Taim",
             course: "Bachelor of Science in Data Science",
             documentType: "None",
@@ -111,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 8,
+            jobId: 3, // Data Analyst
             name: "Koby L. Jay",
             course: "Bachelor of Science in Software Engineering",
             documentType: "Resume",
@@ -125,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 9,
+            jobId: 3, // Data Analyst
             name: "Jaydos D. Crist",
             course: "Bachelor of Science in Cybersecurity",
             documentType: "Resume",
@@ -139,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 10,
+            jobId: 3, // Data Analyst
             name: "Rayd Ohm M. Dih",
             course: "Bachelor of Science in Game Development",
             documentType: "Resume",
@@ -156,93 +191,68 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // STATE MANAGEMENT
     // ========================================
+    let selectedJobId = null; // Currently selected job post
     let currentFilter = 'all';
     let searchTerm = '';
     let selectedApplicants = new Set();
+    let batchMode = false; // Track if in batch selection mode
 
     // ========================================
     // DOM ELEMENTS
     // ========================================
+    const jobTitleSelect = document.getElementById('jobTitleSelect');
     const searchInput = document.getElementById('searchInput');
-    const filterBtn = document.getElementById('filterBtn');
-    const filterMenu = document.getElementById('filterMenu');
-    const filterDropdown = document.querySelector('.filter-dropdown');
+    const filterPills = document.querySelectorAll('.filter-pill');
     const applicantsList = document.getElementById('applicantsList');
     const emptyState = document.getElementById('emptyState');
     const selectAllCheckbox = document.getElementById('selectAll');
+
+    // Statistics elements
+    const statisticsSidebar = document.querySelector('.statistics-sidebar');
+    const viewsCountEl = document.getElementById('viewsCount');
     const totalCountEl = document.getElementById('totalCount');
+    const pendingCountEl = document.getElementById('pendingCount');
     const acceptedCountEl = document.getElementById('acceptedCount');
     const rejectedCountEl = document.getElementById('rejectedCount');
 
-    // Chart initialization
-    let statsChart;
-
-    // ========================================
-    // STATISTICS CHART
-    // ========================================
-    function initChart() {
-        const ctx = document.getElementById('statsChart');
-        if (!ctx) return;
-
-        const stats = calculateStatistics(applicantsData);
-
-        statsChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Accepted', 'Rejected'],
-                datasets: [{
-                    data: [stats.accepted, stats.rejected],
-                    backgroundColor: ['#10b981', '#ef4444'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        enabled: true,
-                        backgroundColor: '#333',
-                        padding: 12,
-                        titleFont: {
-                            size: 14,
-                            weight: 'bold'
-                        },
-                        bodyFont: {
-                            size: 13
-                        }
-                    }
-                }
-            }
-        });
-
-        updateStatistics();
-    }
+    // Toolbar elements
+    const regularToolbar = document.querySelector('.action-buttons');
+    const batchActionsToolbar = document.getElementById('batchActionsToolbar');
+    const selectedCountEl = document.getElementById('selectedCount');
 
     // ========================================
     // STATISTICS CALCULATION & UPDATE
     // ========================================
-    function calculateStatistics(data) {
-        const accepted = data.filter(a => a.status === 'accepted').length;
-        const rejected = data.filter(a => a.status === 'rejected').length;
-        const total = data.length;
-        return { accepted, rejected, total };
+    function getApplicantsForJob(jobId) {
+        if (!jobId) return [];
+        return applicantsData.filter(a => a.jobId === jobId);
+    }
+
+    function calculateJobStatistics(jobId) {
+        if (!jobId) {
+            return { views: 0, total: 0, pending: 0, accepted: 0, rejected: 0 };
+        }
+
+        const job = jobPostsData.find(j => j.id === jobId);
+        const jobApplicants = getApplicantsForJob(jobId);
+
+        const accepted = jobApplicants.filter(a => a.status === 'accepted').length;
+        const rejected = jobApplicants.filter(a => a.status === 'rejected').length;
+        const pending = jobApplicants.filter(a => a.status === 'pending').length;
+        const total = jobApplicants.length;
+        const views = job ? job.views : 0;
+
+        return { views, total, pending, accepted, rejected };
     }
 
     function updateStatistics() {
-        const stats = calculateStatistics(applicantsData);
-        totalCountEl.textContent = stats.total;
-        acceptedCountEl.textContent = stats.accepted;
-        rejectedCountEl.textContent = stats.rejected;
+        const stats = calculateJobStatistics(selectedJobId);
 
-        if (statsChart) {
-            statsChart.data.datasets[0].data = [stats.accepted, stats.rejected];
-            statsChart.update();
-        }
+        if (viewsCountEl) viewsCountEl.textContent = stats.views;
+        if (totalCountEl) totalCountEl.textContent = stats.total;
+        if (pendingCountEl) pendingCountEl.textContent = stats.pending;
+        if (acceptedCountEl) acceptedCountEl.textContent = stats.accepted;
+        if (rejectedCountEl) rejectedCountEl.textContent = stats.rejected;
     }
 
     // ========================================
@@ -275,17 +285,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Get initials for avatar
         const initials = applicant.name.split(' ').map(n => n[0]).join('').substring(0, 2);
 
+        // Only show checkbox for pending applicants
+        const showCheckbox = applicant.status === 'pending';
+
         card.innerHTML = `
             <div class="applicant-row">
                 <div class="cell checkbox-cell">
-                    <input type="checkbox" class="applicant-checkbox" data-id="${applicant.id}">
+                    ${showCheckbox ? `<input type="checkbox" class="applicant-checkbox" data-id="${applicant.id}">` : ''}
                 </div>
                 <div class="cell name-cell">
                     <div class="applicant-avatar">${initials}</div>
                     <span class="applicant-name">${applicant.name}</span>
                 </div>
                 <div class="cell course-cell">${applicant.course}</div>
-                <div class="cell document-cell">
+       <div class="cell document-cell">
                     <span class="doc-label">${applicant.documentType}</span>
                     ${applicant.documentUrl ? `<a href="${applicant.documentUrl}" class="doc-view-link" target="_blank">View</a>` : ''}
                 </div>
@@ -328,12 +341,16 @@ document.addEventListener('DOMContentLoaded', () => {
             card.classList.toggle('expanded');
         });
 
-        // Add checkbox event
-        const checkbox = card.querySelector('.applicant-checkbox');
-        checkbox.addEventListener('change', (e) => {
-            e.stopPropagation();
-            handleCheckboxChange(applicant.id, checkbox.checked);
-        });
+        // Add checkbox event only if checkbox exists
+        if (showCheckbox) {
+            const checkbox = card.querySelector('.applicant-checkbox');
+            if (checkbox) {
+                checkbox.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    handleCheckboxChange(applicant.id, checkbox.checked);
+                });
+            }
+        }
 
         // Add action button events
         const acceptBtn = card.querySelector('.btn-accept');
@@ -360,7 +377,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // FILTER & SEARCH
     // ========================================
     function getFilteredData() {
-        let filtered = [...applicantsData];
+        // Start with applicants for the selected job
+        let filtered = selectedJobId ? getApplicantsForJob(selectedJobId) : [];
 
         // Apply status filter
         if (currentFilter !== 'all') {
@@ -380,6 +398,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDisplay() {
+        // Check if a job is selected
+        if (!selectedJobId) {
+            // Hide statistics sidebar
+            if (statisticsSidebar) statisticsSidebar.style.display = 'none';
+
+            // Hide the entire applicants container to prevent scattered UI elements
+            const applicantsContainer = document.querySelector('.applicants-container');
+            if (applicantsContainer) applicantsContainer.style.display = 'none';
+
+            // Show empty state in the applicants list area
+            if (applicantsList) applicantsList.innerHTML = '';
+            if (emptyState) {
+                emptyState.style.display = 'block';
+                emptyState.innerHTML = `
+                    <i class="fa-solid fa-briefcase"></i>
+                    <h3>No Job Selected</h3>
+                    <p>Please select a job title from the dropdown above to view applicants</p>
+                `;
+            }
+            return;
+        }
+
+        // Show statistics sidebar
+        if (statisticsSidebar) statisticsSidebar.style.display = 'block';
+
+        // Show applicants container
+        const applicantsContainer = document.querySelector('.applicants-container');
+        if (applicantsContainer) applicantsContainer.style.display = 'block';
+
         const filteredData = getFilteredData();
         renderApplicants(filteredData);
         updateStatistics();
@@ -388,45 +435,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // SEARCH FUNCTIONALITY
     // ========================================
-    searchInput.addEventListener('input', (e) => {
-        searchTerm = e.target.value;
-        updateDisplay();
-    });
-
-    // ========================================
-    // FILTER FUNCTIONALITY
-    // ========================================
-    filterBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        filterDropdown.classList.toggle('active');
-    });
-
-    // Close filter menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!filterDropdown.contains(e.target)) {
-            filterDropdown.classList.remove('active');
-        }
-    });
-
-    // Filter option selection
-    const filterOptions = document.querySelectorAll('.filter-option');
-    filterOptions.forEach(option => {
-        option.addEventListener('click', () => {
-            // Update active state
-            filterOptions.forEach(opt => opt.classList.remove('active'));
-            option.classList.add('active');
-
-            // Update filter
-            currentFilter = option.dataset.filter;
-            document.getElementById('filterLabel').textContent = option.textContent.trim();
-
-            // Close dropdown
-            filterDropdown.classList.remove('active');
-
-            // Update display
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            searchTerm = e.target.value;
             updateDisplay();
         });
-    });
+    }
+
+    // ========================================
+    // FILTER PILLS FUNCTIONALITY
+    // ========================================
+    if (filterPills) {
+        filterPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                // Update active state
+                filterPills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+
+                // Update filter
+                currentFilter = pill.dataset.status;
+
+                // Update display
+                updateDisplay();
+            });
+        });
+    }
 
     // ========================================
     // CHECKBOX FUNCTIONALITY
@@ -438,28 +471,52 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedApplicants.delete(id);
         }
         updateSelectAllCheckbox();
+        toggleBatchMode();
     }
 
     function updateSelectAllCheckbox() {
         const visibleCheckboxes = document.querySelectorAll('.applicant-checkbox');
         const checkedCount = Array.from(visibleCheckboxes).filter(cb => cb.checked).length;
 
-        selectAllCheckbox.checked = visibleCheckboxes.length > 0 && checkedCount === visibleCheckboxes.length;
-        selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < visibleCheckboxes.length;
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = visibleCheckboxes.length > 0 && checkedCount === visibleCheckboxes.length;
+            selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < visibleCheckboxes.length;
+        }
     }
 
-    selectAllCheckbox.addEventListener('change', (e) => {
-        const checked = e.target.checked;
-        document.querySelectorAll('.applicant-checkbox').forEach(cb => {
-            cb.checked = checked;
-            const id = parseInt(cb.dataset.id);
-            if (checked) {
-                selectedApplicants.add(id);
+    function toggleBatchMode() {
+        const hasSelection = selectedApplicants.size > 0;
+        batchMode = hasSelection;
+
+        if (batchActionsToolbar && regularToolbar) {
+            if (hasSelection) {
+                regularToolbar.style.display = 'none';
+                batchActionsToolbar.style.display = 'flex';
+                if (selectedCountEl) {
+                    selectedCountEl.textContent = `${selectedApplicants.size} selected`;
+                }
             } else {
-                selectedApplicants.delete(id);
+                regularToolbar.style.display = 'flex';
+                batchActionsToolbar.style.display = 'none';
             }
+        }
+    }
+
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', (e) => {
+            const checked = e.target.checked;
+            document.querySelectorAll('.applicant-checkbox').forEach(cb => {
+                cb.checked = checked;
+                const id = parseInt(cb.dataset.id);
+                if (checked) {
+                    selectedApplicants.add(id);
+                } else {
+                    selectedApplicants.delete(id);
+                }
+            });
+            toggleBatchMode();
         });
-    });
+    }
 
     // ========================================
     // ACCEPT/REJECT ACTIONS
@@ -484,29 +541,138 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Batch operations
+    function acceptSelectedApplicants() {
+        selectedApplicants.forEach(id => {
+            const applicant = applicantsData.find(a => a.id === id);
+            if (applicant && applicant.status === 'pending') {
+                applicant.status = 'accepted';
+            }
+        });
+        // Backend integration point:
+        // fetch('/api/applicants/batch-accept', { method: 'POST', body: JSON.stringify({ ids: Array.from(selectedApplicants) }) })
+
+        clearSelection();
+        updateDisplay();
+    }
+
+    function rejectSelectedApplicants() {
+        selectedApplicants.forEach(id => {
+            const applicant = applicantsData.find(a => a.id === id);
+            if (applicant && applicant.status === 'pending') {
+                applicant.status = 'rejected';
+            }
+        });
+        // Backend integration point:
+        // fetch('/api/applicants/batch-reject', { method: 'POST', body: JSON.stringify({ ids: Array.from(selectedApplicants) }) })
+
+        clearSelection();
+        updateDisplay();
+    }
+
+    function clearSelection() {
+        selectedApplicants.clear();
+        document.querySelectorAll('.applicant-checkbox').forEach(cb => cb.checked = false);
+        if (selectAllCheckbox) selectAllCheckbox.checked = false;
+        toggleBatchMode();
+    }
+
+    // ========================================
+    // JOB DROPDOWN FUNCTIONALITY
+    // ========================================
+    function populateJobDropdown() {
+        if (!jobTitleSelect) return;
+
+        // Clear existing options
+        jobTitleSelect.innerHTML = '<option value="">Select a job post...</option>';
+
+        if (jobPostsData.length === 0) {
+            jobTitleSelect.innerHTML = '<option value="">You don\'t post any job title yet.</option>';
+            jobTitleSelect.disabled = true;
+            return;
+        }
+
+        // Populate with job posts
+        jobPostsData.forEach(job => {
+            const option = document.createElement('option');
+            option.value = job.id;
+            option.textContent = job.title;
+            jobTitleSelect.appendChild(option);
+        });
+
+        jobTitleSelect.disabled = false;
+    }
+
+    if (jobTitleSelect) {
+        jobTitleSelect.addEventListener('change', (e) => {
+            selectedJobId = e.target.value ? parseInt(e.target.value) : null;
+            clearSelection(); // Clear any selections when changing jobs
+            updateDisplay();
+        });
+    }
+
     // ========================================
     // ACTION BUTTONS
     // ========================================
-    document.getElementById('btnAdd').addEventListener('click', () => {
-        // TODO: Show modal for adding new job post
-        console.log('Add button clicked - Modal to be implemented');
-    });
+    const btnAdd = document.getElementById('btnAdd');
+    const btnClose = document.getElementById('btnClose');
+    const btnEdit = document.getElementById('btnEdit');
 
-    document.getElementById('btnClose').addEventListener('click', () => {
-        // TODO: Show confirmation modal for closing job and rejecting pending applicants
-        console.log('Close button clicked - Confirmation modal to be implemented');
-    });
+    if (btnAdd) {
+        btnAdd.addEventListener('click', () => {
+            // TODO: Show modal for adding new job post
+            console.log('Add button clicked - Modal to be implemented');
+        });
+    }
 
-    document.getElementById('btnEdit').addEventListener('click', () => {
-        // TODO: Show modal for editing job post
-        console.log('Edit button clicked - Modal to be implemented');
-    });
+    if (btnClose) {
+        btnClose.addEventListener('click', () => {
+            // TODO: Show confirmation modal for closing job and rejecting pending applicants
+            console.log('Close button clicked - Confirmation modal to be implemented');
+        });
+    }
+
+    if (btnEdit) {
+        btnEdit.addEventListener('click', () => {
+            // TODO: Show modal for editing job post
+            console.log('Edit button clicked - Modal to be implemented');
+        });
+    }
+
+    // Batch action buttons
+    const batchAcceptBtn = document.getElementById('batchAcceptBtn');
+    const batchRejectBtn = document.getElementById('batchRejectBtn');
+    const batchCancelBtn = document.getElementById('batchCancelBtn');
+
+    if (batchAcceptBtn) {
+        batchAcceptBtn.addEventListener('click', () => {
+            if (selectedApplicants.size > 0) {
+                acceptSelectedApplicants();
+            }
+        });
+    }
+
+    if (batchRejectBtn) {
+        batchRejectBtn.addEventListener('click', () => {
+            if (selectedApplicants.size > 0) {
+                rejectSelectedApplicants();
+            }
+        });
+    }
+
+    if (batchCancelBtn) {
+        batchCancelBtn.addEventListener('click', () => {
+            clearSelection();
+        });
+    }
 
     // ========================================
     // INITIALIZATION
     // ========================================
-    initChart();
+    populateJobDropdown();
     updateDisplay();
 
     console.log('Job Listing Page Loaded Successfully!');
+    console.log('Job Posts:', jobPostsData);
+    console.log('Applicants:', applicantsData);
 });

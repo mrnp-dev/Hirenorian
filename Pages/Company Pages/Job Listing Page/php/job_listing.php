@@ -77,51 +77,48 @@
 
                 <!-- Job Listing Content -->
                 <section class="content-section active">
-                    <!-- Toolbar -->
-                    <div class="job-listing-toolbar">
-                        <div class="action-buttons">
-                            <button class="btn-action btn-add" id="btnAdd">
+                    <!-- Job Title and Actions Section -->
+                    <div class="job-title-actions-section">
+                        <div class="job-title-group">
+                            <label for="jobTitleSelect" class="job-title-label">Job Title</label>
+                            <select id="jobTitleSelect" class="job-title-dropdown">
+                                <option value="">Select a job post...</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                        </div>
+
+                        <!-- Regular Action Buttons -->
+                        <div class="action-buttons" id="regularToolbar">
+                            <button class="btn-action btn-neutral" id="btnAdd">
                                 <i class="fa-solid fa-plus"></i>
                                 Add
                             </button>
-                            <button class="btn-action btn-close" id="btnClose">
+                            <button class="btn-action btn-neutral" id="btnClose">
                                 <i class="fa-solid fa-times"></i>
                                 Close
                             </button>
-                            <button class="btn-action btn-edit" id="btnEdit">
+                            <button class="btn-action btn-neutral" id="btnEdit">
                                 <i class="fa-solid fa-pen"></i>
                                 Edit
                             </button>
                         </div>
-                        <div class="search-filter-group">
-                            <div class="search-box">
-                                <i class="fa-solid fa-search"></i>
-                                <input type="text" id="searchInput" placeholder="Search job title...">
-                            </div>
-                            <div class="filter-dropdown">
-                                <button class="filter-btn" id="filterBtn">
-                                    <span id="filterLabel">Filter Applications</span>
-                                    <i class="fa-solid fa-chevron-down"></i>
-                                </button>
-                                <div class="filter-menu" id="filterMenu">
-                                    <div class="filter-option active" data-filter="all">
-                                        <i class="fa-solid fa-check"></i>
-                                        All
-                                    </div>
-                                    <div class="filter-option" data-filter="pending">
-                                        <i class="fa-solid fa-check"></i>
-                                        Pending
-                                    </div>
-                                    <div class="filter-option" data-filter="accepted">
-                                        <i class="fa-solid fa-check"></i>
-                                        Accepted
-                                    </div>
-                                    <div class="filter-option" data-filter="rejected">
-                                        <i class="fa-solid fa-check"></i>
-                                        Rejected
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+
+                    <!-- Batch Actions Toolbar (Hidden by default) -->
+                    <div class="batch-actions-toolbar" id="batchActionsToolbar" style="display: none;">
+                        <span class="selected-count" id="selectedCount">0 selected</span>
+                        <div class="batch-actions-buttons">
+                            <button class="batch-btn batch-accept" id="batchAcceptBtn">
+                                <i class="fa-solid fa-check"></i>
+                                Accept Selected
+                            </button>
+                            <button class="batch-btn batch-reject" id="batchRejectBtn">
+                                <i class="fa-solid fa-times"></i>
+                                Reject Selected
+                            </button>
+                            <button class="batch-btn batch-cancel" id="batchCancelBtn">
+                                Cancel
+                            </button>
                         </div>
                     </div>
 
@@ -131,28 +128,59 @@
                         <div class="statistics-sidebar">
                             <div class="stats-card">
                                 <h3>Post Statistics</h3>
-                                <div class="stats-chart-container">
-                                    <div class="chart-wrapper">
-                                        <canvas id="statsChart"></canvas>
-                                        <div class="chart-center-label">
-                                            <span class="center-number" id="totalCount">0</span>
-                                            <span class="center-text">APPLICANTS</span>
+                                <div class="stats-stack">
+                                    <!-- Views Stat -->
+                                    <div class="stat-card-item views">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <span class="stat-value" id="viewsCount">0</span>
+                                            <span class="stat-label">Views</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="stats-summary">
-                                    <div class="stat-item accepted">
-                                        <div class="stat-indicator"></div>
-                                        <div class="stat-details">
-                                            <span class="stat-label">Accepted</span>
+
+                                    <!-- Applicants Stat -->
+                                    <div class="stat-card-item applicants">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-users"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <span class="stat-value" id="totalCount">0</span>
+                                            <span class="stat-label">Applicants</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pending Stat -->
+                                    <div class="stat-card-item pending">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-clock"></i>
+                                        </div>
+                                        <div class="stat-info">
+                                            <span class="stat-value" id="pendingCount">0</span>
+                                            <span class="stat-label">Pending</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Accepted Stat -->
+                                    <div class="stat-card-item accepted">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-check"></i>
+                                        </div>
+                                        <div class="stat-info">
                                             <span class="stat-value" id="acceptedCount">0</span>
+                                            <span class="stat-label">Accepted</span>
                                         </div>
                                     </div>
-                                    <div class="stat-item rejected">
-                                        <div class="stat-indicator"></div>
-                                        <div class="stat-details">
-                                            <span class="stat-label">Rejected</span>
+
+                                    <!-- Rejected Stat -->
+                                    <div class="stat-card-item rejected">
+                                        <div class="stat-icon">
+                                            <i class="fa-solid fa-times"></i>
+                                        </div>
+                                        <div class="stat-info">
                                             <span class="stat-value" id="rejectedCount">0</span>
+                                            <span class="stat-label">Rejected</span>
                                         </div>
                                     </div>
                                 </div>
@@ -161,6 +189,20 @@
 
                         <!-- Applicants List -->
                         <div class="applicants-container">
+                            <!-- List Controls (Search & Filter) -->
+                            <div class="list-controls">
+                                <div class="filter-pills">
+                                    <button class="filter-pill active" data-status="all">All</button>
+                                    <button class="filter-pill" data-status="pending">Pending</button>
+                                    <button class="filter-pill" data-status="accepted">Accepted</button>
+                                    <button class="filter-pill" data-status="rejected">Rejected</button>
+                                </div>
+                                <div class="search-box-inline">
+                                    <i class="fa-solid fa-search"></i>
+                                    <input type="text" id="searchInput" placeholder="Search applicants...">
+                                </div>
+                            </div>
+
                             <!-- Table Header -->
                             <div class="applicants-header">
                                 <div class="header-cell checkbox-cell">
