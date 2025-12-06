@@ -1,15 +1,251 @@
-.company-card {
-  background: linear-gradient(135deg, #F9A825, #FDD835);
-  color: #333;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.company-card .btn {
-  background-color: rgba(0, 0, 0, 0.1);
-  color: #333;
-  /* Added more padding for a wider button look */
-  padding: 12px 30px;
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+
+    background: linear-gradient(to bottom, #6b0000 0%, #6b0000 50%, #ffffff 50%, #ffffff 100%);
+    background-image:
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' preserveAspectRatio='xMidYMid slice'><rect width='100%' height='100%' fill='%236b0000'/><path d='M0,450 C260,360 580,360 900,450 C1220,540 1480,420 1600,450 L1600,900 L0,900 Z' fill='%23ffffff'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
 }
 
-.company-card .btn:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+/*HEADER STYLES*/
+.header {
+    position: absolute;
+    top: 1.5rem;
+    left: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    z-index: 10;
+}
+.header img { width: 90px; height: 90px; object-fit: contain; }
+.header h1 {
+    font-family: 'Marcellus', serif;
+    font-size: 3.5rem;
+    color: #FFD700; /*yellowgold*/
+    font-weight: 400;
+}
+
+/* MAIN WRAPPER */
+.wrapper {
+    position: relative;
+    width: 85%;
+    max-width: 1100px;
+    height: 590px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    display: flex;
+    z-index: 1;
+}
+
+/*LEFT PANEL (DARK)*/
+.left-panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 65%;
+    background: #1f1f1f;
+    color: white;
+    border-radius: 25px 0 0 25px;
+    padding: 5rem 6rem;
+    padding-right: 9rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.left-panel h2 {
+    text-align: left;
+    font-size: 1.8rem;
+    margin-bottom: 2.7rem;
+    font-weight: 500;
+}
+
+.p1.active .left-panel input {
+    color: #1f1f1f; /* dark input text */
+    border-bottom: 2px solid #ccc;
+}
+
+/* RIGHT PANEL (YELLOW STEPS) */
+.right-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 45%;
+    background: #ffb800; /* Yellow Color */
+    border-radius: 0 25px 25px 0;
+    padding: 5rem 4rem;
+    z-index: 2;
+}
+
+.right-panel h3 {
+    font-size: 1.5rem;
+    margin-bottom: 3rem;
+    line-height: 1.4;
+    color: #9b0000; /* Dark Red text */
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* STEP ICON STYLES */
+.step-icon {
+    background: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 3px solid #9b0000; /* Dark Red border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.step-icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.step-text {
+    font-weight: 600;
+    color: #9b0000;
+    line-height: 1.3;
+}
+
+/* ACTIVE STEP STYLING */
+.step.active-step .step-icon {
+    background: #9b0000;
+}
+
+.step.active-step .step-text {
+    font-weight: 700;
+}
+
+/*FORM INPUT STYLES*/
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+}
+
+input {
+    flex: 1;
+    padding: 0.6rem 0.1rem;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    color: white;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+input:focus {
+    border-color: #ffb800;
+}
+
+/* BUTTON STYLES */
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.btn-login {
+    background: white;
+    color: #9b0000;
+}
+
+.btn-next, .btn-submit {
+    background: #ffb800;
+    color: #1f1f1f;
+}
+
+.btn-back {
+    background: #aaa;
+    color: #1f1f1f;
+}
+
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* transition .3sec */
+.p1, .p2, .p3 {
+    opacity: 0;
+    filter: blur(2px);
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transition: filter 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.p1.active, .p2.active, .p3.active {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: all;
+    position: relative;
+}
+
+/* RESPONSIVE STYLES*/
+@media (max-width: 1024px) {
+    /* slightly reduce wave impact on medium screens */
+    body {
+        background-position: center top;
+        background-size: cover;
+    }
+}
+
+@media (max-width: 768px) {
+    .wrapper { height: auto; }
+    .left-panel, .right-panel {
+        position: relative;
+        width: 100%;
+        border-radius: 25px;
+        padding: 3rem 1.5rem;
+    }
+    .right-panel { z-index: 2; margin-bottom: 1rem; }
+    .left-panel { z-index: 1; }
+    .form-row { flex-direction: column; }
+    .header { left: 1.5rem; top: 1rem; }
 }
