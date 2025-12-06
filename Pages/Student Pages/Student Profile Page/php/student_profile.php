@@ -2,11 +2,11 @@
 session_start();
 if(isset($_SESSION['email']))
 {
-    echo "<script>console.log('email in session');</script>";
+    $data = 
 }
 else
 {
-    echo "<script>console.log('email not in session');</script>";
+    header("Location: ../../../Landing Page/php/landing_page.php");
 }
 ?>
 

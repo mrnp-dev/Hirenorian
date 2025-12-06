@@ -281,7 +281,7 @@ else
     <script src="../js/modules/otp.js"></script>
     <script src="../js/modules/navigation.js"></script>
     <script src="../js/modules/main.js"></script>
-    <script src="../js/toast.js"></script>
+    <script src="../js/modules/toast.js"></script>
 </body>
 
 </html>
