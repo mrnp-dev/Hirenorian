@@ -112,7 +112,7 @@ else
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img">
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo $first_name . " " . $last_name; ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -135,8 +135,8 @@ else
                                 <img src="../../../Landing Page/Images/gradpic2.png" alt="Profile Picture" class="profile-avatar">
                             </div>
                             <div class="profile-info">
-                                <h1 class="profile-name">Juan Dela Cruz</h1>
-                                <p class="profile-headline">BS Information Technology Student at DHVSU</p>
+                                <h1 class="profile-name"><?php echo $first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix; ?></h1>
+                                <p class="profile-headline"><?php echo $course; ?> Student at <?php echo $university; ?></p>
                                 <p class="profile-location"><i class="fa-solid fa-location-dot"></i> San Fernando, Pampanga</p>
                             </div>
                             <div class="profile-actions">
@@ -155,11 +155,11 @@ else
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span>juan.delacruz@email.com</span>
+                                    <span><?php echo $personal_email; ?></span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span>+63 912 345 6789</span>
+                                    <span><?php echo $phone_number; ?></span>
                                 </div>
                             </div>
 
@@ -232,8 +232,8 @@ else
                                     <div class="timeline-item">
                                         <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                                         <div class="timeline-content">
-                                            <h3>Bachelor of Science in Information Technology</h3>
-                                            <p class="institution">Don Honorio Ventura State University</p>
+                                            <h3><?php echo $course; ?></h3>
+                                            <p class="institution"><?php echo $university; ?></p>
                                             <p class="date">2021 - Present</p>
                                         </div>
                                     </div>
