@@ -143,7 +143,12 @@ async function check_LogIn_Fields() {
             const data = await response.json();
             if (response.ok && data.status === "success") {
                 ToastSystem.show('Login Successfully', "success");
-                resetFormState();
+                setTimeout(() => {
+                    ToastSystem.show("Redirecting to Student Dashboard", "info");
+                    setTimeout(() => {
+                        window.location.href = "../../../Student%20Pages/Student%20Dashboard%20Page/php/student_dashboard.php";
+                    }, 1500);
+                }, 1500);
             } else {
                 ToastSystem.show('Login Failed', "error");
             }

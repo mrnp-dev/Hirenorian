@@ -1,3 +1,14 @@
+<?php
+session_start();
+if(isset($_SESSION['email']))
+{
+    echo "<script>console.log('email in session');</script>";
+}
+else
+{
+    echo "<script>console.log('email not in session');</script>";
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
