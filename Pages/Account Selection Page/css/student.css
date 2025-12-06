@@ -1,12 +1,15 @@
 .student-card {
-  background: linear-gradient(135deg, #6B0F1A, #B91322);
+  background: linear-gradient(200deg, #9B000A, #720000);
+  padding-left: 50px;
 }
 
+
 .student-card .btn {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #9B000A;
   color: #fff;
   /* Added more padding for a wider button look */
-  padding: 12px 30px; 
+  padding: 20px 30px; 
+  font-size: 20px;
 }
 
 .student-card .btn:hover {

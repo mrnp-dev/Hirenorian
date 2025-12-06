@@ -43,21 +43,21 @@
         <section id="find-career-section">
 
             <section id="find-your-career-left-section">
-                <h1 id="get-hired-today">GET HIRED<br>TODAY</h1>
-                <p id="hirenorian-info">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
-                <div id="find-your-career-div"><button id="find-your-career-button">Find your Career</button></div>
+                <h1 id="get-hired-today" class="fade-up" >GET HIRED<br>TODAY</h1>
+                <p id="hirenorian-info" class="fade-up" style="animation-delay: .2s;">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
+                <div id="find-your-career-div" class="fade-up" style="animation-delay: .4s;"><button id="find-your-career-button">Find your Career</button></div>
                 <div></div>
             </section>
 
             <section id="find-your-career-right-section">
-                <div id="circle-left"></div>
-                <div id="circle-right"></div>
-                <img src="../Images/gradpic2.png" id="gradpic" alt="">
+                <div id="circle-left"  class="floating parallax" data-speed="3"></div>
+                <div id="circle-right"  class="floating parallax" data-speed="2"></div>
+                <img src="../Images/gradpic2.png" id="gradpic" class="floating parallax" data-speed="1.5" alt="">
             </section>
 
 
         </section>
-        <div id="left-circle-yellow"></div>
+        <div id="left-circle-yellow" class="floating parallax" data-speed="4"></div>
 
     </header>
 
@@ -69,9 +69,9 @@
                     <section id="headline-left-section"></section>
 
                     <section id="headline-right-section">
-                        <h1 id="headline">Headline</h1>
-                        <h2 id="sub-headline">sub headline</h2>
-                        <p id="headline-info">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
+                        <h1 id="headline" class="fade-up">Headline</h1>
+                        <h2 id="sub-headline" class="fade-up" style="animation-delay: .2s;">sub headline</h2>
+                        <p id="headline-info" class="fade-up" style="animation-delay: .4s;">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
                     </section>
                 </section>
 
@@ -92,26 +92,30 @@
             </section>
         </section>
 
-        <section id=whole-section>
+        <section id="main-section-2">
 
-            <section id="job-section">
+            <section id="companies-section">
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number One</h3>
-                    <img src="..\Images\cloudstaff.jpg" class="job-image">
-                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
-                </section>
+                <section class="company-card">
+                    <div class="company-card-top">
+                        <img src="../Images/cloudstaff.jpg" class="company-logo" alt="Cloudstaff logo">
+                    </div>
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number Two</h3>
-                    <img src="..\Images\cloudstaff.jpg" class="job-image">
-                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
-                </section>
+                    <div class="company-card-middle">
+                        <h3 class="company-name">Cloudstaff</h3>
+                        <h2 class="company-position">UI/UX Web Designer</h2>
+                        <p class="company-tagline">Join the #1 workplace in the Philippines and design experiences that matter.</p>
+                    </div>
 
-                <section class="job">
-                    <h3 class="job-one-right"> Job Number Three </h3>
-                    <img src="..\Images\cloudstaff.jpg" class="job-image">
-                    <p class="info">Experience an extraordinary global<br>career at Cloudstaff, the #1 workplace<br> everywhere. Join our talented<br> team and be part of something bigger.<br>Apply now!</p>
+                    <div class="company-card-info">
+                        <p><strong>Location:</strong> Angeles City, Pampanga</p>
+                        <p><strong>Job Type:</strong> Full-time</p>
+                        <p><strong>Salary:</strong> ₱30,000 – ₱45,000/month</p>
+                    </div>
+
+                    <div class="company-card-bottom">
+                        <button>Apply Now</button>
+                    </div>
                 </section>
 
             </section>
@@ -206,6 +210,22 @@
         </section>
 
     </footer>
+
+   
+
+<script>
+        document.addEventListener("mousemove", (e) => {
+        document.querySelectorAll(".parallax").forEach(el => {
+        const speed = parseFloat(el.getAttribute("data-speed"));
+        const x = (window.innerWidth - e.pageX * speed) / 120;
+        const y = (window.innerHeight - e.pageY * speed) / 120;
+        el.style.transform = `translate(${x}px, ${y}px)`;
+    });
+});
+
+
+
+</script>
 
 </body>
 

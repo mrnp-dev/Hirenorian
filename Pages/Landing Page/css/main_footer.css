@@ -45,7 +45,7 @@
 {
     display: flex;
     margin-left: 60px;
-    
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .icon2 {
@@ -60,25 +60,45 @@
     height: 30px;
     width: 40px;
     margin-left: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 
+}
+
+#fb2:hover {
+    transform: scale(1.25);
 }
 
 #in2 {
     height: 30px;
     width: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     
+}
+
+#in2:hover {
+    transform: scale(1.25);
 }
 
 #yt2 {
     height: 30px;
     width: 30px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     
+}
+
+#yt2:hover {
+    transform: scale(1.25);
 }
 
 #ig2 {
     height: 50px;
     width: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
     
+}
+
+#ig2:hover {
+    transform: scale(1.25);
 }
 
 #bottom-right
@@ -107,4 +127,10 @@
 {
     color: white;
     font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.pages:hover {
+    transform: scale(1.25);
 }
