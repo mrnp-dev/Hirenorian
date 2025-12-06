@@ -25,28 +25,28 @@
                 <span class="logo-text">Hirenorian</span>
             </div>
             <ul class="nav-menu">
-                <li class="nav-item active" data-section="dashboard-section">
+                <li class="nav-item active">
                     <a href="#" class="nav-link">
                         <i class="fa-solid fa-table-columns"></i>
                         <span class="link-text">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item" data-section="company-deets-section">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="../../Company Profile Page/php/company_profile.php" class="nav-link">
                         <i class="fa-solid fa-users"></i>
-                        <span class="link-text">Company Deets</span>
+                        <span class="link-text">Company Profile</span>
                     </a>
                 </li>
-                <li class="nav-item" data-section="applicants-manager-section">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="../../Job Listing Page/php/job_listing.php" class="nav-link">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <span class="link-text">Applicants Manager</span>
+                        <span class="link-text">Job Listing</span>
                     </a>
                 </li>
-                <li class="nav-item" data-section="company-info-section">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="../../Help Page/php/help.php" class="nav-link">
                         <i class="fa-solid fa-circle-info"></i>
-                        <span class="link-text">Company Info</span>
+                        <span class="link-text">Help</span>
                     </a>
                 </li>
             </ul>
@@ -176,33 +176,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                <!-- Company Deets Section -->
-                <section id="company-deets-section" class="content-section">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-users placeholder-icon"></i>
-                        <h2>Company Deets</h2>
-                        <p>Manage your company details and team members here.</p>
-                    </div>
-                </section>
-
-                <!-- Applicants Manager Section -->
-                <section id="applicants-manager-section" class="content-section">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-magnifying-glass placeholder-icon"></i>
-                        <h2>Applicants Manager</h2>
-                        <p>Review and manage job applications.</p>
-                    </div>
-                </section>
-
-                <!-- Company Info Section -->
-                <section id="company-info-section" class="content-section">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-circle-info placeholder-icon"></i>
-                        <h2>Company Info</h2>
-                        <p>Update your company profile and information.</p>
                     </div>
                 </section>
             </div>

@@ -41,38 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Section Navigation Logic
-    const navItems = document.querySelectorAll('.nav-item');
-    const sections = document.querySelectorAll('.content-section');
-    const pageTitle = document.querySelector('.page-title h1');
-
-    navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            const targetSectionId = item.getAttribute('data-section');
-            const sectionName = item.querySelector('.link-text').textContent;
-
-            // Remove active class from all nav items
-            navItems.forEach(navItem => navItem.classList.remove('active'));
-
-            // Add active class to clicked nav item
-            item.classList.add('active');
-
-            // Hide all sections
-            sections.forEach(section => section.classList.remove('active'));
-
-            // Show target section
-            const targetSection = document.getElementById(targetSectionId);
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
-
-            // Update page title
-            pageTitle.textContent = sectionName;
-        });
-    });
-
     // ========================================
     // 2. CHART.JS - PIE CHART
     // ========================================

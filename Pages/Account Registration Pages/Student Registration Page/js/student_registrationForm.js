@@ -104,19 +104,31 @@ signUp_Inputs.forEach(input => {
 
 async function check_LogIn_Fields() {
     let isValid = true;
-    signUp_Inputs.forEach(input => {
-        if (input.value.trim() == "") {
-            isValid = showError(input, `${input.name} cannot empty.`);
-        } else if (input.name == "Student Email") {
-            isValid = checkLogged_Email(input);
-        } else {
-            isValid = true;
-        }
-    });
+    const emailInput = document.querySelector('#signup-email');
+    const passwordInput = document.querySelector('#signup-password');
+
+    // Validate email
+    if (emailInput.value.trim() === "") {
+        showError(emailInput, `${emailInput.name} cannot be empty.`);
+        isValid = false;
+    } else if (!checkLogged_Email(emailInput)) {
+        showError(emailInput, `Please enter a valid student email.`);
+        isValid = false;
+    } else {
+        removeError(emailInput);
+    }
+
+    // Validate password
+    if (passwordInput.value.trim() === "") {
+        showError(passwordInput, `${passwordInput.name} cannot be empty.`);
+        isValid = false;
+    } else {
+        removeError(passwordInput);
+    }
 
     if (isValid) {
-        const email = document.querySelector('#signup-email').value.trim();
-        const password = document.querySelector('#signup-password').value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
         try {
             const response = await fetch("http://158.69.205.176:8080/student_login_process.php", {
                 method: "POST",
@@ -131,6 +143,7 @@ async function check_LogIn_Fields() {
             const data = await response.json();
             if (response.ok && data.status === "success") {
                 ToastSystem.show('Login Successfully', "success");
+                resetFormState();
             } else {
                 ToastSystem.show('Login Failed', "error");
             }
@@ -571,21 +584,53 @@ function confirmPassword(input) {
     }
 }
 
-function toggleShow_Hide_Password() {
-    const toggleButtons = document.querySelectorAll('.toggle_show_hide');
-    toggleButtons.forEach(button => {
+// MODIFIED: Password toggle function
+// - Sign In toggle: works independently
+// - Registration Password & Confirm Password toggles: linked together
+function toggleShow_Hide_Password(button) {
+    const buttonId = button.id;
+
+    // Check if this is a Registration section toggle (Password or Confirm Password)
+    if (buttonId === 'togglePassword' || buttonId === 'toggleConfirmPassword') {
+        // Toggle both Password and Confirm Password fields together
+        const passwordWrapper = document.querySelector('#togglePassword').closest('.input-wrapper');
+        const confirmPasswordWrapper = document.querySelector('#toggleConfirmPassword').closest('.input-wrapper');
+
+        const passwordField = passwordWrapper.querySelector('input');
+        const confirmPasswordField = confirmPasswordWrapper.querySelector('input');
+        const passwordEye = passwordWrapper.querySelector('i');
+        const confirmPasswordEye = confirmPasswordWrapper.querySelector('i');
+
+        // Toggle both fields
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            confirmPasswordField.type = 'text';
+        } else {
+            passwordField.type = 'password';
+            confirmPasswordField.type = 'password';
+        }
+
+        // Toggle both eye icons
+        passwordEye.classList.toggle('fa-eye');
+        passwordEye.classList.toggle('fa-eye-slash');
+        confirmPasswordEye.classList.toggle('fa-eye');
+        confirmPasswordEye.classList.toggle('fa-eye-slash');
+    } else {
+        // Sign In toggle - works independently
         const input_wrapper = button.closest('.input-wrapper');
         const eye = input_wrapper.querySelector('i');
         const passwordField = input_wrapper.querySelector('input');
-        if (passwordField.type == 'password') {
+
+        if (passwordField.type === 'password') {
             passwordField.type = 'text';
         } else {
             passwordField.type = 'password';
         }
         eye.classList.toggle('fa-eye');
         eye.classList.toggle('fa-eye-slash');
-    });
+    }
 }
+// END MODIFICATION
 
 function checkWhiteSpaces(input) {
     const regExSpaces = /\s{2,}/;
@@ -756,6 +801,161 @@ function resetFormState() {
     const allInputs = document.querySelectorAll('input');
     allInputs.forEach(input => input.classList.remove('input_InvalidInput'));
 }
+
+// ==================== RESET FORM STATE ====================
+// Resets all registration state when user successfully registers
+// This ensures a fresh state if user navigates back to the page
+function resetFormState() {
+    // 1. Reset all input fields in registration section
+    const signUpForm = document.querySelector('#signUp-Form');
+    if (signUpForm) {
+        signUpForm.reset();
+    }
+
+    // 2. Clear all input values manually (in case form.reset doesn't catch all)
+    const allRegistrationInputs = document.querySelectorAll('.sign-up-container input');
+    allRegistrationInputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('input_InvalidInput');
+    });
+
+    // Clear Sign In inputs
+    const allSignInInputs = document.querySelectorAll('.sign-in-container input');
+    allSignInInputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('input_InvalidInput');
+    });
+
+    // 3. Reset error messages
+    const errorMessages = document.querySelectorAll('.sign-up-container .input-wrapper p');
+    errorMessages.forEach(p => {
+        p.style.visibility = 'hidden';
+        p.textContent = 'error';
+        p.style.color = 'red';
+    });
+
+    const signInErrorMessages = document.querySelectorAll('.sign-in-container .input-wrapper p');
+    signInErrorMessages.forEach(p => {
+        p.style.visibility = 'hidden';
+        p.textContent = 'error';
+        p.style.color = 'red';
+    });
+
+    // 4. Reset email verification state
+    emailVerificationState.personalEmail = false;
+    emailVerificationState.schoolEmail = false;
+
+    // Reset personal email verification UI
+    const verifyPersonalBtn = document.querySelector('#verify-personal-email-btn');
+    const personalVerifiedBadge = document.querySelector('#personal-email-verified');
+    if (verifyPersonalBtn) verifyPersonalBtn.style.display = 'flex';
+    if (personalVerifiedBadge) personalVerifiedBadge.style.display = 'none';
+
+    // Reset school email verification UI
+    const verifySchoolBtn = document.querySelector('#verify-school-email-btn');
+    const schoolVerifiedBadge = document.querySelector('#school-email-verified');
+    if (verifySchoolBtn) verifySchoolBtn.style.display = 'flex';
+    if (schoolVerifiedBadge) schoolVerifiedBadge.style.display = 'none';
+
+    // 5. Reset password toggle buttons to default (hidden password, fa-eye)
+    const passwordField = document.querySelector('#password-input');
+    const confirmPasswordField = document.querySelector('#confirmPass-input');
+    const togglePasswordBtn = document.querySelector('#togglePassword');
+    const toggleConfirmPasswordBtn = document.querySelector('#toggleConfirmPassword');
+
+    if (passwordField) passwordField.type = 'password';
+    if (confirmPasswordField) confirmPasswordField.type = 'password';
+
+    if (togglePasswordBtn) {
+        const pwdEye = togglePasswordBtn.querySelector('i');
+        if (pwdEye) {
+            pwdEye.classList.remove('fa-eye-slash');
+            pwdEye.classList.add('fa-eye');
+        }
+    }
+    if (toggleConfirmPasswordBtn) {
+        const confirmPwdEye = toggleConfirmPasswordBtn.querySelector('i');
+        if (confirmPwdEye) {
+            confirmPwdEye.classList.remove('fa-eye-slash');
+            confirmPwdEye.classList.add('fa-eye');
+        }
+    }
+
+    // 6. Reset section containers to initial state (first section visible)
+    if (firstInputs_Container) {
+        firstInputs_Container.style.display = 'flex';
+        firstInputs_Container.classList.remove('slide-right', 'slide-left');
+    }
+    if (secondInputs_Container) {
+        secondInputs_Container.style.display = 'none';
+        secondInputs_Container.classList.remove('slide-right', 'slide-left');
+    }
+    if (thirdInputs_Container) {
+        thirdInputs_Container.style.display = 'none';
+        thirdInputs_Container.classList.remove('slide-right', 'slide-left');
+    }
+
+    // Reset title
+    if (title) title.textContent = 'Personalize your Profile';
+
+    // 7. Reset step indicators to first step
+    steps.forEach((step, index) => {
+        step.classList.remove('active-step');
+        step_text[index].classList.remove('left-active-text');
+        step_icon[index].classList.remove('left-active-icon');
+    });
+    if (steps[0]) steps[0].classList.add('active-step');
+    if (step_text[0]) step_text[0].classList.add('left-active-text');
+    if (step_icon[0]) step_icon[0].classList.add('left-active-icon');
+    currentStep = 0;
+
+    // 8. Reset tags selection
+    selectedTags = [];
+    updateSelectedCount();
+    tagsContainer.innerHTML = '<p>No tags available for this course.</p>';
+
+    // 9. Clear userInformation object
+    userInformation = {};
+
+    // 10. Reset validation states
+    idealLocation_Valid = false;
+    secondInputs_Validation = [];
+
+    // 11. Switch to Sign In section (make it active)
+    const formContainer = document.querySelector('.form-container');
+    const toggleContainer = document.querySelector('.toggle-container');
+    const signInContainer = document.querySelector('.sign-in-container');
+    const signUpContainer = document.querySelector('.sign-up-container');
+    const toggleLeft = document.querySelector('.toggle-left');
+    const toggleRight = document.querySelector('.toggle-right');
+
+    // Set Sign In as active
+    if (formContainer) {
+        formContainer.classList.remove('signUp');
+        formContainer.classList.add('signIn');
+    }
+    if (toggleContainer) {
+        toggleContainer.classList.remove('signUp');
+        toggleContainer.classList.add('signIn');
+    }
+    if (signInContainer) {
+        signInContainer.classList.remove('shift_inactive');
+        signInContainer.classList.add('shift_active');
+    }
+    if (signUpContainer) {
+        signUpContainer.classList.remove('shift_active');
+        signUpContainer.classList.add('shift_inactive');
+    }
+    if (toggleLeft) {
+        toggleLeft.classList.remove('shift_active');
+        toggleLeft.classList.add('shift_inactive');
+    }
+    if (toggleRight) {
+        toggleRight.classList.remove('shift_inactive');
+        toggleRight.classList.add('shift_active');
+    }
+}
+// ==================== END RESET FORM STATE ====================
 
 async function Register_Student() {
     console.log(userInformation);
@@ -1476,7 +1676,7 @@ function resetOTPInputs() {
 }
 
 function setupOTPInputHandlers() {
-    const otpInputs = document.querySelectorAll('.otp-input');
+    const otpInputs = document.querySelectorAll('.otp-modal-content .otp-input');
 
     otpInputs.forEach((input, index) => {
         // Remove existing event listeners by cloning
@@ -1485,7 +1685,7 @@ function setupOTPInputHandlers() {
     });
 
     // Re-select after cloning
-    const freshInputs = document.querySelectorAll('.otp-input');
+    const freshInputs = document.querySelectorAll('.otp-modal-content .otp-input');
 
     freshInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
