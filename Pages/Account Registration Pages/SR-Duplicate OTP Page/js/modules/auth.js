@@ -29,12 +29,29 @@ async function check_LogIn_Fields() {
             const data = await response.json();
             if (response.ok && data.status === "success") {
                 ToastSystem.show('Login Successfully', "success");
-                setTimeout(() => {
-                    ToastSystem.show("Redirecting to Student Dashboard", "info");
+                const resp = await fetch("store_cred_session.php",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email
+                        })
+                    }
+                );
+                const dt = await resp.json();
+                if (resp.ok && dt.status === "success") {
+                    ToastSystem.show('Session stored successfully', "success");
                     setTimeout(() => {
-                        window.location.href = "../../../Student%20Pages/Student%20Dashboard%20Page/php/student_dashboard.php";
+                        ToastSystem.show("Redirecting to Student Dashboard", "info");
+                        setTimeout(() => {
+                            window.location.href = "../../../Student%20Pages/Student%20Dashboard%20Page/php/student_dashboard.php";
+                        }, 1500);
                     }, 1500);
-                }, 1500);
+                } else {
+                    ToastSystem.show('Session storage failed', "error");
+                }
             } else {
                 ToastSystem.show('Login Failed', "error");
             }
