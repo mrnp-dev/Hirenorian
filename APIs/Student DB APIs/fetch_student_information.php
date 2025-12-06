@@ -23,14 +23,14 @@ if ($data === null)
 
 $stu_email = $data['student_email'];
 $query = "SELECT student_id FROM Students WHERE student_email = :stu_email";
-$stmt =  pdo->prepare($query);
+$stmt =  $conn->prepare($query);
 $stmt->execute(['stu_email' => $stu_email]);
 
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 $stu_id = $row["student_id"];
 
 $query = "SELECT * FROM Students s JOIN Education e ON s.student_id = e.student_id WHERE e.student_id = :stu_id";
-$stmt = pdo->prepare($query);
+$stmt = $conn->prepare($query);
 $stmt->execute(['stu_id' => $stu_id]);
 
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

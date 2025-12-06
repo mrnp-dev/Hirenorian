@@ -3,6 +3,7 @@ session_start();
 if(isset($_SESSION['email']))
 {
     $student_email = $_SESSION['email'];
+    echo "<script>console.log('Student Email: " . $student_email . "');</script>";
     $apiUrl = "http://158.69.205.176:8080/fetch_student_information.php";
 
     $ch = curl_init($apiUrl);
@@ -17,17 +18,21 @@ if(isset($_SESSION['email']))
     if ($response === false) {
         die("Curl error: " . curl_error($ch));
     }
+    else
+    {
+        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
+
+    }
     curl_close($ch);
 
     $data = json_decode($response, true);
 
     if ($data['status'] === "success") {
-        echo "Student ID: " . $data['student_id'] . "\n";
         echo "<script>console.log('Student ID: " . $data['student_id'] . "');</script>";
-        print_r($data['data']);
+        $student = $data['data'][0];
+        
     } else {
-        echo "Error: " . $data['message'];
-        echo "<script>console.log('Error: " . $data['message'] . "');</script>";
+        echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
 }
 else
