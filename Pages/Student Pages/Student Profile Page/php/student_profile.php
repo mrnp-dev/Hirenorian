@@ -2,7 +2,33 @@
 session_start();
 if(isset($_SESSION['email']))
 {
-    $data = 
+    $student_email = $_SESSION['email'];
+    $apiUrl = "http://158.69.205.176:8080/fetch_student_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "student_email" => $student_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    }
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data['status'] === "success") {
+        echo "Student ID: " . $data['student_id'] . "\n";
+        echo "<script>console.log('Student ID: " . $data['student_id'] . "');</script>";
+        print_r($data['data']);
+    } else {
+        echo "Error: " . $data['message'];
+        echo "<script>console.log('Error: " . $data['message'] . "');</script>";
+    }
 }
 else
 {
