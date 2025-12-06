@@ -34,6 +34,23 @@ if(isset($_SESSION['email']))
         echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
     $student = $data['data'][0];
+
+    // Students Table
+    $account_id     = $student['account_id'];
+    $student_id     = $student['student_id'];
+    $first_name     = $student['first_name'];
+    $last_name      = $student['last_name'];
+    $middle_initial = $student['middle_initial'];
+    $suffix         = $student['suffix'];
+    $personal_email = $student['personal_email'];
+    $phone_number   = $student['phone_number'];
+    $student_email  = $student['student_email'];
+
+    // Education Table
+    $university   = $student['university'];
+    $department   = $student['department'];
+    $course       = $student['course'];
+    $organization = $student['organization'];
 }
 else
 {
