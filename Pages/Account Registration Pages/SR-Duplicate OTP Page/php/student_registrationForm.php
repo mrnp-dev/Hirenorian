@@ -1,3 +1,16 @@
+<?php
+session_start();
+if(isset($_SESSION['email']))
+{
+    echo "<script>console.log('email in session');</script>";
+    header("Location: ../../../Student Pages/Student Dashboard Page/php/student_dashboard.php");
+}
+else
+{
+    echo "<script>console.log('email not in session');</script>";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

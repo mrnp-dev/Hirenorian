@@ -42,6 +42,7 @@ async function check_LogIn_Fields() {
                 );
                 const dt = await resp.json();
                 if (resp.ok && dt.status === "success") {
+                    console.log(dt.debug);
                     ToastSystem.show('Session stored successfully', "success");
                     setTimeout(() => {
                         ToastSystem.show("Redirecting to Student Dashboard", "info");

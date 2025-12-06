@@ -8,8 +8,9 @@ if(!empty($data['email']))
     session_regenerate_id(true);
     echo json_encode([
         "status" => "success",
-        "message" => "Session stored successfully"
-    ]);
+        "message" => "Session stored successfully",
+        "debug" => "Email stored: " . $_SESSION['email']
+    ]); 
 }
 else
 {
