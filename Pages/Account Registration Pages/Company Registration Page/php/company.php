@@ -14,8 +14,14 @@
 
 <body>
     <div class="header">
-        <img src="../images/image 4.png" alt="Logo">
-        <h1>Hirenorian</h1>
+        <div class="header-left">
+            <img src="../images/image 4.png" alt="Logo">
+            <h1>Hirenorian</h1>
+        </div>
+        <a href="../../Student Registration Page/php/student_registrationForm.php" class="switch-registration-btn">
+            <i class="fa fa-user-graduate"></i>
+            <span>Student Registration</span>
+        </a>
     </div>
 
     <div class="wrapper">
@@ -33,7 +39,8 @@
                         <button type="button" class="toggle_show_hide" id="toggleSignInPassword"
                             onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
                     </div>
-                    <span>Forgot password? <a href="javascript:void(0)" id="forgot-pass" onclick="openResetPasswordUI()">Reset Password</a></span>
+                    <span>Forgot password? <a href="javascript:void(0)" id="forgot-pass"
+                            onclick="openResetPasswordUI()">Reset Password</a></span>
                     <button type="button" id="signIn_Btn" onclick="check_LogIn_Fields()">Login</button>
                 </form>
             </div>
@@ -84,8 +91,7 @@
 
                     <div class="form-section" id="secondInputs">
                         <div class="input-wrapper">
-                            <input type="text" id="companyName-input" name="Company Name"
-                                placeholder="Company Name *">
+                            <input type="text" id="companyName-input" name="Company Name" placeholder="Company Name *">
                             <p>error</p>
                         </div>
 
@@ -110,8 +116,7 @@
                         </div>
 
                         <div class="button-container">
-                            <button type="button" class="btn btn-back"
-                                onclick="goToPreviousSection(this)">Back</button>
+                            <button type="button" class="btn btn-back" onclick="goToPreviousSection(this)">Back</button>
                             <button type="button" class="btn btn-submit" onclick="submitTheForm(this)">Finish</button>
                         </div>
                     </div>

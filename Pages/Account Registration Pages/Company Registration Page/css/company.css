@@ -31,10 +31,17 @@ body {
     position: absolute;
     top: 1.5rem;
     left: 2.5rem;
+    right: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+}
+
+.header-left {
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    z-index: 10;
 }
 
 .header img {
@@ -48,6 +55,33 @@ body {
     font-size: 3.5rem;
     color: #9b0000;
     font-weight: 400;
+}
+
+.switch-registration-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #9b0000;
+    border-radius: 25px;
+    color: #9b0000;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.switch-registration-btn:hover {
+    background: #9b0000;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(155, 0, 0, 0.3);
+}
+
+.switch-registration-btn i {
+    font-size: 1.1rem;
 }
 
 .wrapper {
