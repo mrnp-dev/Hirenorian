@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="cell name-cell">
                     <div class="applicant-avatar">${initials}</div>
-                    <span class="applicant-name">${applicant.name}</span>
+                    <a href="../../Applicant's Profile Page/php/applicant_profile.php?id=${applicant.id}" class="applicant-name-link" style="text-decoration:none; color:inherit; font-weight:600;">${applicant.name}</a>
                 </div>
                 <div class="cell course-cell">${applicant.course}</div>
        <div class="cell document-cell">

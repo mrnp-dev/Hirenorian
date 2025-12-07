@@ -766,3 +766,9 @@ input[type="checkbox"] {
       width: 100%;
    }
 }
+
+/* Applicant Name Link */
+.applicant-name-link:hover {
+   color: var(--primary-maroon) !important;
+   text-decoration: underline !important;
+}
