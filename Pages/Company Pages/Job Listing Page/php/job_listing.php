@@ -315,6 +315,11 @@
                             <span class="radio-custom"></span>
                             <span class="radio-text">Cover Letter</span>
                         </label>
+                        <label class="radio-label">
+                            <input type="radio" name="requiredDocument" value="none">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">None</span>
+                        </label>
                     </div>
                 </div>
 
