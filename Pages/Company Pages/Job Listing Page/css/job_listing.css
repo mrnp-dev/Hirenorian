@@ -48,12 +48,12 @@
 }
 
 .job-title-dropdown:hover {
-   border-color: var(--primary-yellow);
+   border-color: var(--secondary-yellow);
 }
 
 .job-title-dropdown:focus {
    outline: none;
-   border-color: var(--primary-yellow);
+   border-color: var(--secondary-yellow);
    box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.1);
 }
 
@@ -213,14 +213,14 @@
 }
 
 .filter-pill:hover {
-   border-color: var(--primary-yellow);
+   border-color: var(--secondary-yellow);
    background-color: #fffbeb;
    color: #333;
 }
 
 .filter-pill.active {
-   background: linear-gradient(135deg, var(--primary-yellow), #f59e0b);
-   border-color: var(--primary-yellow);
+   background: linear-gradient(135deg, var(--secondary-yellow), #f59e0b);
+   border-color: var(--secondary-yellow);
    color: #333;
    font-weight: 700;
 }
@@ -252,7 +252,7 @@
 
 .search-box-inline input:focus {
    outline: none;
-   border-color: var(--primary-yellow);
+   border-color: var(--secondary-yellow);
    box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.1);
 }
 
@@ -292,7 +292,7 @@
 }
 
 .stat-card-item {
-   background: linear-gradient(135deg, var(--primary-yellow), #f59e0b);
+   background: linear-gradient(135deg, var(--secondary-yellow), #f59e0b);
    border-radius: 12px;
    padding: 15px;
    display: flex;
@@ -430,7 +430,7 @@
 }
 
 .applicant-card:hover {
-   border-color: var(--primary-yellow);
+   border-color: var(--secondary-yellow);
    box-shadow: 0 4px 12px rgba(244, 196, 48, 0.15);
 }
 
@@ -464,7 +464,7 @@ input[type="checkbox"] {
    width: 18px;
    height: 18px;
    cursor: pointer;
-   accent-color: var(--primary-yellow);
+   accent-color: var(--secondary-yellow);
 }
 
 .checkbox-master {
@@ -483,7 +483,7 @@ input[type="checkbox"] {
    width: 40px;
    height: 40px;
    border-radius: 50%;
-   background: linear-gradient(135deg, var(--primary-yellow), #f59e0b);
+   background: linear-gradient(135deg, var(--secondary-yellow), #f59e0b);
    display: flex;
    align-items: center;
    justify-content: center;

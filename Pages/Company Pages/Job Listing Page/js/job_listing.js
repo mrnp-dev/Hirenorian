@@ -263,6 +263,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (data.length === 0) {
             emptyState.style.display = 'block';
+
+            // Show context-aware empty state message
+            if (!selectedJobId) {
+                // No job selected
+                emptyState.innerHTML = `
+                    <i class="fa-solid fa-briefcase"></i>
+                    <h3>No Job Selected</h3>
+                    <p>Please select a job title from the dropdown above to view applicants</p>
+                `;
+            } else {
+                // Job is selected but no applicants match the current filter/search
+                let message = '';
+                let icon = 'fa-inbox';
+
+                if (searchTerm) {
+                    message = `No applicants found matching "${searchTerm}"`;
+                } else if (currentFilter === 'pending') {
+                    message = 'No pending applicants yet';
+                    icon = 'fa-clock';
+                } else if (currentFilter === 'accepted') {
+                    message = 'No accepted applicants yet';
+                    icon = 'fa-check-circle';
+                } else if (currentFilter === 'rejected') {
+                    message = 'No rejected applicants yet';
+                    icon = 'fa-times-circle';
+                } else {
+                    message = 'No applicants have applied yet';
+                }
+
+                emptyState.innerHTML = `
+                    <i class="fa-solid ${icon}"></i>
+                    <h3>${message}</h3>
+                    <p>Check back later or try adjusting your filters</p>
+                `;
+            }
             return;
         }
 

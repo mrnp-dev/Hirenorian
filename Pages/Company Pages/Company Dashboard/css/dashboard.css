@@ -1,25 +1,5 @@
 /* Global Styles */
-:root {
-    --primary-yellow: #f4c430;
-    --dark-bg: #2c2c2c;
-    --darker-bg: #1e1e1e;
-    --text-white: #ffffff;
-    --text-gray: #a0a0a0;
-    --input-bg: #e0e0e0;
-    --success-green: #d1e7dd;
-    --success-text: #0f5132;
-    --pending-yellow: #fff3cd;
-    --pending-text: #664d03;
-    --rejected-red: #f8d7da;
-    --rejected-text: #842029;
-    --sidebar-width-collapsed: 60px;
-    --sidebar-width-expanded: 250px;
-    --transition-speed: 0.3s;
-    --card-bg: #ffffff;
-    --blue-card: #3b82f6;
-    --green-card: #10b981;
-    --red-card: #ef4444;
-}
+/* Note: Variables are imported from variables.css */
 
 * {
     margin: 0;
@@ -29,8 +9,8 @@
 }
 
 body {
-    background-color: var(--dark-bg);
-    color: var(--text-white);
+    background-color: var(--bg-light);
+    color: var(--text-dark);
     height: 100vh;
     overflow: hidden;
 }
@@ -40,10 +20,10 @@ body {
     height: 100%;
 }
 
-/* Sidebar Styles */
+/* Sidebar Styles - Matching Student Dashboard */
 .sidebar {
-    width: var(--sidebar-width-collapsed);
-    background-color: var(--primary-yellow);
+    width: var(--sidebar-collapsed-width);
+    background-color: var(--primary-maroon);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -51,44 +31,47 @@ body {
     overflow: hidden;
     z-index: 100;
     position: relative;
+    white-space: nowrap;
 }
 
 .sidebar:hover {
-    width: var(--sidebar-width-expanded);
+    width: var(--sidebar-width);
 }
 
 .logo-container {
-    height: 60px;
+    height: 70px;
+    /* Matching topbar height */
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 20px;
     white-space: nowrap;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
 }
 
 .logo-icon {
     width: 30px;
     height: 30px;
     min-width: 30px;
-    margin-right: 15px;
 }
 
 .logo-text {
     font-weight: 700;
     font-size: 1.2rem;
-    color: #333;
+    color: var(--secondary-yellow);
     opacity: 0;
-    transition: opacity var(--transition-speed);
+    transition: opacity 0.2s;
 }
 
 .sidebar:hover .logo-text {
     opacity: 1;
+    transition-delay: 0.1s;
 }
 
 .nav-menu {
     list-style: none;
     margin-top: 20px;
+    padding: 0;
 }
 
 .nav-item {
@@ -98,38 +81,37 @@ body {
 .nav-link {
     display: flex;
     align-items: center;
-    padding: 15px;
-    color: #333;
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     transition: background-color 0.2s;
     white-space: nowrap;
+    gap: 15px;
 }
 
 .nav-link i {
-    min-width: 30px;
+    min-width: 20px;
     font-size: 1.2rem;
     text-align: center;
 }
 
 .link-text {
-    margin-left: 15px;
     font-weight: 500;
     opacity: 0;
-    transition: opacity var(--transition-speed);
+    transition: opacity 0.2s;
+    font-size: 1rem;
 }
 
 .sidebar:hover .link-text {
     opacity: 1;
+    transition-delay: 0.1s;
 }
 
 .nav-item:hover .nav-link,
 .nav-item.active .nav-link {
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-.nav-item.active .nav-link {
-    background-color: rgba(123, 17, 19, 0.2);
-    border-right: 4px solid #7B1113;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-yellow);
+    border-right: 4px solid var(--secondary-yellow);
 }
 
 /* Main Content Styles */
@@ -138,67 +120,88 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background-image: url("../../../Landing Page/Images/Backgrounds/white-hexagon-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin-left: 0;
+    /* Sidebar is not fixed here in the same way relative to margin, or is it? */
+    /* Checking Company structure: Sidebar is flex item, not fixed. Student was fixed? 
+       Student sidebar.css says 'position: fixed'. 
+       Refactoring Company to matching layout if possible or keeping flex.
+       Company layout used flex for sidebar. I will keep sidebar relative (flex) but matching styles.
+       Wait, if I change sidebar to matching style, it works. 
+       But Student sidebar is fixed. Company previous CSS sidebar was relative flex item. 
+       I will keep it flex item for now to avoid breaking layout structure unless requested.
+       The visual style matches.
+    */
 }
 
-/* Top Bar */
+/* Top Bar - Matching Student Dashboard */
 .top-bar {
-    height: 60px;
-    background-color: var(--darker-bg);
+    height: 70px;
+    background-color: #fff;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     padding: 0 30px;
-    border-bottom: 1px solid #444;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 90;
+    border-bottom: 1px solid #eee;
 }
 
 .page-title h1 {
-    font-size: 2rem;
-    color: var(--primary-yellow);
-    font-weight: 600;
-    margin-bottom: 1rem;
+    /* Hidden in top bar usually, or distinct? Company had page-title inside content-wrapper */
 }
 
 .user-profile {
-    position: relative;
-    cursor: pointer;
-}
-
-.user-info {
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: var(--transition-speed);
+}
+
+.user-profile:hover {
+    background-color: #f0f0f0;
 }
 
 .user-avatar {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--primary-yellow);
-    background-color: #555;
+    background-color: #ddd;
+    /* placeholder bg */
+    border: 2px solid var(--primary-maroon);
+    /* Image inside if present */
 }
 
 .user-name {
-    font-weight: 500;
-    font-size: 0.9rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
 }
 
 .dropdown-arrow {
     font-size: 0.8rem;
-    color: var(--text-gray);
+    color: var(--text-dark);
 }
 
 .dropdown-menu {
     position: absolute;
-    top: 100%;
-    right: 0;
+    top: 60px;
+    /* adjusted */
+    right: 30px;
     background-color: white;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
     padding: 10px 0;
     min-width: 150px;
     display: none;
     z-index: 1000;
-    margin-top: 10px;
+    border: 1px solid #eee;
 }
 
 .dropdown-menu.show {
@@ -208,13 +211,14 @@ body {
 .dropdown-item {
     display: block;
     padding: 10px 20px;
-    color: #333;
+    color: var(--text-dark);
     text-decoration: none;
     font-size: 0.9rem;
 }
 
 .dropdown-item:hover {
-    background-color: #f0f0f0;
+    background-color: #f8f9fa;
+    color: var(--primary-maroon);
 }
 
 /* Content Wrapper */
@@ -225,6 +229,16 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.page-title {
+    margin-bottom: 10px;
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    color: var(--primary-maroon);
+    font-weight: 700;
 }
 
 /* Section Transitions */
@@ -256,28 +270,31 @@ body {
    MODERN DASHBOARD LAYOUT STYLES
 ======================================== */
 
-/* Main Dashboard Container - 65% height constraint */
 .dashboard-main-container {
     display: grid;
     grid-template-columns: 75% 25%;
     gap: 20px;
-    height: 65vh;
-    /* 65% of viewport height */
-    max-height: 65vh;
+    /* Removed fixed height constraint to allow content to flow naturally if needed, 
+       but keeping max-height if scrolling is intended within panels. 
+       Let's keep height constraint but cleaner. */
+    height: calc(100vh - 180px);
+    /* Approx calculation */
+    min-height: 500px;
 }
 
 /* ========================================
    LEFT COLUMN: JOB LISTINGS PANEL (75%)
 ======================================== */
 .job-listings-panel {
-    background-color: var(--card-bg);
-    border-radius: 20px;
+    background-color: #fff;
+    border-radius: 12px;
     padding: 25px;
-    color: #333;
+    color: var(--text-dark);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
 }
 
 .section-header {
@@ -288,34 +305,31 @@ body {
 }
 
 .section-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: #333;
+    color: var(--text-dark);
 }
 
 .btn-view-all {
-    background: linear-gradient(135deg, var(--blue-card), #2563eb);
+    background: var(--primary-maroon);
     border: none;
     padding: 10px 18px;
-    border-radius: 10px;
+    border-radius: 8px;
     color: white;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 2px 4px rgba(123, 17, 19, 0.2);
 }
 
 .btn-view-all:hover {
+    background-color: #5a0c0e;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-}
-
-.btn-view-all i {
-    font-size: 0.85rem;
+    box-shadow: 0 4px 8px rgba(123, 17, 19, 0.3);
 }
 
 .job-listing-container {
@@ -332,14 +346,14 @@ body {
 .job-listing-table th {
     text-align: left;
     padding: 15px;
-    color: #9ca3af;
-    font-size: 0.75rem;
+    color: #666;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 1px solid #eee;
     position: sticky;
     top: 0;
-    background-color: white;
+    background-color: #fff;
     z-index: 10;
 }
 
@@ -348,15 +362,11 @@ body {
     border-bottom: 1px solid #f3f4f6;
     font-size: 0.95rem;
     font-weight: 500;
-    color: #333;
-}
-
-.job-listing-table tbody tr {
-    transition: background-color 0.2s;
+    color: var(--text-dark);
 }
 
 .job-listing-table tbody tr:hover {
-    background-color: #f9fafb;
+    background-color: #f9f9f9;
 }
 
 .status-pill {
@@ -369,21 +379,21 @@ body {
 }
 
 .status-pill.accepted {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: #10b981;
-    border: 1px solid #10b981;
+    background-color: var(--status-accepted-bg);
+    color: var(--status-accepted-text);
+    border: none;
 }
 
 .status-pill.rejected {
-    background-color: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-    border: 1px solid #ef4444;
+    background-color: var(--status-rejected-bg);
+    color: var(--status-rejected-text);
+    border: none;
 }
 
 .status-pill.pending {
-    background-color: rgba(245, 158, 11, 0.15);
-    color: #f59e0b;
-    border: 1px solid #f59e0b;
+    background-color: var(--status-pending-bg);
+    color: var(--status-pending-text);
+    border: none;
 }
 
 /* ========================================
@@ -396,91 +406,27 @@ body {
     height: 100%;
 }
 
-/* PIE CHART SECTION - Top 35% */
+/* PIE CHART SECTION */
 .pie-chart-section {
-    background-color: var(--card-bg);
-    border-radius: 20px;
+    background-color: #fff;
+    border-radius: 12px;
     padding: 20px;
-    color: #333;
+    color: var(--text-dark);
     display: flex;
     flex-direction: column;
     height: 35%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
 }
 
-.pie-chart-section h3 {
+.pie-chart-section h3,
+.recruitment-metrics-section h3 {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 15px;
-    color: #333;
+    color: var(--text-dark);
 }
 
-.chart-wrapper {
-    flex: 1;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-height: 120px;
-    margin-bottom: 10px;
-}
-
-.chart-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background-color: #f8f9fa;
-    padding: 6px 10px;
-    border-radius: 8px;
-}
-
-.legend-dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-.legend-dot.active {
-    background-color: #10b981;
-}
-
-.legend-dot.closed {
-    background-color: #ef4444;
-}
-
-.legend-text {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.1;
-}
-
-.legend-label {
-    font-size: 0.7rem;
-    color: #666;
-}
-
-.legend-value {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #333;
-}
-
-/* RECRUITMENT METRICS SECTION - Bottom 65% */
-.recruitment-metrics-section {
-    background-color: var(--card-bg);
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-/* Modern Horizontal Layout: Stats Left, Chart Right */
 .chart-content-wrapper {
     flex: 1;
     display: flex;
@@ -488,7 +434,6 @@ body {
     min-height: 0;
 }
 
-/* Left Side: Stats Cards (40%) */
 .chart-stats {
     flex: 0 0 40%;
     display: flex;
@@ -498,34 +443,34 @@ body {
 
 .stat-card {
     background-color: #f8f9fa;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 12px 15px;
     display: flex;
     align-items: center;
     gap: 12px;
     flex: 1;
+    border: 1px solid #eee;
 }
 
 .stat-indicator {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     flex-shrink: 0;
 }
 
 .active-indicator {
-    background-color: #10b981;
+    background-color: var(--green-card);
 }
 
 .closed-indicator {
-    background-color: #ef4444;
+    background-color: var(--red-card);
 }
 
 .stat-details {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex: 1;
 }
 
 .stat-label {
@@ -535,19 +480,16 @@ body {
 }
 
 .stat-number {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
     font-weight: 700;
-    color: #333;
-    line-height: 1;
+    color: var(--text-dark);
 }
 
-/* Right Side: Chart Display (60%) */
 .chart-display {
     flex: 0 0 60%;
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 
 .chart-container {
@@ -559,12 +501,6 @@ body {
     justify-content: center;
 }
 
-.chart-container canvas {
-    max-width: 180px;
-    max-height: 180px;
-}
-
-/* Center Label in Donut Hole */
 .chart-center-label {
     position: absolute;
     top: 50%;
@@ -576,37 +512,28 @@ body {
 
 .center-number {
     display: block;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #333;
-    line-height: 1;
+    color: var(--text-dark);
 }
 
 .center-text {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #666;
-    margin-top: 4px;
-    font-weight: 500;
 }
 
-/* RECRUITMENT METRICS SECTION - Bottom 65% */
+/* RECRUITMENT METRICS SECTION */
 .recruitment-metrics-section {
-    background-color: var(--card-bg);
-    border-radius: 20px;
+    background-color: #fff;
+    border-radius: 12px;
     padding: 20px;
-    color: #333;
+    color: var(--text-dark);
     display: flex;
     flex-direction: column;
     height: 65%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.recruitment-metrics-section h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #333;
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
 }
 
 .metrics-cards-vertical {
@@ -621,34 +548,29 @@ body {
     align-items: center;
     gap: 15px;
     padding: 15px;
-    border-radius: 12px;
+    border-radius: 10px;
     color: white;
     flex: 1;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.metric-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .metric-card.total {
-    background: linear-gradient(135deg, var(--blue-card), #2563eb);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
 
 .metric-card.accepted {
-    background: linear-gradient(135deg, var(--green-card), #059669);
+    background: linear-gradient(135deg, #10b981, #059669);
 }
 
 .metric-card.rejected {
-    background: linear-gradient(135deg, var(--red-card), #dc2626);
+    background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
 .metric-icon {
-    width: 45px;
-    height: 45px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.2);
     display: flex;
     align-items: center;
@@ -656,112 +578,77 @@ body {
     flex-shrink: 0;
 }
 
-.metric-icon i {
-    font-size: 1.3rem;
-}
-
 .metric-content {
     display: flex;
     flex-direction: column;
     gap: 2px;
-    flex: 1;
 }
 
 .metric-label {
     font-size: 0.75rem;
-    opacity: 0.95;
-    font-weight: 500;
+    opacity: 0.9;
 }
 
 .metric-number {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    line-height: 1;
 }
 
-/* ========================================
-   MODAL STYLES
-======================================== */
+/* Modal Styles */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #fff;
     margin: 3% auto;
     padding: 0;
-    border-radius: 20px;
+    border-radius: 12px;
     width: 85%;
-    max-width: 1000px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    max-width: 900px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
 .modal-header {
-    padding: 25px 30px;
+    padding: 20px 25px;
     border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, #f8f9fa, #ffffff);
-}
-
-.modal-header h2 {
-    margin: 0;
-    color: #333;
-    font-size: 1.5rem;
+    background: #f8f9fa;
 }
 
 .close-modal {
-    color: #aaa;
-    font-size: 32px;
+    color: #999;
+    font-size: 28px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s;
-    line-height: 1;
 }
 
-.close-modal:hover,
-.close-modal:focus {
+.close-modal:hover {
     color: #333;
-    transform: rotate(90deg);
 }
 
 .modal-body {
-    padding: 30px;
+    padding: 25px;
     max-height: 70vh;
     overflow-y: auto;
-}
-
-.modal-body table {
-    color: #333;
-}
-
-.modal-body table th {
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-.modal-body table td {
-    color: #333;
 }
 
 .full-width {
     width: 100%;
 }
 
-/* ========================================
-   PLACEHOLDER CONTENT (Other Sections)
-======================================== */
+/* Placeholder Content */
 .placeholder-content {
     display: flex;
     flex-direction: column;
@@ -772,86 +659,27 @@ body {
     text-align: center;
     padding: 50px;
     background-color: white;
-    border-radius: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.placeholder-icon {
-    font-size: 4rem;
-    color: var(--primary-yellow);
-    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
 }
 
 .placeholder-content h2 {
-    font-size: 2rem;
-    margin-bottom: 10px;
-    color: #333;
+    color: var(--primary-maroon);
 }
 
-.placeholder-content p {
-    font-size: 1.1rem;
-    color: #888;
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-======================================== */
-@media (max-width: 1400px) {
-    .dashboard-main-container {
-        grid-template-columns: 70% 30%;
-    }
-
-    .metric-number {
-        font-size: 1.5rem;
-    }
-
-    .metric-label {
-        font-size: 0.7rem;
-    }
-}
-
-@media (max-width: 1024px) {
+/* Responsive */
+@media (max-width: 1200px) {
     .dashboard-main-container {
         grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
         height: auto;
         max-height: none;
     }
 
-    .analytics-panel {
-        grid-row: 1;
-        flex-direction: row;
+    .pie-chart-section {
         height: auto;
     }
 
-    .job-listings-panel {
-        grid-row: 2;
-        height: 400px;
-    }
-
-    .pie-chart-section,
     .recruitment-metrics-section {
-        flex: 1;
         height: auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        position: absolute;
-        height: 100%;
-        z-index: 1000;
-    }
-
-    .main-content {
-        margin-left: var(--sidebar-width-collapsed);
-    }
-
-    .analytics-panel {
-        flex-direction: column;
-    }
-
-    .metric-card {
-        flex-direction: row;
     }
 }

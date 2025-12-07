@@ -1,0 +1,36 @@
+:root {
+    --primary-maroon: #7b1113;
+    --secondary-yellow: #f1c40f;
+    --text-dark: #333;
+    --text-light: #fff;
+    --bg-light: #f4f6f9;
+    --sidebar-width: 250px;
+    --sidebar-collapsed-width: 80px;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+
+    /* Status Colors */
+    --status-pending-bg: #fff3cd;
+    --status-pending-text: #856404;
+    --status-accepted-bg: #d4edda;
+    --status-accepted-text: #155724;
+    --status-rejected-bg: #f8d7da;
+    --status-rejected-text: #721c24;
+
+    /* Card Backgrounds */
+    --blue-card: #3b82f6;
+    --green-card: #10b981;
+    --red-card: #ef4444;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}

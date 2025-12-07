@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Listing - Hirenorian</title>
     <!-- Shared CSS from Dashboard -->
+    <link rel="stylesheet" href="../../Company Dashboard/css/variables.css">
     <link rel="stylesheet" href="../../Company Dashboard/css/dashboard.css">
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="../css/job_listing.css">
