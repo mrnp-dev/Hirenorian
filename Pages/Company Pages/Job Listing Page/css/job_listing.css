@@ -106,11 +106,14 @@
    display: none;
    align-items: center;
    gap: 20px;
-   padding: 15px 20px;
-   background: #f59e0b;
-   border-radius: 12px;
+   padding: 15px 0;
+   /* Remove horizontal padding if no background */
+   background: transparent;
+   border-radius: 0;
    animation: slideIn 0.3s ease;
    margin-bottom: 25px;
+   border-bottom: 1px solid #e5e7eb;
+   /* Add divider instead of background box */
 }
 
 @keyframes slideIn {
@@ -152,24 +155,28 @@
 
 .batch-accept {
    background-color: white;
-   color: #10b981;
+   color: #333;
+   border: 1px solid #e5e7eb;
 }
 
 .batch-accept:hover {
-   background-color: #10b981;
-   color: white;
-   transform: translateY(-2px);
+   background-color: #f3f4f6;
+   /* Light grey */
+   color: #333;
+   transform: none;
 }
 
 .batch-reject {
    background-color: white;
-   color: #ef4444;
+   color: #333;
+   border: 1px solid #e5e7eb;
 }
 
 .batch-reject:hover {
-   background-color: #ef4444;
-   color: white;
-   transform: translateY(-2px);
+   background-color: #f3f4f6;
+   /* Light grey */
+   color: #333;
+   transform: none;
 }
 
 .batch-cancel {
