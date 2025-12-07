@@ -1285,3 +1285,25 @@ input[type="checkbox"] {
       gap: 12px;
    }
 }
+/* Modal Mode Indicator */
+.modal-mode-indicator {
+   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+   color: #1a1a1a;
+   padding: 12px 20px;
+   border-radius: 12px 12px 0 0;
+   margin: -30px -30px 20px -30px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   font-size: 0.95rem;
+   font-weight: 600;
+   box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+}
+
+.modal-mode-indicator i {
+   font-size: 1.1rem;
+}
+
+.modal-mode-indicator strong {
+   color: #7c2d12;
+}

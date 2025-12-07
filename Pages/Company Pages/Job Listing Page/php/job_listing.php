@@ -238,6 +238,12 @@
     <div class="job-post-modal-overlay" id="jobPostModalOverlay" style="display: none;">
         <div class="job-post-modal">
             <form id="jobPostForm" class="job-post-form">
+                <!-- Mode Indicator -->
+                <div class="modal-mode-indicator" id="modalModeIndicator" style="display: none;">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span id="modalModeText">Editing: <strong id="editingJobTitle"></strong></span>
+                </div>
+
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <div class="job-title-input-group">
@@ -249,7 +255,7 @@
                             <i class="fa-solid fa-times"></i> Cancel
                         </button>
                         <button type="submit" class="btn-modal btn-post" id="btnPostJob">
-                            <i class="fa-solid fa-check"></i> Post
+                            <i class="fa-solid fa-check"></i> <span id="submitBtnText">Post</span>
                         </button>
                     </div>
                 </div>

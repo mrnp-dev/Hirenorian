@@ -720,8 +720,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnEdit) {
         btnEdit.addEventListener('click', () => {
-            // TODO: Show modal for editing job post
-            console.log('Edit button clicked - Modal to be implemented');
+            const selectedJobId = jobTitleSelect.value;
+
+            if (!selectedJobId) {
+                alert('Please select a job post to edit');
+                return;
+            }
+
+            // Get the selected job post data
+            const selectedJob = jobPostsData.find(job => job.id.toString() === selectedJobId);
+
+            if (!selectedJob) {
+                console.error('Job not found');
+                return;
+            }
+
+            // Create mock data for edit (using actual job title from dropdown)
+            // For testing, using random values for other fields as requested
+            const mockJobData = {
+                jobId: selectedJob.id,
+                jobTitle: selectedJob.title, // Actual job title from dropdown
+                location: "Manila, Philippines", // Mock data
+                workType: "Full-time", // Mock data
+                applicantLimit: 15, // Mock data
+                category: "Technology & Digital", // Mock data
+                workTags: ["Software Development", "Web Development", "Cloud Computing"], // Mock data
+                requiredDocument: "resume", // Mock data
+                jobDescription: "We are looking for an experienced professional to join our growing team. This is an exciting opportunity to work on cutting-edge projects with a collaborative team of experts.", // Mock data
+                responsibilities: "• Lead project development and implementation\n• Collaborate with cross-functional teams\n• Mentor junior team members\n• Ensure code quality and best practices", // Mock data
+                qualification: "• Bachelor's degree in relevant field\n• 5+ years of experience\n• Strong problem-solving skills\n• Excellent communication abilities", // Mock data
+                skills: "• Technical expertise in relevant technologies\n• Leadership and team management\n• Agile/Scrum methodology\n• Strong analytical skills", // Mock data 
+                status: selectedJob.status,
+                views: selectedJob.views
+            };
+
+            // Open modal in edit mode
+            openJobPostModal('edit', mockJobData);
         });
     }
 
@@ -761,6 +795,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedTags = [];
     const MAX_TAGS = 3;
 
+    // Modal Mode Management
+    let modalMode = 'add'; // 'add' or 'edit'
+    let currentEditingJobId = null;
+
     // DOM Elements for Modal
     const jobPostModalOverlay = document.getElementById('jobPostModalOverlay');
     const jobPostForm = document.getElementById('jobPostForm');
@@ -768,6 +806,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const categorySelect = document.getElementById('categorySelect');
     const tagsContainer = document.getElementById('tagsContainer');
     const tagCounter = document.getElementById('tagCounter');
+    const modalModeIndicator = document.getElementById('modalModeIndicator');
+    const editingJobTitle = document.getElementById('editingJobTitle');
+    const submitBtnText = document.getElementById('submitBtnText');
 
     // Fetch Categories and Tags Data
     async function fetchCategoriesAndTags() {
@@ -821,11 +862,46 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Open Job Post Modal
-    function openJobPostModal() {
+    function openJobPostModal(mode = 'add', jobData = null) {
         if (jobPostModalOverlay) {
+            modalMode = mode;
+
             jobPostModalOverlay.style.display = 'flex';
             jobPostModalOverlay.classList.remove('closing');
             resetJobPostForm();
+
+            // Update UI based on mode
+            if (mode === 'edit' && jobData) {
+                currentEditingJobId = jobData.jobId;
+
+                // Show mode indicator
+                if (modalModeIndicator) {
+                    modalModeIndicator.style.display = 'flex';
+                    if (editingJobTitle) {
+                        editingJobTitle.textContent = jobData.jobTitle;
+                    }
+                }
+
+                // Change button text
+                if (submitBtnText) {
+                    submitBtnText.textContent = 'Update';
+                }
+
+                // Populate form
+                populateFormForEdit(jobData);
+            } else {
+                // Add mode - hide indicator
+                if (modalModeIndicator) {
+                    modalModeIndicator.style.display = 'none';
+                }
+
+                // Reset button text
+                if (submitBtnText) {
+                    submitBtnText.textContent = 'Post';
+                }
+
+                currentEditingJobId = null;
+            }
 
             // Fetch data if not already loaded
             if (Object.keys(categoriesTagsData).length === 0) {
@@ -835,6 +911,87 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetchWorkTypes();
             }
         }
+    }
+
+    // Populate Form for Edit Mode
+    function populateFormForEdit(jobData) {
+        // Populate job title
+        const jobTitleInput = document.getElementById('jobTitleInput');
+        if (jobTitleInput) jobTitleInput.value = jobData.jobTitle || '';
+
+        // Populate location
+        const locationInput = document.getElementById('locationInput');
+        if (locationInput) locationInput.value = jobData.location || '';
+
+        // Populate work type
+        const workTypeSelect = document.getElementById('workTypeSelect');
+        if (workTypeSelect && jobData.workType) {
+            // Wait for options to load
+            setTimeout(() => {
+                workTypeSelect.value = jobData.workType;
+            }, 100);
+        }
+
+        // Populate applicant limit
+        const applicantLimitInput = document.getElementById('applicantLimitInput');
+        if (applicantLimitInput) applicantLimitInput.value = jobData.applicantLimit || '';
+
+        // Populate category and tags
+        if (jobData.category && jobData.workTags) {
+            setTimeout(() => {
+                // Set category
+                if (categorySelect) {
+                    categorySelect.value = jobData.category;
+                    // Trigger change event to render tags
+                    const event = new Event('change');
+                    categorySelect.dispatchEvent(event);
+
+                    // Select tags after they're rendered
+                    setTimeout(() => {
+                        selectedTags = [...jobData.workTags];
+                        const tagPills = document.querySelectorAll('.tag-pill');
+                        tagPills.forEach(pill => {
+                            const tagName = pill.dataset.tag;
+                            if (selectedTags.includes(tagName)) {
+                                pill.classList.add('selected');
+                            }
+                        });
+
+                        // Disable non-selected tags if max reached
+                        if (selectedTags.length >= MAX_TAGS) {
+                            document.querySelectorAll('.tag-pill:not(.selected)').forEach(pill => {
+                                pill.classList.add('disabled');
+                            });
+                        }
+
+                        updateTagCounter();
+                    }, 200);
+                }
+            }, 150);
+        }
+
+        // Populate required document
+        if (jobData.requiredDocument) {
+            const docRadios = document.getElementsByName('requiredDocument');
+            docRadios.forEach(radio => {
+                if (radio.value === jobData.requiredDocument) {
+                    radio.checked = true;
+                }
+            });
+        }
+
+        // Populate text areas
+        const jobDescriptionTextarea = document.getElementById('jobDescriptionTextarea');
+        if (jobDescriptionTextarea) jobDescriptionTextarea.value = jobData.jobDescription || '';
+
+        const responsibilitiesTextarea = document.getElementById('responsibilitiesTextarea');
+        if (responsibilitiesTextarea) responsibilitiesTextarea.value = jobData.responsibilities || '';
+
+        const qualificationTextarea = document.getElementById('qualificationTextarea');
+        if (qualificationTextarea) qualificationTextarea.value = jobData.qualification || '';
+
+        const skillsTextarea = document.getElementById('skillsTextarea');
+        if (skillsTextarea) skillsTextarea.value = jobData.skills || '';
     }
 
     // Close Job Post Modal
@@ -1109,26 +1266,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 views: 0
             };
 
-            // Log data for now (backend integration point)
-            console.log('Job Posting Data:', formData);
+            // Check mode and handle accordingly
+            if (modalMode === 'edit') {
+                // Add job ID for update
+                formData.jobId = currentEditingJobId;
 
-            // TODO: Send data to backend
-            // fetch('/api/job-posts', { 
-            //     method: 'POST', 
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(formData) 
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     console.log('Success:', data);
-            //     closeJobPostModal();
-            //     // Reload job list or add new job to dropdown
-            //     location.reload(); // Temporary solution
-            // })
-            // .catch(error => console.error('Error:', error));
+                // Log update data for now (backend integration point)
+                console.log('=== JOB POST UPDATE ===');
+                console.log('Updating Job ID:', currentEditingJobId);
+                console.log('Updated Job Data:', formData);
 
-            // For now, just show success message and close modal
-            alert('Job post created successfully! (Backend integration pending)');
+                // TODO: Send update to backend
+                // fetch(`/api/job-posts/${currentEditingJobId}`, { 
+                //     method: 'PUT', 
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(formData) 
+                // })
+
+                alert('Job post updated successfully! (Backend integration pending)');
+            } else {
+                // Add mode - Log create data for now (backend integration point)
+                console.log('=== NEW JOB POST ===');
+                console.log('Job Posting Data:', formData);
+
+                // TODO: Send data to backend
+                // fetch('/api/job-posts', { 
+                //     method: 'POST', 
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(formData) 
+                // })
+
+                alert('Job post created successfully! (Backend integration pending)');
+            }
+
             closeJobPostModal();
         });
     }
