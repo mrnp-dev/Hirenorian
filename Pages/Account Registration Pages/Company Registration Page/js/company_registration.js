@@ -640,6 +640,7 @@ function goToPreviousSection(button) {
     const formSection = button.closest('.form-section');
     formSection.classList.remove('slide-left');
     formSection.classList.add('slide-right');
+    secondBackButton_Action = 'back';  // Set flag to trigger back animation
     manageSteps('back');
 }
 

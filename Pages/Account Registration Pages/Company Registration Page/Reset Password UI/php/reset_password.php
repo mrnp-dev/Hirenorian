@@ -12,9 +12,9 @@
                 </div>
             </div>
             <h2>Reset Password</h2>
-            <p class="reset-instruction">Enter your student email to receive an OTP.</p>
+            <p class="reset-instruction">Enter your company email to receive an OTP.</p>
             <div class="input-wrapper">
-                <input type="text" id="reset-email-input" placeholder="Student Email">
+                <input type="text" id="reset-email-input" placeholder="Company Email">
                 <p class="error-msg">error</p>
             </div>
             <button type="button" class="btn-reset-primary" onclick="initiateResetPasswordOTP()">

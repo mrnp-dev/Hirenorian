@@ -42,16 +42,16 @@ async function initiateResetPasswordOTP() {
     const email = emailInput.value.trim();
     const errorMsg = emailInput.parentElement.querySelector('.error-msg');
 
-    // Validation
-    const validSchoolEmail_RegEx = /^20[0-9]{2}[0-9]{6}@pampangastateu\.edu\.ph$/;
+    // Validation - Normal email format for company
+    const validEmail_RegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (email === "") {
         showResetError(errorMsg, "Email cannot be empty");
         return;
     }
 
-    if (!validSchoolEmail_RegEx.test(email)) {
-        showResetError(errorMsg, "Invalid student email format");
+    if (!validEmail_RegEx.test(email)) {
+        showResetError(errorMsg, "Invalid email format");
         return;
     }
 
