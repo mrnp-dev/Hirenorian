@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 // You might need to adjust the path to autoload.php depending on where your vendor folder is.
 // Assuming vendor is in the root or relative to this file.
 // For this prototype, we'll look for it in the project root or current dir.
-$autoloadPath = '../../vendor/autoload.php'; 
+$autoloadPath = 's';
 if (!file_exists($autoloadPath)) {
     $autoloadPath = 'vendor/autoload.php';
 }
@@ -33,23 +33,23 @@ $mail = new PHPMailer(true);
 try {
     // Server settings
     $mail->isSMTP();
-    $mail->Host       = 'mail.privateemail.com';                     // Set the SMTP server to send through
-    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-    $mail->Username   = 'mailbox_1@mrnp.site';                     // SMTP username
-    $mail->Password   = '@09Pampanga09';                               // SMTP password
+    $mail->Host = 'mail.privateemail.com';                     // Set the SMTP server to send through
+    $mail->SMTPAuth = true;                                   // Enable SMTP authentication
+    $mail->Username = 'mailbox_1@mrnp.site';                     // SMTP username
+    $mail->Password = '@09Pampanga09';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-    $mail->Port       = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+    $mail->Port = 587;                                    // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
     // Sender info
     $mail->setFrom('mailbox_1@mrnp.site', 'Mailer');
-    
+
     // Recipient
     $mail->addAddress($recipientEmail);     // Add a recipient
 
     // Content
     $mail->isHTML(true);                                  // Set email format to HTML
     $mail->Subject = 'Test Email from Prototype';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->Body = 'This is the HTML message body <b>in bold!</b>';
     $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
     $mail->send();

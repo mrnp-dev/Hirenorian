@@ -707,8 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAdd) {
         btnAdd.addEventListener('click', () => {
-            // TODO: Show modal for adding new job post
-            console.log('Add button clicked - Modal to be implemented');
+            openJobPostModal();
         });
     }
 
@@ -752,6 +751,408 @@ document.addEventListener('DOMContentLoaded', () => {
             clearSelection();
         });
     }
+
+    // ========================================
+    // JOB POSTING MODAL FUNCTIONALITY
+    // ========================================
+
+    let categoriesTagsData = {};
+    let workTypesData = [];
+    let selectedTags = [];
+    const MAX_TAGS = 3;
+
+    // DOM Elements for Modal
+    const jobPostModalOverlay = document.getElementById('jobPostModalOverlay');
+    const jobPostForm = document.getElementById('jobPostForm');
+    const btnCancelModal = document.getElementById('btnCancelModal');
+    const categorySelect = document.getElementById('categorySelect');
+    const tagsContainer = document.getElementById('tagsContainer');
+    const tagCounter = document.getElementById('tagCounter');
+
+    // Fetch Categories and Tags Data
+    async function fetchCategoriesAndTags() {
+        try {
+            const response = await fetch('../json/categories_tags.json');
+            categoriesTagsData = await response.json();
+            populateCategoryDropdown();
+        } catch (error) {
+            console.error('Error fetching categories and tags:', error);
+        }
+    }
+
+    // Fetch Work Types Data
+    async function fetchWorkTypes() {
+        try {
+            const response = await fetch('../json/work_types.json');
+            workTypesData = await response.json();
+            populateWorkTypesDropdown();
+        } catch (error) {
+            console.error('Error fetching work types:', error);
+        }
+    }
+
+    // Populate Category Dropdown
+    function populateCategoryDropdown() {
+        if (!categorySelect) return;
+
+        categorySelect.innerHTML = '<option value="">Select a category...</option>';
+
+        Object.keys(categoriesTagsData).forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    // Populate Work Types Dropdown
+    function populateWorkTypesDropdown() {
+        const workTypeSelect = document.getElementById('workTypeSelect');
+        if (!workTypeSelect) return;
+
+        workTypeSelect.innerHTML = '<option value="">Select work type...</option>';
+
+        workTypesData.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            workTypeSelect.appendChild(option);
+        });
+    }
+
+    // Open Job Post Modal
+    function openJobPostModal() {
+        if (jobPostModalOverlay) {
+            jobPostModalOverlay.style.display = 'flex';
+            jobPostModalOverlay.classList.remove('closing');
+            resetJobPostForm();
+
+            // Fetch data if not already loaded
+            if (Object.keys(categoriesTagsData).length === 0) {
+                fetchCategoriesAndTags();
+            }
+            if (workTypesData.length === 0) {
+                fetchWorkTypes();
+            }
+        }
+    }
+
+    // Close Job Post Modal
+    function closeJobPostModal() {
+        if (jobPostModalOverlay) {
+            jobPostModalOverlay.classList.add('closing');
+            setTimeout(() => {
+                jobPostModalOverlay.style.display = 'none';
+                jobPostModalOverlay.classList.remove('closing');
+            }, 300);
+        }
+    }
+
+    // Reset Job Post Form
+    function resetJobPostForm() {
+        if (jobPostForm) {
+            jobPostForm.reset();
+        }
+        selectedTags = [];
+        updateTagCounter();
+        clearTags();
+        clearAllErrors();
+    }
+
+    // Category Selection Handler
+    if (categorySelect) {
+        categorySelect.addEventListener('change', (e) => {
+            const selectedCategory = e.target.value;
+            if (selectedCategory && categoriesTagsData[selectedCategory]) {
+                renderTags(categoriesTagsData[selectedCategory]);
+            } else {
+                clearTags();
+            }
+            // Reset selected tags when category changes
+            selectedTags = [];
+            updateTagCounter();
+            clearError('tags');
+        });
+    }
+
+    // Render Tags
+    function renderTags(tags) {
+        if (!tagsContainer) return;
+
+        tagsContainer.innerHTML = '';
+
+        if (!tags || tags.length === 0) {
+            tagsContainer.innerHTML = '<p class="tag-placeholder">No tags available for this category</p>';
+            return;
+        }
+
+        tags.forEach(tag => {
+            const tagPill = document.createElement('div');
+            tagPill.className = 'tag-pill';
+            tagPill.textContent = tag;
+            tagPill.dataset.tag = tag;
+
+            tagPill.addEventListener('click', () => toggleTagSelection(tag, tagPill));
+
+            tagsContainer.appendChild(tagPill);
+        });
+    }
+
+    // Clear Tags
+    function clearTags() {
+        if (tagsContainer) {
+            tagsContainer.innerHTML = '<p class="tag-placeholder">Please select a category to view available tags</p>';
+        }
+    }
+
+    // Toggle Tag Selection
+    function toggleTagSelection(tag, element) {
+        const tagIndex = selectedTags.indexOf(tag);
+
+        if (tagIndex > -1) {
+            // Tag is already selected, remove it
+            selectedTags.splice(tagIndex, 1);
+            element.classList.remove('selected');
+
+            // Re-enable all tags
+            document.querySelectorAll('.tag-pill.disabled').forEach(pill => {
+                pill.classList.remove('disabled');
+            });
+        } else {
+            // Check if max limit reached
+            if (selectedTags.length >= MAX_TAGS) {
+                // Show visual feedback
+                if (tagCounter) {
+                    tagCounter.style.color = '#ef4444';
+                    setTimeout(() => {
+                        tagCounter.style.color = 'var(--secondary-yellow)';
+                    }, 500);
+                }
+                return;
+            }
+
+            // Add tag
+            selectedTags.push(tag);
+            element.classList.add('selected');
+
+            // Disable other tags if max reached
+            if (selectedTags.length >= MAX_TAGS) {
+                document.querySelectorAll('.tag-pill:not(.selected)').forEach(pill => {
+                    pill.classList.add('disabled');
+                });
+            }
+        }
+
+        updateTagCounter();
+    }
+
+    // Update Tag Counter
+    function updateTagCounter() {
+        if (tagCounter) {
+            tagCounter.textContent = `Selected: ${selectedTags.length}/${MAX_TAGS}`;
+        }
+    }
+
+    // Form Validation
+    function validateJobPostForm() {
+        let isValid = true;
+
+        // Job Title
+        const jobTitle = document.getElementById('jobTitleInput').value.trim();
+        if (!jobTitle) {
+            showError('jobTitle', 'Job title is required');
+            isValid = false;
+        }
+
+        // Location
+        const location = document.getElementById('locationInput').value.trim();
+        if (!location) {
+            showError('location', 'Location is required');
+            isValid = false;
+        }
+
+        // Work Type
+        const workType = document.getElementById('workTypeSelect').value;
+        if (!workType) {
+            showError('workType', 'Work type is required');
+            isValid = false;
+        }
+
+        // Applicant Limit
+        const applicantLimit = document.getElementById('applicantLimitInput').value;
+        if (!applicantLimit || applicantLimit < 1) {
+            showError('applicantLimit', 'Applicant limit must be at least 1');
+            isValid = false;
+        }
+
+        // Work Tags (minimum 1)
+        if (selectedTags.length < 1) {
+            showError('tags', 'Please select at least 1 work tag');
+            isValid = false;
+        }
+
+        // Job Description
+        const jobDescription = document.getElementById('jobDescriptionTextarea').value.trim();
+        if (!jobDescription) {
+            showError('jobDescription', 'Job description is required');
+            isValid = false;
+        }
+
+        // Responsibilities
+        const responsibilities = document.getElementById('responsibilitiesTextarea').value.trim();
+        if (!responsibilities) {
+            showError('responsibilities', 'Responsibilities are required');
+            isValid = false;
+        }
+
+        // Qualification
+        const qualification = document.getElementById('qualificationTextarea').value.trim();
+        if (!qualification) {
+            showError('qualification', 'Qualification is required');
+            isValid = false;
+        }
+
+        // Skills
+        const skills = document.getElementById('skillsTextarea').value.trim();
+        if (!skills) {
+            showError('skills', 'Skills are required');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Show Error
+    function showError(fieldName, message) {
+        const errorElement = document.getElementById(`${fieldName}Error`);
+        const inputElement = document.getElementById(`${fieldName}Input`) ||
+            document.getElementById(`${fieldName}Select`) ||
+            document.getElementById(`${fieldName}Textarea`);
+
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        if (inputElement) {
+            inputElement.classList.add('error');
+        }
+    }
+
+    // Clear Error
+    function clearError(fieldName) {
+        const errorElement = document.getElementById(`${fieldName}Error`);
+        const inputElement = document.getElementById(`${fieldName}Input`) ||
+            document.getElementById(`${fieldName}Select`) ||
+            document.getElementById(`${fieldName}Textarea`);
+
+        if (errorElement) {
+            errorElement.classList.remove('show');
+            errorElement.textContent = '';
+        }
+
+        if (inputElement) {
+            inputElement.classList.remove('error');
+        }
+    }
+
+    // Clear All Errors
+    function clearAllErrors() {
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.remove('show');
+            el.textContent = '';
+        });
+        document.querySelectorAll('.error').forEach(el => {
+            el.classList.remove('error');
+        });
+    }
+
+    // Add input event listeners to clear errors on user input
+    if (jobPostForm) {
+        const inputs = jobPostForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const fieldName = e.target.id.replace('Input', '').replace('Select', '').replace('Textarea', '');
+                clearError(fieldName);
+            });
+        });
+    }
+
+    // Form Submission Handler
+    if (jobPostForm) {
+        jobPostForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Clear previous errors
+            clearAllErrors();
+
+            // Validate form
+            if (!validateJobPostForm()) {
+                return;
+            }
+
+            // Collect form data
+            const formData = {
+                jobTitle: document.getElementById('jobTitleInput').value.trim(),
+                location: document.getElementById('locationInput').value.trim(),
+                workType: document.getElementById('workTypeSelect').value,
+                applicantLimit: parseInt(document.getElementById('applicantLimitInput').value),
+                category: document.getElementById('categorySelect').value,
+                workTags: [...selectedTags],
+                requiredDocument: document.querySelector('input[name="requiredDocument"]:checked').value,
+                jobDescription: document.getElementById('jobDescriptionTextarea').value.trim(),
+                responsibilities: document.getElementById('responsibilitiesTextarea').value.trim(),
+                qualification: document.getElementById('qualificationTextarea').value.trim(),
+                skills: document.getElementById('skillsTextarea').value.trim(),
+                datePosted: new Date().toISOString(),
+                status: 'active',
+                views: 0
+            };
+
+            // Log data for now (backend integration point)
+            console.log('Job Posting Data:', formData);
+
+            // TODO: Send data to backend
+            // fetch('/api/job-posts', { 
+            //     method: 'POST', 
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData) 
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            //     closeJobPostModal();
+            //     // Reload job list or add new job to dropdown
+            //     location.reload(); // Temporary solution
+            // })
+            // .catch(error => console.error('Error:', error));
+
+            // For now, just show success message and close modal
+            alert('Job post created successfully! (Backend integration pending)');
+            closeJobPostModal();
+        });
+    }
+
+    // Cancel Button Handler
+    if (btnCancelModal) {
+        btnCancelModal.addEventListener('click', closeJobPostModal);
+    }
+
+    // Close modal when clicking outside
+    if (jobPostModalOverlay) {
+        jobPostModalOverlay.addEventListener('click', (e) => {
+            if (e.target === jobPostModalOverlay) {
+                closeJobPostModal();
+            }
+        });
+    }
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && jobPostModalOverlay && jobPostModalOverlay.style.display === 'flex') {
+            closeJobPostModal();
+        }
+    });
 
     // ========================================
     // INITIALIZATION
