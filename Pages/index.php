@@ -189,6 +189,32 @@
             </div>
         </div>
 
+        <div class="section">
+            <h2 class="section-title">Company Portal</h2>
+            <div class="link-grid">
+                <a href="Company Pages/Company Dashboard/php/company_dashboard.php" class="page-link">
+                    <span class="page-name">Company Dashboard</span>
+                    <span class="page-path">Company Pages/.../company_dashboard.php</span>
+                    <span class="badge badge-company">Dashboard</span>
+                </a>
+                <a href="Company Pages/Company Profile Page/php/company_profile.php" class="page-link">
+                    <span class="page-name">Company Profile</span>
+                    <span class="page-path">Company Pages/.../company_profile.php</span>
+                    <span class="badge badge-company">Profile</span>
+                </a>
+                <a href="Company Pages/Job Listing Page/php/job_listing.php" class="page-link">
+                    <span class="page-name">Job Listing</span>
+                    <span class="page-path">Company Pages/.../job_listing.php</span>
+                    <span class="badge badge-company">Jobs</span>
+                </a>
+                <a href="Company Pages/Help Page/php/help.php" class="page-link">
+                    <span class="page-name">Help Page</span>
+                    <span class="page-path">Company Pages/.../help.php</span>
+                    <span class="badge badge-company">Help</span>
+                </a>
+            </div>
+        </div>
+
 
     </div>
 </body>
