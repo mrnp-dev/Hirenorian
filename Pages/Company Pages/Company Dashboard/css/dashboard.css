@@ -12,7 +12,9 @@ body {
     background-color: var(--bg-light);
     color: var(--text-dark);
     height: 100vh;
-    overflow: hidden;
+    overflow-y: auto;
+    /* Allow vertical scroll if needed, fix cropped content */
+    overflow-x: hidden;
 }
 
 .dashboard-container {
@@ -162,13 +164,18 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    /* Ensure alignment */
     gap: 12px;
-    /* Increased gap */
     cursor: pointer;
     padding: 5px 10px;
     border-radius: 8px;
     transition: var(--transition-speed);
+}
+
+/* User Info Wrapper - added to align children */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .user-profile:hover {
@@ -180,37 +187,18 @@ body {
     height: 40px;
     border-radius: 50%;
     background-color: #ddd;
-    /* placeholder bg */
     border: 2px solid var(--primary-maroon);
-    /* Image inside if present */
-    order: 2;
-    /* Move avatar to the right */
 }
 
 .user-name {
     font-weight: 600;
     font-size: 0.95rem;
     color: var(--text-dark);
-    order: 1;
-    /* Move name to the left */
 }
 
 .dropdown-arrow {
     font-size: 0.8rem;
     color: var(--text-dark);
-    order: 3;
-    /* Arrow stays at the end or moves? Request was "icon then name". Usually Name -> Icon. 
-                 Wait, "Icon and name... stacked... should be icon then name (beside each other)".
-                 Check current HTML: Avatar, Name, Arrow. 
-                 If user meant "Icon (Avatar) then Name", it is already that way in HTML?
-                 "Icon and the name at the upper right seems to be stacked" -> vertical stacking?
-                 My CSS has `display: flex; align-items: center`. They should be horizontal.
-                 Maybe the container width is too small?
-                 Or maybe they meant ORDER. "icon then name".
-                 Let's ensure horizontal layout is forced and strictly aligned.
-                 The user said "stacked", implies flex-direction column or wrapping.
-                 I will enforce `flex-direction: row` and `flex-wrap: nowrap`.
-              */
     margin-left: 5px;
 }
 
@@ -297,7 +285,7 @@ body {
 
 .dashboard-main-container {
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 3fr 1fr;
     gap: 20px;
     /* Removed fixed height constraint to allow content to flow naturally if needed, 
        but keeping max-height if scrolling is intended within panels. 
@@ -526,7 +514,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    max-height: 200px;
+    max-height: 150px;
     /* Limit height */
 }
 
