@@ -185,6 +185,11 @@
                     <span class="page-path">Student Pages/.../edit_profile.php</span>
                     <span class="badge badge-student">Edit Profile</span>
                 </a>
+                <a href="Student Pages/Internship Search Page/php/internship_search.php" class="page-link">
+                    <span class="page-name">Internship Search</span>
+                    <span class="page-path">Student Pages/.../internship_search.php</span>
+                    <span class="badge badge-student">Search</span>
+                </a>
 
             </div>
         </div>
