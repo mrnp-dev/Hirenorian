@@ -107,7 +107,7 @@
    align-items: center;
    gap: 20px;
    padding: 15px 20px;
-   background: linear-gradient(135deg, #f4c430, #f59e0b);
+   background: #f59e0b;
    border-radius: 12px;
    animation: slideIn 0.3s ease;
    margin-bottom: 25px;
