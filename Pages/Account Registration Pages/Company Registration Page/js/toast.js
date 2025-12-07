@@ -11,14 +11,14 @@ const ToastSystem = {
       this.container.className = 'toast-container';
       document.body.appendChild(this.container);
     }
-    
+
     this.checkForPendingToast();
   },
 
   show(message, type = 'info', duration = 5000) {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
-    
+
     const icons = {
       success: '✓',
       error: '✕',
@@ -44,7 +44,7 @@ const ToastSystem = {
 
   remove(toast) {
     if (!toast || !toast.parentElement) return;
-    
+
     toast.classList.add('removing');
     setTimeout(() => {
       if (toast.parentElement) {
@@ -64,18 +64,18 @@ const ToastSystem = {
 
   checkForPendingToast() {
     const data = sessionStorage.getItem(this.storageKey);
-    
+
     if (data) {
       try {
         const toast = JSON.parse(data);
         const age = Date.now() - (toast.timestamp || 0);
-        
+
         if (age < 10000) {
           setTimeout(() => {
             this.show(toast.message, toast.type);
           }, 300);
         }
-        
+
         sessionStorage.removeItem(this.storageKey);
       } catch (e) {
         console.error('Error parsing toast data:', e);
@@ -84,7 +84,6 @@ const ToastSystem = {
     }
   },
 
-  // NEW METHOD: Show toast and navigate after delay
   showAndNavigate(message, type, url, delay = 1500) {
     this.show(message, type, delay);
     setTimeout(() => {
