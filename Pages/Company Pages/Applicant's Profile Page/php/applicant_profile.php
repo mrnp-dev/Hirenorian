@@ -1,25 +1,98 @@
 <?php
 session_start();
 // Company Session Check
-if (!isset($_SESSION['company_email'])) // valid check for company? assuming yes based on context
-{
-    // session_start(); 
-    // Assuming company session might be different or shared. 
-    // If this is company view, we shouldn't redirect strictly to landing if no student session.
-    // For now, let's assume we show mock data or use mock session logic for the dashboard.
-    // echo "<script>console.log('Company session active');</script>"; 
+if (!isset($_SESSION['company_email'])) {
+    // Handling session check
 }
-// Note: In real app, we'd fetch based on ID in URL. keeping mock for now.
-$first_name = "Juan";
-$last_name = "Dela Cruz";
-$middle_initial = "M";
-$suffix = "";
-$course = "Bachelor of Science in Information Technology";
-$university = "Don Honorio Ventura State University";
+
+// Mock Data (Mirrors job_listing.js)
+$applicants = [
+    1 => [
+        "name" => "Jose E. Batumbakal",
+        "course" => "Bachelor of Science in Computer Science",
+        "email" => "jose@email.com",
+        "phone" => "09123456789",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    2 => [
+        "name" => "Pedro Dee Z. Nuts",
+        "course" => "Bachelor of Science in Information and Communications Technology",
+        "email" => "pedro@email.com",
+        "phone" => "09234567890",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    3 => [
+        "name" => "Jebron G. Lames",
+        "course" => "Bachelor of Science in Accounting Technology",
+        "email" => "jebron@email.com",
+        "phone" => "09345678901",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    4 => [
+        "name" => "Tobay D. Brown",
+        "course" => "Bachelor of Science in Information Technology",
+        "email" => "tobay@email.com",
+        "phone" => "09456789012",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    5 => [
+        "name" => "Sakha M. Adibix",
+        "course" => "Bachelor of Science in Information Systems",
+        "email" => "sakha@email.com",
+        "phone" => "09567890123",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    6 => [
+        "name" => "Seyda Z. Elven",
+        "course" => "Bachelor of Science in Computer Engineering",
+        "email" => "seyda@email.com",
+        "phone" => "09678901234",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    7 => [
+        "name" => "DayMo N. Taim",
+        "course" => "Bachelor of Science in Data Science",
+        "email" => "daymo@email.com",
+        "phone" => "09789012345",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    8 => [
+        "name" => "Koby L. Jay",
+        "course" => "Bachelor of Science in Software Engineering",
+        "email" => "koby@email.com",
+        "phone" => "09890123456",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    9 => [
+        "name" => "Jaydos D. Crist",
+        "course" => "Bachelor of Science in Cybersecurity",
+        "email" => "jaydos@email.com",
+        "phone" => "09901234567",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    10 => [
+        "name" => "Rayd Ohm M. Dih",
+        "course" => "Bachelor of Science in Game Development",
+        "email" => "rayd@email.com",
+        "phone" => "09012345678",
+        "university" => "Don Honorio Ventura State University"
+    ]
+];
+
+// Get ID from URL
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 1;
+$data = isset($applicants[$id]) ? $applicants[$id] : $applicants[1];
+
+// Populate variables
+$full_name = $data['name'];
+$course = $data['course'];
+$university = $data['university'];
+$personal_email = $data['email'];
+$phone_number = $data['phone'];
+
+// Default values for others
 $department = "College of Computing Studies";
-$organization = "DHVSU Computer Society";
-$personal_email = "juan.delacruz@gmail.com";
-$phone_number = "0912 345 6789";
+$organization = "Student Organization";
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +189,7 @@ $phone_number = "0912 345 6789";
                             </div>
                             <div class="profile-info">
                                 <h1 class="profile-name">
-                                    <?php echo $first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix; ?>
+                                    <?php echo $full_name; ?>
                                 </h1>
                                 <p class="profile-headline"><?php echo $course; ?> Student at <?php echo $university; ?>
                                 </p>

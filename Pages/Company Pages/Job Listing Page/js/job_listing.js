@@ -198,6 +198,55 @@ document.addEventListener('DOMContentLoaded', () => {
     let batchMode = false; // Track if in batch selection mode
 
     // ========================================
+    // STATE PERSISTENCE
+    // ========================================
+    function saveState() {
+        const state = {
+            selectedJobId,
+            currentFilter,
+            searchTerm
+        };
+        sessionStorage.setItem('jobListingState', JSON.stringify(state));
+    }
+
+    function loadState() {
+        const savedState = sessionStorage.getItem('jobListingState');
+        if (savedState) {
+            try {
+                const state = JSON.parse(savedState);
+
+                // Validate if job ID still exists in our current data
+                if (state.selectedJobId) {
+                    const jobExists = jobPostsData.some(j => j.id === state.selectedJobId);
+                    if (jobExists) {
+                        selectedJobId = state.selectedJobId;
+                    }
+                }
+
+                if (state.currentFilter) currentFilter = state.currentFilter;
+                if (state.searchTerm !== undefined) searchTerm = state.searchTerm;
+
+                // Sync UI elements
+                if (jobTitleSelect) jobTitleSelect.value = selectedJobId || "";
+                if (searchInput) searchInput.value = searchTerm;
+
+                if (filterPills) {
+                    filterPills.forEach(pill => {
+                        if (pill.dataset.status === currentFilter) {
+                            pill.classList.add('active');
+                        } else {
+                            pill.classList.remove('active');
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Error loading state:", e);
+                sessionStorage.removeItem('jobListingState');
+            }
+        }
+    }
+
+    // ========================================
     // DOM ELEMENTS
     // ========================================
     const jobTitleSelect = document.getElementById('jobTitleSelect');
@@ -473,6 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchTerm = e.target.value;
+            saveState();
             updateDisplay();
         });
     }
@@ -491,6 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentFilter = pill.dataset.status;
 
                 // Update display
+                saveState();
                 updateDisplay();
             });
         });
@@ -642,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
         jobTitleSelect.addEventListener('change', (e) => {
             selectedJobId = e.target.value ? parseInt(e.target.value) : null;
             clearSelection(); // Clear any selections when changing jobs
+            saveState();
             updateDisplay();
         });
     }
@@ -705,6 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // INITIALIZATION
     // ========================================
     populateJobDropdown();
+    loadState();
     updateDisplay();
 
     console.log('Job Listing Page Loaded Successfully!');
