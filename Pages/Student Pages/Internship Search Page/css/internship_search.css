@@ -124,9 +124,9 @@
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 25px;
-    height: calc(100vh - 350px);
+    height: calc(100vh - 150px);
     /* Adjust based on header/banner height */
-    min-height: 500px;
+    min-height: 600px;
 }
 
 /* Left Column: Job List */
