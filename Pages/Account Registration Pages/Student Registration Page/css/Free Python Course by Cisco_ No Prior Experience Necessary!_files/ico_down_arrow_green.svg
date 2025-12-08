@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36" viewBox="0 0 36 36">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Mask" d="M.356.391a1.136,1.136,0,0,1,1.621-.1l.1.1L8.884,7.875a1.436,1.436,0,0,1,.089,1.781l-.089.109L2.075,17.249a1.14,1.14,0,0,1-1.719,0,1.436,1.436,0,0,1-.089-1.781l.089-.109L6.306,8.82.356,2.281A1.436,1.436,0,0,1,.267.5Z" transform="translate(0)" fill="#6abf4b"/>
+    </clipPath>
+  </defs>
+  <g id="ico_expand" transform="translate(36 36) rotate(180)">
+    <!-- <rect id="Rectangle_5790" data-name="Rectangle 5790" width="36" height="36" rx="2" fill="#f7f8fa"/> -->
+    <g id="Arrow" transform="translate(9 22.24) rotate(-90)">
+      <g id="Colors_Green" data-name="Colors/Green" transform="translate(0 0)">
+        <path id="Mask-2" data-name="Mask" d="M.356.391a1.136,1.136,0,0,1,1.621-.1l.1.1L8.884,7.875a1.436,1.436,0,0,1,.089,1.781l-.089.109L2.075,17.249a1.14,1.14,0,0,1-1.719,0,1.436,1.436,0,0,1-.089-1.781l.089-.109L6.306,8.82.356,2.281A1.436,1.436,0,0,1,.267.5Z" transform="translate(0)" fill="#6abf4b"/>
+        <g id="Colors_Green-2" data-name="Colors/Green" clip-path="url(#clip-path)">
+          <g id="Colors_Green-3" data-name="Colors/Green" transform="translate(-137.871 -154.751)">
+            <rect id="Rectangle" width="311.242" height="342.109" fill="#6abf4b"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

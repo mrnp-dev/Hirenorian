@@ -1,12 +1,24 @@
 #footer-section
 {
     height: 30vh;
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
     background-color: #212529;
+
+    opacity: 0;
+    transform: translateY(30px);
+    animation: footerFadeUp .9s ease-out forwards;
+    animation-delay: .1s;
   
  
+}
+
+@keyframes footerFadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 #footer-top-redbar
@@ -16,6 +28,16 @@
     background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0.6), rgba(31, 31, 31, 1));
     margin-bottom: 10px;
 
+    opacity: 0;
+    animation: redbarFade .7s ease-out forwards;
+    animation-delay: .3s;
+
+}
+
+@keyframes redbarFade {
+    to {
+        opacity: 1;
+    }
 }
 
 #footer-bottom-section
@@ -115,6 +137,22 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+
+    opacity: 0;
+    transform: translateY(20px);
+    animation: footerColumnFade .7s ease-out forwards;
+}
+
+.topics-section:nth-of-type(1) { animation-delay: .4s; }
+.topics-section:nth-of-type(2) { animation-delay: .55s; }
+.topics-section:nth-of-type(3) { animation-delay: .7s; }
+
+@keyframes footerColumnFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 }
 
 .topic
@@ -133,4 +171,26 @@
 
 .pages:hover {
     transform: scale(1.25);
+}
+
+#footer-buttons .icon2 {
+    transition: transform .25s ease, opacity .25s ease;
+}
+
+#footer-buttons .icon2:hover {
+    transform: scale(1.15);
+    opacity: .85;
+}
+
+.fade-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

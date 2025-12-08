@@ -1,6 +1,6 @@
 #header-section {
     height: 100vh;
-    width: 100vw;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -175,24 +175,6 @@
 
 }
 
-.floating {
-    position: absolute;
-    animation: floatAnimation 8s infinite ease-in-out;
-}
-
-
-@keyframes floatAnimation {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(20px, -20px); }
-    50% { transform: translate(-15px, 15px); }
-    75% { transform: translate(10px, 10px); }
-    100% { transform: translate(0, 0); }
-}
-
-
-.parallax {
-    transition: transform 0.2s linear;
-}
 
 .fade-up {
     opacity: 0;
