@@ -31,3 +31,54 @@ mysql> describe Students;
 | tag3           | varchar(50)  | YES  |     | NULL              |                   |
 | ideal_location | varchar(100) | YES  |     | NULL              |                   |
 +----------------+--------------+------+-----+-------------------+-------------------+
+15 rows in set (0.01 sec)
+
+mysql> describe StudentEducationHistory;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| edu_hist_id | int          | NO   | PRI | NULL    | auto_increment |
+| student_id  | int          | NO   | MUL | NULL    |                |
+| institution | varchar(100) | NO   |     | NULL    |                |
+| degree      | varchar(100) | NO   |     | NULL    |                |
+| start_year  | varchar(20)  | YES  |     | NULL    |                |
+| end_year    | varchar(20)  | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+mysql> describe StudentExperience;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| exp_id       | int          | NO   | PRI | NULL    | auto_increment |
+| student_id   | int          | NO   | MUL | NULL    |                |
+| job_title    | varchar(100) | NO   |     | NULL    |                |
+| company_name | varchar(100) | NO   |     | NULL    |                |
+| start_date   | varchar(50)  | YES  |     | NULL    |                |
+| end_date     | varchar(50)  | YES  |     | NULL    |                |
+| description  | text         | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.03 sec)
+
+mysql> describe StudentProfile;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| profile_id      | int          | NO   | PRI | NULL    | auto_increment |
+| student_id      | int          | NO   | MUL | NULL    |                |
+| location        | varchar(255) | YES  |     | NULL    |                |
+| about_me        | text         | YES  |     | NULL    |                |
+| profile_picture | varchar(255) | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> describe StudentSkills;
++----------------+--------------------------+------+-----+---------+----------------+
+| Field          | Type                     | Null | Key | Default | Extra          |
++----------------+--------------------------+------+-----+---------+----------------+
+| skill_id       | int                      | NO   | PRI | NULL    | auto_increment |
+| student_id     | int                      | NO   | MUL | NULL    |                |
+| skill_name     | varchar(100)             | NO   |     | NULL    |                |
+| skill_category | enum('Technical','Soft') | NO   |     | NULL    |                |
++----------------+--------------------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
