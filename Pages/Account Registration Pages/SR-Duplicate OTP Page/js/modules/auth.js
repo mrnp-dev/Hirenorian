@@ -16,7 +16,7 @@ async function check_LogIn_Fields() {
         const email = document.querySelector('#signup-email').value.trim();
         const password = document.querySelector('#signup-password').value.trim();
         try {
-            const response = await fetch("http://158.69.205.176:8080/student_login_process.php", {
+            const response = await fetch("http://158.69.205.176:8080/Hirenorian/API/studentDB_APIs/student_login_process.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

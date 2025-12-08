@@ -121,8 +121,53 @@ async function check_LogIn_Fields() {
     }
 
     if (isValid) {
-        ToastSystem.show('Login functionality will be integrated with backend', "info");
-        // TODO: Implement backend login
+        const company_email = document.querySelector('#signin-email').value.trim();
+        const company_password = document.querySelector('#signin-password').value.trim();
+        try {
+            const response = await fetch("http://158.69.205.176:8080/Hirenorian/API/companyDB_APIs/company_login_process.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    company_email,
+                    company_password
+                })
+            });
+            const data = await response.json();
+            if (response.ok && data.status === "success") {
+                ToastSystem.show('Login Successfully', "success");
+                const response = await fetch("company_session.php",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            company_email
+                        })
+                    }
+                );
+                const data = await response.json();
+                if (response.ok && data.status === "success") {
+                    console.log(data.debug);
+                    ToastSystem.show('Session stored successfully', "success");
+                    setTimeout(() => {
+                        ToastSystem.show("Redirecting to Company Dashboard", "info");
+                        setTimeout(() => {
+                            window.location.href = "../../../Company%20Pages/Company%20Dashboard/php/company_dashboard.php";
+                        }, 1500);
+                    }, 1500);
+                } else {
+                    ToastSystem.show('Session storage failed', "error");
+                }
+            } else {
+                ToastSystem.show('Login Failed', "error");
+            }
+        } catch (err) {
+            console.error("Network error:", err);
+            alert("Unable to connect to server");
+        }
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
@@ -698,7 +743,7 @@ async function Register_Company() {
                 setTimeout(() => {
                     ToastSystem.show("Redirecting to the landing page", "info");
                     setTimeout(() => {
-                        // window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
+                        window.location.href = "../../../Company%20Pages/Company%20Dashboard/php/company_dashboard.php";
                     }, 2000);
                 }, 1500);
             } else {
