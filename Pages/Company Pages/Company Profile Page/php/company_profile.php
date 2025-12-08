@@ -630,6 +630,7 @@
         </div>
     </div>
 
+    <script src="../../Company Dashboard/js/toast.js"></script>
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/company_profile.js"></script>
 </body>

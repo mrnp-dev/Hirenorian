@@ -88,7 +88,7 @@ function saveProfileChanges() {
     // const payload = { ... };
     // fetch('/api/updateProfile', { ... });
 
-    showNotification('Profile updated successfully!', 'success');
+    ToastSystem.show('Profile updated successfully!', 'success');
     toggleEditMode(false);
 }
 
@@ -175,7 +175,7 @@ function saveImageChanges() {
     const preview = document.getElementById('imagePreview');
 
     if (preview.style.display === 'none') {
-        alert('Please select an image first');
+        ToastSystem.show('Please select an image first', 'warning');
         return;
     }
 
@@ -257,7 +257,7 @@ function deleteListItem(itemId, section) {
     const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
     if (item) {
         item.remove();
-        // showNotification('Item deleted (unsaved)', 'success');
+        ToastSystem.show('Item deleted', 'info');
     }
 }
 
@@ -265,7 +265,7 @@ function deleteListItem(itemId, section) {
 
 function savePerk() {
     const text = document.getElementById('perkText').value.trim();
-    if (!text) return alert('Please enter text');
+    if (!text) return ToastSystem.show('Please enter text', 'warning');
 
     if (currentEditItem) {
         // Edit existing
@@ -293,7 +293,7 @@ function savePerk() {
 function saveLocation() {
     const name = document.getElementById('locationName').value.trim();
     const desc = document.getElementById('locationDescription').value.trim();
-    if (!name || !desc) return alert('Fill all fields');
+    if (!name || !desc) return ToastSystem.show('Fill all fields', 'warning');
 
     if (currentEditItem) {
         const item = document.querySelector(`#edit-profile-container [data-id="${currentEditItem}"]`);
@@ -328,7 +328,7 @@ function saveContactPerson() {
     const pos = document.getElementById('personPosition').value.trim();
     const email = document.getElementById('personEmail').value.trim();
     const phone = document.getElementById('personPhone').value.trim();
-    if (!name || !pos || !email || !phone) return alert('Fill all fields');
+    if (!name || !pos || !email || !phone) return ToastSystem.show('Fill all fields', 'warning');
 
     if (currentEditItem) {
         const item = document.querySelector(`#edit-profile-container [data-id="${currentEditItem}"]`);
@@ -366,8 +366,10 @@ function saveContactPerson() {
 
 function showModal(id) {
     const modal = document.getElementById(id);
-    modal.classList.add('show');
     modal.style.display = 'flex';
+    // Force reflow to enable transition
+    void modal.offsetWidth;
+    modal.classList.add('show');
 }
 
 function closePerkModal() { closeModal('perkModal'); }
@@ -378,36 +380,6 @@ function closeModal(id) {
     const modal = document.getElementById(id);
     modal.classList.remove('show');
     setTimeout(() => { modal.style.display = 'none'; }, 300);
-}
-
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    // Inline styles for notification
-    notification.style.cssText = `
-        position: fixed; top: 20px; right: 20px;
-        background: ${type === 'success' ? '#10b981' : '#ef4444'};
-        color: white; padding: 16px 24px; border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 10000;
-        animation: slideInRight 0.3s ease; font-weight: 500;
-    `;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// Add animation keyframes if not present
-if (!document.getElementById('notif-styles')) {
-    const s = document.createElement('style');
-    s.id = 'notif-styles';
-    s.textContent = `
-        @keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
-    `;
-    document.head.appendChild(s);
 }
 
 // Close modals on outside click
