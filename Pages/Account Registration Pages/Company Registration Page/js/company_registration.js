@@ -677,11 +677,39 @@ async function submitTheForm(button) {
         ToastSystem.show('Registration form is ready for backend integration!', 'success');
         console.log('User Information:', userInformation);
         // TODO: Implement backend submission
+        Register_Company();
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
 }
 
+async function Register_Company() {
+    console.log(userInformation);
+    fetch("http://158.69.205.176:8080/Hirenorian/API/companyDB_APIs/company_registration_process.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userInformation)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Server Response:", data);
+            if (data.status === "success") {
+                ToastSystem.show("Company has been registered successfully", "success");
+                setTimeout(() => {
+                    ToastSystem.show("Redirecting to the landing page", "info");
+                    setTimeout(() => {
+                        // window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
+                    }, 2000);
+                }, 1500);
+            } else {
+                ToastSystem.show("Something went wrong, try again later.", "error");
+                console.log(data.message);
+            }
+        })
+        .catch(err => {
+            console.error("Fetch error:", err);
+        });
+}
 // ==================== EMAIL VERIFICATION ====================
 async function initiateEmailVerification(emailType) {
     if (emailType === 'company') {

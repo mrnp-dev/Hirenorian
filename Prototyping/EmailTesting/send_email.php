@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 // You might need to adjust the path to autoload.php depending on where your vendor folder is.
 // Assuming vendor is in the root or relative to this file.
 // For this prototype, we'll look for it in the project root or current dir.
-$autoloadPath = 's';
+$autoloadPath = '../../vendor/autoload.php';
 if (!file_exists($autoloadPath)) {
     $autoloadPath = 'vendor/autoload.php';
 }
