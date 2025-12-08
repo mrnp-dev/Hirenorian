@@ -164,6 +164,16 @@
                     <span class="page-path">Prototyping/EmailTesting/index.html</span>
                     <span class="badge badge-main">Prototype</span>
                 </a>
+                <a href="../Prototyping/FileUpload/client_sender.php" class="page-link">
+                    <span class="page-name">File Upload Sender</span>
+                    <span class="page-path">Prototyping/FileUpload/client_sender.php</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
+                <a href="../Prototyping/FileUpload/client_viewer.php" class="page-link">
+                    <span class="page-name">File Upload Viewer</span>
+                    <span class="page-path">Prototyping/FileUpload/client_viewer.php</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
             </div>
         </div>
 
@@ -184,6 +194,11 @@
                     <span class="page-name">Edit Profile</span>
                     <span class="page-path">Student Pages/.../edit_profile.php</span>
                     <span class="badge badge-student">Edit Profile</span>
+                </a>
+                <a href="Student Pages/Internship Search Page/php/internship_search.php" class="page-link">
+                    <span class="page-name">Internship Search</span>
+                    <span class="page-path">Student Pages/.../internship_search.php</span>
+                    <span class="badge badge-student">Search</span>
                 </a>
 
             </div>

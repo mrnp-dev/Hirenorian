@@ -4,7 +4,7 @@ if(isset($_SESSION['email']))
 {
     $student_email = $_SESSION['email'];
     echo "<script>console.log('Student Email: " . $student_email . "');</script>";
-    $apiUrl = "http://158.69.205.176:8080/fetch_student_information.php";
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
 
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -94,7 +94,7 @@ else
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="../../Internship Search Page/php/internship_search.php" class="nav-item">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Internship Search</span>
                 </a>
