@@ -164,6 +164,16 @@
                     <span class="page-path">Prototyping/EmailTesting/index.html</span>
                     <span class="badge badge-main">Prototype</span>
                 </a>
+                <a href="../Prototyping/FileUpload/client_sender.php" class="page-link">
+                    <span class="page-name">File Upload Sender</span>
+                    <span class="page-path">Prototyping/FileUpload/client_sender.php</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
+                <a href="../Prototyping/FileUpload/client_viewer.php" class="page-link">
+                    <span class="page-name">File Upload Viewer</span>
+                    <span class="page-path">Prototyping/FileUpload/client_viewer.php</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
             </div>
         </div>
 
