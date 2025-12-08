@@ -476,6 +476,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -495,6 +496,7 @@
         transform: translateY(50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -689,6 +691,142 @@
         padding-top: 0;
     }
 }
+
+/* ========================================
+   EDIT MODE SPECIFIC STYLES
+   ======================================== */
+
+/* Container Toggling managed via JS/Inline Styles but adding helper classes if needed */
+#view-profile-container,
+#edit-profile-container {
+    transition: opacity 0.3s ease;
+    position: relative;
+    /* Ensure absolute children are positioned relative to this container */
+}
+
+/* Edit Trigger Button Container */
+.edit-mode-trigger-container {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 20;
+}
+
+.btn-primary-action {
+    background: white;
+    color: var(--primary-maroon);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-action:hover {
+    background: var(--primary-maroon);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Sticky Action Bar */
+.action-bar-sticky {
+    position: sticky;
+    top: 80px;
+    /* Adjust based on top bar height */
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.edit-mode-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-mode-label::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: #FFC107;
+    /* Editing state indicator */
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* Edit Fields in Header */
+.edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+}
+
+.form-group.compact {
+    margin-bottom: 0;
+}
+
+.form-group.compact label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #888;
+}
+
+.form-group.compact input,
+.form-group.compact select {
+    padding: 8px 12px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Ensure Textareas in Sections look like the text */
+.form-group.no-margin {
+    margin-bottom: 0;
+}
+
+.form-group.no-margin textarea {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+    border: 1px dashed #ccc;
+    background: #fafafa;
+}
+
+.form-group.no-margin textarea:focus {
+    background: white;
+    border-style: solid;
+}
+
+/* Banner Overlay in Edit Mode */
+.profile-banner-container.edit-mode {
+    border: 2px dashed var(--primary-maroon);
+}
+
 
 @media (max-width: 768px) {
     .profile-banner-container {

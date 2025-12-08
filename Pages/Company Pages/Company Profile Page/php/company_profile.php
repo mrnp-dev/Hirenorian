@@ -78,250 +78,436 @@
 
                 <!-- Company Profile Content -->
                 <section class="content-section active">
-                    <!-- Company Banner -->
-                    <div class="profile-banner-container">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
-                            alt="Company Banner" class="company-banner" id="companyBanner">
-                        <button class="edit-banner-btn" onclick="openImageUploadModal('banner')" title="Update Banner">
-                            <i class="fa-solid fa-camera"></i>
-                        </button>
-                    </div>
-
-                    <!-- Company Header -->
-                    <div class="company-header">
-                        <div class="company-icon-wrapper">
-                            <img src="https://logo.clearbit.com/riotgames.com" alt="Company Icon" class="company-icon"
-                                id="companyIcon">
-                            <button class="edit-icon-btn" onclick="openImageUploadModal('icon')"
-                                title="Update Company Icon">
-                                <i class="fa-solid fa-camera"></i>
+                    <!-- ==================== VIEW MODE CONTAINER ==================== -->
+                    <div id="view-profile-container">
+                        <!-- Edit Button (Triggers Edit Mode) -->
+                        <div class="edit-mode-trigger-container">
+                            <button class="btn-primary-action" onclick="toggleEditMode(true)">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Profile
                             </button>
                         </div>
-                        <div class="company-main-info">
-                            <h2 class="company-name">Company Name</h2>
-                            <p class="company-tagline">Private, global video game developer and publisher</p>
-                            <p class="company-industry">Video game industry</p>
+
+                        <!-- Company Banner -->
+                        <div class="profile-banner-container">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                                alt="Company Banner" class="company-banner" id="viewCompanyBanner">
+                        </div>
+
+                        <!-- Company Header -->
+                        <div class="company-header">
+                            <div class="company-icon-wrapper">
+                                <img src="https://logo.clearbit.com/riotgames.com" alt="Company Icon"
+                                    class="company-icon" id="viewCompanyIcon">
+                            </div>
+                            <div class="company-main-info">
+                                <h2 class="company-name" id="viewCompanyName">Company Name</h2>
+                                <p class="company-tagline" id="viewCompanyTagline">Private, global video game developer
+                                    and publisher</p>
+                                <p class="company-industry" id="viewCompanyIndustry">Video game industry</p>
+                            </div>
+                        </div>
+
+                        <!-- Two Column Layout -->
+                        <div class="profile-content-grid">
+                            <!-- Left Sidebar -->
+                            <div class="profile-sidebar">
+                                <!-- Contact Information -->
+                                <div class="card info-card">
+                                    <div class="card-header">
+                                        <h3>Contact Information</h3>
+                                    </div>
+                                    <div class="info-items" id="viewContactInfo">
+                                        <div class="info-item">
+                                            <i class="fa-solid fa-envelope"></i>
+                                            <span id="viewContactEmail">support@riotgames.com</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <span id="viewContactLocation">Manila, Philippines</span>
+                                        </div>
+                                        <div class="info-item">
+                                            <i class="fa-solid fa-link"></i>
+                                            <a href="https://www.riotgames.com" target="_blank"
+                                                id="viewContactWebsite">https://www.riotgames.com</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Company Statistics -->
+                                <div class="card stats-card">
+                                    <h3>Company Statistics</h3>
+                                    <div class="stat-items">
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-users"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Employees</span>
+                                                <span class="stat-value">2,450</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-calendar"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Acquired</span>
+                                                <span class="stat-value">890</span>
+                                            </div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-chart-line"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Ex-Employees</span>
+                                                <span class="stat-value">1,560</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Main Content Area -->
+                            <div class="profile-main">
+                                <!-- About Us -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>About Us</h2>
+                                    </div>
+                                    <p class="section-text" id="viewAboutUsText">
+                                        We are an American video game developer, publisher, and esports tournament
+                                        organizer
+                                        headquartered in Los Angeles, California. The
+                                        company was founded in 2006 by Brandon Black and Marc Merrill with a
+                                        "player-first"
+                                        philosophy, aiming to continuously improve and
+                                        support games long-term rather than focusing on new releases.
+                                    </p>
+                                </div>
+
+                                <!-- Why Join Us -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2><i class="fa-solid fa-lightbulb"></i> Why Join Us</h2>
+                                    </div>
+                                    <p class="section-text" id="viewWhyJoinText">
+                                        Offers a chance to build iconic player-focused experiences in a passionate,
+                                        inclusive culture with strong autonomy, great benefits (health,
+                                        family, generous PTO, retirement match, play fund), and a focus on continuous
+                                        learning, all while working on globally beloved titles
+                                        like League of Legends and Valorant.
+                                    </p>
+                                </div>
+
+                                <!-- Perks & Benefits -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2><i class="fa-solid fa-gift"></i> Perks & Benefits</h2>
+                                    </div>
+                                    <ul class="benefits-list" id="viewPerksList">
+                                        <li class="benefit-item" data-id="perk-1">
+                                            <span>Unlimited PTO</span>
+                                        </li>
+                                        <li class="benefit-item" data-id="perk-2">
+                                            <span>Comprehensive health/dental/vision</span>
+                                        </li>
+                                        <li class="benefit-item" data-id="perk-3">
+                                            <span>Generous parental leave, retirement matching (401k)</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Office Locations -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>Office Locations</h2>
+                                    </div>
+                                    <div class="locations-list" id="viewLocationsList">
+                                        <div class="location-item" data-id="loc-1">
+                                            <div class="location-icon">
+                                                <i class="fa-solid fa-map-marker-alt"></i>
+                                            </div>
+                                            <div class="location-content">
+                                                <h4>Manila, Philippines</h4>
+                                                <p class="location-description">Opened in 2022, this office serves the
+                                                    large
+                                                    Filipino player base.</p>
+                                            </div>
+                                        </div>
+                                        <div class="location-item" data-id="loc-2">
+                                            <div class="location-icon">
+                                                <i class="fa-solid fa-map-marker-alt"></i>
+                                            </div>
+                                            <div class="location-content">
+                                                <h4>Los Angeles, USA (Headquarters)</h4>
+                                                <p class="location-description">Located at 12333 W Olympic Blvd, this
+                                                    campus
+                                                    is the epicenter of Riot Games' operations.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Person -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>Contact Person</h2>
+                                    </div>
+                                    <div class="contacts-list" id="viewContactsList">
+                                        <div class="contact-person-item" data-id="contact-1">
+                                            <div class="contact-info">
+                                                <h4>Brandon Beck</h4>
+                                                <p class="contact-position">Position: Co-Founder & Co-Chairman</p>
+                                                <p class="contact-email">Email: BrandonBeck@gmail.com</p>
+                                                <p class="contact-phone">Number: +63 9632579999</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Two Column Layout -->
-                    <div class="profile-content-grid">
-                        <!-- Left Sidebar -->
-                        <div class="profile-sidebar">
-                            <!-- Contact Information -->
-                            <div class="card info-card">
-                                <div class="card-header">
-                                    <h3>Contact Information</h3>
-                                    <button class="edit-btn" onclick="openEditModal('contact')"
-                                        title="Edit Contact Information">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                </div>
-                                <div class="info-items" id="contactInfo">
-                                    <div class="info-item">
-                                        <i class="fa-solid fa-envelope"></i>
-                                        <span>support@riotgames.com</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        <span>Manila, Philippines</span>
-                                    </div>
-                                    <div class="info-item">
-                                        <i class="fa-solid fa-link"></i>
-                                        <a href="https://www.riotgames.com"
-                                            target="_blank">https://www.riotgames.com</a>
-                                    </div>
-                                </div>
+                    <!-- ==================== EDIT MODE CONTAINER ==================== -->
+                    <div id="edit-profile-container" style="display: none;">
+                        <!-- Action Bar (Save/Cancel) -->
+                        <div class="action-bar-sticky">
+                            <span class="edit-mode-label">Editing Company Profile</span>
+                            <div class="action-buttons">
+                                <button class="btn-cancel" onclick="toggleEditMode(false)">Cancel</button>
+                                <button class="btn-save" onclick="saveProfileChanges()">Save Changes</button>
                             </div>
+                        </div>
 
-                            <!-- Company Statistics -->
-                            <div class="card stats-card">
-                                <h3>Company Statistics</h3>
-                                <div class="stat-items">
-                                    <div class="stat-item">
-                                        <i class="fa-solid fa-users"></i>
-                                        <div class="stat-content">
-                                            <span class="stat-label">Employees</span>
-                                            <span class="stat-value">2,450</span>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        <div class="stat-content">
-                                            <span class="stat-label">Acquired</span>
-                                            <span class="stat-value">890</span>
-                                        </div>
-                                    </div>
-                                    <div class="stat-item">
-                                        <i class="fa-solid fa-chart-line"></i>
-                                        <div class="stat-content">
-                                            <span class="stat-label">Ex-Employees</span>
-                                            <span class="stat-value">1,560</span>
-                                        </div>
-                                    </div>
+                        <!-- Company Banner Edit -->
+                        <div class="profile-banner-container edit-mode">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                                alt="Company Banner" class="company-banner" id="editCompanyBanner">
+                            <button class="edit-banner-btn" onclick="openImageUploadModal('banner')"
+                                title="Update Banner">
+                                <i class="fa-solid fa-camera"></i> Change Banner
+                            </button>
+                        </div>
+
+                        <!-- Company Header Edit -->
+                        <div class="company-header">
+                            <div class="company-icon-wrapper">
+                                <img src="https://logo.clearbit.com/riotgames.com" alt="Company Icon"
+                                    class="company-icon" id="editCompanyIcon">
+                                <button class="edit-icon-btn" onclick="openImageUploadModal('icon')"
+                                    title="Update Company Icon">
+                                    <i class="fa-solid fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="company-main-info edit-fields">
+                                <div class="form-group compact">
+                                    <label>Company Name</label>
+                                    <input type="text" id="editCompanyName" value="Company Name">
+                                </div>
+                                <div class="form-group compact">
+                                    <label>Tagline</label>
+                                    <input type="text" id="editCompanyTagline"
+                                        value="Private, global video game developer and publisher">
+                                </div>
+                                <div class="form-group compact">
+                                    <label>Industry</label>
+                                    <select id="editCompanyIndustry">
+                                        <option value="Video game industry" selected>Video game industry</option>
+                                        <option value="Technology">Technology</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Main Content Area -->
-                        <div class="profile-main">
-                            <!-- About Us -->
-                            <div class="card section-card">
-                                <div class="card-header">
-                                    <h2>About Us</h2>
-                                    <button class="edit-btn" onclick="openEditModal('about')" title="Edit About Us">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                </div>
-                                <p class="section-text" id="aboutUsText">
-                                    We are an American video game developer, publisher, and esports tournament organizer
-                                    headquartered in Los Angeles, California. The
-                                    company was founded in 2006 by Brandon Black and Marc Merrill with a "player-first"
-                                    philosophy, aiming to continuously improve and
-                                    support games long-term rather than focusing on new releases.
-                                </p>
-                            </div>
-
-                            <!-- Why Join Us -->
-                            <div class="card section-card">
-                                <div class="card-header">
-                                    <h2><i class="fa-solid fa-lightbulb"></i> Why Join Us</h2>
-                                </div>
-                                <p class="section-text" id="whyJoinText">
-                                    Offers a chance to build iconic player-focused experiences in a passionate,
-                                    inclusive culture with strong autonomy, great benefits (health,
-                                    family, generous PTO, retirement match, play fund), and a focus on continuous
-                                    learning, all while working on globally beloved titles
-                                    like League of Legends and Valorant.
-                                </p>
-                            </div>
-
-                            <!-- Perks & Benefits -->
-                            <div class="card section-card">
-                                <div class="card-header">
-                                    <h2><i class="fa-solid fa-gift"></i> Perks & Benefits</h2>
-                                    <button class="add-btn" onclick="openAddModal('perks')" title="Add Perk">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </div>
-                                <ul class="benefits-list" id="perksList">
-                                    <li class="benefit-item">
-                                        <span>Unlimited PTO</span>
-                                        <div class="item-actions">
-                                            <button class="action-btn edit" onclick="editListItem('perk-1', 'perks')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button class="action-btn delete"
-                                                onclick="deleteListItem('perk-1', 'perks')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                    <li class="benefit-item">
-                                        <span>Comprehensive health/dental/vision</span>
-                                        <div class="item-actions">
-                                            <button class="action-btn edit" onclick="editListItem('perk-2', 'perks')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button class="action-btn delete"
-                                                onclick="deleteListItem('perk-2', 'perks')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                    <li class="benefit-item">
-                                        <span>Generous parental leave, retirement matching (401k)</span>
-                                        <div class="item-actions">
-                                            <button class="action-btn edit" onclick="editListItem('perk-3', 'perks')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button class="action-btn delete"
-                                                onclick="deleteListItem('perk-3', 'perks')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- Office Locations -->
-                            <div class="card section-card">
-                                <div class="card-header">
-                                    <h2>Office Locations</h2>
-                                    <button class="add-btn" onclick="openAddModal('locations')" title="Add Location">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
-                                </div>
-                                <div class="locations-list" id="locationsList">
-                                    <div class="location-item" data-id="loc-1">
-                                        <div class="location-icon">
-                                            <i class="fa-solid fa-map-marker-alt"></i>
-                                        </div>
-                                        <div class="location-content">
-                                            <h4>Manila, Philippines</h4>
-                                            <p class="location-description">Opened in 2022, this office serves the large
-                                                Filipino player base.</p>
-                                        </div>
-                                        <div class="item-actions">
-                                            <button class="action-btn edit"
-                                                onclick="editListItem('loc-1', 'locations')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button class="action-btn delete"
-                                                onclick="deleteListItem('loc-1', 'locations')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
+                        <!-- Two Column Layout Edit -->
+                        <div class="profile-content-grid">
+                            <!-- Left Sidebar Edit -->
+                            <div class="profile-sidebar">
+                                <!-- Contact Information Edit -->
+                                <div class="card info-card">
+                                    <div class="card-header">
+                                        <h3>Edit Contact Info</h3>
                                     </div>
-                                    <div class="location-item" data-id="loc-2">
-                                        <div class="location-icon">
-                                            <i class="fa-solid fa-map-marker-alt"></i>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-envelope"></i> Email</label>
+                                        <input type="email" id="editContactEmail" value="support@riotgames.com">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-location-dot"></i> Location</label>
+                                        <input type="text" id="editContactLocation" value="Manila, Philippines">
+                                    </div>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-link"></i> Website</label>
+                                        <input type="url" id="editContactWebsite" value="https://www.riotgames.com">
+                                    </div>
+                                </div>
+                                <!-- Company Statistics (Read Only in Edit Mode too, assuming stats are auto-calculated) -->
+                                <div class="card stats-card">
+                                    <h3>Company Statistics</h3>
+                                    <div class="stat-items">
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-users"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Employees</span>
+                                                <span class="stat-value">2,450</span>
+                                            </div>
                                         </div>
-                                        <div class="location-content">
-                                            <h4>Los Angeles, USA (Headquarters)</h4>
-                                            <p class="location-description">Located at 12333 W Olympic Blvd, this campus
-                                                is the epicenter of Riot Games' operations.</p>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-calendar"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Acquired</span>
+                                                <span class="stat-value">890</span>
+                                            </div>
                                         </div>
-                                        <div class="item-actions">
-                                            <button class="action-btn edit"
-                                                onclick="editListItem('loc-2', 'locations')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button class="action-btn delete"
-                                                onclick="deleteListItem('loc-2', 'locations')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-chart-line"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Ex-Employees</span>
+                                                <span class="stat-value">1,560</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Contact Person -->
-                            <div class="card section-card">
-                                <div class="card-header">
-                                    <h2>Contact Person</h2>
-                                    <button class="add-btn" onclick="openAddModal('contacts')"
-                                        title="Add Contact Person">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </button>
+                            <!-- Main Content Area Edit -->
+                            <div class="profile-main">
+                                <!-- About Us Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>About Us</h2>
+                                    </div>
+                                    <div class="form-group no-margin">
+                                        <textarea id="editAboutUsText"
+                                            rows="6">We are an American video game developer, publisher, and esports tournament organizer headquartered in Los Angeles, California. The company was founded in 2006 by Brandon Black and Marc Merrill with a "player-first" philosophy, aiming to continuously improve and support games long-term rather than focusing on new releases.</textarea>
+                                    </div>
                                 </div>
-                                <div class="contacts-list" id="contactsList">
-                                    <div class="contact-person-item" data-id="contact-1">
-                                        <div class="contact-info">
-                                            <h4>Brandon Beck</h4>
-                                            <p class="contact-position">Position: Co-Founder & Co-Chairman</p>
-                                            <p class="contact-email">Email: BrandonBeck@gmail.com</p>
-                                            <p class="contact-phone">Number: +63 9632579999</p>
+
+                                <!-- Why Join Us Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2><i class="fa-solid fa-lightbulb"></i> Why Join Us</h2>
+                                    </div>
+                                    <div class="form-group no-margin">
+                                        <textarea id="editWhyJoinText"
+                                            rows="6">Offers a chance to build iconic player-focused experiences in a passionate, inclusive culture with strong autonomy, great benefits (health, family, generous PTO, retirement match, play fund), and a focus on continuous learning, all while working on globally beloved titles like League of Legends and Valorant.</textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Perks & Benefits Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2><i class="fa-solid fa-gift"></i> Manage Perks</h2>
+                                        <button class="add-btn" onclick="openAddModal('perks')" title="Add Perk">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <ul class="benefits-list" id="editPerksList">
+                                        <li class="benefit-item" data-id="perk-1">
+                                            <span>Unlimited PTO</span>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit"
+                                                    onclick="editListItem('perk-1', 'perks')"><i
+                                                        class="fa-solid fa-pen"></i></button>
+                                                <button class="action-btn delete"
+                                                    onclick="deleteListItem('perk-1', 'perks')"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </li>
+                                        <li class="benefit-item" data-id="perk-2">
+                                            <span>Comprehensive health/dental/vision</span>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit"
+                                                    onclick="editListItem('perk-2', 'perks')"><i
+                                                        class="fa-solid fa-pen"></i></button>
+                                                <button class="action-btn delete"
+                                                    onclick="deleteListItem('perk-2', 'perks')"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </li>
+                                        <li class="benefit-item" data-id="perk-3">
+                                            <span>Generous parental leave, retirement matching (401k)</span>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit"
+                                                    onclick="editListItem('perk-3', 'perks')"><i
+                                                        class="fa-solid fa-pen"></i></button>
+                                                <button class="action-btn delete"
+                                                    onclick="deleteListItem('perk-3', 'perks')"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Office Locations Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>Manage Locations</h2>
+                                        <button class="add-btn" onclick="openAddModal('locations')"
+                                            title="Add Location">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <div class="locations-list" id="editLocationsList">
+                                        <div class="location-item" data-id="loc-1">
+                                            <div class="location-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                                            <div class="location-content">
+                                                <h4>Manila, Philippines</h4>
+                                                <p class="location-description">Opened in 2022, this office serves the
+                                                    large
+                                                    Filipino player base.</p>
+                                            </div>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit"
+                                                    onclick="editListItem('loc-1', 'locations')"><i
+                                                        class="fa-solid fa-pen"></i></button>
+                                                <button class="action-btn delete"
+                                                    onclick="deleteListItem('loc-1', 'locations')"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </div>
                                         </div>
-                                        <div class="item-actions">
-                                            <button class="action-btn edit"
-                                                onclick="editListItem('contact-1', 'contacts')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button class="action-btn delete"
-                                                onclick="deleteListItem('contact-1', 'contacts')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
+                                        <div class="location-item" data-id="loc-2">
+                                            <div class="location-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                                            <div class="location-content">
+                                                <h4>Los Angeles, USA (Headquarters)</h4>
+                                                <p class="location-description">Located at 12333 W Olympic Blvd, this
+                                                    campus
+                                                    is the epicenter of Riot Games' operations.</p>
+                                            </div>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit"
+                                                    onclick="editListItem('loc-2', 'locations')"><i
+                                                        class="fa-solid fa-pen"></i></button>
+                                                <button class="action-btn delete"
+                                                    onclick="deleteListItem('loc-2', 'locations')"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Person Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>Manage Contacts</h2>
+                                        <button class="add-btn" onclick="openAddModal('contacts')" title="Add Contact">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <div class="contacts-list" id="editContactsList">
+                                        <div class="contact-person-item" data-id="contact-1">
+                                            <div class="contact-info">
+                                                <h4>Brandon Beck</h4>
+                                                <p class="contact-position">Position: Co-Founder & Co-Chairman</p>
+                                                <p class="contact-email">Email: BrandonBeck@gmail.com</p>
+                                                <p class="contact-phone">Number: +63 9632579999</p>
+                                            </div>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit"
+                                                    onclick="editListItem('contact-1', 'contacts')"><i
+                                                        class="fa-solid fa-pen"></i></button>
+                                                <button class="action-btn delete"
+                                                    onclick="deleteListItem('contact-1', 'contacts')"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -358,58 +544,6 @@
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeImageUploadModal()">Cancel</button>
                 <button class="btn-save" onclick="saveImageChanges()">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Contact Modal -->
-    <div id="editContactModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Edit Contact Information</h3>
-                <button class="close-modal" onclick="closeEditModal('contact')">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="contactEmail">Email</label>
-                    <input type="email" id="contactEmail" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="contactLocation">Location</label>
-                    <input type="text" id="contactLocation" placeholder="Enter location">
-                </div>
-                <div class="form-group">
-                    <label for="contactWebsite">Website</label>
-                    <input type="url" id="contactWebsite" placeholder="Enter website URL">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeEditModal('contact')">Cancel</button>
-                <button class="btn-save" onclick="saveContentChanges('contact')">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit About Us Modal -->
-    <div id="editAboutModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Edit About Us</h3>
-                <button class="close-modal" onclick="closeEditModal('about')">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="aboutText">About Us</label>
-                    <textarea id="aboutText" rows="6" placeholder="Enter company description"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeEditModal('about')">Cancel</button>
-                <button class="btn-save" onclick="saveContentChanges('about')">Save Changes</button>
             </div>
         </div>
     </div>
