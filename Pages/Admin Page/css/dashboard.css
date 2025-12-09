@@ -369,6 +369,189 @@ body {
     border-radius: 4px;
 }
 
+/* =======================================================
+   CRUD STYLES
+   ======================================================= */
+
+.student-management-card {
+    padding: 0; 
+    overflow: hidden;
+}
+
+.table-actions {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: flex-end;
+    background: #fcfcfc;
+    border-bottom: 1px solid #eee;
+}
+
+.add-new-btn {
+    background-color: var(--primary-maroon);
+    color: var(--text-light);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.add-new-btn:hover {
+    background-color: #5d0c0e;
+}
+
+.crud-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    table-layout: fixed;
+}
+
+.crud-table th, .crud-table td {
+    padding: 15px 20px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.crud-table thead {
+    background-color: var(--bg-light); 
+    color: #555;
+    font-weight: 600;
+}
+
+.crud-table tbody tr:hover {
+    background-color: #f7f7f7;
+}
+
+/* Status Badges */
+.status {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-block;
+}
+
+.status.verified {
+    background-color: #e5f5e5; 
+    color: #38761D;
+}
+
+.status.unverified {
+    background-color: #ffe5e5; 
+    color: #CC0000;
+}
+
+/* Action Buttons (Edit/Delete) */
+.action-buttons {
+    text-align: center;
+    width: 100px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1rem;
+    transition: color 0.2s;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.edit-btn {
+    color: #555;
+}
+
+.edit-btn:hover {
+    color: var(--secondary-yellow);
+}
+
+.delete-btn {
+    color: #555;
+}
+
+.delete-btn:hover {
+    color: var(--primary-maroon);
+}
+
+
+/* Pagination Footer */
+.pagination-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fff;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.entries-select {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-arrow, .page-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    min-width: 30px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    color: #666;
+    font-weight: 500;
+}
+
+.nav-arrow:hover:not(:disabled), .page-number:hover {
+    background-color: #f0f0f0;
+}
+
+.nav-arrow:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.active-page {
+    background-color: var(--primary-maroon);
+    color: var(--text-light);
+    border-color: var(--primary-maroon);
+}
+
+.active-page:hover {
+    background-color: var(--primary-maroon);
+    color: var(--text-light);
+}
+
+/* Specific Column Widths */
+.crud-table th:nth-child(1), .crud-table td:nth-child(1) { width: 5%; } 
+.crud-table th:nth-child(6), .crud-table td:nth-child(6) { width: 12%; text-align: center;} 
+.crud-table th:nth-child(7), .crud-table td:nth-child(7) { width: 10%; } 
+
 @media (max-width: 1200px) {
     .admin-stats-grid {
         grid-template-columns: repeat(2, 1fr);
