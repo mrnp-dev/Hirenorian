@@ -226,7 +226,7 @@ else
                             <div class="account-actions">
                                 <button class="btn-outline">Change Password</button>
                                 <button class="btn-outline">Privacy Settings</button>
-                                <button class="btn-danger">Deactivate Account</button>
+                                <button class="btn-danger">Verify Account</button>
                             </div>
                         </div>
 
