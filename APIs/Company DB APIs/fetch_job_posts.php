@@ -54,14 +54,22 @@ $query = "
     ORDER BY jp.created_at DESC
 ";
 
-$stmt = $conn->prepare($query);
-$stmt->execute([':company_id' => $company_id]);
-$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+try {
+    $stmt = $conn->prepare($query);
+    $stmt->execute([':company_id' => $company_id]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Return JSON response
-echo json_encode([
-    "status" => "success",
-    "company_id" => $company_id,
-    "data" => $results
-], JSON_PRETTY_PRINT);
+    // Return JSON response
+    echo json_encode([
+        "status" => "success",
+        "company_id" => $company_id,
+        "data" => $results
+    ], JSON_PRETTY_PRINT);
+
+} catch (PDOException $e) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Database error: " . $e->getMessage()
+    ]);
+}
 ?>

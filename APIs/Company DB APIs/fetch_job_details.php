@@ -47,40 +47,48 @@ $query = "
     GROUP BY jp.post_id
 ";
 
-$stmt = $conn->prepare($query);
-$stmt->execute([':job_id' => $job_id]);
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $stmt = $conn->prepare($query);
+    $stmt->execute([':job_id' => $job_id]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$row) {
-    echo json_encode(["status" => "error", "message" => "Job not found"]);
-    exit();
+    if (!$row) {
+        echo json_encode(["status" => "error", "message" => "Job not found"]);
+        exit();
+    }
+
+    // Fetch tags separately
+    $tagQuery = "SELECT tag FROM Job_Tags WHERE post_id = :job_id";
+    $tagStmt = $conn->prepare($tagQuery);
+    $tagStmt->execute([':job_id' => $job_id]);
+    $tags = $tagStmt->fetchAll(PDO::FETCH_COLUMN);
+
+    // Build response
+    echo json_encode([
+        "status" => "success",
+        "data" => [
+            "jobId" => $row["jobId"],
+            "jobTitle" => $row["jobTitle"],
+            "location" => $row["location"],
+            "workType" => $row["workType"],
+            "applicantLimit" => $row["applicantLimit"],
+            "currentApplicants" => $row["currentApplicants"],
+            "category" => $row["category"],
+            "workTags" => $tags,
+            "requiredDocument" => $row["requiredDocument"],
+            "jobDescription" => $row["jobDescription"],
+            "responsibilities" => $row["responsibilities"],
+            "qualifications" => $row["qualifications"],
+            "skills" => $row["skills"],
+            "companyName" => $row["companyName"],
+            "companyIcon" => $row["companyIcon"] ?? "https://via.placeholder.com/80?text=Company"
+        ]
+    ], JSON_PRETTY_PRINT);
+
+} catch (PDOException $e) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Database error: " . $e->getMessage()
+    ]);
 }
-
-// Fetch tags separately
-$tagQuery = "SELECT tag FROM Job_Tags WHERE post_id = :job_id";
-$tagStmt = $conn->prepare($tagQuery);
-$tagStmt->execute([':job_id' => $job_id]);
-$tags = $tagStmt->fetchAll(PDO::FETCH_COLUMN);
-
-// Build response
-echo json_encode([
-    "status" => "success",
-    "data" => [
-        "jobId" => $row["jobId"],
-        "jobTitle" => $row["jobTitle"],
-        "location" => $row["location"],
-        "workType" => $row["workType"],
-        "applicantLimit" => $row["applicantLimit"],
-        "currentApplicants" => $row["currentApplicants"],
-        "category" => $row["category"],
-        "workTags" => $tags,
-        "requiredDocument" => $row["requiredDocument"],
-        "jobDescription" => $row["jobDescription"],
-        "responsibilities" => $row["responsibilities"],
-        "qualifications" => $row["qualifications"],
-        "skills" => $row["skills"],
-        "companyName" => $row["companyName"],
-        "companyIcon" => $row["companyIcon"]
-    ]
-], JSON_PRETTY_PRINT);
 ?>

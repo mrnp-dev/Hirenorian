@@ -389,12 +389,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('detailApplicantLimit').textContent = `${jobDetails.currentApplicants}/${jobDetails.applicantLimit} Applicants`;
 
         // Map requiredDocument to readable format
+        // Make case-insensitive to handle 'resume', 'Resume', 'cover-letter', 'Cover Letter', etc.
         const docTypeMap = {
             'resume': 'Resume/CV',
             'cover-letter': 'Cover Letter',
+            'cover letter': 'Cover Letter',
             'none': 'None'
         };
-        document.getElementById('detailRequiredDoc').textContent = docTypeMap[jobDetails.requiredDocument] || 'None';
+        const requiredDoc = (jobDetails.requiredDocument || '').toLowerCase().trim();
+        document.getElementById('detailRequiredDoc').textContent = docTypeMap[requiredDoc] || jobDetails.requiredDocument || 'None';
 
         // Update work tags
         const tagsContainer = document.getElementById('detailWorkTags');
@@ -403,9 +406,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         ).join('');
 
         // Update job sections
+        // ✅ FIX: Changed from 'qualification' (singular) to 'qualifications' (plural)
         document.getElementById('detailJobDescription').textContent = jobDetails.jobDescription;
         document.getElementById('detailResponsibilities').textContent = jobDetails.responsibilities;
-        document.getElementById('detailQualifications').textContent = jobDetails.qualification;
+        document.getElementById('detailQualifications').textContent = jobDetails.qualifications;
         document.getElementById('detailSkills').textContent = jobDetails.skills;
     }
 

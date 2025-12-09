@@ -21,18 +21,26 @@ if (!isset($_SESSION['email'])) {
 $company_email = $_SESSION['email'];
 
 // Lookup company_id
-$query = "SELECT company_id FROM Company WHERE email = :company_email";
-$stmt = $conn->prepare($query);
-$stmt->execute([':company_email' => $company_email]);
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+try {
+    $query = "SELECT company_id FROM Company WHERE email = :company_email";
+    $stmt = $conn->prepare($query);
+    $stmt->execute([':company_email' => $company_email]);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-if (!$row) {
-    echo json_encode(["status" => "error", "message" => "Company not found"]);
-    exit();
+    if (!$row) {
+        echo json_encode(["status" => "error", "message" => "Company not found"]);
+        exit();
+    }
+
+    echo json_encode([
+        "status" => "success",
+        "company_id" => $row["company_id"]
+    ], JSON_PRETTY_PRINT);
+
+} catch (PDOException $e) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Database error: " . $e->getMessage()
+    ]);
 }
-
-echo json_encode([
-    "status" => "success",
-    "company_id" => $row["company_id"]
-], JSON_PRETTY_PRINT);
 ?>
