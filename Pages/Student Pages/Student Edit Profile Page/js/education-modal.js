@@ -149,48 +149,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // TODO: Add API call to update the education entry
-            // For now, simulate success if no API exists for EDIT yet
-            console.log('Updating education entry:', {
-                edu_id: eduId,
-                degree: degree,
-                institution: school,
-                start_year: startYear,
-                end_year: endYear
-            });
+            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/update_education_bg.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    edu_id: eduId,
+                    studentId: studentId, // Sending just in case, though API currently relies on edu_id
+                    degree: degree,
+                    institution: school,
+                    start_year: startYear,
+                    end_year: endYear
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // Update the DOM
+                        const timelineItem = document.querySelector(`.timeline-item[data-edu-id="${eduId}"]`);
+                        if (timelineItem) {
+                            timelineItem.querySelector('h3').textContent = degree;
+                            timelineItem.querySelector('.institution').textContent = school;
+                            timelineItem.querySelector('.date').textContent = `${startYear} - ${endYear}`;
 
-            // We can add logic here to fetch an update API if/when created.
-            // Current user request only mentioned "add_education_update.php" (bg).
+                            // Update data attributes on the edit button
+                            const editBtn = timelineItem.querySelector('.edit-education-btn');
+                            if (editBtn) {
+                                editBtn.dataset.degree = degree;
+                                editBtn.dataset.institution = school;
+                                editBtn.dataset.startYear = startYear;
+                                editBtn.dataset.endYear = endYear;
+                            }
+                        }
 
-            // Update DOM purely for visual feedback or just reload if we had an API.
-            // Since we don't have an edit API yet, we'll keep the existing simulation logic 
-            // but update it to use ToastSystem and maybe simulate reload if desired, 
-            // though without saving it will reset. 
+                        // Close modal
+                        closeModal(editEducationModal);
 
-            // Wait, looking at the previous file content, it was alerting. 
-            // I'll leave the Edit logic mostly as is but upgrade alerts to Toasts.
-
-            ToastSystem.show('Education updated (Simulation only - API missing)', "info");
-
-            /* 
-            // Update the DOM
-            const timelineItem = document.querySelector(`.timeline-item[data-edu-id="${eduId}"]`);
-            if (timelineItem) {
-                timelineItem.querySelector('h3').textContent = degree;
-                timelineItem.querySelector('.institution').textContent = school;
-                timelineItem.querySelector('.date').textContent = `${startYear} - ${endYear}`;
-
-                // Update data attributes on the edit button
-                const editBtn = timelineItem.querySelector('.edit-education-btn');
-                editBtn.dataset.degree = degree;
-                editBtn.dataset.institution = school;
-                editBtn.dataset.startYear = startYear;
-                editBtn.dataset.endYear = endYear;
-            }
-            */
-
-            // Close modal
-            closeModal(editEducationModal);
+                        // Show success message
+                        ToastSystem.show('Education entry updated successfully', "success");
+                    } else {
+                        ToastSystem.show('Failed to update education entry', "error");
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    ToastSystem.show('Network error', "error");
+                });
         });
     }
 
