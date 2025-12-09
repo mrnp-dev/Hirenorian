@@ -1345,7 +1345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (responsibilitiesTextarea) responsibilitiesTextarea.value = jobData.responsibilities || '';
 
         const qualificationTextarea = document.getElementById('qualificationTextarea');
-        if (qualificationTextarea) qualificationTextarea.value = jobData.qualification || '';
+        if (qualificationTextarea) qualificationTextarea.value = jobData.qualifications || jobData.qualification || '';
 
         const skillsTextarea = document.getElementById('skillsTextarea');
         if (skillsTextarea) skillsTextarea.value = jobData.skills || '';
@@ -1594,7 +1594,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Form Submission Handler
     if (jobPostForm) {
-        jobPostForm.addEventListener('submit', (e) => {
+        jobPostForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             // Clear previous errors
@@ -1607,56 +1607,72 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Collect form data
             const formData = {
-                jobTitle: document.getElementById('jobTitleInput').value.trim(),
+                title: document.getElementById('jobTitleInput').value.trim(),
                 location: document.getElementById('locationInput').value.trim(),
-                workType: document.getElementById('workTypeSelect').value,
-                applicantLimit: parseInt(document.getElementById('applicantLimitInput').value),
+                work_type: document.getElementById('workTypeSelect').value,
+                applicant_limit: parseInt(document.getElementById('applicantLimitInput').value),
                 category: document.getElementById('categorySelect').value,
-                workTags: [...selectedTags],
-                requiredDocument: document.querySelector('input[name="requiredDocument"]:checked').value,
-                jobDescription: document.getElementById('jobDescriptionTextarea').value.trim(),
+                work_tags: [...selectedTags],
+                required_document: document.querySelector('input[name="requiredDocument"]:checked').value,
+                description: document.getElementById('jobDescriptionTextarea').value.trim(),
                 responsibilities: document.getElementById('responsibilitiesTextarea').value.trim(),
-                qualification: document.getElementById('qualificationTextarea').value.trim(),
-                skills: document.getElementById('skillsTextarea').value.trim(),
-                datePosted: new Date().toISOString(),
-                status: 'active',
-                views: 0
+                qualifications: document.getElementById('qualificationTextarea').value.trim(),
+                skills: document.getElementById('skillsTextarea').value.trim()
             };
 
             // Check mode and handle accordingly
             if (modalMode === 'edit') {
                 // Add job ID for update
-                formData.jobId = currentEditingJobId;
+                formData.post_id = currentEditingJobId;
 
-                // Log update data for now (backend integration point)
-                console.log('=== JOB POST UPDATE ===');
-                console.log('Updating Job ID:', currentEditingJobId);
-                console.log('Updated Job Data:', formData);
+                try {
+                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_job_post.php", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
 
-                // TODO: Send update to backend
-                // fetch(`/api/job-posts/${currentEditingJobId}`, { 
-                //     method: 'PUT', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(formData) 
-                // })
+                    const result = await response.json();
 
-                alert('Job post updated successfully! (Backend integration pending)');
+                    if (result.status === "success") {
+                        alert('Job post updated successfully!');
+
+                        // Refresh job details
+                        await fetchJobDetails(currentEditingJobId);
+
+                        // Update cache in jobPostsData as well for card view
+                        const jobIndex = jobPostsData.findIndex(j => j.id === currentEditingJobId);
+                        if (jobIndex !== -1) {
+                            jobPostsData[jobIndex].title = formData.title;
+                            jobPostsData[jobIndex].location = formData.location;
+                            jobPostsData[jobIndex].applicantLimit = formData.applicant_limit;
+                            jobPostsData[jobIndex].jobDescription = formData.description;
+                            // Re-render current view
+                            if (viewMode === 'cards') {
+                                showCardView();
+                            } else {
+                                // If detail view, header might need update (like applicants limit)
+                                const detailTitle = document.getElementById('detailJobTitle');
+                                if (detailTitle) detailTitle.textContent = formData.title;
+                            }
+                        }
+
+                        closeJobPostModal();
+                    } else if (result.code === "LIMIT_BELOW_ACCEPTED") {
+                        alert(result.message);
+                    } else {
+                        alert('Failed to update job post: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Error updating job post:', error);
+                    alert('Network error. Please try again.');
+                }
             } else {
-                // Add mode - Log create data for now (backend integration point)
-                console.log('=== NEW JOB POST ===');
-                console.log('Job Posting Data:', formData);
-
-                // TODO: Send data to backend
-                // fetch('/api/job-posts', { 
-                //     method: 'POST', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(formData) 
-                // })
-
-                alert('Job post created successfully! (Backend integration pending)');
+                // Create mode - keeping existing placeholder logic or TOD0
+                // For now, just alert as requested previously for create
+                alert('Job post created successfully! (Backend integration for CREATE pending)');
+                closeJobPostModal();
             }
-
-            closeJobPostModal();
         });
     }
 
@@ -1702,14 +1718,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const btnEditDetail = document.getElementById('btnEditDetail');
     if (btnEditDetail) {
-        btnEditDetail.addEventListener('click', () => {
+        btnEditDetail.addEventListener('click', async () => {
             if (selectedJobForDetail) {
-                // Get job details from mockJobDetails
-                const jobDetails = mockJobDetails[selectedJobForDetail];
+                // Use cached details if available, otherwise fetch
+                let jobDetails = jobDetailsCache[selectedJobForDetail];
+                if (!jobDetails) {
+                    await fetchJobDetails(selectedJobForDetail);
+                    jobDetails = jobDetailsCache[selectedJobForDetail];
+                }
+
                 if (jobDetails) {
                     openJobPostModal('edit', jobDetails);
                 } else {
                     console.error('Job details not found for ID:', selectedJobForDetail);
+                    alert('Could not load job details for editing.');
                 }
             }
         });
