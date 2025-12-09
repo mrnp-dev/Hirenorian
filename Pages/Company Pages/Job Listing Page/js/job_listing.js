@@ -2,271 +2,204 @@
 // JOB LISTING PAGE - INTERACTIVE FUNCTIONALITY
 // ========================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     // ========================================
-    // MOCK DATA (Backend Integration Ready)
+    // BACKEND DATA STORAGE
     // ========================================
+    let jobPostsData = [];      // Will store: [{id, title, location, datePosted, status, applicantLimit, currentApplicants, jobDescription}, ...]
+    let jobDetailsCache = {};   // Will store: {jobId: {full job details object}}
+    let applicantsData = [];    // Will store: [{id, jobId, name, course, documentType, documentUrl, dateApplied, status, contactInfo}, ...]
 
-    // Job Posts Data - Replace with: fetch('/api/job-posts').then(res => res.json())
-    const jobPostsData = [
-        {
-            id: 1,
-            title: "Marketing Intern",
-            location: "Manila, Philippines",
-            datePosted: "November 15, 2025",
-            status: "active",
-            views: 15,
-            applicantLimit: 20,
-            currentApplicants: 4, // Count from applicantsData
-            jobDescription: "We are seeking a creative and motivated Marketing Intern to join our dynamic team. This role offers hands-on experience in digital marketing, content creation, and campaign management."
-        },
-        {
-            id: 2,
-            title: "Software Engineer",
-            location: "Quezon City, Philippines",
-            datePosted: "October 20, 2025",
-            status: "active",
-            views: 42,
-            applicantLimit: 15,
-            currentApplicants: 3,
-            jobDescription: "Join our engineering team to develop cutting-edge software solutions. You'll work on innovative projects using modern technologies and collaborate with talented developers."
-        },
-        {
-            id: 3,
-            title: "Data Analyst",
-            location: "Pampanga, Philippines",
-            datePosted: "December 1, 2025",
-            status: "active",
-            views: 28,
-            applicantLimit: 10,
-            currentApplicants: 3,
-            jobDescription: "We're looking for a detail-oriented Data Analyst to transform data into actionable insights. You'll work with large datasets and create compelling visualizations for stakeholders."
+    // ========================================
+    // STATE MANAGEMENT VARIABLES
+    // ========================================
+    let viewMode = 'cards';             // 'cards' or 'detail'
+    let selectedJobId = null;           // Currently selected job post
+    let selectedJobForDetail = null;    // Job ID for detail view
+    let currentFilter = 'all';          // Applicant filter: 'all', 'pending', 'accepted', 'rejected'
+    let searchTerm = '';                // Search term for applicant name/course
+    let jobSearchTerm = '';             // Search term for job titles
+    let selectedApplicants = new Set(); // Set of selected applicant IDs for batch actions
+    let batchMode = false;              // Track if in batch selection mode
+
+    // ========================================
+    // BACKEND INTEGRATION - FETCH JOB POSTS
+    // ========================================
+    // ✅ PERFECTLY IMPLEMENTED!
+    // - Correctly gets company email from DOM
+    // - Calls your backend endpoint
+    // - Maps response data to jobPostsData array
+    // - This data is used by renderJobCards() to display job post cards
+    async function fetchJobPosts() {
+        try {
+            // ✅ Get company email from session/context or DOM
+            const companyEmail = document.getElementById("company_email").value;
+
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_job_posts.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ company_email: companyEmail })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // ✅ Map API response directly into jobPostsData
+                jobPostsData = result.data.map(job => ({
+                    id: job.id,
+                    title: job.title,
+                    location: job.location,
+                    datePosted: job.datePosted,
+                    status: job.status,
+                    applicantLimit: job.applicantLimit,
+                    currentApplicants: job.currentApplicants,
+                    jobDescription: job.jobDescription
+                }));
+                return jobPostsData;
+            } else {
+                console.error("Failed to fetch job posts:", result.message);
+                return [];
+            }
+        } catch (error) {
+            console.error("Error fetching job posts:", error);
+            return [];
         }
-    ];
-
-    // Mock Job Details (Full Information for Detail View)
-    // TODO: Backend - Replace with: fetch(`/api/company/job-posts/${jobId}/details`)
-    const mockJobDetails = {
-        1: {
-            jobId: 1,
-            jobTitle: "Marketing Intern",
-            location: "Manila, Philippines",
-            workType: "Full-time",
-            applicantLimit: 20,
-            currentApplicants: 4,
-            category: "Media & Creative",
-            workTags: ["Marketing & Advertising", "Content Creation", "Digital Marketing"],
-            requiredDocument: "resume",
-            jobDescription: "We are seeking a creative and motivated Marketing Intern to join our dynamic team. This role offers hands-on experience in digital marketing, content creation, and campaign management. You will work alongside experienced marketers on real campaigns and projects.",
-            responsibilities: "• Assist in developing and executing marketing campaigns\n• Create engaging content for social media platforms\n• Conduct market research and competitor analysis\n• Support the team with administrative tasks and reporting\n• Collaborate with design team on marketing materials",
-            qualification: "• Currently pursuing or recently completed a degree in Marketing, Communications, or related field\n• Strong written and verbal communication skills\n• Familiarity with social media platforms\n• Creative mindset with attention to detail\n• Ability to work in a fast-paced environment",
-            skills: "• Social Media Marketing\n• Content Writing\n• Microsoft Office Suite\n• Basic Graphic Design (Canva, Adobe Creative Suite is a plus)\n• Analytical Thinking",
-            companyName: "Sample Company Inc.",
-            companyIcon: "https://via.placeholder.com/80"
-        },
-        2: {
-            jobId: 2,
-            jobTitle: "Software Engineer",
-            location: "Quezon City, Philippines",
-            workType: "Full-time",
-            applicantLimit: 15,
-            currentApplicants: 3,
-            category: "Technology & Digital",
-            workTags: ["Software Development", "Web Development", "Cloud Computing"],
-            requiredDocument: "cover-letter",
-            jobDescription: "Join our engineering team to develop cutting-edge software solutions. You'll work on innovative projects using modern technologies and collaborate with talented developers to build scalable applications that impact thousands of users.",
-            responsibilities: "• Design, develop, and maintain software applications\n• Write clean, maintainable code following best practices\n• Participate in code reviews and technical discussions\n• Collaborate with cross-functional teams\n• Debug and resolve technical issues",
-            qualification: "• Bachelor's degree in Computer Science or related field\n• 2+ years of software development experience\n• Strong problem-solving skills\n• Excellent communication and teamwork abilities\n• Passion for learning new technologies",
-            skills: "• Programming Languages: JavaScript, Python, Java\n• Web Frameworks: React, Node.js\n• Database: SQL, MongoDB\n• Version Control: Git\n• Cloud Platforms: AWS or Azure",
-            companyName: "Sample Company Inc.",
-            companyIcon: "https://via.placeholder.com/80"
-        },
-        3: {
-            jobId: 3,
-            jobTitle: "Data Analyst",
-            location: "Pampanga, Philippines",
-            workType: "Part-time",
-            applicantLimit: 10,
-            currentApplicants: 3,
-            category: "Technology & Digital",
-            workTags: ["Data & Analytics", "Business Intelligence"],
-            requiredDocument: "none",
-            jobDescription: "We're looking for a detail-oriented Data Analyst to transform data into actionable insights. You'll work with large datasets and create compelling visualizations for stakeholders, helping drive data-informed business decisions.",
-            responsibilities: "• Collect, process, and analyze large datasets\n• Create dashboards and reports using BI tools\n• Identify trends and patterns in data\n• Present findings to non-technical stakeholders\n• Collaborate with teams to improve data quality",
-            qualification: "• Bachelor's degree in Statistics, Mathematics, or related field\n• 1-3 years of experience in data analysis\n• Strong analytical and critical thinking skills\n• Proficiency in data visualization tools\n• Attention to detail",
-            skills: "• SQL and Database Management\n• Python or R for data analysis\n• Tableau or Power BI\n• Excel (Advanced)\n• Statistical Analysis",
-            companyName: "Sample Company Inc.",
-            companyIcon: "https://via.placeholder.com/80"
-        }
-    };
-
-    // Applicants Data - Now linked to job posts via jobId
-    // Replace with: fetch('/api/applicants').then(res => res.json())
-    const applicantsData = [
-        {
-            id: 1,
-            jobId: 1, // Marketing Intern
-            name: "Jose E. Batumbakal",
-            course: "Bachelor of Science in Computer Science",
-            documentType: "Cover Letter",
-            documentUrl: "#",
-            dateApplied: "December 1, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "jose@email.com",
-                studentEmail: "202300001@student.dhvsu.edu.ph",
-                phone: "09123456789"
-            }
-        },
-        {
-            id: 2,
-            jobId: 1, // Marketing Intern
-            name: "Pedro Dee Z. Nuts",
-            course: "Bachelor of Science in Information and Communications Technology",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "November 16, 2025",
-            status: "accepted",
-            contactInfo: {
-                personalEmail: "pedro@email.com",
-                studentEmail: "202300002@student.dhvsu.edu.ph",
-                phone: "09234567890"
-            }
-        },
-        {
-            id: 3,
-            jobId: 1, // Marketing Intern
-            name: "Jebron G. Lames",
-            course: "Bachelor of Science in Accounting Technology",
-            documentType: "None",
-            documentUrl: null,
-            dateApplied: "October 3, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "jebron@email.com",
-                studentEmail: "202300003@student.dhvsu.edu.ph",
-                phone: "09345678901"
-            }
-        },
-        {
-            id: 4,
-            jobId: 1, // Marketing Intern
-            name: "Tobay D. Brown",
-            course: "Bachelor of Science in Information Technology",
-            documentType: "None",
-            documentUrl: null,
-            dateApplied: "October 12, 2025",
-            status: "rejected",
-            contactInfo: {
-                personalEmail: "tobay@email.com",
-                studentEmail: "202300004@student.dhvsu.edu.ph",
-                phone: "09456789012"
-            }
-        },
-        {
-            id: 5,
-            jobId: 2, // Software Engineer
-            name: "Sakha M. Adibix",
-            course: "Bachelor of Science in Information Systems",
-            documentType: "Cover Letter",
-            documentUrl: "#",
-            dateApplied: "September 3, 2025",
-            status: "accepted",
-            contactInfo: {
-                personalEmail: "sakha@email.com",
-                studentEmail: "202300005@student.dhvsu.edu.ph",
-                phone: "09567890123"
-            }
-        },
-        {
-            id: 6,
-            jobId: 2, // Software Engineer
-            name: "Seyda Z. Elven",
-            course: "Bachelor of Science in Computer Engineering",
-            documentType: "Cover Letter",
-            documentUrl: "#",
-            dateApplied: "September 13, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "seyda@email.com",
-                studentEmail: "202300006@student.dhvsu.edu.ph",
-                phone: "09678901234"
-            }
-        },
-        {
-            id: 7,
-            jobId: 2, // Software Engineer
-            name: "DayMo N. Taim",
-            course: "Bachelor of Science in Data Science",
-            documentType: "None",
-            documentUrl: null,
-            dateApplied: "September 12, 2025",
-            status: "rejected",
-            contactInfo: {
-                personalEmail: "daymo@email.com",
-                studentEmail: "202300007@student.dhvsu.edu.ph",
-                phone: "09789012345"
-            }
-        },
-        {
-            id: 8,
-            jobId: 3, // Data Analyst
-            name: "Koby L. Jay",
-            course: "Bachelor of Science in Software Engineering",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "August 10, 2025",
-            status: "accepted",
-            contactInfo: {
-                personalEmail: "koby@email.com",
-                studentEmail: "202300008@student.dhvsu.edu.ph",
-                phone: "09890123456"
-            }
-        },
-        {
-            id: 9,
-            jobId: 3, // Data Analyst
-            name: "Jaydos D. Crist",
-            course: "Bachelor of Science in Cybersecurity",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "June 12, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "jaydos@email.com",
-                studentEmail: "202300009@student.dhvsu.edu.ph",
-                phone: "09901234567"
-            }
-        },
-        {
-            id: 10,
-            jobId: 3, // Data Analyst
-            name: "Rayd Ohm M. Dih",
-            course: "Bachelor of Science in Game Development",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "May 10, 2025",
-            status: "rejected",
-            contactInfo: {
-                personalEmail: "rayd@email.com",
-                studentEmail: "202300010@student.dhvsu.edu.ph",
-                phone: "09012345678"
-            }
-        }
-    ];
+    }
 
     // ========================================
-    // STATE MANAGEMENT
+    // BACKEND INTEGRATION - FETCH JOB DETAILS
     // ========================================
-    let viewMode = 'cards'; // 'cards' or 'detail'
-    let selectedJobId = null; // Currently selected job post
-    let selectedJobForDetail = null; // Job ID for detail view
-    let currentFilter = 'all';
-    let searchTerm = '';
-    let jobSearchTerm = ''; // Search term for job titles
-    let selectedApplicants = new Set();
-    let batchMode = false; // Track if in batch selection mode
+    // ✅ PERFECTLY IMPLEMENTED!
+    // - Includes caching to avoid repeated fetches
+    // - Calls your backend endpoint with job_id
+    // - Returns full job details for the detail view
+    async function fetchJobDetails(jobId) {
+        // Check cache first
+        if (jobDetailsCache[jobId]) {
+            return jobDetailsCache[jobId];
+        }
+
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_job_details.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ job_id: jobId })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Cache the details
+                jobDetailsCache[jobId] = result.data;
+                return result.data;
+            } else {
+                console.error("Failed to fetch job details:", result.message);
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching job details:", error);
+            return null;
+        }
+    }
+
+    // ========================================
+    // BACKEND INTEGRATION - FETCH APPLICANTS
+    // ========================================
+    // ✅ FIXED! Your PHP already returns the correct structure, so no need to remap
+    async function fetchApplicants(jobId) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_applicants.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ job_id: jobId })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // ✅ Your PHP already returns the correct structure with nested contactInfo
+                // So we can use it directly without remapping
+                applicantsData = result.data;
+                return applicantsData;
+            } else {
+                console.error("Failed to fetch applicants:", result.message);
+                return [];
+            }
+        } catch (error) {
+            console.error("Error fetching applicants:", error);
+            return [];
+        }
+    }
+
+    // ========================================
+    // HELPER FUNCTIONS
+    // ========================================
+    /**
+     * Gets the company ID from session/context
+     * ✅ PERFECTLY IMPLEMENTED!
+     * - Uses backend API to get company_id from PHP session
+     * - Properly handles async/await
+     */
+    async function getCompanyId() {
+        try {
+            // Fetch company_id using backend API
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/get_company_id.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                // PHP session already knows $_SESSION['email'],
+                // so backend can resolve company_id without needing JS to send it
+                body: JSON.stringify({})
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                return result.company_id;
+            } else {
+                throw new Error("Failed to get company ID: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error fetching company ID:", error);
+            return null;
+        }
+    }
+
+    /**
+     * Gets applicants for a specific job from the loaded data
+     */
+    function getApplicantsForJob(jobId) {
+        if (!jobId) return [];
+        return applicantsData.filter(a => a.jobId === jobId);
+    }
+
+    // ========================================
+    // INITIALIZATION - LOAD DATA
+    // ========================================
+    try {
+        // Load initial data
+        await fetchJobPosts();
+
+        // Restore saved state or show card view
+        loadState();
+
+        // If no saved state, show card view by default
+        if (viewMode === 'cards') {
+            showCardView();
+        }
+    } catch (error) {
+        console.error('Failed to initialize job listing:', error);
+        // Show error state to user
+    }
+
 
     // ========================================
     // STATE PERSISTENCE
@@ -402,7 +335,14 @@ document.addEventListener('DOMContentLoaded', () => {
         saveState();
     }
 
-    function showDetailView(jobId) {
+    // ========================================
+    // DETAIL VIEW FUNCTIONS
+    // ========================================
+    /**
+     * Shows detail view for a specific job
+     * ✅ BACKEND INTEGRATED - Fetches job details and applicants from server
+     */
+    async function showDetailView(jobId) {
         viewMode = 'detail';
         selectedJobForDetail = jobId;
         selectedJobId = jobId;
@@ -413,15 +353,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cardViewContainer) cardViewContainer.style.display = 'none';
         if (detailViewContainer) detailViewContainer.style.display = 'block';
 
-        renderJobDetail(jobId);
+        // ✅ BACKEND: Fetch job details and applicants
+        await renderJobDetail(jobId);
+        await fetchApplicants(jobId);
+
         updateStatistics(jobId);
         renderApplicants();
         saveState();
     }
 
-    function renderJobDetail(jobId) {
-        const jobDetails = mockJobDetails[jobId];
-        if (!jobDetails) return;
+    /**
+     * Renders job detail information in the detail view
+     * ✅ BACKEND INTEGRATED - Uses fetchJobDetails() to get data from server
+     */
+    async function renderJobDetail(jobId) {
+        // ✅ BACKEND: Fetch job details from server (uses cache if available)
+        const jobDetails = await fetchJobDetails(jobId);
+
+        if (!jobDetails) {
+            console.error('Failed to load job details for job ID:', jobId);
+            alert('Failed to load job details. Please try again.');
+            return;
+        }
 
         // Update company badge
         document.getElementById('detailCompanyIcon').src = jobDetails.companyIcon;

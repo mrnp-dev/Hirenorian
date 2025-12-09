@@ -1,3 +1,46 @@
+<?php
+session_start();
+
+if (isset($_SESSION['email'])) {
+    $company_email = $_SESSION['email'];
+
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_information.php";
+
+    // Send JSON with "company_email"
+    $payload = json_encode([
+        "company_email" => $company_email
+    ]);
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    }
+
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data['status'] === "success") {
+        // --- Base company info ---
+        $company = $data['company'];
+        $company_id = $company['company_id'];
+        $company_name = $company['company_name'];
+        $company_email = $company['email'];
+    } else {
+        $error_message = $data['message'];
+    }
+
+} else {
+    header("Location: ../../../Landing Page/php/landing_page.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +105,7 @@
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar"></div>
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -70,7 +113,7 @@
                     </div>
                 </div>
             </header>
-
+            <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
             <div class="content-wrapper">
                 <div class="page-title">
                     <h1>Job Listing</h1>
