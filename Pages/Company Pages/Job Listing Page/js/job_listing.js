@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let jobPostsData = [];      // Will store: [{id, title, location, datePosted, status, applicantLimit, currentApplicants, jobDescription}, ...]
     let jobDetailsCache = {};   // Will store: {jobId: {full job details object}}
     let applicantsData = [];    // Will store: [{id, jobId, name, course, documentType, documentUrl, dateApplied, status, contactInfo}, ...]
+    let acceptedCountsCache = {}; // ✅ FIX: Store accepted counts per job {jobId: acceptedCount}
 
     // ========================================
     // STATE MANAGEMENT VARIABLES
@@ -127,6 +128,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // ✅ Your PHP already returns the correct structure with nested contactInfo
                 // So we can use it directly without remapping
                 applicantsData = result.data;
+
+                // ✅ FIX: Also update the accepted count cache
+                const acceptedCount = result.data.filter(a => a.status === 'accepted').length;
+                acceptedCountsCache[jobId] = acceptedCount;
+
                 return applicantsData;
             } else {
                 console.error("Failed to fetch applicants:", result.message);
@@ -181,12 +187,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         return applicantsData.filter(a => a.jobId === jobId);
     }
 
+    /**
+     * Fetches applicants for ALL jobs at once and caches accepted counts
+     * Called during initialization to pre-load all applicant data
+     * ✅ This fixes the bug where accepted counts show 0 until detail view is opened
+     */
+    async function fetchAllApplicants() {
+        try {
+            // Fetch applicants for each job and calculate accepted counts
+            const fetchPromises = jobPostsData.map(async (job) => {
+                const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_applicants.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ job_id: job.id })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    // Count accepted applicants for this job
+                    const acceptedCount = result.data.filter(a => a.status === 'accepted').length;
+                    // Store in cache
+                    acceptedCountsCache[job.id] = acceptedCount;
+                }
+            });
+
+            // Wait for all fetches to complete
+            await Promise.all(fetchPromises);
+
+            console.log(`✅ Pre-loaded accepted counts for ${jobPostsData.length} jobs:`, acceptedCountsCache);
+        } catch (error) {
+            console.error('Error pre-loading applicants:', error);
+        }
+    }
+
     // ========================================
     // INITIALIZATION - LOAD DATA
     // ========================================
     try {
         // Load initial data
         await fetchJobPosts();
+
+        // ✅ FIX: Pre-load all applicants data so counts show correctly from the start
+        await fetchAllApplicants();
 
         // Restore saved state or show card view
         loadState();
@@ -293,8 +338,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         noJobsState.style.display = 'none';
 
         jobCardsGrid.innerHTML = filteredJobs.map(job => {
-            const applicants = getApplicantsForJob(job.id);
-            const currentCount = applicants.length;
+            // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
+            const acceptedCount = acceptedCountsCache[job.id] || 0;
             return `
                 <div class="job-card" data-job-id="${job.id}">
                     <div class="job-card-header">
@@ -308,7 +353,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <span>${job.location}</span>
                         </div>
                     </div>
-                    <div class="card-applicant-status">${currentCount}/${job.applicantLimit}</div>
+                    <div class="card-applicant-status">${acceptedCount}/${job.applicantLimit}</div>
                     <p class="job-card-description">${job.jobDescription}</p>
                 </div>
             `;
@@ -386,7 +431,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Update meta information
         document.getElementById('detailLocation').textContent = jobDetails.location;
         document.getElementById('detailWorkType').textContent = jobDetails.workType;
-        document.getElementById('detailApplicantLimit').textContent = `${jobDetails.currentApplicants}/${jobDetails.applicantLimit} Applicants`;
+        // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
+        const acceptedApplicants = acceptedCountsCache[jobId] || 0;
+        document.getElementById('detailApplicantLimit').textContent = `${acceptedApplicants}/${jobDetails.applicantLimit} Applicants`;
 
         // Map requiredDocument to readable format
         // Make case-insensitive to handle 'resume', 'Resume', 'cover-letter', 'Cover Letter', etc.
