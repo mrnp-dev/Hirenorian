@@ -55,7 +55,15 @@ try {
     $experience = $stmtExp->fetchAll(PDO::FETCH_ASSOC);
 
     // 5. Fetch Education History (1:Matching)
-    $queryEdu = "SELECT * FROM StudentEducationHistory WHERE student_id = :stu_id";
+    $queryEduHist = "SELECT * FROM StudentEducationHistory WHERE student_id = :stu_id";
+    $stmtEduHist = $conn->prepare($queryEduHist);
+    $stmtEduHist->execute(['stu_id' => $stu_id]);
+    $education_history = $stmtEduHist->fetchAll(PDO::FETCH_ASSOC);
+
+    // 6. Fetch Education (Current/Primary?) (1:Matching or 1:1?)
+    // Based on describe table, it has an auto increment edu_id, so it might be multiple rows or single.
+    // However, usually "Education" vs "History" implies current vs past. assuming multiple or single, fetchAll is safe.
+    $queryEdu = "SELECT * FROM Education WHERE student_id = :stu_id";
     $stmtEdu = $conn->prepare($queryEdu);
     $stmtEdu->execute(['stu_id' => $stu_id]);
     $education = $stmtEdu->fetchAll(PDO::FETCH_ASSOC);
@@ -66,6 +74,7 @@ try {
         "profile" => $profile ? $profile : [], // Empty object/array if not set
         "skills" => $skills,
         "experience" => $experience,
+        "education_history" => $education_history,
         "education" => $education
     ];
 
