@@ -134,6 +134,11 @@
                                     <span id="detailCompanyName" class="detail-company-name"></span>
                                 </div>
                                 <h2 id="detailJobTitle" class="detail-job-title"></h2>
+
+                                <!-- Work Tags under Job Title -->
+                                <div id="detailWorkTags" class="job-detail-tags">
+                                    <!-- Tags will be populated dynamically -->
+                                </div>
                             </div>
 
                             <div class="job-detail-meta">
@@ -155,28 +160,27 @@
                                 </div>
                             </div>
 
-                            <div id="detailWorkTags" class="job-detail-tags">
-                                <!-- Tags will be populated dynamically -->
-                            </div>
+                            <!-- Job Detail Sections in Horizontal Layout -->
+                            <div class="job-detail-sections-grid">
+                                <div class="job-detail-section">
+                                    <h3>Job Description</h3>
+                                    <p id="detailJobDescription"></p>
+                                </div>
 
-                            <div class="job-detail-section">
-                                <h3>Job Description</h3>
-                                <p id="detailJobDescription"></p>
-                            </div>
+                                <div class="job-detail-section">
+                                    <h3>Responsibilities</h3>
+                                    <p id="detailResponsibilities"></p>
+                                </div>
 
-                            <div class="job-detail-section">
-                                <h3>Responsibilities</h3>
-                                <p id="detailResponsibilities"></p>
-                            </div>
+                                <div class="job-detail-section">
+                                    <h3>Qualifications</h3>
+                                    <p id="detailQualifications"></p>
+                                </div>
 
-                            <div class="job-detail-section">
-                                <h3>Qualifications</h3>
-                                <p id="detailQualifications"></p>
-                            </div>
-
-                            <div class="job-detail-section">
-                                <h3>Skills</h3>
-                                <p id="detailSkills"></p>
+                                <div class="job-detail-section">
+                                    <h3>Skills</h3>
+                                    <p id="detailSkills"></p>
+                                </div>
                             </div>
                         </div>
 

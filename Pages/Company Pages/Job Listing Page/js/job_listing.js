@@ -1557,7 +1557,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnEditDetail) {
         btnEditDetail.addEventListener('click', () => {
             if (selectedJobForDetail) {
-                openJobPostModal('edit', selectedJobForDetail);
+                // Get job details from mockJobDetails
+                const jobDetails = mockJobDetails[selectedJobForDetail];
+                if (jobDetails) {
+                    openJobPostModal('edit', jobDetails);
+                } else {
+                    console.error('Job details not found for ID:', selectedJobForDetail);
+                }
             }
         });
     }
