@@ -437,7 +437,8 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                     <div class="form-group">
                                         <label><i class="fa-solid fa-envelope"></i> Email</label>
-                                        <input type="email" id="editContactEmail" value="<?php echo $company_email; ?>">
+                                        <input type="email" id="editContactEmail" value="<?php echo $company_email; ?>"
+                                            readonly style="background-color: #e9ecef; cursor: not-allowed;">
                                     </div>
                                     <div class="form-group">
                                         <label><i class="fa-solid fa-location-dot"></i> Location</label>
