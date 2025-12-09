@@ -517,10 +517,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // RENDER APPLICANTS
     // ========================================
-    function renderApplicants(data) {
+    function renderApplicants(data = null) {
+        // If no data provided, get filtered data based on current filter
+        const applicantsToRender = data || getFilteredData();
+
         applicantsList.innerHTML = '';
 
-        if (data.length === 0) {
+        if (applicantsToRender.length === 0) {
             emptyState.style.display = 'block';
 
             // Show context-aware empty state message
@@ -562,7 +565,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         emptyState.style.display = 'none';
 
-        data.forEach(applicant => {
+        applicantsToRender.forEach(applicant => {
             const card = createApplicantCard(applicant);
             applicantsList.appendChild(card);
         });

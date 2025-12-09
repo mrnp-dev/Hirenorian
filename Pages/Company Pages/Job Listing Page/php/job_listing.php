@@ -191,17 +191,6 @@
                                 <div class="stats-card">
                                     <h3>Post Statistics</h3>
                                     <div class="stats-stack">
-                                        <!-- Views Stat -->
-                                        <div class="stat-card-item views">
-                                            <div class="stat-icon">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </div>
-                                            <div class="stat-info">
-                                                <span class="stat-value" id="viewsCount">0</span>
-                                                <span class="stat-label">Views</span>
-                                            </div>
-                                        </div>
-
                                         <!-- Applicants Stat -->
                                         <div class="stat-card-item applicants">
                                             <div class="stat-icon">
