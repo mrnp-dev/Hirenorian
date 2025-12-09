@@ -151,7 +151,7 @@ else
                             <div class="profile-info">
                                 <h1 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . " " : "") . $last_name . " " . $suffix); ?></h1>
                                 <p class="profile-headline"><?php echo htmlspecialchars($course); ?> Student at <?php echo htmlspecialchars($university); ?></p>
-                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> <?php echo htmlspecialchars($location); ?></p>
+                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> <?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: #999;">Not Specified</em>'; ?></p>
                             </div>
                             <div class="profile-actions">
                                 <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-primary">
@@ -169,15 +169,15 @@ else
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span><?php echo htmlspecialchars($personal_email); ?></span>
+                                    <span><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope-open-text"></i>
-                                    <span><?php echo htmlspecialchars($student_email); ?></span>
+                                    <span><?php echo !empty($student_email) ? htmlspecialchars($student_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span><?php echo htmlspecialchars($phone_number); ?></span>
+                                    <span><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                             </div>
 
