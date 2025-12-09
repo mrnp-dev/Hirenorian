@@ -46,7 +46,7 @@ function saveProfileChanges() {
     const industry = document.getElementById('editCompanyIndustry').value;
 
     document.getElementById('viewCompanyName').textContent = companyName;
-    document.getElementById('viewCompanyTagline').textContent = tagLine;
+    document.getElementById('viewCompanyTagline').textContent = tagLine ? tagLine : "No tagline provided";
     document.getElementById('viewCompanyIndustry').textContent = industry;
 
     // 2. Sync Contact Info
@@ -59,24 +59,24 @@ function saveProfileChanges() {
 
     // Update link href and text
     const websiteLink = document.getElementById('viewContactWebsite');
-    websiteLink.textContent = website;
-    websiteLink.href = website;
+    websiteLink.textContent = website ? website : "Set Website Link";
+    websiteLink.href = website ? website : "#";
 
     // 3. Sync Main Text Sections
     const aboutText = document.getElementById('editAboutUsText').value;
     const whyJoinText = document.getElementById('editWhyJoinText').value;
 
-    document.getElementById('viewAboutUsText').textContent = aboutText;
-    document.getElementById('viewWhyJoinText').textContent = whyJoinText;
+    document.getElementById('viewAboutUsText').textContent = aboutText ? aboutText : "No about us provided";
+    document.getElementById('viewWhyJoinText').textContent = whyJoinText ? whyJoinText : "No why join us provided";
 
     // 4. Sync Lists (Perks, Locations, Contacts)
     // Since lists are modified in real-time in the Edit container DOM, 
     // we need to copy the HTML structure to the View container 
     // AND strip out the edit buttons/actions.
 
-    syncListToView('editPerksList', 'viewPerksList');
-    syncListToView('editLocationsList', 'viewLocationsList');
-    syncListToView('editContactsList', 'viewContactsList');
+    syncListToView('editPerksList', 'viewPerksList', 'perks');
+    syncListToView('editLocationsList', 'viewLocationsList', 'locations');
+    syncListToView('editContactsList', 'viewContactsList', 'contacts');
 
     // 5. Sync Images (Banner/Icon)
     // Images are updated in the edit container immediately via the modal.
@@ -96,7 +96,7 @@ function saveProfileChanges() {
  * Helper to sync a list from Edit container to View container
  * Removes 'item-actions' buttons from the cloned content.
  */
-function syncListToView(editListId, viewListId) {
+function syncListToView(editListId, viewListId, type) {
     const editList = document.getElementById(editListId);
     const viewList = document.getElementById(viewListId);
 
@@ -108,7 +108,31 @@ function syncListToView(editListId, viewListId) {
     const actionDivs = clone.querySelectorAll('.item-actions');
     actionDivs.forEach(div => div.remove());
 
-    // Replace the view list with the cleaned clone
+    // If list is empty (no items left), inject empty state HTML
+    if (clone.children.length === 0) {
+        let emptyHTML = '';
+        if (type === 'perks') {
+            emptyHTML = `<li class="benefit-item no-perks"><span>No perks listed</span></li>`;
+        } else if (type === 'locations') {
+            emptyHTML = `
+                <div class="location-item no-locations">
+                    <div class="location-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                    <div class="location-content">
+                        <h4>No office locations listed</h4>
+                    </div>
+                </div>`;
+        } else if (type === 'contacts') {
+            emptyHTML = `
+                <div class="contact-person-item no-contacts">
+                    <div class="contact-info">
+                        <h4>No contact persons listed</h4>
+                    </div>
+                </div>`;
+        }
+        clone.innerHTML = emptyHTML;
+    }
+
+    // Replace the view list with the cleaned/populated clone
     viewList.parentNode.replaceChild(clone, viewList);
 }
 
