@@ -13,25 +13,93 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 1,
             title: "Marketing Intern",
+            location: "Manila, Philippines",
             datePosted: "November 15, 2025",
             status: "active",
-            views: 15
+            views: 15,
+            applicantLimit: 20,
+            currentApplicants: 4, // Count from applicantsData
+            jobDescription: "We are seeking a creative and motivated Marketing Intern to join our dynamic team. This role offers hands-on experience in digital marketing, content creation, and campaign management."
         },
         {
             id: 2,
             title: "Software Engineer",
+            location: "Quezon City, Philippines",
             datePosted: "October 20, 2025",
             status: "active",
-            views: 42
+            views: 42,
+            applicantLimit: 15,
+            currentApplicants: 3,
+            jobDescription: "Join our engineering team to develop cutting-edge software solutions. You'll work on innovative projects using modern technologies and collaborate with talented developers."
         },
         {
             id: 3,
             title: "Data Analyst",
+            location: "Pampanga, Philippines",
             datePosted: "December 1, 2025",
             status: "active",
-            views: 28
+            views: 28,
+            applicantLimit: 10,
+            currentApplicants: 3,
+            jobDescription: "We're looking for a detail-oriented Data Analyst to transform data into actionable insights. You'll work with large datasets and create compelling visualizations for stakeholders."
         }
     ];
+
+    // Mock Job Details (Full Information for Detail View)
+    // TODO: Backend - Replace with: fetch(`/api/company/job-posts/${jobId}/details`)
+    const mockJobDetails = {
+        1: {
+            jobId: 1,
+            jobTitle: "Marketing Intern",
+            location: "Manila, Philippines",
+            workType: "Full-time",
+            applicantLimit: 20,
+            currentApplicants: 4,
+            category: "Media & Creative",
+            workTags: ["Marketing & Advertising", "Content Creation", "Digital Marketing"],
+            requiredDocument: "resume",
+            jobDescription: "We are seeking a creative and motivated Marketing Intern to join our dynamic team. This role offers hands-on experience in digital marketing, content creation, and campaign management. You will work alongside experienced marketers on real campaigns and projects.",
+            responsibilities: "• Assist in developing and executing marketing campaigns\n• Create engaging content for social media platforms\n• Conduct market research and competitor analysis\n• Support the team with administrative tasks and reporting\n• Collaborate with design team on marketing materials",
+            qualification: "• Currently pursuing or recently completed a degree in Marketing, Communications, or related field\n• Strong written and verbal communication skills\n• Familiarity with social media platforms\n• Creative mindset with attention to detail\n• Ability to work in a fast-paced environment",
+            skills: "• Social Media Marketing\n• Content Writing\n• Microsoft Office Suite\n• Basic Graphic Design (Canva, Adobe Creative Suite is a plus)\n• Analytical Thinking",
+            companyName: "Sample Company Inc.",
+            companyIcon: "https://via.placeholder.com/80"
+        },
+        2: {
+            jobId: 2,
+            jobTitle: "Software Engineer",
+            location: "Quezon City, Philippines",
+            workType: "Full-time",
+            applicantLimit: 15,
+            currentApplicants: 3,
+            category: "Technology & Digital",
+            workTags: ["Software Development", "Web Development", "Cloud Computing"],
+            requiredDocument: "cover-letter",
+            jobDescription: "Join our engineering team to develop cutting-edge software solutions. You'll work on innovative projects using modern technologies and collaborate with talented developers to build scalable applications that impact thousands of users.",
+            responsibilities: "• Design, develop, and maintain software applications\n• Write clean, maintainable code following best practices\n• Participate in code reviews and technical discussions\n• Collaborate with cross-functional teams\n• Debug and resolve technical issues",
+            qualification: "• Bachelor's degree in Computer Science or related field\n• 2+ years of software development experience\n• Strong problem-solving skills\n• Excellent communication and teamwork abilities\n• Passion for learning new technologies",
+            skills: "• Programming Languages: JavaScript, Python, Java\n• Web Frameworks: React, Node.js\n• Database: SQL, MongoDB\n• Version Control: Git\n• Cloud Platforms: AWS or Azure",
+            companyName: "Sample Company Inc.",
+            companyIcon: "https://via.placeholder.com/80"
+        },
+        3: {
+            jobId: 3,
+            jobTitle: "Data Analyst",
+            location: "Pampanga, Philippines",
+            workType: "Part-time",
+            applicantLimit: 10,
+            currentApplicants: 3,
+            category: "Technology & Digital",
+            workTags: ["Data & Analytics", "Business Intelligence"],
+            requiredDocument: "none",
+            jobDescription: "We're looking for a detail-oriented Data Analyst to transform data into actionable insights. You'll work with large datasets and create compelling visualizations for stakeholders, helping drive data-informed business decisions.",
+            responsibilities: "• Collect, process, and analyze large datasets\n• Create dashboards and reports using BI tools\n• Identify trends and patterns in data\n• Present findings to non-technical stakeholders\n• Collaborate with teams to improve data quality",
+            qualification: "• Bachelor's degree in Statistics, Mathematics, or related field\n• 1-3 years of experience in data analysis\n• Strong analytical and critical thinking skills\n• Proficiency in data visualization tools\n• Attention to detail",
+            skills: "• SQL and Database Management\n• Python or R for data analysis\n• Tableau or Power BI\n• Excel (Advanced)\n• Statistical Analysis",
+            companyName: "Sample Company Inc.",
+            companyIcon: "https://via.placeholder.com/80"
+        }
+    };
 
     // Applicants Data - Now linked to job posts via jobId
     // Replace with: fetch('/api/applicants').then(res => res.json())
@@ -191,9 +259,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // STATE MANAGEMENT
     // ========================================
+    let viewMode = 'cards'; // 'cards' or 'detail'
     let selectedJobId = null; // Currently selected job post
+    let selectedJobForDetail = null; // Job ID for detail view
     let currentFilter = 'all';
     let searchTerm = '';
+    let jobSearchTerm = ''; // Search term for job titles
     let selectedApplicants = new Set();
     let batchMode = false; // Track if in batch selection mode
 
@@ -202,9 +273,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     function saveState() {
         const state = {
-            selectedJobId,
+            viewMode,
+            selectedJobId: selectedJobForDetail || selectedJobId,
             currentFilter,
-            searchTerm
+            searchTerm,
+            jobSearchTerm
         };
         sessionStorage.setItem('jobListingState', JSON.stringify(state));
     }
@@ -215,21 +288,30 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const state = JSON.parse(savedState);
 
+                // Load view mode
+                if (state.viewMode) viewMode = state.viewMode;
+
                 // Validate if job ID still exists in our current data
                 if (state.selectedJobId) {
                     const jobExists = jobPostsData.some(j => j.id === state.selectedJobId);
                     if (jobExists) {
                         selectedJobId = state.selectedJobId;
+                        selectedJobForDetail = state.selectedJobId;
                     }
                 }
 
                 if (state.currentFilter) currentFilter = state.currentFilter;
                 if (state.searchTerm !== undefined) searchTerm = state.searchTerm;
+                if (state.jobSearchTerm !== undefined) jobSearchTerm = state.jobSearchTerm;
 
                 // Sync UI elements
-                if (jobTitleSelect) jobTitleSelect.value = selectedJobId || "";
+                const jobSearchInput = document.getElementById('jobSearchInput');
+                if (jobSearchInput && jobSearchTerm) jobSearchInput.value = jobSearchTerm;
+
+                const searchInput = document.getElementById('searchInput');
                 if (searchInput) searchInput.value = searchTerm;
 
+                const filterPills = document.querySelectorAll('.filter-pill');
                 if (filterPills) {
                     filterPills.forEach(pill => {
                         if (pill.dataset.status === currentFilter) {
@@ -239,11 +321,139 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
+
+                // Restore view based on state
+                if (viewMode === 'detail' && selectedJobForDetail) {
+                    showDetailView(selectedJobForDetail);
+                } else {
+                    showCardView();
+                }
             } catch (e) {
                 console.error("Error loading state:", e);
                 sessionStorage.removeItem('jobListingState');
             }
         }
+    }
+
+    // ========================================
+    // CARD VIEW FUNCTIONS
+    // ========================================
+    function renderJobCards(searchQuery = '') {
+        const jobCardsGrid = document.getElementById('jobCardsGrid');
+        const noJobsState = document.getElementById('noJobsState');
+
+        if (!jobCardsGrid) return;
+
+        const filteredJobs = searchQuery
+            ? jobPostsData.filter(job =>
+                job.title.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            : jobPostsData;
+
+        if (filteredJobs.length === 0) {
+            jobCardsGrid.style.display = 'none';
+            noJobsState.style.display = 'block';
+            return;
+        }
+
+        jobCardsGrid.style.display = 'grid';
+        noJobsState.style.display = 'none';
+
+        jobCardsGrid.innerHTML = filteredJobs.map(job => {
+            const applicants = getApplicantsForJob(job.id);
+            const currentCount = applicants.length;
+            return `
+                <div class="job-card" data-job-id="${job.id}">
+                    <div class="job-card-header">
+                        <img src="https://via.placeholder.com/48" alt="Company Icon" class="card-company-icon">
+                        <span class="card-company-name">Sample Company Inc.</span>
+                    </div>
+                    <h3 class="job-card-title">${job.title}</h3>
+                    <div class="job-card-meta">
+                        <div class="card-meta-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>${job.location}</span>
+                        </div>
+                    </div>
+                    <div class="card-applicant-status">${currentCount}/${job.applicantLimit}</div>
+                    <p class="job-card-description">${job.jobDescription}</p>
+                </div>
+            `;
+        }).join('');
+
+        // Add click handlers to cards
+        document.querySelectorAll('.job-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const jobId = parseInt(card.dataset.jobId);
+                showDetailView(jobId);
+            });
+        });
+    }
+
+    function showCardView() {
+        viewMode = 'cards';
+        const cardViewContainer = document.getElementById('card-view-container');
+        const detailViewContainer = document.getElementById('detail-view-container');
+
+        if (cardViewContainer) cardViewContainer.style.display = 'block';
+        if (detailViewContainer) detailViewContainer.style.display = 'none';
+
+        renderJobCards(jobSearchTerm);
+        saveState();
+    }
+
+    function showDetailView(jobId) {
+        viewMode = 'detail';
+        selectedJobForDetail = jobId;
+        selectedJobId = jobId;
+
+        const cardViewContainer = document.getElementById('card-view-container');
+        const detailViewContainer = document.getElementById('detail-view-container');
+
+        if (cardViewContainer) cardViewContainer.style.display = 'none';
+        if (detailViewContainer) detailViewContainer.style.display = 'block';
+
+        renderJobDetail(jobId);
+        updateStatistics(jobId);
+        renderApplicants();
+        saveState();
+    }
+
+    function renderJobDetail(jobId) {
+        const jobDetails = mockJobDetails[jobId];
+        if (!jobDetails) return;
+
+        // Update company badge
+        document.getElementById('detailCompanyIcon').src = jobDetails.companyIcon;
+        document.getElementById('detailCompanyName').textContent = jobDetails.companyName;
+
+        // Update job title
+        document.getElementById('detailJobTitle').textContent = jobDetails.jobTitle;
+
+        // Update meta information
+        document.getElementById('detailLocation').textContent = jobDetails.location;
+        document.getElementById('detailWorkType').textContent = jobDetails.workType;
+        document.getElementById('detailApplicantLimit').textContent = `${jobDetails.currentApplicants}/${jobDetails.applicantLimit} Applicants`;
+
+        // Map requiredDocument to readable format
+        const docTypeMap = {
+            'resume': 'Resume/CV',
+            'cover-letter': 'Cover Letter',
+            'none': 'None'
+        };
+        document.getElementById('detailRequiredDoc').textContent = docTypeMap[jobDetails.requiredDocument] || 'None';
+
+        // Update work tags
+        const tagsContainer = document.getElementById('detailWorkTags');
+        tagsContainer.innerHTML = jobDetails.workTags.map(tag =>
+            `<span class="detail-tag">${tag}</span>`
+        ).join('');
+
+        // Update job sections
+        document.getElementById('detailJobDescription').textContent = jobDetails.jobDescription;
+        document.getElementById('detailResponsibilities').textContent = jobDetails.responsibilities;
+        document.getElementById('detailQualifications').textContent = jobDetails.qualification;
+        document.getElementById('detailSkills').textContent = jobDetails.skills;
     }
 
     // ========================================
@@ -1325,13 +1535,70 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========================================
-    // INITIALIZATION
+    // NEW EVENT HANDLERS FOR CARD VIEW UI
     // ========================================
-    populateJobDropdown();
+    const jobSearchInput = document.getElementById('jobSearchInput');
+    if (jobSearchInput) {
+        jobSearchInput.addEventListener('input', (e) => {
+            jobSearchTerm = e.target.value;
+            saveState();
+            renderJobCards(jobSearchTerm);
+        });
+    }
+
+    const btnBack = document.getElementById('btnBack');
+    if (btnBack) {
+        btnBack.addEventListener('click', () => {
+            showCardView();
+        });
+    }
+
+    const btnEditDetail = document.getElementById('btnEditDetail');
+    if (btnEditDetail) {
+        btnEditDetail.addEventListener('click', () => {
+            if (selectedJobForDetail) {
+                openJobPostModal('edit', selectedJobForDetail);
+            }
+        });
+    }
+
+    const btnCloseDetail = document.getElementById('btnCloseDetail');
+    if (btnCloseDetail) {
+        btnCloseDetail.addEventListener('click', () => {
+            if (!selectedJobForDetail) return;
+
+            // TODO: Backend - Close job post and reject all pending applicants
+            // fetch(`/api/company/job-posts/${selectedJobForDetail}/close`, { method: 'POST' })
+
+            const confirmed = confirm('Are you sure you want to close this job post? All pending applicants will be rejected.');
+            if (confirmed) {
+                console.log(`Closing job post ID: ${selectedJobForDetail}`);
+                alert('Job post closed successfully! (Backend integration pending)');
+                showCardView();
+            }
+        });
+    }
+
+    const btnAddJob = document.getElementById('btnAddJob');
+    if (btnAddJob) {
+        btnAddJob.addEventListener('click', () => {
+            openJobPostModal('add');
+        });
+    }
+
+    // ========================================
+    // INITIALIZATION
+    // ========================================    
+    // Load saved state and restore appropriate view
     loadState();
-    updateDisplay();
+
+    // If no saved state, show card view by default
+    if (viewMode === 'cards') {
+        showCardView();
+    }
 
     console.log('Job Listing Page Loaded Successfully!');
     console.log('Job Posts:', jobPostsData);
     console.log('Applicants:', applicantsData);
+    console.log('View Mode:', viewMode);
 });
