@@ -105,11 +105,9 @@ function saveProfileChanges() {
 
 
     // --- 3. Backend Integration Point ---
-
     const payload = {
-        company_id: 1, // TODO: Retrieve actual company_id from session or hidden input
+        company_id: document.getElementById('company_id').value,
         basic_info: basicInfo,
-        statistics: stats,
         details: details,
         lists: {
             locations: locations,
@@ -121,31 +119,27 @@ function saveProfileChanges() {
     // Debugging
     console.log("Payload prepared for Backend:", payload);
 
-    /**
-     * ==========================================
-     * BACKEND LOGIC IMPLEMENTATION
-     * ==========================================
-     * 
-     * fetch('../../APIs/Company DB APIs/update_company_profile.php', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify(payload)
-     * })
-     * .then(response => response.json())
-     * .then(data => {
-     *     if (data.status === 'success') {
-     *         ToastSystem.show('Profile updated successfully!', 'success');
-     *     } else {
-     *         ToastSystem.show('Update failed: ' + data.message, 'error');
-     *     }
-     * })
-     * .catch(error => {
-     *     console.error('Error:', error);
-     *     ToastSystem.show('An error occurred.', 'error');
-     * });
-     * 
-     * ==========================================
-     */
+    // Send to backend API
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_profile_update.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === "success") {
+                console.log("✅ Profile updated successfully:", result.message);
+                // Optionally show a success alert or redirect
+            } else {
+                console.error("❌ Update failed:", result.message);
+                // Optionally show an error alert
+            }
+        })
+        .catch(error => {
+            console.error("⚠️ Network or server error:", error);
+        });
 
 
     // --- 4. Update UI (View Mode) ---

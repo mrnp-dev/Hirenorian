@@ -168,7 +168,8 @@ if (isset($_SESSION['email'])) {
                 <div class="page-title">
                     <h1>Company Profile</h1>
                 </div>
-
+                <input type="hidden" name="company_id" id="company_id"
+                    value="<?php echo htmlspecialchars($company_id); ?>">
                 <!-- Company Profile Content -->
                 <section class="content-section active">
                     <!-- ==================== VIEW MODE CONTAINER ==================== -->
@@ -364,8 +365,6 @@ if (isset($_SESSION['email'])) {
                                         <?php endif; ?>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -551,7 +550,8 @@ if (isset($_SESSION['email'])) {
                                                     <div class="location-content">
                                                         <h4><?php echo htmlspecialchars($loc['location']); ?></h4>
                                                         <p class="location-description">
-                                                            <?php echo htmlspecialchars($loc['description']); ?></p>
+                                                            <?php echo htmlspecialchars($loc['description']); ?>
+                                                        </p>
                                                     </div>
                                                     <div class="item-actions">
                                                         <button class="action-btn edit"
@@ -584,11 +584,14 @@ if (isset($_SESSION['email'])) {
                                                         <h4><?php echo htmlspecialchars($contact['contact_name'] ?? ''); // Assuming contact_name exists, otherwise adjust ?>
                                                         </h4>
                                                         <p class="contact-position">Position:
-                                                            <?php echo htmlspecialchars($contact['position']); ?></p>
+                                                            <?php echo htmlspecialchars($contact['position']); ?>
+                                                        </p>
                                                         <p class="contact-email">Email:
-                                                            <?php echo htmlspecialchars($contact['email']); ?></p>
+                                                            <?php echo htmlspecialchars($contact['email']); ?>
+                                                        </p>
                                                         <p class="contact-phone">Number:
-                                                            <?php echo htmlspecialchars($contact['contact_number']); ?></p>
+                                                            <?php echo htmlspecialchars($contact['contact_number']); ?>
+                                                        </p>
                                                     </div>
                                                     <div class="item-actions">
                                                         <button class="action-btn edit"
