@@ -148,7 +148,7 @@ else
                                 <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture" class="profile-avatar">
                             </div>
                             <div class="profile-info">
-                                <h1 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></h1>
+                                <h1 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . " " : "") . $last_name . " " . $suffix); ?></h1>
                                 <p class="profile-headline"><?php echo htmlspecialchars($course); ?> Student at <?php echo htmlspecialchars($university); ?></p>
                                 <p class="profile-location"><i class="fa-solid fa-location-dot"></i> <?php echo htmlspecialchars($location); ?></p>
                             </div>
