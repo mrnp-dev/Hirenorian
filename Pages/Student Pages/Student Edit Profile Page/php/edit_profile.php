@@ -43,7 +43,9 @@ if(isset($_SESSION['email']))
         $last_name = $basic['last_name'] ?? "";
         $middle_initial = $basic['middle_initial'] ?? "";
         $suffix = $basic['suffix'] ?? "";
+        $suffix = $basic['suffix'] ?? "";
         $student_email_val = $basic['student_email'] ?? ""; // logical email
+        $personal_email = $basic['personal_email'] ?? "";
         $phone_number = $basic['phone_number'] ?? "";
 
         $location = $prof['location'] ?? "";
@@ -161,6 +163,10 @@ else
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-envelope"></i>
+                                    <span><?php echo htmlspecialchars($personal_email); ?></span>
+                                </div>
+                                <div class="contact-item">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
                                     <span><?php echo htmlspecialchars($student_email_val); ?></span>
                                 </div>
                                 <div class="contact-item">
@@ -302,8 +308,12 @@ else
         <div class="modal-body">
             <form action="" method="POST">
                 <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($student_email_val); ?>">
+                    <label for="personalEmail">Personal Email</label>
+                    <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
+                </div>
+                <div class="form-group">
+                    <label for="studentEmail">Student Email</label>
+                    <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" readonly>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>

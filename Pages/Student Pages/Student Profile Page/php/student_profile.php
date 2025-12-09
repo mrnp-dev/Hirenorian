@@ -41,6 +41,7 @@ if (isset($_SESSION['email'])) {
         $last_name      = $basic_info['last_name'];
         $middle_initial = $basic_info['middle_initial'];
         $suffix         = $basic_info['suffix'];
+        $personal_email = $basic_info['personal_email'] ?? "Not Provided";
         $phone_number   = $basic_info['phone_number'];
         $student_email  = $basic_info['student_email'];
 
@@ -168,6 +169,10 @@ else
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
+                                    <span><?php echo htmlspecialchars($personal_email); ?></span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
                                     <span><?php echo htmlspecialchars($student_email); ?></span>
                                 </div>
                                 <div class="info-item">
