@@ -461,8 +461,8 @@ else
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST">
-            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <form action="" method="POST" id="addEducationForm">
+            <input type="hidden" name="student_id" id="studentId" value="<?php echo htmlspecialchars($student_id); ?>">
             <div class="form-group">
                 <label for="degree">Degree / Strand / Level</label>
                 <input type="text" id="degree" name="degree" placeholder="e.g. BS Information Technology, STEM, Elementary">

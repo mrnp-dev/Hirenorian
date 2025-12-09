@@ -32,7 +32,8 @@ $stmt->execute([
 ]);
 
 if ($stmt->rowCount() > 0) {
-    echo json_encode(["status" => "success", "message" => "Education background added successfully"]);
+    $new_edu_id = $conn->lastInsertId();
+    echo json_encode(["status" => "success", "message" => "Education background added successfully", "edu_id" => $new_edu_id]);
 } else {
     echo json_encode(["status" => "error", "message" => "Failed to add education background"]);
 }
