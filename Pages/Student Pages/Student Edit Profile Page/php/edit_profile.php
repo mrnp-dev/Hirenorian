@@ -420,8 +420,8 @@ else
         <div class="modal-body">
             <form action="" method="POST">
                 <div class="form-group">
-                    <label for="degree">Degree / Strand</label>
-                    <input type="text" id="degree" name="degree" placeholder="e.g. BS Information Technology">
+                    <label for="degree">Degree / Strand / Level</label>
+                    <input type="text" id="degree" name="degree" placeholder="e.g. BS Information Technology, STEM, Elementary">
                 </div>
                 <div class="form-group">
                     <label for="school">School / Institution</label>
