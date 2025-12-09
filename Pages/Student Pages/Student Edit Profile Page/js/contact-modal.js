@@ -4,12 +4,11 @@
  * Dependencies: validation.js
  */
 
-// ============ CONTACT MODAL VALIDATION ============
-
 document.addEventListener('DOMContentLoaded', () => {
     const contactModal = document.getElementById('editContactModal');
 
     if (contactModal) {
+        const studentIdInput = contactModal.querySelector('#student_id');
         const personalEmailInput = contactModal.querySelector('#personalEmail');
         const phoneInput = contactModal.querySelector('#phone');
         const locationInput = contactModal.querySelector('#location');
@@ -48,11 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
             contactForm.addEventListener('submit', (e) => {
                 e.preventDefault();
 
+                const studentId = studentIdInput ? studentIdInput.value : "";
                 const isEmailValid = personalEmailInput ? validateEmail(personalEmailInput) : true;
                 const isPhoneValid = phoneInput ? validatePhoneNumber(phoneInput) : true;
                 const isLocationValid = locationInput ? validateLocation(locationInput) : true;
-                
-                
+
                 if (isEmailValid && isPhoneValid && isLocationValid) {
                     // All validations passed
                     const email = personalEmailInput.value;
@@ -64,30 +63,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log('Phone:', phone);
                     console.log('Location:', location);
 
-                    try {
-                        const response = fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/student_contact_update.php", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                email,
-                                phone,
-                                location
-                            })
-                        });
-                        const data = response.json();
-                        if (response.ok && data.status === "success") {
+                    fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit Profile APIs/student_contact_update.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            email,
+                            phone,
+                            location,
+                            studentId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
                             ToastSystem.show('Contact updated successfully', "success");
                             closeModal(contactModal);
                         } else {
                             ToastSystem.show('Failed to update contact', "error");
                         }
-                    }
-                    catch (err) {
-                        console.error(err);
-                    }
-                    closeModal(contactModal);
+                    })
+                    .catch(err => {
+                        console.error("Fetch error:", err);
+                        ToastSystem.show('Network error', "error");
+                    });
                 }
             });
         }

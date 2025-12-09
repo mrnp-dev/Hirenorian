@@ -23,6 +23,7 @@ if(isset($_SESSION['email']))
     $data = json_decode($response, true);
     
     // Initialize default values
+    $student_id = ""; // Added for hidden inputs in modals
     $first_name = ""; $last_name = ""; $middle_initial = ""; $suffix = ""; 
     $student_email_val = ""; $phone_number = "";
     $location = ""; $about_me = ""; $course = ""; $university = "";
@@ -39,6 +40,7 @@ if(isset($_SESSION['email']))
         $education_history = $data['data']['education_history'] ?? [];
         $experience_list = $data['data']['experience'] ?? [];
 
+        $student_id = $basic['student_id'] ?? "";
         $first_name = $basic['first_name'] ?? "";
         $last_name = $basic['last_name'] ?? "";
         $middle_initial = $basic['middle_initial'] ?? "";
@@ -324,10 +326,11 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="profilePhoto">Select Image</label>
-                    <input type="file" id="profilePhoto" name="profile_photo" accept="image/*">
-                </div>
+            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <div class="form-group">
+                <label for="profilePhoto">Select Image</label>
+                <input type="file" id="profilePhoto" name="profile_photo" accept="image/*">
+            </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
                     <button type="submit" class="btn-primary">Save Changes</button>
@@ -344,10 +347,11 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST">
-                <div class="form-group">
-                    <label for="personalEmail">Personal Email</label>
-                    <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
-                </div>
+            <input type="hidden" name="student_id" id="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <div class="form-group">
+                <label for="personalEmail">Personal Email</label>
+                <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
+            </div>
                 <div class="form-group">
                     <label for="studentEmail">Student Email <small style="color: #999; font-weight: normal;">(Not Editable)</small></label>
                     <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" disabled>
@@ -376,10 +380,11 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST" id="skillsForm">
-                <!-- Technical Skills Section -->
-                <div class="form-group">
-                    <label>Technical Skills</label>
-                    <div class="skill-input-group">
+            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <!-- Technical Skills Section -->
+            <div class="form-group">
+                <label>Technical Skills</label>
+                <div class="skill-input-group">
                         <input type="text" id="technicalSkillInput" placeholder="Enter a technical skill">
                         <button type="button" class="btn-add-skill" id="addTechnicalSkill">
                             <i class="fa-solid fa-plus"></i> Add
@@ -436,10 +441,11 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST">
-                <div class="form-group">
-                    <label for="aboutMe">About Me</label>
-                    <textarea id="aboutMe" name="about_me" rows="6"><?php echo htmlspecialchars($about_me); ?></textarea>
-                </div>
+            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <div class="form-group">
+                <label for="aboutMe">About Me</label>
+                <textarea id="aboutMe" name="about_me" rows="6"><?php echo htmlspecialchars($about_me); ?></textarea>
+            </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
                     <button type="submit" class="btn-primary">Save Changes</button>
@@ -456,10 +462,11 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST">
-                <div class="form-group">
-                    <label for="degree">Degree / Strand / Level</label>
-                    <input type="text" id="degree" name="degree" placeholder="e.g. BS Information Technology, STEM, Elementary">
-                </div>
+            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <div class="form-group">
+                <label for="degree">Degree / Strand / Level</label>
+                <input type="text" id="degree" name="degree" placeholder="e.g. BS Information Technology, STEM, Elementary">
+            </div>
                 <div class="form-group">
                     <label for="school">School / Institution</label>
                     <input type="text" id="school" name="school" placeholder="e.g. DHVSU">
@@ -491,6 +498,7 @@ else
         <div class="modal-body">
             <form action="" method="POST" id="editEducationForm">
                 <input type="hidden" id="editEduId" name="edu_id" value="">
+                <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
                 <div class="form-group">
                     <label for="editDegree">Degree / Strand / Level</label>
                     <input type="text" id="editDegree" name="degree" placeholder="e.g. BS Information Technology, STEM, Elementary">
@@ -525,10 +533,11 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST">
-                <div class="form-group">
-                    <label for="jobTitle">Job Title / Role</label>
-                    <input type="text" id="jobTitle" name="job_title" placeholder="e.g. Web Developer Intern">
-                </div>
+            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <div class="form-group">
+                <label for="jobTitle">Job Title / Role</label>
+                <input type="text" id="jobTitle" name="job_title" placeholder="e.g. Web Developer Intern">
+            </div>
                 <div class="form-group">
                     <label for="company">Company / Organization</label>
                     <input type="text" id="company" name="company" placeholder="e.g. Tech Solutions Inc.">
@@ -564,6 +573,7 @@ else
         <div class="modal-body">
             <form action="" method="POST" id="editExperienceForm">
                 <input type="hidden" id="editExpId" name="exp_id" value="">
+                <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
                 <div class="form-group">
                     <label for="editJobTitle">Job Title / Role</label>
                     <input type="text" id="editJobTitle" name="job_title" placeholder="e.g. Web Developer Intern">
