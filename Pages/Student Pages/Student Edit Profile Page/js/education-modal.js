@@ -205,20 +205,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Confirm deletion
             if (confirm(`Are you sure you want to delete "${degree}"? This action cannot be undone.`)) {
-                // TODO: Add API call to delete the education entry
-                console.log('Deleting education entry ID:', eduId);
 
-                // Remove from DOM
-                timelineItem.remove();
+                fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/delete_education_bg.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        edu_id: eduId
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            // Remove from DOM
+                            timelineItem.remove();
 
-                // Check if timeline is empty
-                const timeline = document.querySelector('.education-section .timeline');
-                if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
-                    timeline.innerHTML = '<p>No education history added.</p>';
-                }
+                            // Check if timeline is empty
+                            const timeline = document.querySelector('.education-section .timeline');
+                            if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
+                                timeline.innerHTML = '<p>No education history added.</p>';
+                            }
 
-                // Show success message
-                ToastSystem.show('Education deleted (Simulation)', "info");
+                            ToastSystem.show('Education entry deleted successfully', "success");
+                        } else {
+                            ToastSystem.show('Failed to delete education entry', "error");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Fetch error:", err);
+                        ToastSystem.show('Network error', "error");
+                    });
             }
         }
     });
