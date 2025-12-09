@@ -343,7 +343,7 @@ if (isset($_SESSION['email'])) {
                                             <?php foreach ($contacts as $index => $contact): ?>
                                                 <div class="contact-person-item" data-id="contact-<?php echo $index + 1; ?>">
                                                     <div class="contact-info">
-                                                        <h4><?php echo htmlspecialchars($contact['position']); ?></h4>
+                                                        <h4><?php echo htmlspecialchars($contact['contact_name']); ?></h4>
                                                         <p class="contact-position">Position:
                                                             <?php echo htmlspecialchars($contact['position']); ?>
                                                         </p>
