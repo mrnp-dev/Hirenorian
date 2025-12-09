@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -21,11 +21,11 @@
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <a href="#" class="nav-item active">
+                <a href="dashboard.php" class="nav-item active">
                     <i class="fa-solid fa-table-columns"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="student_management.php" class="nav-item">
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Management</span>
                 </a>
@@ -115,6 +115,6 @@
         </div>
     </div>
 
-    <script src="dashboard.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 </html>
