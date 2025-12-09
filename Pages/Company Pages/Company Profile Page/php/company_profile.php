@@ -344,11 +344,14 @@ if (isset($_SESSION['email'])) {
                                                     <div class="contact-info">
                                                         <h4><?php echo htmlspecialchars($contact['position']); ?></h4>
                                                         <p class="contact-position">Position:
-                                                            <?php echo htmlspecialchars($contact['position']); ?></p>
+                                                            <?php echo htmlspecialchars($contact['position']); ?>
+                                                        </p>
                                                         <p class="contact-email">Email:
-                                                            <?php echo htmlspecialchars($contact['email']); ?></p>
+                                                            <?php echo htmlspecialchars($contact['email']); ?>
+                                                        </p>
                                                         <p class="contact-phone">Number:
-                                                            <?php echo htmlspecialchars($contact['contact_number']); ?></p>
+                                                            <?php echo htmlspecialchars($contact['contact_number']); ?>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             <?php endforeach; ?>
@@ -363,268 +366,246 @@ if (isset($_SESSION['email'])) {
                                 </div>
 
 
-                                <!-- ==================== EDIT MODE CONTAINER ==================== -->
-                                <div id="edit-profile-container" style="display: none;">
-                                    <!-- Action Bar (Save/Cancel) -->
-                                    <div class="action-bar-sticky">
-                                        <span class="edit-mode-label">Editing Company Profile</span>
-                                        <div class="action-buttons">
-                                            <button class="btn-cancel" onclick="toggleEditMode(false)">Cancel</button>
-                                            <button class="btn-save" onclick="saveProfileChanges()">Save
-                                                Changes</button>
-                                        </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==================== EDIT MODE CONTAINER ==================== -->
+                    <div id="edit-profile-container" style="display: none;">
+                        <!-- Action Bar (Save/Cancel) -->
+                        <div class="action-bar-sticky">
+                            <span class="edit-mode-label">Editing Company Profile</span>
+                            <div class="action-buttons">
+                                <button class="btn-cancel" onclick="toggleEditMode(false)">Cancel</button>
+                                <button class="btn-save" onclick="saveProfileChanges()">Save
+                                    Changes</button>
+                            </div>
+                        </div>
+
+                        <!-- Company Banner Edit -->
+                        <div class="profile-banner-container edit-mode">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                                alt="Company Banner" class="company-banner" id="editCompanyBanner">
+                            <button class="edit-banner-btn" onclick="openImageUploadModal('banner')"
+                                title="Update Banner">
+                                <i class="fa-solid fa-camera"></i> Change Banner
+                            </button>
+                        </div>
+
+                        <!-- Company Header Edit -->
+                        <div class="company-header">
+                            <div class="company-icon-wrapper">
+                                <img src="" alt="Company Icon" class="company-icon" id="editCompanyIcon">
+                                <button class="edit-icon-btn" onclick="openImageUploadModal('icon')"
+                                    title="Update Company Icon">
+                                    <i class="fa-solid fa-camera"></i>
+                                </button>
+                            </div>
+                            <div class="company-main-info edit-fields">
+                                <div class="form-group compact">
+                                    <label>Company Name</label>
+                                    <input type="text" id="editCompanyName" value="<?php echo $company_name; ?>">
+                                </div>
+                                <div class="form-group compact">
+                                    <label>Tagline</label>
+                                    <input type="text" id="editCompanyTagline"
+                                        value="<?php echo $tagline ? $tagline : ""; ?>">
+                                </div>
+                                <div class="form-group compact">
+                                    <label>Industry</label>
+                                    <select id="editCompanyIndustry">
+                                        <option value="<?php echo $industry ?>" selected>
+                                            <?php echo $industry ?>
+                                        </option>
+                                        <option value="Video game industry">Video game industry</option>
+                                        <option value="Technology">Technology</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Finance">Finance</option>
+                                        <option value="Healthcare">Healthcare</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Two Column Layout Edit -->
+                        <div class="profile-content-grid">
+                            <!-- Left Sidebar Edit -->
+                            <div class="profile-sidebar">
+                                <!-- Contact Information Edit -->
+                                <div class="card info-card">
+                                    <div class="card-header">
+                                        <h3>Edit Contact Info</h3>
                                     </div>
-
-                                    <!-- Company Banner Edit -->
-                                    <div class="profile-banner-container edit-mode">
-                                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
-                                            alt="Company Banner" class="company-banner" id="editCompanyBanner">
-                                        <button class="edit-banner-btn" onclick="openImageUploadModal('banner')"
-                                            title="Update Banner">
-                                            <i class="fa-solid fa-camera"></i> Change Banner
-                                        </button>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-envelope"></i> Email</label>
+                                        <input type="email" id="editContactEmail" value="<?php echo $company_email; ?>">
                                     </div>
-
-                                    <!-- Company Header Edit -->
-                                    <div class="company-header">
-                                        <div class="company-icon-wrapper">
-                                            <img src="" alt="Company Icon" class="company-icon" id="editCompanyIcon">
-                                            <button class="edit-icon-btn" onclick="openImageUploadModal('icon')"
-                                                title="Update Company Icon">
-                                                <i class="fa-solid fa-camera"></i>
-                                            </button>
-                                        </div>
-                                        <div class="company-main-info edit-fields">
-                                            <div class="form-group compact">
-                                                <label>Company Name</label>
-                                                <input type="text" id="editCompanyName" value="Company Name">
-                                            </div>
-                                            <div class="form-group compact">
-                                                <label>Tagline</label>
-                                                <input type="text" id="editCompanyTagline"
-                                                    value="Private, global video game developer and publisher">
-                                            </div>
-                                            <div class="form-group compact">
-                                                <label>Industry</label>
-                                                <select id="editCompanyIndustry">
-                                                    <option value="Video game industry" selected>Video game industry
-                                                    </option>
-                                                    <option value="Technology">Technology</option>
-                                                    <option value="Marketing">Marketing</option>
-                                                    <option value="Finance">Finance</option>
-                                                    <option value="Healthcare">Healthcare</option>
-                                                </select>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-location-dot"></i> Location</label>
+                                        <input type="text" id="editContactLocation" value="<?php echo $address; ?>">
                                     </div>
-
-                                    <!-- Two Column Layout Edit -->
-                                    <div class="profile-content-grid">
-                                        <!-- Left Sidebar Edit -->
-                                        <div class="profile-sidebar">
-                                            <!-- Contact Information Edit -->
-                                            <div class="card info-card">
-                                                <div class="card-header">
-                                                    <h3>Edit Contact Info</h3>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label><i class="fa-solid fa-envelope"></i> Email</label>
-                                                    <input type="email" id="editContactEmail"
-                                                        value="support@riotgames.com">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label><i class="fa-solid fa-location-dot"></i> Location</label>
-                                                    <input type="text" id="editContactLocation"
-                                                        value="Manila, Philippines">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label><i class="fa-solid fa-link"></i> Website</label>
-                                                    <input type="url" id="editContactWebsite"
-                                                        value="https://www.riotgames.com">
-                                                </div>
-                                            </div>
-                                            <!-- Company Statistics (Read Only in Edit Mode too, assuming stats are auto-calculated) -->
-                                            <div class="card stats-card">
-                                                <h3>Company Statistics</h3>
-                                                <div class="stat-items">
-                                                    <div class="stat-item">
-                                                        <i class="fa-solid fa-users"></i>
-                                                        <div class="stat-content">
-                                                            <span class="stat-label">Employees</span>
-                                                            <span class="stat-value">2,450</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="stat-item">
-                                                        <i class="fa-solid fa-calendar"></i>
-                                                        <div class="stat-content">
-                                                            <span class="stat-label">Acquired</span>
-                                                            <span class="stat-value">890</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="stat-item">
-                                                        <i class="fa-solid fa-chart-line"></i>
-                                                        <div class="stat-content">
-                                                            <span class="stat-label">Ex-Employees</span>
-                                                            <span class="stat-value">1,560</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                    <div class="form-group">
+                                        <label><i class="fa-solid fa-link"></i> Website</label>
+                                        <input type="url" id="editContactWebsite"
+                                            value="<?php echo $website_link ? $website_link : ""; ?>">
+                                    </div>
+                                </div>
+                                <!-- Company Statistics (Read Only in Edit Mode too, assuming stats are auto-calculated) -->
+                                <div class="card stats-card">
+                                    <h3>Company Statistics</h3>
+                                    <div class="stat-items">
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-users"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Employees</span>
+                                                <span
+                                                    class="stat-value"><?php echo $employees ? $employees : 0 ?></span>
                                             </div>
                                         </div>
-
-                                        <!-- Main Content Area Edit -->
-                                        <div class="profile-main">
-                                            <!-- About Us Edit -->
-                                            <div class="card section-card">
-                                                <div class="card-header">
-                                                    <h2>About Us</h2>
-                                                </div>
-                                                <div class="form-group no-margin">
-                                                    <textarea id="editAboutUsText"
-                                                        rows="6">We are an American video game developer, publisher, and esports tournament organizer headquartered in Los Angeles, California. The company was founded in 2006 by Brandon Black and Marc Merrill with a "player-first" philosophy, aiming to continuously improve and support games long-term rather than focusing on new releases.</textarea>
-                                                </div>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-calendar"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Accepted</span>
+                                                <span class="stat-value"><?php echo $accepted ? $accepted : 0 ?></span>
                                             </div>
-
-                                            <!-- Why Join Us Edit -->
-                                            <div class="card section-card">
-                                                <div class="card-header">
-                                                    <h2><i class="fa-solid fa-lightbulb"></i> Why Join Us</h2>
-                                                </div>
-                                                <div class="form-group no-margin">
-                                                    <textarea id="editWhyJoinText"
-                                                        rows="6">Offers a chance to build iconic player-focused experiences in a passionate, inclusive culture with strong autonomy, great benefits (health, family, generous PTO, retirement match, play fund), and a focus on continuous learning, all while working on globally beloved titles like League of Legends and Valorant.</textarea>
-                                                </div>
-                                            </div>
-
-                                            <!-- Perks & Benefits Edit -->
-                                            <div class="card section-card">
-                                                <div class="card-header">
-                                                    <h2><i class="fa-solid fa-gift"></i> Manage Perks</h2>
-                                                    <button class="add-btn" onclick="openAddModal('perks')"
-                                                        title="Add Perk">
-                                                        <i class="fa-solid fa-plus"></i> Add
-                                                    </button>
-                                                </div>
-                                                <ul class="benefits-list" id="editPerksList">
-                                                    <li class="benefit-item" data-id="perk-1">
-                                                        <span>Unlimited PTO</span>
-                                                        <div class="item-actions">
-                                                            <button class="action-btn edit"
-                                                                onclick="editListItem('perk-1', 'perks')"><i
-                                                                    class="fa-solid fa-pen"></i></button>
-                                                            <button class="action-btn delete"
-                                                                onclick="deleteListItem('perk-1', 'perks')"><i
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </div>
-                                                    </li>
-                                                    <li class="benefit-item" data-id="perk-2">
-                                                        <span>Comprehensive health/dental/vision</span>
-                                                        <div class="item-actions">
-                                                            <button class="action-btn edit"
-                                                                onclick="editListItem('perk-2', 'perks')"><i
-                                                                    class="fa-solid fa-pen"></i></button>
-                                                            <button class="action-btn delete"
-                                                                onclick="deleteListItem('perk-2', 'perks')"><i
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </div>
-                                                    </li>
-                                                    <li class="benefit-item" data-id="perk-3">
-                                                        <span>Generous parental leave, retirement matching (401k)</span>
-                                                        <div class="item-actions">
-                                                            <button class="action-btn edit"
-                                                                onclick="editListItem('perk-3', 'perks')"><i
-                                                                    class="fa-solid fa-pen"></i></button>
-                                                            <button class="action-btn delete"
-                                                                onclick="deleteListItem('perk-3', 'perks')"><i
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                            <!-- Office Locations Edit -->
-                                            <div class="card section-card">
-                                                <div class="card-header">
-                                                    <h2>Manage Locations</h2>
-                                                    <button class="add-btn" onclick="openAddModal('locations')"
-                                                        title="Add Location">
-                                                        <i class="fa-solid fa-plus"></i> Add
-                                                    </button>
-                                                </div>
-                                                <div class="locations-list" id="editLocationsList">
-                                                    <div class="location-item" data-id="loc-1">
-                                                        <div class="location-icon"><i
-                                                                class="fa-solid fa-map-marker-alt"></i></div>
-                                                        <div class="location-content">
-                                                            <h4>Manila, Philippines</h4>
-                                                            <p class="location-description">Opened in 2022, this office
-                                                                serves the
-                                                                large
-                                                                Filipino player base.</p>
-                                                        </div>
-                                                        <div class="item-actions">
-                                                            <button class="action-btn edit"
-                                                                onclick="editListItem('loc-1', 'locations')"><i
-                                                                    class="fa-solid fa-pen"></i></button>
-                                                            <button class="action-btn delete"
-                                                                onclick="deleteListItem('loc-1', 'locations')"><i
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="location-item" data-id="loc-2">
-                                                        <div class="location-icon"><i
-                                                                class="fa-solid fa-map-marker-alt"></i></div>
-                                                        <div class="location-content">
-                                                            <h4>Los Angeles, USA (Headquarters)</h4>
-                                                            <p class="location-description">Located at 12333 W Olympic
-                                                                Blvd, this
-                                                                campus
-                                                                is the epicenter of Riot Games' operations.</p>
-                                                        </div>
-                                                        <div class="item-actions">
-                                                            <button class="action-btn edit"
-                                                                onclick="editListItem('loc-2', 'locations')"><i
-                                                                    class="fa-solid fa-pen"></i></button>
-                                                            <button class="action-btn delete"
-                                                                onclick="deleteListItem('loc-2', 'locations')"><i
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Contact Person Edit -->
-                                            <div class="card section-card">
-                                                <div class="card-header">
-                                                    <h2>Manage Contacts</h2>
-                                                    <button class="add-btn" onclick="openAddModal('contacts')"
-                                                        title="Add Contact">
-                                                        <i class="fa-solid fa-plus"></i> Add
-                                                    </button>
-                                                </div>
-                                                <div class="contacts-list" id="editContactsList">
-                                                    <div class="contact-person-item" data-id="contact-1">
-                                                        <div class="contact-info">
-                                                            <h4>Brandon Beck</h4>
-                                                            <p class="contact-position">Position: Co-Founder &
-                                                                Co-Chairman</p>
-                                                            <p class="contact-email">Email: BrandonBeck@gmail.com</p>
-                                                            <p class="contact-phone">Number: +63 9632579999</p>
-                                                        </div>
-                                                        <div class="item-actions">
-                                                            <button class="action-btn edit"
-                                                                onclick="editListItem('contact-1', 'contacts')"><i
-                                                                    class="fa-solid fa-pen"></i></button>
-                                                            <button class="action-btn delete"
-                                                                onclick="deleteListItem('contact-1', 'contacts')"><i
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="stat-item">
+                                            <i class="fa-solid fa-chart-line"></i>
+                                            <div class="stat-content">
+                                                <span class="stat-label">Ex-Employees</span>
+                                                <span
+                                                    class="stat-value"><?php echo $ex_employees ? $ex_employees : 0 ?></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <!-- Main Content Area Edit -->
+                            <div class="profile-main">
+                                <!-- About Us Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>About Us</h2>
+                                    </div>
+                                    <div class="form-group no-margin">
+                                        <textarea id="editAboutUsText"
+                                            rows="6"><?php echo $about_us ? $about_us : "No about us provided"; ?></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Why Join Us Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2><i class="fa-solid fa-lightbulb"></i> Why Join Us</h2>
+                                    </div>
+                                    <div class="form-group no-margin">
+                                        <textarea id="editWhyJoinText"
+                                            rows="6"><?php echo $why_join_us ? $why_join_us : "No why join us provided"; ?></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Perks & Benefits Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2><i class="fa-solid fa-gift"></i> Manage Perks</h2>
+                                        <button class="add-btn" onclick="openAddModal('perks')" title="Add Perk">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <ul class="benefits-list" id="editPerksList">
+                                        <?php if (!empty($perks)): ?>
+                                            <?php foreach ($perks as $index => $perk): ?>
+                                                <?php $perkId = "perk-" . ($index + 1); ?>
+                                                <li class="benefit-item" data-id="<?php echo $perkId; ?>">
+                                                    <span><?php echo htmlspecialchars($perk['perk']); ?></span>
+                                                    <div class="item-actions">
+                                                        <button class="action-btn edit"
+                                                            onclick="editListItem('<?php echo $perkId; ?>', 'perks')"><i
+                                                                class="fa-solid fa-pen"></i></button>
+                                                        <button class="action-btn delete"
+                                                            onclick="deleteListItem('<?php echo $perkId; ?>', 'perks')"><i
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </ul>
+                                </div>
+
+                                <!-- Office Locations Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>Manage Locations</h2>
+                                        <button class="add-btn" onclick="openAddModal('locations')"
+                                            title="Add Location">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <div class="locations-list" id="editLocationsList">
+                                        <?php if (!empty($locations)): ?>
+                                            <?php foreach ($locations as $index => $loc): ?>
+                                                <?php $locId = "loc-" . ($index + 1); ?>
+                                                <div class="location-item" data-id="<?php echo $locId; ?>">
+                                                    <div class="location-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                                                    <div class="location-content">
+                                                        <h4><?php echo htmlspecialchars($loc['location']); ?></h4>
+                                                        <p class="location-description">
+                                                            <?php echo htmlspecialchars($loc['description']); ?></p>
+                                                    </div>
+                                                    <div class="item-actions">
+                                                        <button class="action-btn edit"
+                                                            onclick="editListItem('<?php echo $locId; ?>', 'locations')"><i
+                                                                class="fa-solid fa-pen"></i></button>
+                                                        <button class="action-btn delete"
+                                                            onclick="deleteListItem('<?php echo $locId; ?>', 'locations')"><i
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Person Edit -->
+                                <div class="card section-card">
+                                    <div class="card-header">
+                                        <h2>Manage Contacts</h2>
+                                        <button class="add-btn" onclick="openAddModal('contacts')" title="Add Contact">
+                                            <i class="fa-solid fa-plus"></i> Add
+                                        </button>
+                                    </div>
+                                    <div class="contacts-list" id="editContactsList">
+                                        <?php if (!empty($contacts)): ?>
+                                            <?php foreach ($contacts as $index => $contact): ?>
+                                                <?php $contId = "contact-" . ($index + 1); ?>
+                                                <div class="contact-person-item" data-id="<?php echo $contId; ?>">
+                                                    <div class="contact-info">
+                                                        <h4><?php echo htmlspecialchars($contact['contact_name'] ?? ''); // Assuming contact_name exists, otherwise adjust ?>
+                                                        </h4>
+                                                        <p class="contact-position">Position:
+                                                            <?php echo htmlspecialchars($contact['position']); ?></p>
+                                                        <p class="contact-email">Email:
+                                                            <?php echo htmlspecialchars($contact['email']); ?></p>
+                                                        <p class="contact-phone">Number:
+                                                            <?php echo htmlspecialchars($contact['contact_number']); ?></p>
+                                                    </div>
+                                                    <div class="item-actions">
+                                                        <button class="action-btn edit"
+                                                            onclick="editListItem('<?php echo $contId; ?>', 'contacts')"><i
+                                                                class="fa-solid fa-pen"></i></button>
+                                                        <button class="action-btn delete"
+                                                            onclick="deleteListItem('<?php echo $contId; ?>', 'contacts')"><i
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </main>
