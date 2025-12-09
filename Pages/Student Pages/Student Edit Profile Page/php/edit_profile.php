@@ -67,67 +67,7 @@ if(isset($_SESSION['email']))
         $technical_skills = implode(", ", $tech_arr);
         $soft_skills = implode(", ", $soft_arr);
     }
-
-    // Add sample educational background entries for testing
-    $education_history = [
-        [
-            'edu_hist_id' => 1,
-            'student_id' => 123,
-            'institution' => 'Central Elementary School',
-            'degree' => 'Elementary Education',
-            'start_year' => '2010',
-            'end_year' => '2016'
-        ],
-        [
-            'edu_hist_id' => 2,
-            'student_id' => 123,
-            'institution' => 'Science High School',
-            'degree' => 'High School Diploma',
-            'start_year' => '2016',
-            'end_year' => '2020'
-        ],
-        [
-            'edu_hist_id' => 3,
-            'student_id' => 123,
-            'institution' => 'Don Honorio Ventura State University',
-            'degree' => 'Senior High School - STEM',
-            'start_year' => '2020',
-            'end_year' => '2022'
-        ]
-    ];
-
-    // Add sample experience entries for testing
-    $experience_list = [
-        [
-            'exp_id' => 1,
-            'student_id' => 123,
-            'job_title' => 'Web Developer Intern',
-            'company_name' => 'Tech Solutions Inc.',
-            'start_date' => '2023',
-            'end_date' => '2024',
-            'description' => 'Developed and maintained company websites using HTML, CSS, JavaScript, and PHP. Collaborated with senior developers on various web projects.'
-        ],
-        [
-            'exp_id' => 2,
-            'student_id' => 123,
-            'job_title' => 'IT Support Volunteer',
-            'company_name' => 'Local Community Center',
-            'start_date' => '2022',
-            'end_date' => '2023',
-            'description' => 'Provided technical support to community members. Set up and maintained computer systems and networks.'
-        ],
-        [
-            'exp_id' => 3,
-            'student_id' => 123,
-            'job_title' => 'Student Council President',
-            'company_name' => 'Don Honorio Ventura State University',
-            'start_date' => '2021',
-            'end_date' => '2022',
-            'description' => 'Led student council initiatives, organized campus events, and represented student interests to administration.'
-        ]
-    ];
 }
-
 else
 {
     header("Location: ../../../Landing Page/php/landing_page.php");
