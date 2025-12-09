@@ -26,7 +26,7 @@ $data = [
 ];
 
 // Call VPS API
-$apiUrl = "http://mrnp.site:8080/Hirenorian/API/Edit_profile_API/update_contact_info.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit Profile APIs/update_contact_info.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_POST, true);

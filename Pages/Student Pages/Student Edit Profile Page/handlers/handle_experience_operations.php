@@ -52,7 +52,7 @@ switch ($operation) {
 }
 
 // Call VPS API
-$apiUrl = "http://mrnp.site:8080/Hirenorian/API/Edit_profile_API/" . $apiEndpoint;
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit Profile APIs/" . $apiEndpoint;
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_POST, true);
