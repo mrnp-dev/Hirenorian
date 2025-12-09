@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (data.status === "success") {
                                 ToastSystem.show('Contact updated successfully', "success");
                                 closeModal(contactModal);
-                                location.reload();
                             } else {
                                 ToastSystem.show('Failed to update contact', "error");
                             }

@@ -610,6 +610,7 @@ else
     <script src="../js/validation.js"></script>
     
     <!-- Feature modules (depend on core modules) -->
+    <script src="../js/toast.js"></script>
     <script src="../js/contact-modal.js"></script>
     <script src="../js/skills-modal.js"></script>
     <script src="../js/education-modal.js"></script>
