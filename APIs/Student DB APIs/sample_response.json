@@ -1,0 +1,67 @@
+{
+    "status": "success",
+    "student_id": 123,
+    "data": {
+        "basic_info": {
+            "student_id": 123,
+            "first_name": "John",
+            "last_name": "Doe",
+            "middle_initial": "A",
+            "suffix": "",
+            "phone_number": "09123456789",
+            "student_email": "john.doe@university.edu"
+        },
+        "profile": {
+            "profile_id": 1,
+            "student_id": 123,
+            "location": "Makati City",
+            "about_me": "A passionate computer science student looking for internship opportunities.",
+            "profile_picture": "path/to/profile.jpg"
+        },
+        "skills": [
+            {
+                "skill_id": 1,
+                "student_id": 123,
+                "skill_name": "PHP",
+                "skill_category": "Technical"
+            },
+            {
+                "skill_id": 2,
+                "student_id": 123,
+                "skill_name": "Communication",
+                "skill_category": "Soft"
+            }
+        ],
+        "experience": [
+            {
+                "exp_id": 1,
+                "student_id": 123,
+                "job_title": "Web Developer Intern",
+                "company_name": "Tech Solutions Inc.",
+                "start_date": "2024-01-01",
+                "end_date": "2024-06-01",
+                "description": "Developed internal tools using Laravel."
+            }
+        ],
+        "education_history": [
+            {
+                "edu_hist_id": 1,
+                "student_id": 123,
+                "institution": "Science High School",
+                "degree": "High School Diploma",
+                "start_year": "2016",
+                "end_year": "2020"
+            }
+        ],
+        "education": [
+            {
+                "edu_id": 1,
+                "student_id": 123,
+                "university": "State University",
+                "department": "College of Computer Studies",
+                "course": "Bachelor of Science in Computer Science",
+                "organization": "Computer Society"
+            }
+        ]
+    }
+}

@@ -118,7 +118,7 @@ async function getJobClassificationList(selectedDepartment) {
 }
 
 async function ifStudentNumber_Exist() {
-    return fetch("http://158.69.205.176:8080/check_student_number.php", {
+    return fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/check_student_number.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInformation)
@@ -144,7 +144,7 @@ async function ifStudentNumber_Exist() {
 
 async function Register_Student() {
     console.log(userInformation);
-    fetch("http://158.69.205.176:8080/add_student_process.php", {
+    fetch("http://158.69.205.176:8080/Hirenorian/API/studentDB_APIs/add_student_process.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInformation)

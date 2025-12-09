@@ -130,7 +130,7 @@ async function check_LogIn_Fields() {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
         try {
-            const response = await fetch("http://158.69.205.176:8080/student_login_process.php", {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/student_login_process.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -727,7 +727,7 @@ function goToLast(button) {
 }
 
 async function ifStudentNumber_Exist() {
-    return fetch("http://158.69.205.176:8080/check_student_number.php", {
+    return fetch("http://158.69.205.176:8080/Hirenorian/API/studentDB_APIs/check_student_number.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInformation)
