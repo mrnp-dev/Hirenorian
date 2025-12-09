@@ -622,6 +622,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (newPassInput) {
         newPassInput.addEventListener('input', function () {
+            // Clear error message on typing
+            newPassError.classList.remove('show');
+
             const val = this.value;
             const length = val.length;
 
@@ -662,8 +665,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     color = "#dc3545";
             }
 
-            strengthHint.textContent = `Strength: ${strengthText}`;
-            strengthHint.style.color = color;
+            strengthHint.innerHTML = `Strength: <span style="color: ${color}">${strengthText}</span>`;
+            strengthHint.style.color = "black";
         });
 
         // 3. On-Blur Validation (Min Length)
@@ -704,8 +707,10 @@ function openChangePasswordModal() {
     document.getElementById('confirmPassword').value = '';
     // Reset errors/hints
     document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
-    document.getElementById('passwordStrengthHint').textContent = "Min 12 chars, Medium strength required.";
-    document.getElementById('passwordStrengthHint').style.color = "#666";
+    const strengthHint = document.getElementById('passwordStrengthHint');
+    strengthHint.textContent = "Min 12 chars, Medium strength required.";
+    strengthHint.style.color = "#666";
+    strengthHint.style.display = "block"; // Ensure it is visible initially
     // Reset visibility
     document.querySelectorAll('.toggle-password').forEach(icon => {
         icon.classList.remove('fa-eye-slash');
