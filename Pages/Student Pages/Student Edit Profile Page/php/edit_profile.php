@@ -594,6 +594,18 @@ else
         </div>
     </div>
 
+    <!-- JavaScript Modules (in dependency order) -->
+    <!-- Core modules (no dependencies) -->
+    <script src="../js/ui-controls.js"></script>
+    <script src="../js/validation.js"></script>
+    
+    <!-- Feature modules (depend on core modules) -->
+    <script src="../js/contact-modal.js"></script>
+    <script src="../js/skills-modal.js"></script>
+    <script src="../js/education-modal.js"></script>
+    <script src="../js/experience-modal.js"></script>
+    
+    <!-- Main entry point -->
     <script src="../js/edit_profile.js"></script>
 </body>
 </html>
