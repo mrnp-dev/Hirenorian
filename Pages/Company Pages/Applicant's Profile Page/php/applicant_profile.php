@@ -1,56 +1,98 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) {
-    $student_email = $_SESSION['email'];
-    echo "<script>console.log('Student Email: " . $student_email . "');</script>";
-    $apiUrl = "http://158.69.205.176:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
-
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        "student_email" => $student_email
-    ]));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $response = curl_exec($ch);
-    if ($response === false) {
-        die("Curl error: " . curl_error($ch));
-    } else {
-        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
-
-    }
-    curl_close($ch);
-
-    $data = json_decode($response, true);
-
-    if ($data['status'] === "success") {
-        echo "<script>console.log('Student ID: " . $data['student_id'] . "');</script>";
-
-    } else {
-        echo "<script>console.log('Err: " . $data['message'] . "');</script>";
-    }
-    $student = $data['data'][0];
-
-    // Students Table
-    $account_id = $student['account_id'];
-    $student_id = $student['student_id'];
-    $first_name = $student['first_name'];
-    $last_name = $student['last_name'];
-    $middle_initial = $student['middle_initial'];
-    $suffix = $student['suffix'];
-    $personal_email = $student['personal_email'];
-    $phone_number = $student['phone_number'];
-    $student_email = $student['student_email'];
-
-    // Education Table
-    $university = $student['university'];
-    $department = $student['department'];
-    $course = $student['course'];
-    $organization = $student['organization'];
-} else {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+// Company Session Check
+if (!isset($_SESSION['company_email'])) {
+    // Handling session check
 }
+
+// Mock Data (Mirrors job_listing.js)
+$applicants = [
+    1 => [
+        "name" => "Jose E. Batumbakal",
+        "course" => "Bachelor of Science in Computer Science",
+        "email" => "jose@email.com",
+        "phone" => "09123456789",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    2 => [
+        "name" => "Pedro Dee Z. Nuts",
+        "course" => "Bachelor of Science in Information and Communications Technology",
+        "email" => "pedro@email.com",
+        "phone" => "09234567890",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    3 => [
+        "name" => "Jebron G. Lames",
+        "course" => "Bachelor of Science in Accounting Technology",
+        "email" => "jebron@email.com",
+        "phone" => "09345678901",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    4 => [
+        "name" => "Tobay D. Brown",
+        "course" => "Bachelor of Science in Information Technology",
+        "email" => "tobay@email.com",
+        "phone" => "09456789012",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    5 => [
+        "name" => "Sakha M. Adibix",
+        "course" => "Bachelor of Science in Information Systems",
+        "email" => "sakha@email.com",
+        "phone" => "09567890123",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    6 => [
+        "name" => "Seyda Z. Elven",
+        "course" => "Bachelor of Science in Computer Engineering",
+        "email" => "seyda@email.com",
+        "phone" => "09678901234",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    7 => [
+        "name" => "DayMo N. Taim",
+        "course" => "Bachelor of Science in Data Science",
+        "email" => "daymo@email.com",
+        "phone" => "09789012345",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    8 => [
+        "name" => "Koby L. Jay",
+        "course" => "Bachelor of Science in Software Engineering",
+        "email" => "koby@email.com",
+        "phone" => "09890123456",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    9 => [
+        "name" => "Jaydos D. Crist",
+        "course" => "Bachelor of Science in Cybersecurity",
+        "email" => "jaydos@email.com",
+        "phone" => "09901234567",
+        "university" => "Don Honorio Ventura State University"
+    ],
+    10 => [
+        "name" => "Rayd Ohm M. Dih",
+        "course" => "Bachelor of Science in Game Development",
+        "email" => "rayd@email.com",
+        "phone" => "09012345678",
+        "university" => "Don Honorio Ventura State University"
+    ]
+];
+
+// Get ID from URL
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 1;
+$data = isset($applicants[$id]) ? $applicants[$id] : $applicants[1];
+
+// Populate variables
+$full_name = $data['name'];
+$course = $data['course'];
+$university = $data['university'];
+$personal_email = $data['email'];
+$phone_number = $data['phone'];
+
+// Default values for others
+$department = "College of Computing Studies";
+$organization = "Student Organization";
 ?>
 
 <!DOCTYPE html>
@@ -59,12 +101,12 @@ if (isset($_SESSION['email'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Hirenorian</title>
+    <title>Applicant Profile - Hirenorian</title>
     <!-- Shared CSS -->
-    <link rel="stylesheet" href="../../Student Dashboard Page/css/variables.css">
-    <link rel="stylesheet" href="../../Student Dashboard Page/css/layout.css">
-    <link rel="stylesheet" href="../../Student Dashboard Page/css/sidebar.css">
-    <link rel="stylesheet" href="../../Student Dashboard Page/css/topbar.css">
+    <link rel="stylesheet" href="../../Company Dashboard/css/variables.css">
+    <link rel="stylesheet" href="../../Company Dashboard/css/dashboard.css">
+    <!-- Reusing dashboard styles for Sidebar/TopBar -->
+
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="../css/profile.css">
 
@@ -74,54 +116,66 @@ if (isset($_SESSION['email'])) {
 
 <body>
     <div class="dashboard-container">
-        <!-- Left Sidebar -->
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php"
-                    style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
-                    <span class="logo-text">Hirenorian</span>
-                </a>
+                <img src="https://dhvsu.edu.ph/images/about_pampanga_state_u/pampanga-state-u-logo-small.png"
+                    alt="Pampanga State University" class="logo-icon">
+                <span class="logo-text">Hirenorian</span>
             </div>
-            <nav class="sidebar-nav">
-                <a href="../../Student Dashboard Page/php/student_dashboard.php" class="nav-item">
-                    <i class="fa-solid fa-table-columns"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="#" class="nav-item active">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Profile</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Internship Search</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </a>
-            </nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../../Company Dashboard/php/company_dashboard.php" class="nav-link">
+                        <i class="fa-solid fa-table-columns"></i>
+                        <span class="link-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../../Company Profile Page/php/company_profile.php" class="nav-link">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="link-text">Company Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a href="../../Job Listing Page/php/job_listing.php" class="nav-link">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span class="link-text">Job Listing</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="../../Help Page/php/help.php" class="nav-link">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span class="link-text">Help</span>
+                    </a>
+                </li>
+            </ul>
         </aside>
 
         <!-- Main Content Area -->
         <div class="main-content">
             <!-- Top Bar -->
             <header class="top-bar">
-                <div class="top-bar-right">
-                    <div class="user-profile" id="userProfileBtn">
-                        <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img">
-                        <span class="user-name"><?php echo $first_name . " " . $last_name; ?></span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                    <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                <div class="user-profile" id="userProfileBtn">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <!-- Placeholder -->
+                        </div>
+                        <span class="user-name">Juan Dela Cruz</span>
+                        <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                 </div>
             </header>
 
             <!-- Profile Content -->
             <main class="dashboard-body">
+                <!-- Back Navigation + Label -->
+                <div class="profile-nav-header">
+                    <a href="../../Job Listing Page/php/job_listing.php" class="btn-back">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Job Listings
+                    </a>
+                    <h2 class="page-label">Applicant Profile</h2>
+                </div>
+
                 <!-- Cover Banner -->
                 <div class="profile-banner"></div>
 
@@ -135,18 +189,14 @@ if (isset($_SESSION['email'])) {
                             </div>
                             <div class="profile-info">
                                 <h1 class="profile-name">
-                                    <?php echo $first_name . " " . $middle_initial . " " . $last_name . " " . $suffix; ?>
+                                    <?php echo $full_name; ?>
                                 </h1>
                                 <p class="profile-headline"><?php echo $course; ?> Student at <?php echo $university; ?>
                                 </p>
                                 <p class="profile-location"><i class="fa-solid fa-location-dot"></i> San Fernando,
                                     Pampanga</p>
                             </div>
-                            <div class="profile-actions">
-                                <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-primary">
-                                    <i class="fa-solid fa-pen-to-square"></i> Edit Profile
-                                </a>
-                            </div>
+                            <!-- No Edit Button for Company View -->
                         </div>
                     </div>
 
@@ -263,6 +313,7 @@ if (isset($_SESSION['email'])) {
         </div>
     </div>
 
+    <!-- Reusing dashboard.js for shared behavior if needed, or local profile.js -->
     <script src="../js/profile.js"></script>
 </body>
 

@@ -1,6 +1,849 @@
 /* ========================================
    COMPANY PROFILE PAGE STYLES
-   Future-proof for backend integration
+   Modern, Premium UI with Glassmorphism
 ======================================== */
 
-/* Add section-specific styles here as needed */
+/* ========== BANNER SECTION ========== */
+.profile-banner-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    margin-bottom: 80px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+.company-banner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.edit-banner-btn {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(123, 17, 19, 0.9);
+    backdrop-filter: blur(10px);
+    color: var(--text-light);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.edit-banner-btn:hover {
+    background: rgba(123, 17, 19, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* ========== COMPANY HEADER ========== */
+.company-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0 24px;
+    margin-bottom: 32px;
+    margin-top: -60px;
+    position: relative;
+    z-index: 10;
+}
+
+.company-icon-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.company-icon {
+    width: 140px;
+    height: 140px;
+    border-radius: 16px;
+    border: 5px solid var(--text-light);
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    background: white;
+}
+
+.edit-icon-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(123, 17, 19, 0.95);
+    color: var(--text-light);
+    border: 2px solid white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.edit-icon-btn:hover {
+    background: var(--primary-maroon);
+    transform: scale(1.1);
+}
+
+.company-main-info {
+    flex: 1;
+    padding-top: 40px;
+}
+
+.company-name {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.company-tagline {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.company-industry {
+    font-size: 14px;
+    color: var(--primary-maroon);
+    font-weight: 500;
+}
+
+/* ========== GRID LAYOUT ========== */
+.profile-content-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    padding: 0 24px 24px;
+}
+
+/* ========== SIDEBAR ========== */
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ========== CARD STYLES ========== */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+.card h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-header h3,
+.card-header h2 {
+    margin-bottom: 0;
+}
+
+/* ========== INFO CARD ========== */
+.info-items {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #555;
+}
+
+.info-item i {
+    color: var(--primary-maroon);
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.info-item a {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.info-item a:hover {
+    color: var(--primary-maroon);
+    text-decoration: underline;
+}
+
+/* ========== STATS CARD ========== */
+.stat-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-maroon);
+}
+
+.stat-item i {
+    font-size: 20px;
+    color: var(--primary-maroon);
+    width: 24px;
+    text-align: center;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* ========== MAIN CONTENT AREA ========== */
+.profile-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.section-card {
+    background: white;
+}
+
+.section-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555;
+    text-align: justify;
+}
+
+/* ========== EDIT/ADD BUTTONS ========== */
+.edit-btn,
+.add-btn {
+    background: transparent;
+    border: 2px solid var(--primary-maroon);
+    color: var(--primary-maroon);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.edit-btn:hover,
+.add-btn:hover {
+    background: var(--primary-maroon);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(123, 17, 19, 0.3);
+}
+
+/* ========== BENEFITS LIST ========== */
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.benefit-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-maroon);
+    transition: all 0.3s ease;
+}
+
+.benefit-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(123, 17, 19, 0.15);
+}
+
+.benefit-item span {
+    flex: 1;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+/* ========== LOCATIONS LIST ========== */
+.locations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.location-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.location-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.location-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-maroon);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.location-icon i {
+    color: white;
+    font-size: 18px;
+}
+
+.location-content {
+    flex: 1;
+}
+
+.location-content h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+
+.location-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* ========== CONTACTS LIST ========== */
+.contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-person-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border-radius: 10px;
+    border-left: 5px solid var(--secondary-yellow);
+    transition: all 0.3s ease;
+}
+
+.contact-person-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.contact-info p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+/* ========== ITEM ACTIONS ========== */
+.item-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.action-btn.edit {
+    color: #0066cc;
+}
+
+.action-btn.edit:hover {
+    background: #e3f2fd;
+    color: #0052a3;
+}
+
+.action-btn.delete {
+    color: #dc3545;
+}
+
+.action-btn.delete:hover {
+    background: #ffe5e5;
+    color: #b02a37;
+}
+
+/* ========== MODAL STYLES ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+
+    /* Smooth Push/Pop transition */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    /* Prevent interaction when hidden */
+    pointer-events: none;
+
+    /* Centering */
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modal-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.close-modal:hover {
+    background: #f0f0f0;
+    color: var(--text-dark);
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 24px;
+    border-top: 2px solid #f0f0f0;
+}
+
+/* ========== FORM STYLES ========== */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-maroon);
+    box-shadow: 0 0 0 3px rgba(123, 17, 19, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* ========== BUTTON STYLES ========== */
+.btn-cancel,
+.btn-save,
+.btn-upload {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-cancel {
+    background: #f0f0f0;
+    color: var(--text-dark);
+}
+
+.btn-cancel:hover {
+    background: #e0e0e0;
+}
+
+.btn-save {
+    background: var(--primary-maroon);
+    color: white;
+}
+
+.btn-save:hover {
+    background: #5d0d0f;
+    box-shadow: 0 4px 12px rgba(123, 17, 19, 0.3);
+}
+
+.btn-upload {
+    width: 100%;
+    background: var(--primary-maroon);
+    color: white;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-upload:hover {
+    background: #5d0d0f;
+}
+
+/* ========== IMAGE UPLOAD ========== */
+.image-preview-container {
+    width: 100%;
+    height: 300px;
+    border: 3px dashed #d0d0d0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fafafa;
+    transition: all 0.3s ease;
+}
+
+.image-preview-container:hover {
+    border-color: var(--primary-maroon);
+    background: #fff5f5;
+}
+
+#imagePreview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.upload-placeholder {
+    text-align: center;
+    color: #999;
+}
+
+.upload-placeholder i {
+    font-size: 48px;
+    color: var(--primary-maroon);
+    margin-bottom: 12px;
+}
+
+.upload-placeholder p {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+    .profile-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .company-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: -80px;
+    }
+
+    .company-main-info {
+        padding-top: 0;
+    }
+}
+
+/* ========================================
+   EDIT MODE SPECIFIC STYLES
+   ======================================== */
+
+/* Container Toggling managed via JS/Inline Styles but adding helper classes if needed */
+#view-profile-container,
+#edit-profile-container {
+    transition: opacity 0.3s ease;
+    position: relative;
+    /* Ensure absolute children are positioned relative to this container */
+}
+
+/* Edit Trigger Button Container */
+.edit-mode-trigger-container {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 20;
+}
+
+.btn-primary-action {
+    background: white;
+    color: var(--primary-maroon);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-action:hover {
+    background: var(--primary-maroon);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Sticky Action Bar */
+.action-bar-sticky {
+    position: sticky;
+    top: 80px;
+    /* Adjust based on top bar height */
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 16px 24px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.edit-mode-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-mode-label::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: #FFC107;
+    /* Editing state indicator */
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* Edit Fields in Header */
+.edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 500px;
+}
+
+.form-group.compact {
+    margin-bottom: 0;
+}
+
+.form-group.compact label {
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #888;
+}
+
+.form-group.compact input,
+.form-group.compact select {
+    padding: 8px 12px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+/* Ensure Textareas in Sections look like the text */
+.form-group.no-margin {
+    margin-bottom: 0;
+}
+
+.form-group.no-margin textarea {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+    border: 1px dashed #ccc;
+    background: #fafafa;
+}
+
+.form-group.no-margin textarea:focus {
+    background: white;
+    border-style: solid;
+}
+
+/* Banner Overlay in Edit Mode */
+.profile-banner-container.edit-mode {
+    border: 2px dashed var(--primary-maroon);
+}
+
+
+@media (max-width: 768px) {
+    .profile-banner-container {
+        height: 200px;
+        margin-bottom: 60px;
+    }
+
+    .company-icon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .company-name {
+        font-size: 24px;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+}
