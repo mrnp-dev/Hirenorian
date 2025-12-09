@@ -238,12 +238,30 @@ else
                             </div>
                             <div class="timeline">
                                 <?php if(!empty($education_history)): foreach($education_history as $hist): ?>
-                                <div class="timeline-item">
+                                <div class="timeline-item" data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content">
-                                        <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
-                                        <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
-                                        <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
+                                        <div class="timeline-header">
+                                            <div class="timeline-info">
+                                                <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
+                                                <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
+                                                <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
+                                            </div>
+                                            <div class="timeline-actions">
+                                                <button class="icon-btn-sm edit-education-btn" 
+                                                    data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>"
+                                                    data-degree="<?php echo htmlspecialchars($hist['degree']); ?>"
+                                                    data-institution="<?php echo htmlspecialchars($hist['institution']); ?>"
+                                                    data-start-year="<?php echo htmlspecialchars($hist['start_year']); ?>"
+                                                    data-end-year="<?php echo htmlspecialchars($hist['end_year']); ?>">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button class="icon-btn-sm delete-education-btn" 
+                                                    data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <?php endforeach; else: echo "<p>No education history added.</p>"; endif; ?>
@@ -435,6 +453,41 @@ else
                     <div class="form-group">
                         <label for="eduEndDate">End Year</label>
                         <input type="text" id="eduEndDate" name="end_year" placeholder="YYYY or Present">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-button>Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Education Modal -->
+    <div class="modal" id="editEducationModal">
+        <div class="modal-header">
+            <h3>Edit Education</h3>
+            <button class="close-modal" data-close-button>&times;</button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="POST" id="editEducationForm">
+                <input type="hidden" id="editEduId" name="edu_id" value="">
+                <div class="form-group">
+                    <label for="editDegree">Degree / Strand / Level</label>
+                    <input type="text" id="editDegree" name="degree" placeholder="e.g. BS Information Technology, STEM, Elementary">
+                </div>
+                <div class="form-group">
+                    <label for="editSchool">School / Institution</label>
+                    <input type="text" id="editSchool" name="school" placeholder="e.g. DHVSU">
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="editEduStartDate">Start Year</label>
+                        <input type="number" id="editEduStartDate" name="start_year" placeholder="YYYY">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEduEndDate">End Year</label>
+                        <input type="text" id="editEduEndDate" name="end_year" placeholder="YYYY or Present">
                     </div>
                 </div>
                 <div class="modal-footer">

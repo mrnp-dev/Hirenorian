@@ -241,6 +241,56 @@
     line-height: 1.5;
 }
 
+/* Timeline Header with Actions */
+.timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.timeline-info {
+    flex: 1;
+}
+
+.timeline-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+/* Small Icon Buttons */
+.icon-btn-sm {
+    background: none;
+    border: 1px solid #ddd;
+    color: #666;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.icon-btn-sm:hover {
+    background: var(--primary-maroon);
+    border-color: var(--primary-maroon);
+    color: white;
+}
+
+.icon-btn-sm.delete-education-btn:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.icon-btn-sm i {
+    font-size: 0.75rem;
+}
+
 /* Responsive Profile */
 @media (max-width: 1024px) {
     .profile-grid {
