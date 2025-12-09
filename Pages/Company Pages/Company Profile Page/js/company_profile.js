@@ -735,27 +735,17 @@ function closeChangePasswordModal() {
 }
 
 function savePassword() {
+    const email = document.getElementById('viewContactEmail').textContent
     const currentPass = document.getElementById('currentPassword').value;
     const newPass = document.getElementById('newPassword').value;
     const confirmPass = document.getElementById('confirmPassword').value;
     const currentPassError = document.getElementById('currentPasswordError');
+    console.log(currentPass);
 
     if (!currentPass || !newPass || !confirmPass) {
         return ToastSystem.show('Please fill in all fields', 'warning');
     }
 
-    // Mock Validation: Current Password must be '123'
-    if (currentPass !== '123') {
-        if (currentPassError) {
-            currentPassError.textContent = "Incorrect current password.";
-            currentPassError.classList.add('show');
-        } else {
-            ToastSystem.show('Incorrect current password', 'error');
-        }
-        return;
-    }
-
-    // Final Validation before submit
     if (newPass.length < 12) {
         return ToastSystem.show('Password too short', 'warning');
     }
@@ -763,13 +753,47 @@ function savePassword() {
         return ToastSystem.show('Passwords do not match', 'warning');
     }
 
-    // Backend Logic Placeholder
-    console.log("Change Password Request:", { currentPass, newPass });
-    // TODO: Implement backend call here
+    // Step 1: Verify current password
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/check_current_password.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, current_password: currentPass })
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === "success") {
 
-    ToastSystem.show('Password changed successfully!', 'success');
-    closeChangePasswordModal();
+                // Step 2: If verified, update password
+                return fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/reset_password.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, new_password: newPass })
+                });
+            } else {
+                if (currentPassError) {
+                    currentPassError.textContent = "Incorrect current password.";
+                    currentPassError.classList.add('show');
+                } else {
+                    ToastSystem.show('Incorrect current password', 'error');
+                }
+                throw new Error("Password verification failed");
+            }
+        })
+        .then(response => response.json())
+        .then(updateResult => {
+            if (updateResult.status === "success") {
+                ToastSystem.show('Password changed successfully!', 'success');
+                closeChangePasswordModal();
+            } else {
+                ToastSystem.show('Failed to change password: ' + updateResult.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error("⚠️ Error:", error);
+            ToastSystem.show('An error occurred while changing password', 'error');
+        });
 }
+
 
 // --- Verify Account Modal ---
 function openVerifyAccountModal() {
