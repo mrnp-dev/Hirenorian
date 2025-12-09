@@ -1,0 +1,219 @@
+/* Main container for section 4 - Call to Action */
+#main-section-4 {
+    width: 100%;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 4rem 2rem;
+    box-sizing: border-box;
+    position: relative;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    overflow: hidden;
+}
+
+/* Decorative background elements */
+#main-section-4::before,
+#main-section-4::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+#main-section-4::before {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #9B000A, transparent 70%);
+    top: -100px;
+    right: -100px;
+}
+
+#main-section-4::after {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #FFBD00, transparent 70%);
+    bottom: -150px;
+    left: -150px;
+}
+
+/* Content container */
+#cta-content {
+    max-width: 900px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Main heading */
+#cta-title {
+    font-family: "Marcellus", "Poppins", serif;
+    font-size: 3.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Supporting text */
+#cta-description {
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #e5e7eb;
+    line-height: 1.8;
+    max-width: 700px;
+    margin-bottom: 1rem;
+}
+
+/* Call-to-action buttons container */
+#cta-buttons {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.cta-button {
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.cta-button-primary {
+    background: linear-gradient(90deg, #9B000A, #FFBD00);
+    color: #ffffff;
+}
+
+.cta-button-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(155, 0, 10, 0.4);
+    filter: brightness(1.1);
+}
+
+.cta-button-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+}
+
+.cta-button-secondary:hover {
+    background: #ffffff;
+    color: #1a1a2e;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
+}
+
+/* Stats section */
+#cta-stats {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin-top: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #FFBD00;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #d1d5db;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    #cta-title {
+        font-size: 3rem;
+    }
+
+    #cta-description {
+        font-size: 1.15rem;
+    }
+
+    #cta-stats {
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #main-section-4 {
+        min-height: 70vh;
+        padding: 3rem 1.5rem;
+    }
+
+    #cta-title {
+        font-size: 2.5rem;
+    }
+
+    #cta-description {
+        font-size: 1.1rem;
+    }
+
+    #cta-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .cta-button {
+        width: 100%;
+    }
+
+    #cta-stats {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #cta-title {
+        font-size: 2rem;
+    }
+
+    #cta-description {
+        font-size: 1rem;
+    }
+
+    .cta-button {
+        padding: 0.9rem 2rem;
+        font-size: 0.95rem;
+    }
+}
+
