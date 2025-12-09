@@ -46,150 +46,139 @@ function toggleEditMode(isEditMode) {
 function saveProfileChanges() {
     let hasChanges = false;
 
-    // 1. Sync Header Information
-    const companyNameInput = document.getElementById('editCompanyName');
+    // --- 1. Gather Data using Helper Functions ---
+    const basicInfo = getCompanyBasicInfo();
+    const stats = getCompanyStats();
+    const details = getCompanyDetails();
+    const locations = getLocationsList();
+    const contacts = getContactsList();
+    const perks = getPerksList(); // Optional
+
+    // --- 2. Check for Changes & Validation Reverts ---
+
+    // Validation: Company Name
     const originalCompanyName = document.getElementById('viewCompanyName').textContent;
-    let companyName = companyNameInput.value.trim();
-
-    // Validation: Company Name (Cannot be empty)
-    if (!companyName) {
-        companyName = originalCompanyName; // Revert to saved value
-        companyNameInput.value = originalCompanyName; // Update input to reflect revert
+    if (!basicInfo.name) {
+        document.getElementById('editCompanyName').value = originalCompanyName;
+        basicInfo.name = originalCompanyName; // Fix payload
     }
+    if (basicInfo.name !== originalCompanyName) hasChanges = true;
 
-    if (companyName !== originalCompanyName) {
-        document.getElementById('viewCompanyName').textContent = companyName;
-        hasChanges = true;
-    }
-
-    const tagLineInput = document.getElementById('editCompanyTagline');
-    const originalTagLineText = document.getElementById('viewCompanyTagline').textContent;
-    const tagLine = tagLineInput.value;
-    const resolvedTagLine = tagLine ? tagLine : "No tagline provided";
-
-    if (resolvedTagLine !== originalTagLineText) {
-        document.getElementById('viewCompanyTagline').textContent = resolvedTagLine;
-        hasChanges = true;
-    }
-
-    const industryInput = document.getElementById('editCompanyIndustry');
-    const originalIndustry = document.getElementById('viewCompanyIndustry').textContent;
-    const industry = industryInput.value;
-
-    if (industry !== originalIndustry) {
-        document.getElementById('viewCompanyIndustry').textContent = industry;
-        hasChanges = true;
-    }
-
-    // 2. Sync Contact Info
-    const emailInput = document.getElementById('editContactEmail');
+    // Validation: Email
     const originalEmail = document.getElementById('viewContactEmail').textContent;
-    let email = emailInput.value.trim();
-
-    // Validation: Email (Cannot be empty and must be valid)
-    if (!email || !EMAIL_REGEX.test(email)) {
-        email = originalEmail; // Revert to saved value
-        emailInput.value = originalEmail; // Update input to reflect revert
+    if (!basicInfo.email || !EMAIL_REGEX.test(basicInfo.email)) {
+        document.getElementById('editContactEmail').value = originalEmail;
+        basicInfo.email = originalEmail; // Fix payload
     }
+    if (basicInfo.email !== originalEmail) hasChanges = true;
 
-    if (email !== originalEmail) {
-        document.getElementById('viewContactEmail').textContent = email;
-        hasChanges = true;
-    }
+    // Check other basic info changes
+    if (basicInfo.industry !== document.getElementById('viewCompanyIndustry').textContent) hasChanges = true;
+    if (basicInfo.address !== document.getElementById('viewContactLocation').textContent) hasChanges = true;
 
-    const locationInput = document.getElementById('editContactLocation');
-    const originalLocation = document.getElementById('viewContactLocation').textContent;
-    const location = locationInput.value;
+    // Check details changes
+    if (details.tagline !== document.getElementById('viewCompanyTagline').textContent) hasChanges = true;
 
-    if (location !== originalLocation) {
-        document.getElementById('viewContactLocation').textContent = location;
-        hasChanges = true;
-    }
+    const originalAbout = document.getElementById('viewAboutUsText').textContent;
+    if ((details.aboutUs || "No about us provided") !== originalAbout) hasChanges = true;
 
-    const websiteInput = document.getElementById('editContactWebsite');
-    const websiteLinkElement = document.getElementById('viewContactWebsite');
-    const originalWebsite = websiteLinkElement.getAttribute('href') !== '#' ? websiteLinkElement.getAttribute('href') : '';
-    const website = websiteInput.value;
+    const originalWhy = document.getElementById('viewWhyJoinText').textContent;
+    if ((details.whyJoinUs || "No why join us provided") !== originalWhy) hasChanges = true;
 
-    // Determine what the text content should be
-    const resolvedWebsiteText = website ? website : "Set Website Link";
-    const resolvedWebsiteHref = website ? website : "#";
+    const originalWebsite = document.getElementById('viewContactWebsite').getAttribute('href');
+    const newWebsite = details.websiteUrl || "#";
+    if (newWebsite !== (originalWebsite === "#" ? "" : originalWebsite) && newWebsite !== "#") hasChanges = true;
 
-    // Check for changes (comparing href mostly as text might have placeholder)
-    if (resolvedWebsiteHref !== websiteLinkElement.getAttribute('href')) {
-        websiteLinkElement.textContent = resolvedWebsiteText;
-        websiteLinkElement.href = resolvedWebsiteHref;
-        hasChanges = true;
-    }
 
-    // 3. Sync Main Text Sections
-    const aboutTextInput = document.getElementById('editAboutUsText');
-    const originalAboutUs = document.getElementById('viewAboutUsText').textContent;
-    const aboutText = aboutTextInput.value;
-    const resolvedAboutText = aboutText ? aboutText : "No about us provided";
-
-    if (resolvedAboutText !== originalAboutUs) {
-        document.getElementById('viewAboutUsText').textContent = resolvedAboutText;
-        hasChanges = true;
-    }
-
-    const whyJoinTextInput = document.getElementById('editWhyJoinText');
-    const originalWhyJoin = document.getElementById('viewWhyJoinText').textContent;
-    const whyJoinText = whyJoinTextInput.value;
-    const resolvedWhyJoinText = whyJoinText ? whyJoinText : "No why join us provided";
-
-    if (resolvedWhyJoinText !== originalWhyJoin) {
-        document.getElementById('viewWhyJoinText').textContent = resolvedWhyJoinText;
-        hasChanges = true;
-    }
-
-    // 4. Sync Lists (Perks, Locations, Contacts)
-    // For lists, simplistic change detection is hard (order, content, ids). 
-    // We will assume that if the edit list innerHTML differs at all from a 'virtual' sync, 
-    // but honestly, since these are modified in real-time in the Edit container, 
-    // any addition/deletion/edit there SHOULD count as a change already if we were tracking it.
-    // However, the prompt says "if there's no changes on company profile, don't toast".
-    // Since list edits (add/delete/edit items) happen immediately in the DOM of the *Edit List*,
-    // but are only committed to the *View List* here.
-    // We can detect if the View List HTML is effectively different from what we are about to put in.
-
-    // A simpler heuristic for lists:
-    // We'll proceed with syncing. If we want to be strict about "no changes" including lists, 
-    // we would need to snapshot the lists before editing. 
-    // Given the difficulty, we will assume true "No Changes" mostly applies to the main fields,
-    // OR, we can flag 'hasChanges' = true whenever `savePerk/Location/Contact` or `deleteListItem` is called.
-    // BUT those functions modify the Edit DOM immediately. 
-    // Let's rely on checking if the generated HTML for view differs from current view HTML.
-
+    // Check Lists & Images
     if (syncListToView('editPerksList', 'viewPerksList', 'perks')) hasChanges = true;
     if (syncListToView('editLocationsList', 'viewLocationsList', 'locations')) hasChanges = true;
     if (syncListToView('editContactsList', 'viewContactsList', 'contacts')) hasChanges = true;
 
-
-    // 5. Sync Images (Banner/Icon)
     const currentBannerSrc = document.getElementById('viewCompanyBanner').src;
     const newBannerSrc = document.getElementById('editCompanyBanner').src;
-    if (currentBannerSrc !== newBannerSrc) {
-        document.getElementById('viewCompanyBanner').src = newBannerSrc;
-        hasChanges = true;
-    }
+    if (currentBannerSrc !== newBannerSrc) hasChanges = true;
 
     const currentIconSrc = document.getElementById('viewCompanyIcon').src;
     const newIconSrc = document.getElementById('editCompanyIcon').src;
-    if (currentIconSrc !== newIconSrc) {
-        document.getElementById('viewCompanyIcon').src = newIconSrc;
-        hasChanges = true;
-    }
+    if (currentIconSrc !== newIconSrc) hasChanges = true;
 
-    // TODO: Send all data to Backend API here
-    // const payload = { ... };
-    // fetch('/api/updateProfile', { ... });
+
+    // --- 3. Backend Integration Point ---
+
+    const payload = {
+        company_id: 1, // TODO: Retrieve actual company_id from session or hidden input
+        basic_info: basicInfo,
+        statistics: stats,
+        details: details,
+        lists: {
+            locations: locations,
+            contacts: contacts,
+            perks: perks
+        }
+    };
+
+    // Debugging
+    console.log("Payload prepared for Backend:", payload);
+
+    /**
+     * ==========================================
+     * BACKEND LOGIC IMPLEMENTATION
+     * ==========================================
+     * 
+     * fetch('../../APIs/Company DB APIs/update_company_profile.php', {
+     *     method: 'POST',
+     *     headers: { 'Content-Type': 'application/json' },
+     *     body: JSON.stringify(payload)
+     * })
+     * .then(response => response.json())
+     * .then(data => {
+     *     if (data.status === 'success') {
+     *         ToastSystem.show('Profile updated successfully!', 'success');
+     *     } else {
+     *         ToastSystem.show('Update failed: ' + data.message, 'error');
+     *     }
+     * })
+     * .catch(error => {
+     *     console.error('Error:', error);
+     *     ToastSystem.show('An error occurred.', 'error');
+     * });
+     * 
+     * ==========================================
+     */
+
+
+    // --- 4. Update UI (View Mode) ---
+
+    updateViewModeUI(basicInfo, details);
+
+    // Images
+    if (currentBannerSrc !== newBannerSrc) document.getElementById('viewCompanyBanner').src = newBannerSrc;
+    if (currentIconSrc !== newIconSrc) document.getElementById('viewCompanyIcon').src = newIconSrc;
 
     if (hasChanges) {
         ToastSystem.show('Profile updated successfully!', 'success');
     }
 
     toggleEditMode(false);
+}
+
+/**
+ * Updates the View Mode DOM elements with the gathered data.
+ */
+function updateViewModeUI(basicInfo, details) {
+    document.getElementById('viewCompanyName').textContent = basicInfo.name;
+    document.getElementById('viewCompanyIndustry').textContent = basicInfo.industry;
+    document.getElementById('viewContactEmail').textContent = basicInfo.email;
+    document.getElementById('viewContactLocation').textContent = basicInfo.address;
+
+    document.getElementById('viewCompanyTagline').textContent = details.tagline || "No tagline provided";
+    document.getElementById('viewAboutUsText').textContent = details.aboutUs || "No about us provided";
+    document.getElementById('viewWhyJoinText').textContent = details.whyJoinUs || "No why join us provided";
+
+    const websiteLink = document.getElementById('viewContactWebsite');
+    websiteLink.textContent = details.websiteUrl || "Set Website Link";
+    websiteLink.href = details.websiteUrl || "#";
 }
 
 /**
@@ -233,14 +222,89 @@ function syncListToView(editListId, viewListId, type) {
         clone.innerHTML = emptyHTML;
     }
 
-    // Compare innerHTML to detect changes (normalization might be needed but usually consistent)
-    // Note: This is a rough check. Attributes order might differ but here we cloned from DOM so should be consistent.
+    // Compare innerHTML to detect changes
     if (viewList.innerHTML !== clone.innerHTML) {
         viewList.parentNode.replaceChild(clone, viewList);
         return true;
     }
 
     return false;
+}
+
+
+// ========== DATA RETRIEVAL HELPERS ==========
+
+function getCompanyBasicInfo() {
+    return {
+        name: document.getElementById('editCompanyName').value.trim(),
+        industry: document.getElementById('editCompanyIndustry').value,
+        email: document.getElementById('editContactEmail').value.trim(),
+        address: document.getElementById('editContactLocation').value.trim(),
+        phoneNumber: "" // Placeholder
+    };
+}
+
+function getCompanyStats() {
+    const employees = document.querySelector('.card.stats-card .stat-item:nth-child(1) .stat-value')?.textContent || 0;
+    const accepted = document.querySelector('.card.stats-card .stat-item:nth-child(2) .stat-value')?.textContent || 0;
+    const rejected = document.querySelector('.card.stats-card .stat-item:nth-child(3) .stat-value')?.textContent || 0;
+
+    return {
+        totalApplicants: parseInt(employees),
+        accepted: parseInt(accepted),
+        rejected: parseInt(rejected)
+    };
+}
+
+function getCompanyDetails() {
+    return {
+        tagline: document.getElementById('editCompanyTagline').value.trim(),
+        aboutUs: document.getElementById('editAboutUsText').value.trim(),
+        whyJoinUs: document.getElementById('editWhyJoinText').value.trim(),
+        websiteUrl: document.getElementById('editContactWebsite').value.trim()
+    };
+}
+
+function getLocationsList() {
+    const listItems = document.querySelectorAll('#editLocationsList .location-item');
+    const locations = [];
+    listItems.forEach(item => {
+        locations.push({
+            name: item.querySelector('h4').textContent.trim(),
+            description: item.querySelector('.location-description').textContent.trim()
+        });
+    });
+    return locations;
+}
+
+function getContactsList() {
+    const listItems = document.querySelectorAll('#editContactsList .contact-person-item');
+    const contacts = [];
+    listItems.forEach(item => {
+        const name = item.querySelector('h4').textContent.trim();
+        const position = item.querySelector('.contact-position').textContent.replace('Position:', '').trim();
+        const email = item.querySelector('.contact-email').textContent.replace('Email:', '').trim();
+        const phone = item.querySelector('.contact-phone').textContent.replace('Number:', '').trim();
+
+        contacts.push({
+            name: name,
+            position: position,
+            email: email,
+            phoneNumber: phone
+        });
+    });
+    return contacts;
+}
+
+function getPerksList() {
+    const listItems = document.querySelectorAll('#editPerksList .benefit-item');
+    const perks = [];
+    listItems.forEach(item => {
+        perks.push({
+            description: item.querySelector('span').textContent.trim()
+        });
+    });
+    return perks;
 }
 
 
