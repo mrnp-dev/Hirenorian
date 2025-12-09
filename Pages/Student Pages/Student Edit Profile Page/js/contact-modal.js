@@ -1,4 +1,4 @@
-/**
+/* *
  * Contact Modal Module
  * Handles contact information modal functionality
  * Dependencies: validation.js
@@ -75,19 +75,20 @@ document.addEventListener('DOMContentLoaded', () => {
                             studentId
                         })
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            ToastSystem.show('Contact updated successfully', "success");
-                            closeModal(contactModal);
-                        } else {
-                            ToastSystem.show('Failed to update contact', "error");
-                        }
-                    })
-                    .catch(err => {
-                        console.error("Fetch error:", err);
-                        ToastSystem.show('Network error', "error");
-                    });
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === "success") {
+                                ToastSystem.show('Contact updated successfully', "success");
+                                closeModal(contactModal);
+                                location.reload();
+                            } else {
+                                ToastSystem.show('Failed to update contact', "error");
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Fetch error:", err);
+                            ToastSystem.show('Network error', "error");
+                        });
                 }
             });
         }
