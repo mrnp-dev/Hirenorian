@@ -187,38 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isLocationValid = locationInput ? validateLocation(locationInput) : true;
 
                 if (isEmailValid && isPhoneValid && isLocationValid) {
-                    // Prepare form data
-                    const formData = new FormData(contactForm);
-
-                    // Submit to handler
-                    fetch('../handlers/handle_contact_update.php', {
-                        method: 'POST',
-                        body: formData
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                // Update displayed values on the page
-                                if (personalEmailInput) {
-                                    document.querySelector('.contact-item:nth-child(1) span').textContent = personalEmailInput.value;
-                                }
-                                if (phoneInput) {
-                                    document.querySelector('.contact-item:nth-child(3) span').textContent = phoneInput.value;
-                                }
-                                if (locationInput) {
-                                    document.querySelector('.contact-item:nth-child(4) span').textContent = locationInput.value;
-                                }
-
-                                closeModal(contactModal);
-                                alert('Contact information updated successfully!');
-                            } else {
-                                alert('Error: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('Failed to update contact information. Please try again.');
-                        });
+                    // All validations passed
+                    console.log('Form is valid, ready to submit');
+                    // TODO: Add actual form submission logic here
+                    alert('Validation passed! Form submission logic to be implemented.');
                 }
             });
         }
@@ -343,54 +315,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 updateHiddenInputs();
 
-                const formData = new FormData(skillsForm);
+                console.log('Technical Skills:', document.getElementById('technicalSkillsData').value);
+                console.log('Soft Skills:', document.getElementById('softSkillsData').value);
 
-                // Submit to handler
-                fetch('../handlers/handle_skills_update.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            // Update the displayed skills on the page
-                            const technicalSkillsDisplay = document.querySelector('.skills-category:nth-child(1) .tags');
-                            const softSkillsDisplay = document.querySelector('.skills-category:nth-child(2) .tags');
-
-                            // Update technical skills display
-                            if (technicalSkillsDisplay) {
-                                const techSkills = Array.from(technicalContainer.querySelectorAll('.skill-tag'))
-                                    .map(tag => tag.textContent.trim().replace('×', '').trim());
-
-                                if (techSkills.length > 0) {
-                                    technicalSkillsDisplay.innerHTML = techSkills.map(skill => `<span>${skill}</span>`).join('');
-                                } else {
-                                    technicalSkillsDisplay.innerHTML = '<span>No technical skills added</span>';
-                                }
-                            }
-
-                            // Update soft skills display
-                            if (softSkillsDisplay) {
-                                const softSkills = Array.from(softContainer.querySelectorAll('.skill-tag'))
-                                    .map(tag => tag.textContent.trim().replace('×', '').trim());
-
-                                if (softSkills.length > 0) {
-                                    softSkillsDisplay.innerHTML = softSkills.map(skill => `<span>${skill}</span>`).join('');
-                                } else {
-                                    softSkillsDisplay.innerHTML = '<span>No soft skills added</span>';
-                                }
-                            }
-
-                            closeModal(skillsModal);
-                            alert('Skills updated successfully!');
-                        } else {
-                            alert('Error: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to update skills. Please try again.');
-                    });
+                // TODO: Add actual form submission logic here
+                alert('Skills updated! Form submission logic to be implemented.');
             });
         }
     }
@@ -443,50 +372,35 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Prepare form data
-            const formData = new FormData();
-            formData.append('operation', 'update');
-            formData.append('edu_id', eduId);
-            formData.append('degree', degree);
-            formData.append('school', school);
-            formData.append('start_year', startYear);
-            formData.append('end_year', endYear);
+            // TODO: Add API call to update the education entry
+            console.log('Updating education entry:', {
+                edu_id: eduId,
+                degree: degree,
+                institution: school,
+                start_year: startYear,
+                end_year: endYear
+            });
 
-            // Submit to handler
-            fetch('../handlers/handle_education_operations.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Update the DOM
-                        const timelineItem = document.querySelector(`.timeline-item[data-edu-id="${eduId}"]`);
-                        if (timelineItem) {
-                            timelineItem.querySelector('h3').textContent = degree;
-                            timelineItem.querySelector('.institution').textContent = school;
-                            timelineItem.querySelector('.date').textContent = `${startYear} - ${endYear}`;
+            // Update the DOM
+            const timelineItem = document.querySelector(`.timeline-item[data-edu-id="${eduId}"]`);
+            if (timelineItem) {
+                timelineItem.querySelector('h3').textContent = degree;
+                timelineItem.querySelector('.institution').textContent = school;
+                timelineItem.querySelector('.date').textContent = `${startYear} - ${endYear}`;
 
-                            // Update data attributes on the edit button
-                            const editBtn = timelineItem.querySelector('.edit-education-btn');
-                            editBtn.dataset.degree = degree;
-                            editBtn.dataset.institution = school;
-                            editBtn.dataset.startYear = startYear;
-                            editBtn.dataset.endYear = endYear;
-                        }
+                // Update data attributes on the edit button
+                const editBtn = timelineItem.querySelector('.edit-education-btn');
+                editBtn.dataset.degree = degree;
+                editBtn.dataset.institution = school;
+                editBtn.dataset.startYear = startYear;
+                editBtn.dataset.endYear = endYear;
+            }
 
-                        // Close modal
-                        closeModal(editEducationModal);
+            // Close modal
+            closeModal(editEducationModal);
 
-                        alert('Education entry updated successfully!');
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to update education entry. Please try again.');
-                });
+            // Show success message
+            alert('Education entry updated successfully!');
         });
     }
 
@@ -501,37 +415,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Confirm deletion
             if (confirm(`Are you sure you want to delete "${degree}"? This action cannot be undone.`)) {
-                // Prepare form data
-                const formData = new FormData();
-                formData.append('operation', 'delete');
-                formData.append('edu_id', eduId);
+                // TODO: Add API call to delete the education entry
+                console.log('Deleting education entry ID:', eduId);
 
-                // Submit to handler
-                fetch('../handlers/handle_education_operations.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            // Remove from DOM
-                            timelineItem.remove();
+                // Remove from DOM
+                timelineItem.remove();
 
-                            // Check if timeline is empty
-                            const timeline = document.querySelector('.education-section .timeline');
-                            if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
-                                timeline.innerHTML = '<p>No education history added.</p>';
-                            }
+                // Check if timeline is empty
+                const timeline = document.querySelector('.education-section .timeline');
+                if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
+                    timeline.innerHTML = '<p>No education history added.</p>';
+                }
 
-                            alert('Education entry deleted successfully!');
-                        } else {
-                            alert('Error: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to delete education entry. Please try again.');
-                    });
+                // Show success message
+                alert('Education entry deleted successfully!');
             }
         }
     });
@@ -586,53 +483,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Prepare form data
-            const formData = new FormData();
-            formData.append('operation', 'update');
-            formData.append('exp_id', expId);
-            formData.append('job_title', jobTitle);
-            formData.append('company', company);
-            formData.append('start_year', startDate);
-            formData.append('end_year', endDate);
-            formData.append('description', description);
+            // TODO: Add API call to update the experience entry
+            console.log('Updating experience entry:', {
+                exp_id: expId,
+                job_title: jobTitle,
+                company_name: company,
+                start_date: startDate,
+                end_date: endDate,
+                description: description
+            });
 
-            // Submit to handler
-            fetch('../handlers/handle_experience_operations.php', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Update the DOM
-                        const timelineItem = document.querySelector(`.timeline-item[data-exp-id="${expId}"]`);
-                        if (timelineItem) {
-                            timelineItem.querySelector('h3').textContent = jobTitle;
-                            timelineItem.querySelector('.institution').textContent = company;
-                            timelineItem.querySelector('.date').textContent = `${startDate} - ${endDate}`;
-                            timelineItem.querySelector('.description').textContent = description;
+            // Update the DOM
+            const timelineItem = document.querySelector(`.timeline-item[data-exp-id="${expId}"]`);
+            if (timelineItem) {
+                timelineItem.querySelector('h3').textContent = jobTitle;
+                timelineItem.querySelector('.institution').textContent = company;
+                timelineItem.querySelector('.date').textContent = `${startDate} - ${endDate}`;
+                timelineItem.querySelector('.description').textContent = description;
 
-                            // Update data attributes on the edit button
-                            const editBtn = timelineItem.querySelector('.edit-experience-btn');
-                            editBtn.dataset.jobTitle = jobTitle;
-                            editBtn.dataset.company = company;
-                            editBtn.dataset.startDate = startDate;
-                            editBtn.dataset.endDate = endDate;
-                            editBtn.dataset.description = description;
-                        }
+                // Update data attributes on the edit button
+                const editBtn = timelineItem.querySelector('.edit-experience-btn');
+                editBtn.dataset.jobTitle = jobTitle;
+                editBtn.dataset.company = company;
+                editBtn.dataset.startDate = startDate;
+                editBtn.dataset.endDate = endDate;
+                editBtn.dataset.description = description;
+            }
 
-                        // Close modal
-                        closeModal(editExperienceModal);
+            // Close modal
+            closeModal(editExperienceModal);
 
-                        alert('Experience entry updated successfully!');
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to update experience entry. Please try again.');
-                });
+            // Show success message
+            alert('Experience entry updated successfully!');
         });
     }
 
@@ -647,37 +529,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Confirm deletion
             if (confirm(`Are you sure you want to delete "${jobTitle}"? This action cannot be undone.`)) {
-                // Prepare form data
-                const formData = new FormData();
-                formData.append('operation', 'delete');
-                formData.append('exp_id', expId);
+                // TODO: Add API call to delete the experience entry
+                console.log('Deleting experience entry ID:', expId);
 
-                // Submit to handler
-                fetch('../handlers/handle_experience_operations.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            // Remove from DOM
-                            timelineItem.remove();
+                // Remove from DOM
+                timelineItem.remove();
 
-                            // Check if timeline is empty
-                            const timeline = document.querySelector('.experience-section .timeline');
-                            if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
-                                timeline.innerHTML = '<p>No experience added.</p>';
-                            }
+                // Check if timeline is empty
+                const timeline = document.querySelector('.experience-section .timeline');
+                if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
+                    timeline.innerHTML = '<p>No experience added.</p>';
+                }
 
-                            alert('Experience entry deleted successfully!');
-                        } else {
-                            alert('Error: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Failed to delete experience entry. Please try again.');
-                    });
+                // Show success message
+                alert('Experience entry deleted successfully!');
             }
         }
     });
