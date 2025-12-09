@@ -58,14 +58,17 @@ try {
     }
 
     // ✅ VALIDATION: Check if applicant_limit is less than current accepted count
+    // Uses LOWER(status) to be case-insensitive just in case database has mixed casing
     $acceptedQuery = "SELECT COUNT(*) as accepted_count FROM Applicants 
-                      WHERE post_id = :post_id AND status = 'accepted'";
+                      WHERE post_id = :post_id AND LOWER(status) = 'accepted'";
     $acceptedStmt = $conn->prepare($acceptedQuery);
     $acceptedStmt->execute([':post_id' => $post_id]);
     $acceptedResult = $acceptedStmt->fetch(PDO::FETCH_ASSOC);
-    $acceptedCount = $acceptedResult['accepted_count'];
+    $acceptedCount = (int) $acceptedResult['accepted_count'];
 
-    if ($applicant_limit < $acceptedCount) {
+    $limitToCheck = (int) $applicant_limit;
+
+    if ($limitToCheck < $acceptedCount) {
         $conn->rollBack();
         echo json_encode([
             "status" => "error",

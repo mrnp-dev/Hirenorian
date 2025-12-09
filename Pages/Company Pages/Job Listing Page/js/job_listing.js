@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // - Includes caching to avoid repeated fetches
     // - Calls your backend endpoint with job_id
     // - Returns full job details for the detail view
-    async function fetchJobDetails(jobId) {
-        // Check cache first
-        if (jobDetailsCache[jobId]) {
+    async function fetchJobDetails(jobId, forceRefresh = false) {
+        // Check cache first (unless forced)
+        if (!forceRefresh && jobDetailsCache[jobId]) {
             return jobDetailsCache[jobId];
         }
 
@@ -1637,8 +1637,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (result.status === "success") {
                         alert('Job post updated successfully!');
 
-                        // Refresh job details
-                        await fetchJobDetails(currentEditingJobId);
+                        // Refresh job details (FORCE REFRESH)
+                        await fetchJobDetails(currentEditingJobId, true);
+
+                        // Re-render the detail view immediately
+                        await renderJobDetail(currentEditingJobId);
 
                         // Update cache in jobPostsData as well for card view
                         const jobIndex = jobPostsData.findIndex(j => j.id === currentEditingJobId);
@@ -1647,13 +1650,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             jobPostsData[jobIndex].location = formData.location;
                             jobPostsData[jobIndex].applicantLimit = formData.applicant_limit;
                             jobPostsData[jobIndex].jobDescription = formData.description;
-                            // Re-render current view
+
+                            // Re-render view if in cards mode
                             if (viewMode === 'cards') {
                                 showCardView();
-                            } else {
-                                // If detail view, header might need update (like applicants limit)
-                                const detailTitle = document.getElementById('detailJobTitle');
-                                if (detailTitle) detailTitle.textContent = formData.title;
                             }
                         }
 
