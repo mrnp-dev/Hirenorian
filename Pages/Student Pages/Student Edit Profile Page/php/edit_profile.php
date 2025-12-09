@@ -165,7 +165,7 @@ else
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
+                                    <span id="display-personal-email"><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-envelope-open-text"></i>
@@ -173,11 +173,11 @@ else
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></span>
+                                    <span id="display-phone"><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-location-dot"></i>
-                                    <span><?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: #999;">Not Specified</em>'; ?></span>
+                                    <span id="display-location"><?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: #999;">Not Specified</em>'; ?></span>
                                 </div>
                             </div>
                         </div>

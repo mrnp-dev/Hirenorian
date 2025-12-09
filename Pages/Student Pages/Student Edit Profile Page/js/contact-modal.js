@@ -80,6 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (data.status === "success") {
                                 ToastSystem.show('Contact updated successfully', "success");
                                 closeModal(contactModal);
+
+                                // SPA Update
+                                const displayEmail = document.getElementById('display-personal-email');
+                                const displayPhone = document.getElementById('display-phone');
+                                const displayLocation = document.getElementById('display-location');
+
+                                if (displayEmail) {
+                                    displayEmail.innerHTML = email ? email : '<em style="color: #999;">Not Provided</em>';
+                                }
+                                if (displayPhone) {
+                                    displayPhone.innerHTML = phone ? phone : '<em style="color: #999;">Not Provided</em>';
+                                }
+                                if (displayLocation) {
+                                    displayLocation.innerHTML = location ? location : '<em style="color: #999;">Not Specified</em>';
+                                }
                             } else {
                                 ToastSystem.show('Failed to update contact', "error");
                             }
