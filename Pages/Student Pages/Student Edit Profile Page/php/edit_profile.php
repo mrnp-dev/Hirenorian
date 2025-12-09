@@ -338,15 +338,51 @@ else
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST">
+            <form action="" method="POST" id="skillsForm">
+                <!-- Technical Skills Section -->
                 <div class="form-group">
-                    <label for="technicalSkills">Technical Skills (Comma separated)</label>
-                    <textarea id="technicalSkills" name="technical_skills" rows="3"><?php echo htmlspecialchars($technical_skills); ?></textarea>
+                    <label>Technical Skills</label>
+                    <div class="skill-input-group">
+                        <input type="text" id="technicalSkillInput" placeholder="Enter a technical skill">
+                        <button type="button" class="btn-add-skill" id="addTechnicalSkill">
+                            <i class="fa-solid fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div class="skills-container" id="technicalSkillsContainer">
+                        <?php if(!empty($tech_arr)): foreach($tech_arr as $skill): ?>
+                        <span class="skill-tag" data-category="technical">
+                            <?php echo htmlspecialchars($skill); ?>
+                            <button type="button" class="remove-skill"><i class="fa-solid fa-times"></i></button>
+                        </span>
+                        <?php endforeach; endif; ?>
+                    </div>
+                    <small style="color: #666; margin-top: 5px; display: block;">Add skills one at a time using the button above</small>
                 </div>
-                <div class="form-group">
-                    <label for="softSkills">Soft Skills (Comma separated)</label>
-                    <textarea id="softSkills" name="soft_skills" rows="3"><?php echo htmlspecialchars($soft_skills); ?></textarea>
+
+                <!-- Soft Skills Section -->
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Soft Skills</label>
+                    <div class="skill-input-group">
+                        <input type="text" id="softSkillInput" placeholder="Enter a soft skill">
+                        <button type="button" class="btn-add-skill" id="addSoftSkill">
+                            <i class="fa-solid fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div class="skills-container" id="softSkillsContainer">
+                        <?php if(!empty($soft_arr)): foreach($soft_arr as $skill): ?>
+                        <span class="skill-tag" data-category="soft">
+                            <?php echo htmlspecialchars($skill); ?>
+                            <button type="button" class="remove-skill"><i class="fa-solid fa-times"></i></button>
+                        </span>
+                        <?php endforeach; endif; ?>
+                    </div>
+                    <small style="color: #666; margin-top: 5px; display: block;">Add skills one at a time using the button above</small>
                 </div>
+
+                <!-- Hidden inputs to store skills for form submission -->
+                <input type="hidden" id="technicalSkillsData" name="technical_skills" value="">
+                <input type="hidden" id="softSkillsData" name="soft_skills" value="">
+
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
                     <button type="submit" class="btn-primary">Save Changes</button>

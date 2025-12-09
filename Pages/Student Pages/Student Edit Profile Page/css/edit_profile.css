@@ -440,3 +440,118 @@
 .btn-secondary:hover {
     background: #e0e0e0;
 }
+
+/* Skills Input Group */
+.skill-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.skill-input-group input {
+    flex: 1;
+}
+
+.btn-add-skill {
+    background: var(--primary-maroon);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-add-skill:hover {
+    background: #6a1b1b;
+}
+
+.btn-add-skill i {
+    font-size: 0.9rem;
+}
+
+/* Skills Container */
+.skills-container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    min-height: 50px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background: #fafafa;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.skills-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.skills-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.skills-container::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.skills-container::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+.skills-container:empty::before {
+    content: 'No skills added yet';
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Skill Tags */
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-maroon);
+    color: white;
+    padding: 6px 10px 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.skill-tag .remove-skill {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: background 0.2s;
+}
+
+.skill-tag .remove-skill:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.skill-tag .remove-skill i {
+    font-size: 0.7rem;
+}
+
+/* Input error state */
+input.error,
+textarea.error {
+    border-color: #dc3545;
+}
