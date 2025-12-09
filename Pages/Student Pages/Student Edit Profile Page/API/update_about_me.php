@@ -31,9 +31,11 @@ try {
     $row = $result->fetch_assoc();
     $student_id = $row['student_id'];
     
-    // Update StudentProfile table
-    $stmt2 = $conn->prepare("UPDATE StudentProfile SET about_me = ? WHERE student_id = ?");
-    $stmt2->bind_param("si", $about_me, $student_id);
+    // Insert or Update StudentProfile table
+    // This will INSERT if no row exists, or UPDATE if it does
+    $stmt2 = $conn->prepare("INSERT INTO StudentProfile (student_id, about_me) VALUES (?, ?) 
+                             ON DUPLICATE KEY UPDATE about_me = VALUES(about_me)");
+    $stmt2->bind_param("is", $student_id, $about_me);
     $stmt2->execute();
     
     echo json_encode([

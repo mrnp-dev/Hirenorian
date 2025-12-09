@@ -42,9 +42,11 @@ try {
     $row = $result->fetch_assoc();
     $student_id = $row['student_id'];
     
-    // Update StudentProfile table
-    $stmt3 = $conn->prepare("UPDATE StudentProfile SET location = ? WHERE student_id = ?");
-    $stmt3->bind_param("si", $location, $student_id);
+    // Insert or Update StudentProfile table
+    // This will INSERT if no row exists, or UPDATE if it does
+    $stmt3 = $conn->prepare("INSERT INTO StudentProfile (student_id, location) VALUES (?, ?) 
+                             ON DUPLICATE KEY UPDATE location = VALUES(location)");
+    $stmt3->bind_param("is", $student_id, $location);
     $stmt3->execute();
     
     // Commit transaction
