@@ -51,12 +51,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isEmailValid = personalEmailInput ? validateEmail(personalEmailInput) : true;
                 const isPhoneValid = phoneInput ? validatePhoneNumber(phoneInput) : true;
                 const isLocationValid = locationInput ? validateLocation(locationInput) : true;
-
+                
+                
                 if (isEmailValid && isPhoneValid && isLocationValid) {
                     // All validations passed
+                    const email = personalEmailInput.value;
+                    const phone = phoneInput.value;
+                    const location = locationInput.value;
+
                     console.log('Form is valid, ready to submit');
-                    // TODO: Add actual form submission logic here
-                    alert('Validation passed! Form submission logic to be implemented.');
+                    console.log('Email:', email);
+                    console.log('Phone:', phone);
+                    console.log('Location:', location);
+
+                    try {
+                        const response = fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/student_contact_update.php", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                email,
+                                phone,
+                                location
+                            })
+                        });
+                        const data = response.json();
+                        if (response.ok && data.status === "success") {
+                            ToastSystem.show('Contact updated successfully', "success");
+                            closeModal(contactModal);
+                        } else {
+                            ToastSystem.show('Failed to update contact', "error");
+                        }
+                    }
+                    catch (err) {
+                        console.error(err);
+                    }
+                    closeModal(contactModal);
                 }
             });
         }
