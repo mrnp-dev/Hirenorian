@@ -824,53 +824,193 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ========================================
     // ACCEPT/REJECT ACTIONS
     // ========================================
-    function acceptApplicant(id) {
-        const applicant = applicantsData.find(a => a.id === id);
-        if (applicant && applicant.status === 'pending') {
-            applicant.status = 'accepted';
-            // Backend integration point:
-            // fetch('/api/applicants/accept', { method: 'POST', body: JSON.stringify({ id }) })
-            updateDisplay();
+    async function acceptApplicant(id) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_applicant_status.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_id: id, status: "accepted" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                const applicant = applicantsData.find(a => a.id === id);
+                if (applicant) {
+                    applicant.status = 'accepted';
+                }
+
+                // Update cache
+                if (selectedJobForDetail) {
+                    acceptedCountsCache[selectedJobForDetail] = result.accepted_count;
+                    // ✅ FIX: Update the detail view header count immediately
+                    const detailApplicantLimit = document.getElementById('detailApplicantLimit');
+                    if (detailApplicantLimit && selectedJobForDetail) {
+                        const job = jobPostsData.find(j => j.id === selectedJobForDetail);
+                        if (job) {
+                            detailApplicantLimit.textContent = `${result.accepted_count}/${job.applicantLimit} Applicants`;
+                        }
+                    }
+                }
+
+                // If job was closed, update job status
+                if (result.job_closed) {
+                    const job = jobPostsData.find(j => j.id === selectedJobForDetail);
+                    if (job) job.status = 'closed';
+                    alert(`Job post has been automatically closed (${result.accepted_count}/${result.applicant_limit} applicants accepted)`);
+                }
+
+                updateDisplay();
+            } else if (result.code === "LIMIT_REACHED") {
+                alert(result.message);
+            } else {
+                alert("Failed to accept applicant: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error accepting applicant:", error);
+            alert("Network error. Please try again.");
         }
     }
 
-    function rejectApplicant(id) {
-        const applicant = applicantsData.find(a => a.id === id);
-        if (applicant && applicant.status === 'pending') {
-            applicant.status = 'rejected';
-            // Backend integration point:
-            // fetch('/api/applicants/reject', { method: 'POST', body: JSON.stringify({ id }) })
-            updateDisplay();
+    async function rejectApplicant(id) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_applicant_status.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_id: id, status: "rejected" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                const applicant = applicantsData.find(a => a.id === id);
+                if (applicant) {
+                    applicant.status = 'rejected';
+                }
+
+                // Update cache (rejecting decreases accepted count if previously accepted)
+                if (selectedJobForDetail) {
+                    acceptedCountsCache[selectedJobForDetail] = result.accepted_count;
+                    // ✅ FIX: Update the detail view header count immediately
+                    const detailApplicantLimit = document.getElementById('detailApplicantLimit');
+                    if (detailApplicantLimit && selectedJobForDetail) {
+                        const job = jobPostsData.find(j => j.id === selectedJobForDetail);
+                        if (job) {
+                            detailApplicantLimit.textContent = `${result.accepted_count}/${job.applicantLimit} Applicants`;
+                        }
+                    }
+                }
+
+                updateDisplay();
+            } else {
+                alert("Failed to reject applicant: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error rejecting applicant:", error);
+            alert("Network error. Please try again.");
         }
     }
 
     // Batch operations
-    function acceptSelectedApplicants() {
-        selectedApplicants.forEach(id => {
-            const applicant = applicantsData.find(a => a.id === id);
-            if (applicant && applicant.status === 'pending') {
-                applicant.status = 'accepted';
-            }
-        });
-        // Backend integration point:
-        // fetch('/api/applicants/batch-accept', { method: 'POST', body: JSON.stringify({ ids: Array.from(selectedApplicants) }) })
+    async function acceptSelectedApplicants() {
+        const ids = Array.from(selectedApplicants);
+        if (ids.length === 0) return;
 
-        clearSelection();
-        updateDisplay();
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/batch_update_applicants.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_ids: ids, status: "accepted" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                ids.forEach(id => {
+                    const applicant = applicantsData.find(a => a.id === id);
+                    if (applicant) {
+                        applicant.status = 'accepted';
+                    }
+                });
+
+                // Refresh accepted counts for all affected jobs
+                if (selectedJobForDetail) {
+                    await fetchApplicants(selectedJobForDetail);
+                }
+
+                // Notify if jobs were closed
+                if (result.closed_jobs && result.closed_jobs.length > 0) {
+                    alert(`${result.updated_count} applicant(s) accepted. ${result.closed_jobs.length} job post(s) automatically closed due to reaching limit.`);
+                    // Update job statuses
+                    result.closed_jobs.forEach(jobId => {
+                        const job = jobPostsData.find(j => j.id === jobId);
+                        if (job) job.status = 'closed';
+                    });
+                } else {
+                    alert(`${result.updated_count} applicant(s) accepted successfully.`);
+                }
+
+                clearSelection();
+                updateDisplay();
+            } else if (result.code === "LIMIT_REACHED") {
+                alert(result.message);
+            } else {
+                alert("Failed to accept applicants: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error accepting applicants:", error);
+            alert("Network error. Please try again.");
+        }
     }
 
-    function rejectSelectedApplicants() {
-        selectedApplicants.forEach(id => {
-            const applicant = applicantsData.find(a => a.id === id);
-            if (applicant && applicant.status === 'pending') {
-                applicant.status = 'rejected';
-            }
-        });
-        // Backend integration point:
-        // fetch('/api/applicants/batch-reject', { method: 'POST', body: JSON.stringify({ ids: Array.from(selectedApplicants) }) })
+    async function rejectSelectedApplicants() {
+        const ids = Array.from(selectedApplicants);
+        if (ids.length === 0) return;
 
-        clearSelection();
-        updateDisplay();
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/batch_update_applicants.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_ids: ids, status: "rejected" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                ids.forEach(id => {
+                    const applicant = applicantsData.find(a => a.id === id);
+                    if (applicant) {
+                        applicant.status = 'rejected';
+                    }
+                });
+
+                // Refresh accepted counts
+                if (selectedJobForDetail) {
+                    await fetchApplicants(selectedJobForDetail);
+                }
+
+                alert(`${result.updated_count} applicant(s) rejected successfully.`);
+                clearSelection();
+                updateDisplay();
+            } else {
+                alert("Failed to reject applicants: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error rejecting applicants:", error);
+            alert("Network error. Please try again.");
+        }
     }
 
     function clearSelection() {
