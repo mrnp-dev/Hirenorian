@@ -1,3 +1,77 @@
+<?php
+session_start();
+if(isset($_SESSION['email']))
+{
+    $student_email = $_SESSION['email'];
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "student_email" => $student_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    if ($response === false) {
+        // Handle error silently or log
+        echo "<script>console.log('Curl error: " . curl_error($ch) . "');</script>";
+    }
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+    
+    // Initialize default values
+    $first_name = ""; $last_name = ""; $middle_initial = ""; $suffix = ""; 
+    $student_email_val = ""; $phone_number = "";
+    $location = ""; $about_me = ""; $course = ""; $university = "";
+    $profile_picture = "";
+    $technical_skills = ""; $soft_skills = "";
+    $tech_arr = []; $soft_arr = [];
+    $education_history = []; $experience_list = [];
+
+    if (isset($data['status']) && $data['status'] === "success") {
+        $basic = $data['data']['basic_info'] ?? [];
+        $prof = $data['data']['profile'] ?? [];
+        $skills_data = $data['data']['skills'] ?? [];
+        $edu_data = $data['data']['education'] ?? []; // Current
+        $education_history = $data['data']['education_history'] ?? [];
+        $experience_list = $data['data']['experience'] ?? [];
+
+        $first_name = $basic['first_name'] ?? "";
+        $last_name = $basic['last_name'] ?? "";
+        $middle_initial = $basic['middle_initial'] ?? "";
+        $suffix = $basic['suffix'] ?? "";
+        $student_email_val = $basic['student_email'] ?? ""; // logical email
+        $phone_number = $basic['phone_number'] ?? "";
+
+        $location = $prof['location'] ?? "";
+        $about_me = $prof['about_me'] ?? "";
+        $profile_picture = $prof['profile_picture'] ?? "";
+
+        if (!empty($edu_data) && isset($edu_data[0])) {
+            $course = $edu_data[0]['course'] ?? "";
+            $university = $edu_data[0]['university'] ?? "";
+        }
+
+        // Process skills
+        foreach($skills_data as $s) {
+            if (isset($s['skill_category'])) {
+                if ($s['skill_category'] === 'Technical') $tech_arr[] = $s['skill_name'];
+                if (stripos($s['skill_category'], 'Soft') !== false) $soft_arr[] = $s['skill_name'];
+            }
+        }
+        $technical_skills = implode(", ", $tech_arr);
+        $soft_skills = implode(", ", $soft_arr);
+    }
+}
+else
+{
+    header("Location: ../../../Landing Page/php/landing_page.php");
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +126,7 @@
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img">
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -73,12 +147,12 @@
                         <div class="card profile-card">
                             <div class="profile-header">
                                 <div class="profile-img-container">
-                                    <img src="../../../Landing Page/Images/gradpic2.png" alt="Profile Picture">
+                                    <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture">
                                     <button class="edit-photo-btn" data-modal-target="#editPhotoModal"><i class="fa-solid fa-camera"></i></button>
                                 </div>
-                                <h2 class="profile-name">Juan Dela Cruz</h2>
-                                <p class="profile-role">BS Information Technology</p>
-                                <p class="profile-university">Don Honorio Ventura State University</p>
+                                <h2 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></h2>
+                                <p class="profile-role"><?php echo htmlspecialchars($course); ?></p>
+                                <p class="profile-university"><?php echo htmlspecialchars($university); ?></p>
                             </div>
                             <div class="profile-contact">
                                 <div class="contact-header">
@@ -87,15 +161,15 @@
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span>juan.delacruz@email.com</span>
+                                    <span><?php echo htmlspecialchars($student_email_val); ?></span>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span>+63 912 345 6789</span>
+                                    <span><?php echo htmlspecialchars($phone_number); ?></span>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fa-solid fa-location-dot"></i>
-                                    <span>San Fernando, Pampanga</span>
+                                    <span><?php echo htmlspecialchars($location); ?></span>
                                 </div>
                             </div>
                         </div>
@@ -109,20 +183,17 @@
                             <div class="skills-category">
                                 <h3>Technical</h3>
                                 <div class="tags">
-                                    <span>HTML/CSS</span>
-                                    <span>JavaScript</span>
-                                    <span>PHP</span>
-                                    <span>MySQL</span>
-                                    <span>React</span>
+                                    <?php if(!empty($tech_arr)): foreach($tech_arr as $skill): ?>
+                                    <span><?php echo htmlspecialchars($skill); ?></span>
+                                    <?php endforeach; else: echo "<span>No technical skills added</span>"; endif; ?>
                                 </div>
                             </div>
                             <div class="skills-category">
                                 <h3>Soft Skills</h3>
                                 <div class="tags">
-                                    <span>Communication</span>
-                                    <span>Teamwork</span>
-                                    <span>Problem Solving</span>
-                                    <span>Time Management</span>
+                                    <?php if(!empty($soft_arr)): foreach($soft_arr as $skill): ?>
+                                    <span><?php echo htmlspecialchars($skill); ?></span>
+                                    <?php endforeach; else: echo "<span>No soft skills added</span>"; endif; ?>
                                 </div>
                             </div>
                         </div>
@@ -137,9 +208,7 @@
                                 <button class="icon-btn" data-modal-target="#editAboutModal"><i class="fa-solid fa-pen"></i></button>
                             </div>
                             <p class="about-text">
-                                I am a motivated 3rd-year Information Technology student with a passion for web development and software engineering. 
-                                I am currently looking for an internship opportunity where I can apply my skills in building user-friendly applications 
-                                and learn from experienced professionals in the industry. I am a quick learner and eager to contribute to real-world projects.
+                                <?php echo !empty($about_me) ? nl2br(htmlspecialchars($about_me)) : "No bio added yet."; ?>
                             </p>
                         </div>
 
@@ -162,22 +231,16 @@
                                 <button class="icon-btn" data-modal-target="#addEducationModal"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <div class="timeline">
+                                <?php if(!empty($education_history)): foreach($education_history as $hist): ?>
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content">
-                                        <h3>Bachelor of Science in Information Technology</h3>
-                                        <p class="institution">Don Honorio Ventura State University</p>
-                                        <p class="date">2021 - Present</p>
+                                        <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
+                                        <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
+                                        <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
                                     </div>
                                 </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <h3>Senior High School (STEM Strand)</h3>
-                                        <p class="institution">Pampanga High School</p>
-                                        <p class="date">2019 - 2021</p>
-                                    </div>
-                                </div>
+                                <?php endforeach; else: echo "<p>No education history added.</p>"; endif; ?>
                             </div>
                         </div>
 
@@ -188,24 +251,17 @@
                                 <button class="icon-btn" data-modal-target="#addExperienceModal"><i class="fa-solid fa-plus"></i></button>
                             </div>
                             <div class="timeline">
+                                <?php if(!empty($experience_list)): foreach($experience_list as $exp): ?>
                                 <div class="timeline-item">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content">
-                                        <h3>Web Development Lead</h3>
-                                        <p class="institution">DHVSU Computer Society</p>
-                                        <p class="date">2023 - Present</p>
-                                        <p class="description">Led a team of 5 students in developing the organization's official website. Organized coding workshops for freshmen.</p>
+                                        <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
+                                        <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
+                                        <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
+                                        <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
                                     </div>
                                 </div>
-                                <div class="timeline-item">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <h3>Volunteer</h3>
-                                        <p class="institution">Community Tech Outreach</p>
-                                        <p class="date">2022</p>
-                                        <p class="description">Assisted in teaching basic computer literacy to senior citizens in the local community.</p>
-                                    </div>
-                                </div>
+                                <?php endforeach; else: echo "<p>No experience added.</p>"; endif; ?>
                             </div>
                         </div>
                     </div>
@@ -247,15 +303,15 @@
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" value="juan.delacruz@email.com">
+                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($student_email_val); ?>">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" value="+63 912 345 6789">
+                    <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($phone_number); ?>">
                 </div>
                 <div class="form-group">
                     <label for="location">Location</label>
-                    <input type="text" id="location" name="location" value="San Fernando, Pampanga">
+                    <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($location); ?>">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
@@ -275,11 +331,11 @@
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="technicalSkills">Technical Skills (Comma separated)</label>
-                    <textarea id="technicalSkills" name="technical_skills" rows="3">HTML/CSS, JavaScript, PHP, MySQL, React</textarea>
+                    <textarea id="technicalSkills" name="technical_skills" rows="3"><?php echo htmlspecialchars($technical_skills); ?></textarea>
                 </div>
                 <div class="form-group">
                     <label for="softSkills">Soft Skills (Comma separated)</label>
-                    <textarea id="softSkills" name="soft_skills" rows="3">Communication, Teamwork, Problem Solving, Time Management</textarea>
+                    <textarea id="softSkills" name="soft_skills" rows="3"><?php echo htmlspecialchars($soft_skills); ?></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
@@ -299,7 +355,7 @@
             <form action="" method="POST">
                 <div class="form-group">
                     <label for="aboutMe">About Me</label>
-                    <textarea id="aboutMe" name="about_me" rows="6">I am a motivated 3rd-year Information Technology student with a passion for web development and software engineering. I am currently looking for an internship opportunity where I can apply my skills in building user-friendly applications and learn from experienced professionals in the industry. I am a quick learner and eager to contribute to real-world projects.</textarea>
+                    <textarea id="aboutMe" name="about_me" rows="6"><?php echo htmlspecialchars($about_me); ?></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
