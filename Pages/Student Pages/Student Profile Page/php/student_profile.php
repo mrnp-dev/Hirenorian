@@ -185,33 +185,46 @@ else
                             <div class="card skills-card">
                                 <h3>Skills</h3>
                                 <?php 
-                                // Group skills by category if desired, or just list them all.
-                                // Here assuming we just list them by category dynamically or simply all under one if simplified.
-                                // Let's group them by category for better display.
-                                $skills_by_category = [];
+                                // Group skills by category
+                                $technical_skills = [];
+                                $soft_skills = [];
+                                
                                 if (!empty($skills_list)) {
                                     foreach ($skills_list as $skill) {
-                                        $skills_by_category[$skill['skill_category']][] = $skill['skill_name'];
+                                        if ($skill['skill_category'] === 'Technical') {
+                                            $technical_skills[] = $skill['skill_name'];
+                                        } elseif (stripos($skill['skill_category'], 'Soft') !== false) {
+                                            $soft_skills[] = $skill['skill_name'];
+                                        }
                                     }
                                 }
-                                
-                                if (!empty($skills_by_category)): 
-                                    foreach ($skills_by_category as $category => $skills):
                                 ?>
+                                
                                 <div class="skill-category">
-                                    <h4><?php echo htmlspecialchars($category ?? 'General'); ?></h4>
+                                    <h4>Technical</h4>
                                     <div class="tags">
-                                        <?php foreach ($skills as $skill_name): ?>
-                                            <span><?php echo htmlspecialchars($skill_name); ?></span>
-                                        <?php endforeach; ?>
+                                        <?php if (!empty($technical_skills)): ?>
+                                            <?php foreach ($technical_skills as $skill): ?>
+                                                <span><?php echo htmlspecialchars($skill); ?></span>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <span style="color: #999; font-style: italic;">No technical skills added</span>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <?php 
-                                    endforeach;
-                                else:
-                                ?>
-                                    <p class="text-muted">No skills added yet.</p>
-                                <?php endif; ?>
+                                
+                                <div class="skill-category">
+                                    <h4>Soft Skills</h4>
+                                    <div class="tags">
+                                        <?php if (!empty($soft_skills)): ?>
+                                            <?php foreach ($soft_skills as $skill): ?>
+                                                <span><?php echo htmlspecialchars($skill); ?></span>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <span style="color: #999; font-style: italic;">No soft skills added</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
