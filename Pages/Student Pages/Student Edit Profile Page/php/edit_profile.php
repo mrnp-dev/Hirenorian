@@ -67,7 +67,67 @@ if(isset($_SESSION['email']))
         $technical_skills = implode(", ", $tech_arr);
         $soft_skills = implode(", ", $soft_arr);
     }
+
+    // Add sample educational background entries for testing
+    $education_history = [
+        [
+            'edu_hist_id' => 1,
+            'student_id' => 123,
+            'institution' => 'Central Elementary School',
+            'degree' => 'Elementary Education',
+            'start_year' => '2010',
+            'end_year' => '2016'
+        ],
+        [
+            'edu_hist_id' => 2,
+            'student_id' => 123,
+            'institution' => 'Science High School',
+            'degree' => 'High School Diploma',
+            'start_year' => '2016',
+            'end_year' => '2020'
+        ],
+        [
+            'edu_hist_id' => 3,
+            'student_id' => 123,
+            'institution' => 'Don Honorio Ventura State University',
+            'degree' => 'Senior High School - STEM',
+            'start_year' => '2020',
+            'end_year' => '2022'
+        ]
+    ];
+
+    // Add sample experience entries for testing
+    $experience_list = [
+        [
+            'exp_id' => 1,
+            'student_id' => 123,
+            'job_title' => 'Web Developer Intern',
+            'company_name' => 'Tech Solutions Inc.',
+            'start_date' => '2023',
+            'end_date' => '2024',
+            'description' => 'Developed and maintained company websites using HTML, CSS, JavaScript, and PHP. Collaborated with senior developers on various web projects.'
+        ],
+        [
+            'exp_id' => 2,
+            'student_id' => 123,
+            'job_title' => 'IT Support Volunteer',
+            'company_name' => 'Local Community Center',
+            'start_date' => '2022',
+            'end_date' => '2023',
+            'description' => 'Provided technical support to community members. Set up and maintained computer systems and networks.'
+        ],
+        [
+            'exp_id' => 3,
+            'student_id' => 123,
+            'job_title' => 'Student Council President',
+            'company_name' => 'Don Honorio Ventura State University',
+            'start_date' => '2021',
+            'end_date' => '2022',
+            'description' => 'Led student council initiatives, organized campus events, and represented student interests to administration.'
+        ]
+    ];
 }
+
 else
 {
     header("Location: ../../../Landing Page/php/landing_page.php");
@@ -276,13 +336,32 @@ else
                             </div>
                             <div class="timeline">
                                 <?php if(!empty($experience_list)): foreach($experience_list as $exp): ?>
-                                <div class="timeline-item">
+                                <div class="timeline-item" data-exp-id="<?php echo htmlspecialchars($exp['exp_id']); ?>">
                                     <div class="timeline-dot"></div>
                                     <div class="timeline-content">
-                                        <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
-                                        <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
-                                        <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
-                                        <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
+                                        <div class="timeline-header">
+                                            <div class="timeline-info">
+                                                <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
+                                                <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
+                                                <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
+                                                <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
+                                            </div>
+                                            <div class="timeline-actions">
+                                                <button class="icon-btn-sm edit-experience-btn" 
+                                                    data-exp-id="<?php echo htmlspecialchars($exp['exp_id']); ?>"
+                                                    data-job-title="<?php echo htmlspecialchars($exp['job_title']); ?>"
+                                                    data-company="<?php echo htmlspecialchars($exp['company_name']); ?>"
+                                                    data-start-date="<?php echo htmlspecialchars($exp['start_date']); ?>"
+                                                    data-end-date="<?php echo htmlspecialchars($exp['end_date']); ?>"
+                                                    data-description="<?php echo htmlspecialchars($exp['description']); ?>">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button class="icon-btn-sm delete-experience-btn" 
+                                                    data-exp-id="<?php echo htmlspecialchars($exp['exp_id']); ?>">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <?php endforeach; else: echo "<p>No experience added.</p>"; endif; ?>
@@ -527,6 +606,45 @@ else
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea id="description" name="description" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-button>Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Experience Modal -->
+    <div class="modal" id="editExperienceModal">
+        <div class="modal-header">
+            <h3>Edit Experience</h3>
+            <button class="close-modal" data-close-button>&times;</button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="POST" id="editExperienceForm">
+                <input type="hidden" id="editExpId" name="exp_id" value="">
+                <div class="form-group">
+                    <label for="editJobTitle">Job Title / Role</label>
+                    <input type="text" id="editJobTitle" name="job_title" placeholder="e.g. Web Developer Intern">
+                </div>
+                <div class="form-group">
+                    <label for="editCompany">Company / Organization</label>
+                    <input type="text" id="editCompany" name="company" placeholder="e.g. Tech Solutions Inc.">
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="editExpStartDate">Start Year</label>
+                        <input type="number" id="editExpStartDate" name="start_year" placeholder="YYYY">
+                    </div>
+                    <div class="form-group">
+                        <label for="editExpEndDate">End Year</label>
+                        <input type="text" id="editExpEndDate" name="end_year" placeholder="YYYY or Present">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription" name="description" rows="3" placeholder="Describe your responsibilities and achievements..."></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
