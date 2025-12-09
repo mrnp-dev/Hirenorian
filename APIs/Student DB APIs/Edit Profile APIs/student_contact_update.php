@@ -14,6 +14,10 @@ if ($data === null) {
     exit();
 }
 
+$personalEmail = $data['email'];
+$phone = $data['phone'];
+$location = $data['location'];
 
+$query = "UPDATE Students SET personal_email = :personalEmail, phone_number = :phone WHERE "
 
 ?>
