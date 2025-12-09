@@ -475,6 +475,7 @@ if (isset($_SESSION['email'])) {
         </div>
     </div>
 
+    <script src="../../Company Dashboard/js/toast.js"></script>
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/job_listing.js"></script>
 </body>

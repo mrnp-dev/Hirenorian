@@ -417,7 +417,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!jobDetails) {
             console.error('Failed to load job details for job ID:', jobId);
-            alert('Failed to load job details. Please try again.');
+            if (typeof ToastSystem !== 'undefined') {
+                ToastSystem.show('Failed to load job details. Please try again.', 'error');
+            } else {
+                alert('Failed to load job details. Please try again.');
+            }
             return;
         }
 
@@ -1635,7 +1639,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const result = await response.json();
 
                     if (result.status === "success") {
-                        alert('Job post updated successfully!');
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Job post updated successfully!', 'success');
+                        } else {
+                            alert('Job post updated successfully!');
+                        }
 
                         // Refresh job details (FORCE REFRESH)
                         await fetchJobDetails(currentEditingJobId, true);
@@ -1659,18 +1667,34 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                         closeJobPostModal();
                     } else if (result.code === "LIMIT_BELOW_ACCEPTED") {
-                        alert(result.message);
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show(result.message, 'error');
+                        } else {
+                            alert(result.message);
+                        }
                     } else {
-                        alert('Failed to update job post: ' + result.message);
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Failed to update job post: ' + result.message, 'error');
+                        } else {
+                            alert('Failed to update job post: ' + result.message);
+                        }
                     }
                 } catch (error) {
                     console.error('Error updating job post:', error);
-                    alert('Network error. Please try again.');
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Network error. Please try again.', 'error');
+                    } else {
+                        alert('Network error. Please try again.');
+                    }
                 }
             } else {
                 // Create mode - keeping existing placeholder logic or TOD0
                 // For now, just alert as requested previously for create
-                alert('Job post created successfully! (Backend integration for CREATE pending)');
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Job post created successfully! (Backend integration for CREATE pending)', 'success');
+                } else {
+                    alert('Job post created successfully! (Backend integration for CREATE pending)');
+                }
                 closeJobPostModal();
             }
         });
@@ -1731,7 +1755,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     openJobPostModal('edit', jobDetails);
                 } else {
                     console.error('Job details not found for ID:', selectedJobForDetail);
-                    alert('Could not load job details for editing.');
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Could not load job details for editing.', 'error');
+                    } else {
+                        alert('Could not load job details for editing.');
+                    }
                 }
             }
         });
@@ -1748,7 +1776,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const confirmed = confirm('Are you sure you want to close this job post? All pending applicants will be rejected.');
             if (confirmed) {
                 console.log(`Closing job post ID: ${selectedJobForDetail}`);
-                alert('Job post closed successfully! (Backend integration pending)');
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Job post closed successfully! (Backend integration pending)', 'success');
+                } else {
+                    alert('Job post closed successfully! (Backend integration pending)');
+                }
                 showCardView();
             }
         });
