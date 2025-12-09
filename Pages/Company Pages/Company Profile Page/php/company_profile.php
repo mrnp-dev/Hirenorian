@@ -768,6 +768,7 @@ if (isset($_SESSION['email'])) {
                         <input type="password" id="currentPassword" placeholder="Enter current password">
                         <i class="fa-solid fa-eye toggle-password" data-target="currentPassword"></i>
                     </div>
+                    <small class="error-text" id="currentPasswordError"></small>
                 </div>
                 <div class="form-group">
                     <label for="newPassword">New Password</label>

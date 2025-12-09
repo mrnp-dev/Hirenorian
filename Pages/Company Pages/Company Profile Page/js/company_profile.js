@@ -696,7 +696,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // 5. Verification Icon Placeholder Logic
+    // 5. Current Password Logic (Mock)
+    const currentPassInput = document.getElementById('currentPassword');
+    const currentPassError = document.getElementById('currentPasswordError');
+    if (currentPassInput) {
+        currentPassInput.addEventListener('input', function () {
+            currentPassError.classList.remove('show');
+        });
+    }
+
+    // 6. Verification Icon Placeholder Logic
     loadVerificationStatus();
 });
 
@@ -729,9 +738,21 @@ function savePassword() {
     const currentPass = document.getElementById('currentPassword').value;
     const newPass = document.getElementById('newPassword').value;
     const confirmPass = document.getElementById('confirmPassword').value;
+    const currentPassError = document.getElementById('currentPasswordError');
 
     if (!currentPass || !newPass || !confirmPass) {
         return ToastSystem.show('Please fill in all fields', 'warning');
+    }
+
+    // Mock Validation: Current Password must be '123'
+    if (currentPass !== '123') {
+        if (currentPassError) {
+            currentPassError.textContent = "Incorrect current password.";
+            currentPassError.classList.add('show');
+        } else {
+            ToastSystem.show('Incorrect current password', 'error');
+        }
+        return;
     }
 
     // Final Validation before submit
