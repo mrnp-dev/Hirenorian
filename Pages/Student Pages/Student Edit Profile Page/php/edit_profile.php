@@ -312,8 +312,8 @@ else
                     <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
                 </div>
                 <div class="form-group">
-                    <label for="studentEmail">Student Email</label>
-                    <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" readonly>
+                    <label for="studentEmail">Student Email <small style="color: #999; font-weight: normal;">(Not Editable)</small></label>
+                    <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" disabled>
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
