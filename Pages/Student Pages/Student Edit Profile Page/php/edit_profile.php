@@ -215,7 +215,7 @@ else
                                 <h2>About Me</h2>
                                 <button class="icon-btn" data-modal-target="#editAboutModal"><i class="fa-solid fa-pen"></i></button>
                             </div>
-                            <p class="about-text">
+                            <p class="about-text" id="display-about-me">
                                 <?php echo !empty($about_me) ? nl2br(htmlspecialchars($about_me)) : "No bio added yet."; ?>
                             </p>
                         </div>
@@ -441,7 +441,7 @@ else
         </div>
         <div class="modal-body">
             <form action="" method="POST">
-            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <input type="hidden" name="student_id" id="studentId" value="<?php echo htmlspecialchars($student_id); ?>">
             <div class="form-group">
                 <label for="aboutMe">About Me</label>
                 <textarea id="aboutMe" name="about_me" rows="6"><?php echo htmlspecialchars($about_me); ?></textarea>
@@ -615,6 +615,7 @@ else
     <script src="../js/skills-modal.js"></script>
     <script src="../js/education-modal.js"></script>
     <script src="../js/experience-modal.js"></script>
+    <script src="../js/about-modal.js"></script>
     
     <!-- Main entry point -->
     <script src="../js/edit_profile.js"></script>
