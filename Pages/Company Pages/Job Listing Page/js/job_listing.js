@@ -32,6 +32,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     // - Calls your backend endpoint
     // - Maps response data to jobPostsData array
     // - This data is used by renderJobCards() to display job post cards
+
+    // ========================================
+    // HELPER: CUSTOM CONFIRMATION MODAL
+    // ========================================
+    function showConfirmationModal(title, message, type, onConfirm) {
+        const overlay = document.getElementById('confirmationModalOverlay');
+        const titleEl = document.getElementById('confirmationTitle');
+        const messageEl = document.getElementById('confirmationMessage');
+        const modalEl = document.querySelector('.confirmation-modal');
+        const iconEl = document.getElementById('confirmationIcon');
+        const btnCancel = document.getElementById('btnConfirmCancel');
+        const btnProceed = document.getElementById('btnConfirmProceed');
+
+        if (!overlay) return;
+
+        // Reset state
+        modalEl.classList.remove('danger');
+
+        // Remove old event listeners by cloning
+        const newBtnProceed = btnProceed.cloneNode(true);
+        btnProceed.parentNode.replaceChild(newBtnProceed, btnProceed);
+
+        const newBtnCancel = btnCancel.cloneNode(true);
+        btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+
+        // Set content
+        titleEl.textContent = title;
+        messageEl.innerHTML = message.replace(/\n/g, '<br>');
+
+        // Handle type
+        if (type === 'danger') {
+            modalEl.classList.add('danger');
+            iconEl.className = 'fa-solid fa-trash-can';
+        } else {
+            iconEl.className = 'fa-solid fa-triangle-exclamation';
+        }
+
+        // Show modal
+        overlay.style.display = 'flex';
+
+        // Handlers
+        const close = () => { overlay.style.display = 'none'; };
+
+        newBtnCancel.addEventListener('click', close);
+        newBtnProceed.addEventListener('click', () => {
+            close();
+            onConfirm();
+        });
+    }
+
     async function fetchJobPosts() {
         try {
             // ✅ Get company email from session/context or DOM
@@ -1813,48 +1863,51 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnCloseDetail.addEventListener('click', async () => {
             if (!selectedJobForDetail) return;
 
-            const confirmed = confirm('Are you sure you want to CLOSE this job post?\n\nThis will REJECT all pending applicants and cannot be undone.');
+            showConfirmationModal(
+                'Close Job Post?',
+                'Are you sure you want to CLOSE this job post?\n\nThis will REJECT all pending applicants and cannot be undone.',
+                'warning',
+                async () => {
+                    try {
+                        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/close_job_post.php", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ post_id: selectedJobForDetail })
+                        });
 
-            if (confirmed) {
-                try {
-                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/close_job_post.php", {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ post_id: selectedJobForDetail })
-                    });
+                        const result = await response.json();
 
-                    const result = await response.json();
+                        if (result.status === "success") {
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show(`Job post closed! Rejected ${result.rejected_count} pending applicants.`, 'success');
+                            } else {
+                                alert(`Job post closed! Rejected ${result.rejected_count} pending applicants.`);
+                            }
 
-                    if (result.status === "success") {
-                        if (typeof ToastSystem !== 'undefined') {
-                            ToastSystem.show(`Job post closed! Rejected ${result.rejected_count} pending applicants.`, 'success');
+                            // Force refresh details to update status and UI
+                            await fetchJobDetails(selectedJobForDetail, true);
+                            await renderJobDetail(selectedJobForDetail);
+
+                            // Update lists
+                            await fetchJobPosts();
+                            await fetchAllApplicants(); // Counts changed
                         } else {
-                            alert(`Job post closed! Rejected ${result.rejected_count} pending applicants.`);
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show(result.message, 'error');
+                            } else {
+                                alert(result.message);
+                            }
                         }
-
-                        // Force refresh details to update status and UI
-                        await fetchJobDetails(selectedJobForDetail, true);
-                        await renderJobDetail(selectedJobForDetail);
-
-                        // Update lists
-                        await fetchJobPosts();
-                        await fetchAllApplicants(); // Counts changed
-                    } else {
+                    } catch (error) {
+                        console.error('Error closing job:', error);
                         if (typeof ToastSystem !== 'undefined') {
-                            ToastSystem.show(result.message, 'error');
+                            ToastSystem.show('Network error.', 'error');
                         } else {
-                            alert(result.message);
+                            alert('Network error.');
                         }
-                    }
-                } catch (error) {
-                    console.error('Error closing job:', error);
-                    if (typeof ToastSystem !== 'undefined') {
-                        ToastSystem.show('Network error.', 'error');
-                    } else {
-                        alert('Network error.');
                     }
                 }
-            }
+            );
         });
     }
 
@@ -1863,45 +1916,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         btnDeleteDetail.addEventListener('click', async () => {
             if (!selectedJobForDetail) return;
 
-            const confirmed = confirm('⚠️ PERMANENTLY DELETE JOB POST? ⚠️\n\nThis will remove ALL records including applicants, interviews, and statistics.\nThis action CANNOT be undone.');
+            showConfirmationModal(
+                'Delete Job Post?',
+                '⚠️ PERMANENTLY DELETE JOB POST? ⚠️\n\nThis will remove ALL records including applicants, interviews, and statistics.\nThis action CANNOT be undone.',
+                'danger',
+                async () => {
+                    try {
+                        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_post.php", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ post_id: selectedJobForDetail })
+                        });
 
-            if (confirmed) {
-                try {
-                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_post.php", {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ post_id: selectedJobForDetail })
-                    });
+                        const result = await response.json();
 
-                    const result = await response.json();
+                        if (result.status === "success") {
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show('Job post deleted successfully.', 'success');
+                            } else {
+                                alert('Job post deleted successfully.');
+                            }
 
-                    if (result.status === "success") {
-                        if (typeof ToastSystem !== 'undefined') {
-                            ToastSystem.show('Job post deleted successfully.', 'success');
+                            // Go back to list and refresh
+                            showCardView();
+                            await fetchJobPosts();
+                            if (viewMode === 'cards') renderJobCards(jobSearchTerm);
                         } else {
-                            alert('Job post deleted successfully.');
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show('Failed to delete: ' + result.message, 'error');
+                            } else {
+                                alert('Failed to delete: ' + result.message);
+                            }
                         }
-
-                        // Go back to list and refresh
-                        showCardView();
-                        await fetchJobPosts();
-                        if (viewMode === 'cards') renderJobCards(jobSearchTerm);
-                    } else {
+                    } catch (error) {
+                        console.error('Error deleting job:', error);
                         if (typeof ToastSystem !== 'undefined') {
-                            ToastSystem.show('Failed to delete: ' + result.message, 'error');
+                            ToastSystem.show('Network error.', 'error');
                         } else {
-                            alert('Failed to delete: ' + result.message);
+                            alert('Network error.');
                         }
-                    }
-                } catch (error) {
-                    console.error('Error deleting job:', error);
-                    if (typeof ToastSystem !== 'undefined') {
-                        ToastSystem.show('Network error.', 'error');
-                    } else {
-                        alert('Network error.');
                     }
                 }
-            }
+            );
         });
     }
 

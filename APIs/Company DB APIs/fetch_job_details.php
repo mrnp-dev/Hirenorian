@@ -29,6 +29,7 @@ $query = "
         jd.title AS jobTitle,
         jd.location,
         jd.work_type AS workType,
+        jp.status, /* Added status field */
         jp.applicant_limit AS applicantLimit,
         COUNT(a.applicant_id) AS currentApplicants,
         jd.category,
@@ -71,6 +72,7 @@ try {
             "jobTitle" => $row["jobTitle"],
             "location" => $row["location"],
             "workType" => $row["workType"],
+            "status" => $row["status"],
             "applicantLimit" => $row["applicantLimit"],
             "currentApplicants" => $row["currentApplicants"],
             "category" => $row["category"],

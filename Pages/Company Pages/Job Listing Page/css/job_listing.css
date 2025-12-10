@@ -1853,3 +1853,123 @@ input[type="checkbox"] {
       gap: 20px;
    }
 }
+
+/* ========================================
+   CUSTOM CONFIRMATION MODAL
+   ======================================== */
+.confirmation-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2147483646; /* Just below toast (max int) but above everything else */
+    animation: fadeIn 0.2s ease-out;
+}
+
+.confirmation-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.confirmation-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #fef3c7; /* Default warning yellow bg */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.confirmation-icon-wrapper i {
+    font-size: 1.8rem;
+    color: #d97706; /* Default warning orange icon */
+}
+
+/* Danger Variant */
+.confirmation-modal.danger .confirmation-icon-wrapper {
+    background: #fee2e2;
+}
+
+.confirmation-modal.danger .confirmation-icon-wrapper i {
+    color: #dc2626;
+}
+
+.confirmation-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 10px;
+}
+
+.confirmation-message {
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.confirmation-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.confirmation-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-confirm-cancel {
+    background: white;
+    border: 1px solid #d1d5db;
+    color: #374151;
+}
+
+.btn-confirm-cancel:hover {
+    background: #f3f4f6;
+}
+
+.btn-confirm-proceed {
+    background: var(--primary-maroon);
+    border: none;
+    color: white;
+}
+
+.btn-confirm-proceed:hover {
+    background: #7f1d1d; /* Darker maroon */
+}
+
+/* Danger Button Variant */
+.confirmation-modal.danger .btn-confirm-proceed {
+    background: #dc2626; /* Red */
+}
+
+.confirmation-modal.danger .btn-confirm-proceed:hover {
+    background: #b91c1c;
+}

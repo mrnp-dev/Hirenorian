@@ -480,6 +480,21 @@ if (isset($_SESSION['email'])) {
         </div>
     </div>
 
+    <!-- Custom Confirmation Modal -->
+    <div class="confirmation-modal-overlay" id="confirmationModalOverlay" style="display: none;">
+        <div class="confirmation-modal">
+            <div class="confirmation-icon-wrapper" id="confirmationIconWrapper">
+                <i class="fa-solid fa-triangle-exclamation" id="confirmationIcon"></i>
+            </div>
+            <h3 class="confirmation-title" id="confirmationTitle">Confirmation</h3>
+            <p class="confirmation-message" id="confirmationMessage">Are you sure you want to proceed?</p>
+            <div class="confirmation-actions">
+                <button class="btn-confirm-cancel" id="btnConfirmCancel">Cancel</button>
+                <button class="btn-confirm-proceed" id="btnConfirmProceed">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <script src="../../Company Dashboard/js/toast.js"></script>
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/job_listing.js"></script>
