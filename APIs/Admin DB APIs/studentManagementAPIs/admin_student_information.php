@@ -18,6 +18,8 @@ $query = "SELECT
             s.last_name,
             s.suffix,
             s.student_email, 
+            s.activated,
+            s.verified,
             e.course, 
             e.department
           FROM Students s

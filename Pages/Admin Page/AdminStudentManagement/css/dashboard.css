@@ -447,6 +447,16 @@ body {
     color: #CC0000;
 }
 
+.status.activated {
+    background-color: #e5f5e5; 
+    color: #38761D;
+}
+
+.status.deactivated {
+    background-color: #ffe5e5; 
+    color: #CC0000;
+}
+
 /* Action Buttons (Edit/Delete) */
 .action-buttons {
     text-align: center;

@@ -9,7 +9,7 @@ session_start();
 
 $students = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/admin_student_information.php";
+$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -113,8 +113,8 @@ if ($data && isset($data['status'])) {
                                 <th>Campus</th>
                                 <th>Department</th>
                                 <th>School Email</th>
-                                <th>Activation Status</th>
                                 <th>Account Status</th>
+                                <th>Activation Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -129,8 +129,19 @@ if ($data && isset($data['status'])) {
                                     <td><?= $student['department'] ?></td>
                                     <td><?= $student['course'] ?></td>
                                     <td><?= $student['student_email'] ?></td>
-                                    <td><button type="button" class="status verified activation-btn">Verified</button></td>
-                                    <td><span class="">deactivated</span></td>
+                                    <td>
+                                        <button type="button" class="status verification-btn 
+                                            <?= ($student['verified'] === 'true' || $student['verified'] == 1) ? 'verified' : 'unverified' ?>">
+                                            <?= ($student['verified'] === 'true' || $student['verified'] == 1) ? 'verified' : 'unverified' ?>
+                                        </button>
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="status activation-btn 
+                                            <?= ($student['activated'] === 'true' || $student['activated'] == 1) ? 'activated' : 'deactivated' ?>">
+                                            <?= ($student['activated'] === 'true' || $student['activated'] == 1) ? 'activated' : 'deactivated' ?>
+                                        </button>
+                                    </td>
                                     <td class="action-buttons">
                                         <button type="button" class="action-btn edit-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
@@ -163,20 +174,20 @@ if ($data && isset($data['status'])) {
     <script src="sweetalert.min.js"></script>
     <script>
         function submitForm(form) {
-        swal({
-            title: "Are you sure?",
-            text: "This form will be submitted",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then(function (isOkay) {
-            if (isOkay) {
-                form.submit();
-            }
-        });
-        return false;
-    }
+            swal({
+                    title: "Are you sure?",
+                    text: "This form will be submitted",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then(function(isOkay) {
+                    if (isOkay) {
+                        form.submit();
+                    }
+                });
+            return false;
+        }
     </script>
 </body>
 
