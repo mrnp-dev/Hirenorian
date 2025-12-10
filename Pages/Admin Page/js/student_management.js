@@ -7,10 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- CRUD Actions (Front-end only simulation) ---
 
+    // ✅ Edit button navigates to editInfo.php with student ID
     editButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // In a real application, this would open a modal pre-filled with student data
-            alert('Editing student ID: ' + this.closest('tr').querySelector('td:first-child').textContent);
+            const studentId = this.closest('tr').querySelector('td:first-child').textContent;
+            window.location.href = `editInfo.php?id=${studentId}`;
         });
     });
 
@@ -34,33 +35,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Pagination Actions (Visual only simulation) ---
-
     pageNumbers.forEach(number => {
         number.addEventListener('click', function() {
-            // Remove active class from all pages
             pageNumbers.forEach(n => n.classList.remove('active-page'));
-            
-            // Set active class on the clicked page
             this.classList.add('active-page');
-            
-            // In a real application, this would load data for the new page number
             alert('Navigating to page ' + this.textContent);
         });
     });
     
-    // Add logic for previous/next arrows (visual simulation)
     navArrows.forEach(arrow => {
         arrow.addEventListener('click', function() {
             const currentPage = document.querySelector('.active-page');
-            let currentPageNum = parseInt(currentPage.textContent);
             let targetPage = null;
 
-            // Determine if clicking Next or Previous
             if (arrow.querySelector('.fa-chevron-right')) {
-                // Next
                 targetPage = currentPage.nextElementSibling;
             } else if (arrow.querySelector('.fa-chevron-left')) {
-                // Previous
                 targetPage = currentPage.previousElementSibling;
             }
 
