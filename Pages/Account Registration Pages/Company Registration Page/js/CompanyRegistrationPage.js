@@ -15,11 +15,10 @@ const stepIndicators = document.querySelectorAll(".step");
 let current = 0;
 
 
-
 /* For next button */
 function callButtonChecker() {
     firstPageInput.forEach(input => {
-        if(input.value.trim() === '') {
+        if (input.value.trim() === '') {
             fieldStatus1 = false;
             showErrorMessage(input, 'empty field');
         } else {
@@ -32,7 +31,7 @@ function callButtonChecker() {
 
 function callButtonChecker2() {
     secondPageInput.forEach(input => {
-        if(input.value.trim() === '') {
+        if (input.value.trim() === '') {
             fieldStatus2 = false;
             showErrorMessage(input, 'empty field');
         } else {
@@ -44,7 +43,7 @@ function callButtonChecker2() {
 
 function callButtonChecker3() {
     thirdPageInput.forEach(input => {
-        if(input.value.trim() === '') {
+        if (input.value.trim() === '') {
             fieldStatus3 = false;
             showErrorMessage(input, 'empty field');
         } else {
@@ -58,13 +57,13 @@ function callButtonChecker3() {
 /* --- page 1 --- */
 firstPageInput.forEach(input => {
     input.addEventListener('blur', async () => {
-        if(input.name === 'email'){
+        if (input.name === 'email') {
             check_Email(input);
-        } else if(input.name === 'password1') {
+        } else if (input.name === 'password1') {
             checkCompanyPassword(input);
-        } else if(input.name === 'password2') {
+        } else if (input.name === 'password2') {
             checkConfirmCompanyPassword(input);
-        } else if(input.name === 'phoneNum') {
+        } else if (input.name === 'phoneNum') {
             checkPhoneNum(input);
         }
     });
@@ -72,7 +71,7 @@ firstPageInput.forEach(input => {
     input.addEventListener('focus', async () => {
         hideErrorMessage(input);
     });
-    input.addEventListener('input', async () =>{
+    input.addEventListener('input', async () => {
         hideErrorMessage(input);
     });
 });
@@ -83,10 +82,10 @@ function check_Email(input) {
     const correctEmailFormat_RegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const inputEmail = input.value.trim();
 
-    if(inputEmail === '') {
+    if (inputEmail === '') {
         showErrorMessage(input, 'Company Email Cannot be Empty');
         return false;
-    } else if(!correctEmailFormat_RegEx.test(inputEmail)) {
+    } else if (!correctEmailFormat_RegEx.test(inputEmail)) {
         showErrorMessage(input, "Invalid Email");
         return false;
     } else {
@@ -102,31 +101,31 @@ function checkCompanyPassword(input) {
     const companyPasswordHasSpecialChar = /[^A-Za-z0-9]/.test(companyPassword);
     const companyPasswordHasNumbers = /[0-9]/.test(companyPassword);
 
-    if(companyPassword === '') {
+    if (companyPassword === '') {
         showErrorMessage(input, 'Company Password Cannot be Empty');
         return false;
     };
 
-    if(companyPassword.length < 8) {
+    if (companyPassword.length < 8) {
         showErrorMessage(input, 'Password must be at least 8 characters');
         return false;
     };
 
-    if(!companyPasswordHasLower || !companyPasswordHasUpper) {
+    if (!companyPasswordHasLower || !companyPasswordHasUpper) {
         showErrorMessage(input, 'Weak Password: use CAPITAL and lowercase Letters');
         return false;
     };
-    
-    if(!companyPasswordHasSpecialChar) {
+
+    if (!companyPasswordHasSpecialChar) {
         showErrorMessage(input, 'Weak Password: use Special Charcters / Symbols');
         return false;
     };
-    
-    if(!companyPasswordHasNumbers) {
+
+    if (!companyPasswordHasNumbers) {
         showErrorMessage(input, 'Weak Password: use Numeric Characters');
         return false;
     };
-    
+
     hideErrorMessage(input);
     return true;
 };
@@ -135,12 +134,12 @@ function checkConfirmCompanyPassword(input) {
     const companyPasswordConfirmation = input.value;
     let isSame = companyPassword.localeCompare(companyPasswordConfirmation);
 
-    if(companyPasswordConfirmation === '') {
+    if (companyPasswordConfirmation === '') {
         showErrorMessage(input, 'Password Confirmation Cannot be Empty');
         return false;
-    } ;
-    
-    if(isSame != 0) {
+    };
+
+    if (isSame != 0) {
         showErrorMessage(input, 'Password Do Not Match')
         return false;
     } else {
@@ -153,10 +152,10 @@ function checkPhoneNum(input) {
     const PhoneNumber = input.value.trim();
     const correctPhoneNumber_RegEx = /^(?:\+639\d{9}|09\d{9})$/.test(PhoneNumber);
 
-    if(PhoneNumber === '') {
+    if (PhoneNumber === '') {
         showErrorMessage(input, 'Company Phone Number Cannot be Empty');
         return false;
-    } else if(!correctPhoneNumber_RegEx) {
+    } else if (!correctPhoneNumber_RegEx) {
         showErrorMessage(input, 'Invalid Philippine Phone Number')
         return false;
     } else {
@@ -168,13 +167,13 @@ function checkPhoneNum(input) {
 /*Page 2 */
 secondPageInput.forEach(input => {
     input.addEventListener('blur', async () => {
-        if(input.name === 'companyName'){
+        if (input.name === 'companyName') {
             checkCompanyName(input);
-        } else if(input.name === 'companyType') {
+        } else if (input.name === 'companyType') {
             checkCompanyType(input);
-        } else if(input.name === 'industryType') {
+        } else if (input.name === 'industryType') {
             checkindustryType(input);
-        } else if(input.name === 'companyAddress') {
+        } else if (input.name === 'companyAddress') {
             checkCompanyAddress(input);
         }
     })
@@ -182,15 +181,15 @@ secondPageInput.forEach(input => {
     input.addEventListener('focus', async () => {
         hideErrorMessage(input);
     })
-    input.addEventListener('input', async () =>{
+    input.addEventListener('input', async () => {
         hideErrorMessage(input);
-    } )
+    })
 });
 
 function checkCompanyName(input) {
     const companyName = input.value;
 
-    if(companyName === '') {
+    if (companyName === '') {
         showErrorMessage(input, 'Company Name Cannot be Empty');
         return false;
     } else {
@@ -202,7 +201,7 @@ function checkCompanyName(input) {
 function checkCompanyType(input) {
     const companyType = input.value;
 
-    if(companyType === '') {
+    if (companyType === '') {
         showErrorMessage(input, 'Company Type Cannot be Empty');
         return false;
     } else {
@@ -214,7 +213,7 @@ function checkCompanyType(input) {
 function checkindustryType(input) {
     const industryType = input.value;
 
-    if(industryType === '') {
+    if (industryType === '') {
         showErrorMessage(input, 'Industry Cannot be Empty');
         return false;
     } else {
@@ -226,7 +225,7 @@ function checkindustryType(input) {
 function checkCompanyAddress(input) {
     const companyAddress = input.value;
 
-    if(companyAddress === '') {
+    if (companyAddress === '') {
         showErrorMessage(input, 'Company Address Cannot be Empty');
         return false;
     } else {
@@ -237,22 +236,22 @@ function checkCompanyAddress(input) {
 
 /* LOAD JSON DATA */
 async function loadCompanyType() {
-    try{
+    try {
         const response = await fetch('../json/CompanyType.json');
         const data = await response.json();
         return data.typesOfCompanies;
-    }catch(error){
+    } catch (error) {
         console.error("Failed to Load Company Types: ", error);
         return [];
     }
 };
 
 async function loadIndustries() {
-    try{
+    try {
         const response = await fetch('../json/industry.json');
         const data = await response.json();
         return data.industries;
-    }catch(error){
+    } catch (error) {
         console.error("Failed to Load Company Types: ", error);
         return [];
     }
@@ -280,7 +279,7 @@ inputCompanyType.addEventListener('focus', async () => {
         });
 
     });
-    
+
     inputCompanyType.addEventListener('blur', () => {
         dropdownDiv.style.display = 'none';
     });
@@ -308,7 +307,7 @@ inputIndustry.addEventListener('focus', async () => {
         });
 
     });
-    
+
     inputIndustry.addEventListener('blur', () => {
         dropdownDiv2.style.display = 'none';
     });
@@ -320,9 +319,9 @@ inputIndustry.addEventListener('focus', async () => {
 
 thirdPageInput.forEach(input => {
     input.addEventListener('blur', async () => {
-        if(input.name === 'contactEmail'){
+        if (input.name === 'contactEmail') {
             check_Email(input);
-        } else if(input.name === 'contactPhone') {
+        } else if (input.name === 'contactPhone') {
             checkPhoneNum(input);
         } else if (input.name === 'contactName') {
             checkContactName(input);
@@ -334,19 +333,19 @@ thirdPageInput.forEach(input => {
     input.addEventListener('focus', async () => {
         hideErrorMessage(input);
     })
-    input.addEventListener('input', async () =>{
+    input.addEventListener('input', async () => {
         hideErrorMessage(input);
-    } )
+    })
 });
 
 function checkContactName(input) {
     const contactName = input.value;
     const contactNameHasSpecialChar = /[^A-Za-z0-9]/.test(contactName);
 
-    if(contactName === '') {
+    if (contactName === '') {
         showErrorMessage(input, 'Name Cannot be Empty');
         return false;
-    } else if(contactNameHasSpecialChar) {
+    } else if (contactNameHasSpecialChar) {
         showErrorMessage(input, 'Invalid Name');
     } else {
         hideErrorMessage(input);
@@ -358,10 +357,10 @@ function checkContactPosition(input) {
     const contactPosition = input.value;
     const contactPositionHasSpecialChar = /[^A-Za-z0-9]/.test(contactPosition);
 
-    if(contactPosition === '') {
+    if (contactPosition === '') {
         showErrorMessage(input, 'Position / Role Cannot be Empty');
         return false;
-    } else if(contactPositionHasSpecialChar) {
+    } else if (contactPositionHasSpecialChar) {
         showErrorMessage(input, 'Invalid Position');
     } else {
         hideErrorMessage(input);
@@ -391,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function showPage(n) {
         pages.forEach(p => p.classList.remove("active"));
         stepIndicators.forEach(s => s.classList.remove("active-step"));
-        
+
         pages[n].classList.add("active");
         stepIndicators[n].classList.add("active-step");
     }
