@@ -1332,13 +1332,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Populate required document
+        // Populate required document
         if (jobData.requiredDocument) {
             const docRadios = document.getElementsByName('requiredDocument');
+            const requiredDocValue = jobData.requiredDocument.toLowerCase();
+
+            let matched = false;
             docRadios.forEach(radio => {
-                if (radio.value === jobData.requiredDocument) {
+                // Check if values match or if the radio value is contained in the DB value (e.g. 'resume' in 'Resume/CV')
+                // This handles potential variations like 'Resume' vs 'resume'
+                if (radio.value === requiredDocValue ||
+                    requiredDocValue.includes(radio.value) ||
+                    (radio.value === 'resume' && requiredDocValue.includes('cv'))) {
+
                     radio.checked = true;
+                    matched = true;
                 }
             });
+
+            // If no match found but we have a value, try to map it specifically
+            if (!matched) {
+                if (requiredDocValue.includes('cover')) {
+                    const coverRadio = document.querySelector('input[value="cover-letter"]');
+                    if (coverRadio) coverRadio.checked = true;
+                } else if (requiredDocValue.includes('resume') || requiredDocValue.includes('cv')) {
+                    const resumeRadio = document.querySelector('input[value="resume"]');
+                    if (resumeRadio) resumeRadio.checked = true;
+                }
+            }
         }
 
         // Populate text areas
