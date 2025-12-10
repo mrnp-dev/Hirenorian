@@ -70,6 +70,18 @@ try {
         ':organization' => $organization
     ]);
     $conn->commit();
+
+    // Create Student Account Folder
+    $baseDir = __DIR__ . '/Student Accounts/';
+    if (!file_exists($baseDir)) {
+        mkdir($baseDir, 0777, true);
+    }
+    
+    $studentDir = $baseDir . $student_number;
+    if (!file_exists($studentDir)) {
+        mkdir($studentDir, 0777, true);
+    }
+
     echo json_encode([
         "status" => "success",
         "message" => "Student registered successfully",
