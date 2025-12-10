@@ -153,38 +153,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // TODO: Add API call to update the experience entry
-            console.log('Updating experience entry:', {
-                exp_id: expId,
-                job_title: jobTitle,
-                company_name: company,
-                start_date: startDate,
-                end_date: endDate,
-                description: description
-            });
+            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/update_experience_bg.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    exp_id: expId,
+                    job_title: jobTitle,
+                    company: company,
+                    start_year: startDate,
+                    end_year: endDate,
+                    description: description
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        // Update the DOM
+                        const timelineItem = document.querySelector(`.timeline-item[data-exp-id="${expId}"]`);
+                        if (timelineItem) {
+                            timelineItem.querySelector('h3').textContent = jobTitle;
+                            timelineItem.querySelector('.institution').textContent = company;
+                            timelineItem.querySelector('.date').textContent = `${startDate} - ${endDate}`;
+                            timelineItem.querySelector('.description').textContent = description;
 
-            // Update the DOM
-            const timelineItem = document.querySelector(`.timeline-item[data-exp-id="${expId}"]`);
-            if (timelineItem) {
-                timelineItem.querySelector('h3').textContent = jobTitle;
-                timelineItem.querySelector('.institution').textContent = company;
-                timelineItem.querySelector('.date').textContent = `${startDate} - ${endDate}`;
-                timelineItem.querySelector('.description').textContent = description;
+                            // Update data attributes on the edit button
+                            const editBtn = timelineItem.querySelector('.edit-experience-btn');
+                            if (editBtn) {
+                                editBtn.dataset.jobTitle = jobTitle;
+                                editBtn.dataset.company = company;
+                                editBtn.dataset.startDate = startDate;
+                                editBtn.dataset.endDate = endDate;
+                                editBtn.dataset.description = description;
+                            }
+                        }
 
-                // Update data attributes on the edit button
-                const editBtn = timelineItem.querySelector('.edit-experience-btn');
-                editBtn.dataset.jobTitle = jobTitle;
-                editBtn.dataset.company = company;
-                editBtn.dataset.startDate = startDate;
-                editBtn.dataset.endDate = endDate;
-                editBtn.dataset.description = description;
-            }
+                        // Close modal
+                        closeModal(editExperienceModal);
 
-            // Close modal
-            closeModal(editExperienceModal);
-
-            // Show success message
-            alert('Experience entry updated successfully!');
+                        // Show success message
+                        ToastSystem.show('Experience entry updated successfully', "success");
+                    } else {
+                        ToastSystem.show('Failed to update experience entry', "error");
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    ToastSystem.show('Network error', "error");
+                });
         });
     }
 
