@@ -234,6 +234,130 @@
         </main>
     </div>
 
+    <!-- Job Posting Modal -->
+    <div class="job-post-modal-overlay" id="jobPostModalOverlay" style="display: none;">
+        <div class="job-post-modal">
+            <form id="jobPostForm" class="job-post-form">
+                <!-- Mode Indicator -->
+                <div class="modal-mode-indicator" id="modalModeIndicator" style="display: none;">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span id="modalModeText">Editing: <strong id="editingJobTitle"></strong></span>
+                </div>
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <div class="job-title-input-group">
+                        <input type="text" id="jobTitleInput" name="jobTitle" placeholder="Job title" required>
+                        <p class="error-message" id="jobTitleError"></p>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-modal btn-cancel" id="btnCancelModal">
+                            <i class="fa-solid fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn-modal btn-post" id="btnPostJob">
+                            <i class="fa-solid fa-check"></i> <span id="submitBtnText">Post</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Job Details Row -->
+                <div class="job-details-row">
+                    <div class="input-group">
+                        <label for="locationInput">Location</label>
+                        <input type="text" id="locationInput" name="location" placeholder="Location" required>
+                        <p class="error-message" id="locationError"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="workTypeSelect">Type of work</label>
+                        <select id="workTypeSelect" name="workType" required>
+                            <option value="">Select work type...</option>
+                            <!-- Populated by JavaScript -->
+                        </select>
+                        <p class="error-message" id="workTypeError"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="applicantLimitInput">Applicant Limit</label>
+                        <input type="number" id="applicantLimitInput" name="applicantLimit" placeholder="1/20" min="1"
+                            max="99" required>
+                        <p class="error-message" id="applicantLimitError"></p>
+                    </div>
+                </div>
+
+                <!-- Work Tags Section -->
+                <div class="work-tags-section">
+                    <div class="tags-header">
+                        <label>Work Tags</label>
+                        <span class="tag-counter" id="tagCounter">Selected: 0/3</span>
+                    </div>
+                    <div class="category-selector">
+                        <select id="categorySelect" name="category">
+                            <option value="">Select a category...</option>
+                            <!-- Populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="tags-container" id="tagsContainer">
+                        <p class="tag-placeholder">Please select a category to view available tags</p>
+                    </div>
+                    <p class="error-message" id="tagsError"></p>
+                </div>
+
+                <!-- Required Documents Section -->
+                <div class="documents-section">
+                    <label>Require Documents</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="requiredDocument" value="resume" checked>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">Resume/ CV</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="requiredDocument" value="cover-letter">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">Cover Letter</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="requiredDocument" value="none">
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">None</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Job Description -->
+                <div class="textarea-group">
+                    <label for="jobDescriptionTextarea">Job Description</label>
+                    <textarea id="jobDescriptionTextarea" name="jobDescription" rows="6"
+                        placeholder="Type something here...." required></textarea>
+                    <p class="error-message" id="jobDescriptionError"></p>
+                </div>
+
+                <!-- Responsibilities -->
+                <div class="textarea-group">
+                    <label for="responsibilitiesTextarea">Responsibilities</label>
+                    <textarea id="responsibilitiesTextarea" name="responsibilities" rows="6"
+                        placeholder="Type something here...." required></textarea>
+                    <p class="error-message" id="responsibilitiesError"></p>
+                </div>
+
+                <!-- Qualification -->
+                <div class="textarea-group">
+                    <label for="qualificationTextarea">Qualification</label>
+                    <textarea id="qualificationTextarea" name="qualification" rows="6"
+                        placeholder="Type something here...." required></textarea>
+                    <p class="error-message" id="qualificationError"></p>
+                </div>
+
+                <!-- Skills -->
+                <div class="textarea-group">
+                    <label for="skillsTextarea">Skills</label>
+                    <textarea id="skillsTextarea" name="skills" rows="6" placeholder="Type something here...."
+                        required></textarea>
+                    <p class="error-message" id="skillsError"></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/job_listing.js"></script>
 </body>

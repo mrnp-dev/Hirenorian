@@ -222,6 +222,16 @@
                     <span class="page-path">Company Pages/.../job_listing.php</span>
                     <span class="badge badge-company">Jobs</span>
                 </a>
+                <a href="Company Pages/Company Edit Profile Page/php/edit_company_profile.php" class="page-link">
+                    <span class="page-name">Edit Company Profile</span>
+                    <span class="page-path">Company Pages/.../edit_company_profile.php</span>
+                    <span class="badge badge-company">Edit Profile</span>
+                </a>
+                <a href="Company Pages/Applicant's Profile Page/php/applicant_profile.php" class="page-link">
+                    <span class="page-name">Applicant Profile</span>
+                    <span class="page-path">Company Pages/.../applicant_profile.php</span>
+                    <span class="badge badge-company">Applicant</span>
+                </a>
                 <a href="Company Pages/Help Page/php/help.php" class="page-link">
                     <span class="page-name">Help Page</span>
                     <span class="page-path">Company Pages/.../help.php</span>

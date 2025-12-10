@@ -154,23 +154,32 @@
 /* Info Card */
 .info-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    /* Changed from center to handle multi-line text */
     gap: 12px;
     margin-bottom: 15px;
     color: #555;
     font-size: 0.95rem;
 }
 
-.info-item:last-child {
-    margin-bottom: 0;
+.info-item span {
+    flex: 1;
+    /* Take available space */
+    min-width: 0;
+    /* Allow shrinking below content size */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    /* Ensure long words wrap */
 }
 
+/* Add margin to icon for better alignment with text when wrapping */
 .info-item i {
     color: var(--secondary-yellow);
-    /* Gold icons */
     width: 20px;
     text-align: center;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    margin-top: 3px;
 }
 
 /* Skills Card */

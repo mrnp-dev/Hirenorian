@@ -1,7 +1,6 @@
 <?php
 session_start();
-if(isset($_SESSION['email']))
-{
+if (isset($_SESSION['email'])) {
     $student_email = $_SESSION['email'];
     echo "<script>console.log('Student Email: " . $student_email . "');</script>";
     $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
@@ -17,9 +16,7 @@ if(isset($_SESSION['email']))
     $response = curl_exec($ch);
     if ($response === false) {
         die("Curl error: " . curl_error($ch));
-    }
-    else
-    {
+    } else {
         echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
 
     }
@@ -44,6 +41,7 @@ if(isset($_SESSION['email']))
         $last_name      = $basic_info['last_name'];
         $middle_initial = $basic_info['middle_initial'];
         $suffix         = $basic_info['suffix'];
+        $personal_email = $basic_info['personal_email'] ?? "Not Provided";
         $phone_number   = $basic_info['phone_number'];
         $student_email  = $basic_info['student_email'];
 
@@ -73,6 +71,7 @@ else
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -84,16 +83,18 @@ else
     <link rel="stylesheet" href="../../Student Dashboard Page/css/topbar.css">
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="../css/profile.css">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                <a href="../../../Landing Page/php/landing_page.php"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                     <span class="logo-text">Hirenorian</span>
                 </a>
@@ -148,9 +149,9 @@ else
                                 <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture" class="profile-avatar">
                             </div>
                             <div class="profile-info">
-                                <h1 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></h1>
+                                <h1 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . " " : "") . $last_name . " " . $suffix); ?></h1>
                                 <p class="profile-headline"><?php echo htmlspecialchars($course); ?> Student at <?php echo htmlspecialchars($university); ?></p>
-                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> <?php echo htmlspecialchars($location); ?></p>
+                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> <?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: #999;">Not Specified</em>'; ?></p>
                             </div>
                             <div class="profile-actions">
                                 <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-primary">
@@ -168,11 +169,15 @@ else
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span><?php echo htmlspecialchars($student_email); ?></span>
+                                    <span><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-envelope-open-text"></i>
+                                    <span><?php echo !empty($student_email) ? htmlspecialchars($student_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span><?php echo htmlspecialchars($phone_number); ?></span>
+                                    <span><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></span>
                                 </div>
                             </div>
 
@@ -180,33 +185,46 @@ else
                             <div class="card skills-card">
                                 <h3>Skills</h3>
                                 <?php 
-                                // Group skills by category if desired, or just list them all.
-                                // Here assuming we just list them by category dynamically or simply all under one if simplified.
-                                // Let's group them by category for better display.
-                                $skills_by_category = [];
+                                // Group skills by category
+                                $technical_skills = [];
+                                $soft_skills = [];
+                                
                                 if (!empty($skills_list)) {
                                     foreach ($skills_list as $skill) {
-                                        $skills_by_category[$skill['skill_category']][] = $skill['skill_name'];
+                                        if ($skill['skill_category'] === 'Technical') {
+                                            $technical_skills[] = $skill['skill_name'];
+                                        } elseif (stripos($skill['skill_category'], 'Soft') !== false) {
+                                            $soft_skills[] = $skill['skill_name'];
+                                        }
                                     }
                                 }
-                                
-                                if (!empty($skills_by_category)): 
-                                    foreach ($skills_by_category as $category => $skills):
                                 ?>
+                                
                                 <div class="skill-category">
-                                    <h4><?php echo htmlspecialchars($category ?? 'General'); ?></h4>
+                                    <h4>Technical</h4>
                                     <div class="tags">
-                                        <?php foreach ($skills as $skill_name): ?>
-                                            <span><?php echo htmlspecialchars($skill_name); ?></span>
-                                        <?php endforeach; ?>
+                                        <?php if (!empty($technical_skills)): ?>
+                                            <?php foreach ($technical_skills as $skill): ?>
+                                                <span><?php echo htmlspecialchars($skill); ?></span>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <span style="color: #999; font-style: italic;">No technical skills added</span>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                                <?php 
-                                    endforeach;
-                                else:
-                                ?>
-                                    <p class="text-muted">No skills added yet.</p>
-                                <?php endif; ?>
+                                
+                                <div class="skill-category">
+                                    <h4>Soft Skills</h4>
+                                    <div class="tags">
+                                        <?php if (!empty($soft_skills)): ?>
+                                            <?php foreach ($soft_skills as $skill): ?>
+                                                <span><?php echo htmlspecialchars($skill); ?></span>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <span style="color: #999; font-style: italic;">No soft skills added</span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -288,4 +306,5 @@ else
 
     <script src="../js/profile.js"></script>
 </body>
+
 </html>

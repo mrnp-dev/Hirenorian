@@ -198,6 +198,55 @@ document.addEventListener('DOMContentLoaded', () => {
     let batchMode = false; // Track if in batch selection mode
 
     // ========================================
+    // STATE PERSISTENCE
+    // ========================================
+    function saveState() {
+        const state = {
+            selectedJobId,
+            currentFilter,
+            searchTerm
+        };
+        sessionStorage.setItem('jobListingState', JSON.stringify(state));
+    }
+
+    function loadState() {
+        const savedState = sessionStorage.getItem('jobListingState');
+        if (savedState) {
+            try {
+                const state = JSON.parse(savedState);
+
+                // Validate if job ID still exists in our current data
+                if (state.selectedJobId) {
+                    const jobExists = jobPostsData.some(j => j.id === state.selectedJobId);
+                    if (jobExists) {
+                        selectedJobId = state.selectedJobId;
+                    }
+                }
+
+                if (state.currentFilter) currentFilter = state.currentFilter;
+                if (state.searchTerm !== undefined) searchTerm = state.searchTerm;
+
+                // Sync UI elements
+                if (jobTitleSelect) jobTitleSelect.value = selectedJobId || "";
+                if (searchInput) searchInput.value = searchTerm;
+
+                if (filterPills) {
+                    filterPills.forEach(pill => {
+                        if (pill.dataset.status === currentFilter) {
+                            pill.classList.add('active');
+                        } else {
+                            pill.classList.remove('active');
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error("Error loading state:", e);
+                sessionStorage.removeItem('jobListingState');
+            }
+        }
+    }
+
+    // ========================================
     // DOM ELEMENTS
     // ========================================
     const jobTitleSelect = document.getElementById('jobTitleSelect');
@@ -330,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="cell name-cell">
                     <div class="applicant-avatar">${initials}</div>
-                    <span class="applicant-name">${applicant.name}</span>
+                    <a href="../../Applicant's Profile Page/php/applicant_profile.php?id=${applicant.id}" class="applicant-name-link" style="text-decoration:none; color:inherit; font-weight:600;">${applicant.name}</a>
                 </div>
                 <div class="cell course-cell">${applicant.course}</div>
        <div class="cell document-cell">
@@ -473,6 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchTerm = e.target.value;
+            saveState();
             updateDisplay();
         });
     }
@@ -491,6 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentFilter = pill.dataset.status;
 
                 // Update display
+                saveState();
                 updateDisplay();
             });
         });
@@ -642,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
         jobTitleSelect.addEventListener('change', (e) => {
             selectedJobId = e.target.value ? parseInt(e.target.value) : null;
             clearSelection(); // Clear any selections when changing jobs
+            saveState();
             updateDisplay();
         });
     }
@@ -655,8 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAdd) {
         btnAdd.addEventListener('click', () => {
-            // TODO: Show modal for adding new job post
-            console.log('Add button clicked - Modal to be implemented');
+            openJobPostModal();
         });
     }
 
@@ -669,8 +720,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnEdit) {
         btnEdit.addEventListener('click', () => {
-            // TODO: Show modal for editing job post
-            console.log('Edit button clicked - Modal to be implemented');
+            const selectedJobId = jobTitleSelect.value;
+
+            if (!selectedJobId) {
+                alert('Please select a job post to edit');
+                return;
+            }
+
+            // Get the selected job post data
+            const selectedJob = jobPostsData.find(job => job.id.toString() === selectedJobId);
+
+            if (!selectedJob) {
+                console.error('Job not found');
+                return;
+            }
+
+            // Create mock data for edit (using actual job title from dropdown)
+            // For testing, using random values for other fields as requested
+            const mockJobData = {
+                jobId: selectedJob.id,
+                jobTitle: selectedJob.title, // Actual job title from dropdown
+                location: "Manila, Philippines", // Mock data
+                workType: "Full-time", // Mock data
+                applicantLimit: 15, // Mock data
+                category: "Technology & Digital", // Mock data
+                workTags: ["Software Development", "Web Development", "Cloud Computing"], // Mock data
+                requiredDocument: "resume", // Mock data
+                jobDescription: "We are looking for an experienced professional to join our growing team. This is an exciting opportunity to work on cutting-edge projects with a collaborative team of experts.", // Mock data
+                responsibilities: "• Lead project development and implementation\n• Collaborate with cross-functional teams\n• Mentor junior team members\n• Ensure code quality and best practices", // Mock data
+                qualification: "• Bachelor's degree in relevant field\n• 5+ years of experience\n• Strong problem-solving skills\n• Excellent communication abilities", // Mock data
+                skills: "• Technical expertise in relevant technologies\n• Leadership and team management\n• Agile/Scrum methodology\n• Strong analytical skills", // Mock data 
+                status: selectedJob.status,
+                views: selectedJob.views
+            };
+
+            // Open modal in edit mode
+            openJobPostModal('edit', mockJobData);
         });
     }
 
@@ -702,9 +787,548 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================
+    // JOB POSTING MODAL FUNCTIONALITY
+    // ========================================
+
+    let categoriesTagsData = {};
+    let workTypesData = [];
+    let selectedTags = [];
+    const MAX_TAGS = 3;
+
+    // Modal Mode Management
+    let modalMode = 'add'; // 'add' or 'edit'
+    let currentEditingJobId = null;
+
+    // DOM Elements for Modal
+    const jobPostModalOverlay = document.getElementById('jobPostModalOverlay');
+    const jobPostForm = document.getElementById('jobPostForm');
+    const btnCancelModal = document.getElementById('btnCancelModal');
+    const categorySelect = document.getElementById('categorySelect');
+    const tagsContainer = document.getElementById('tagsContainer');
+    const tagCounter = document.getElementById('tagCounter');
+    const modalModeIndicator = document.getElementById('modalModeIndicator');
+    const editingJobTitle = document.getElementById('editingJobTitle');
+    const submitBtnText = document.getElementById('submitBtnText');
+
+    // Fetch Categories and Tags Data
+    async function fetchCategoriesAndTags() {
+        try {
+            const response = await fetch('../json/categories_tags.json');
+            categoriesTagsData = await response.json();
+            populateCategoryDropdown();
+        } catch (error) {
+            console.error('Error fetching categories and tags:', error);
+        }
+    }
+
+    // Fetch Work Types Data
+    async function fetchWorkTypes() {
+        try {
+            const response = await fetch('../json/work_types.json');
+            workTypesData = await response.json();
+            populateWorkTypesDropdown();
+        } catch (error) {
+            console.error('Error fetching work types:', error);
+        }
+    }
+
+    // Populate Category Dropdown
+    function populateCategoryDropdown() {
+        if (!categorySelect) return;
+
+        categorySelect.innerHTML = '<option value="">Select a category...</option>';
+
+        Object.keys(categoriesTagsData).forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            categorySelect.appendChild(option);
+        });
+    }
+
+    // Populate Work Types Dropdown
+    function populateWorkTypesDropdown() {
+        const workTypeSelect = document.getElementById('workTypeSelect');
+        if (!workTypeSelect) return;
+
+        workTypeSelect.innerHTML = '<option value="">Select work type...</option>';
+
+        workTypesData.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            workTypeSelect.appendChild(option);
+        });
+    }
+
+    // Open Job Post Modal
+    function openJobPostModal(mode = 'add', jobData = null) {
+        if (jobPostModalOverlay) {
+            modalMode = mode;
+
+            jobPostModalOverlay.style.display = 'flex';
+            jobPostModalOverlay.classList.remove('closing');
+            resetJobPostForm();
+
+            // Update UI based on mode
+            if (mode === 'edit' && jobData) {
+                currentEditingJobId = jobData.jobId;
+
+                // Show mode indicator
+                if (modalModeIndicator) {
+                    modalModeIndicator.style.display = 'flex';
+                    if (editingJobTitle) {
+                        editingJobTitle.textContent = jobData.jobTitle;
+                    }
+                }
+
+                // Change button text
+                if (submitBtnText) {
+                    submitBtnText.textContent = 'Update';
+                }
+
+                // Populate form
+                populateFormForEdit(jobData);
+            } else {
+                // Add mode - hide indicator
+                if (modalModeIndicator) {
+                    modalModeIndicator.style.display = 'none';
+                }
+
+                // Reset button text
+                if (submitBtnText) {
+                    submitBtnText.textContent = 'Post';
+                }
+
+                currentEditingJobId = null;
+            }
+
+            // Fetch data if not already loaded
+            if (Object.keys(categoriesTagsData).length === 0) {
+                fetchCategoriesAndTags();
+            }
+            if (workTypesData.length === 0) {
+                fetchWorkTypes();
+            }
+        }
+    }
+
+    // Populate Form for Edit Mode
+    function populateFormForEdit(jobData) {
+        // Populate job title
+        const jobTitleInput = document.getElementById('jobTitleInput');
+        if (jobTitleInput) jobTitleInput.value = jobData.jobTitle || '';
+
+        // Populate location
+        const locationInput = document.getElementById('locationInput');
+        if (locationInput) locationInput.value = jobData.location || '';
+
+        // Populate work type
+        const workTypeSelect = document.getElementById('workTypeSelect');
+        if (workTypeSelect && jobData.workType) {
+            // Wait for options to load
+            setTimeout(() => {
+                workTypeSelect.value = jobData.workType;
+            }, 100);
+        }
+
+        // Populate applicant limit
+        const applicantLimitInput = document.getElementById('applicantLimitInput');
+        if (applicantLimitInput) applicantLimitInput.value = jobData.applicantLimit || '';
+
+        // Populate category and tags
+        if (jobData.category && jobData.workTags) {
+            setTimeout(() => {
+                // Set category
+                if (categorySelect) {
+                    categorySelect.value = jobData.category;
+                    // Trigger change event to render tags
+                    const event = new Event('change');
+                    categorySelect.dispatchEvent(event);
+
+                    // Select tags after they're rendered
+                    setTimeout(() => {
+                        selectedTags = [...jobData.workTags];
+                        const tagPills = document.querySelectorAll('.tag-pill');
+                        tagPills.forEach(pill => {
+                            const tagName = pill.dataset.tag;
+                            if (selectedTags.includes(tagName)) {
+                                pill.classList.add('selected');
+                            }
+                        });
+
+                        // Disable non-selected tags if max reached
+                        if (selectedTags.length >= MAX_TAGS) {
+                            document.querySelectorAll('.tag-pill:not(.selected)').forEach(pill => {
+                                pill.classList.add('disabled');
+                            });
+                        }
+
+                        updateTagCounter();
+                    }, 200);
+                }
+            }, 150);
+        }
+
+        // Populate required document
+        if (jobData.requiredDocument) {
+            const docRadios = document.getElementsByName('requiredDocument');
+            docRadios.forEach(radio => {
+                if (radio.value === jobData.requiredDocument) {
+                    radio.checked = true;
+                }
+            });
+        }
+
+        // Populate text areas
+        const jobDescriptionTextarea = document.getElementById('jobDescriptionTextarea');
+        if (jobDescriptionTextarea) jobDescriptionTextarea.value = jobData.jobDescription || '';
+
+        const responsibilitiesTextarea = document.getElementById('responsibilitiesTextarea');
+        if (responsibilitiesTextarea) responsibilitiesTextarea.value = jobData.responsibilities || '';
+
+        const qualificationTextarea = document.getElementById('qualificationTextarea');
+        if (qualificationTextarea) qualificationTextarea.value = jobData.qualification || '';
+
+        const skillsTextarea = document.getElementById('skillsTextarea');
+        if (skillsTextarea) skillsTextarea.value = jobData.skills || '';
+    }
+
+    // Close Job Post Modal
+    function closeJobPostModal() {
+        if (jobPostModalOverlay) {
+            jobPostModalOverlay.classList.add('closing');
+            setTimeout(() => {
+                jobPostModalOverlay.style.display = 'none';
+                jobPostModalOverlay.classList.remove('closing');
+            }, 300);
+        }
+    }
+
+    // Reset Job Post Form
+    function resetJobPostForm() {
+        if (jobPostForm) {
+            jobPostForm.reset();
+        }
+        selectedTags = [];
+        updateTagCounter();
+        clearTags();
+        clearAllErrors();
+    }
+
+    // Category Selection Handler
+    if (categorySelect) {
+        categorySelect.addEventListener('change', (e) => {
+            const selectedCategory = e.target.value;
+            if (selectedCategory && categoriesTagsData[selectedCategory]) {
+                renderTags(categoriesTagsData[selectedCategory]);
+            } else {
+                clearTags();
+            }
+            // Reset selected tags when category changes
+            selectedTags = [];
+            updateTagCounter();
+            clearError('tags');
+        });
+    }
+
+    // Render Tags
+    function renderTags(tags) {
+        if (!tagsContainer) return;
+
+        tagsContainer.innerHTML = '';
+
+        if (!tags || tags.length === 0) {
+            tagsContainer.innerHTML = '<p class="tag-placeholder">No tags available for this category</p>';
+            return;
+        }
+
+        tags.forEach(tag => {
+            const tagPill = document.createElement('div');
+            tagPill.className = 'tag-pill';
+            tagPill.textContent = tag;
+            tagPill.dataset.tag = tag;
+
+            tagPill.addEventListener('click', () => toggleTagSelection(tag, tagPill));
+
+            tagsContainer.appendChild(tagPill);
+        });
+    }
+
+    // Clear Tags
+    function clearTags() {
+        if (tagsContainer) {
+            tagsContainer.innerHTML = '<p class="tag-placeholder">Please select a category to view available tags</p>';
+        }
+    }
+
+    // Toggle Tag Selection
+    function toggleTagSelection(tag, element) {
+        const tagIndex = selectedTags.indexOf(tag);
+
+        if (tagIndex > -1) {
+            // Tag is already selected, remove it
+            selectedTags.splice(tagIndex, 1);
+            element.classList.remove('selected');
+
+            // Re-enable all tags
+            document.querySelectorAll('.tag-pill.disabled').forEach(pill => {
+                pill.classList.remove('disabled');
+            });
+        } else {
+            // Check if max limit reached
+            if (selectedTags.length >= MAX_TAGS) {
+                // Show visual feedback
+                if (tagCounter) {
+                    tagCounter.style.color = '#ef4444';
+                    setTimeout(() => {
+                        tagCounter.style.color = 'var(--secondary-yellow)';
+                    }, 500);
+                }
+                return;
+            }
+
+            // Add tag
+            selectedTags.push(tag);
+            element.classList.add('selected');
+
+            // Disable other tags if max reached
+            if (selectedTags.length >= MAX_TAGS) {
+                document.querySelectorAll('.tag-pill:not(.selected)').forEach(pill => {
+                    pill.classList.add('disabled');
+                });
+            }
+        }
+
+        updateTagCounter();
+    }
+
+    // Update Tag Counter
+    function updateTagCounter() {
+        if (tagCounter) {
+            tagCounter.textContent = `Selected: ${selectedTags.length}/${MAX_TAGS}`;
+        }
+    }
+
+    // Form Validation
+    function validateJobPostForm() {
+        let isValid = true;
+
+        // Job Title
+        const jobTitle = document.getElementById('jobTitleInput').value.trim();
+        if (!jobTitle) {
+            showError('jobTitle', 'Job title is required');
+            isValid = false;
+        }
+
+        // Location
+        const location = document.getElementById('locationInput').value.trim();
+        if (!location) {
+            showError('location', 'Location is required');
+            isValid = false;
+        }
+
+        // Work Type
+        const workType = document.getElementById('workTypeSelect').value;
+        if (!workType) {
+            showError('workType', 'Work type is required');
+            isValid = false;
+        }
+
+        // Applicant Limit
+        const applicantLimit = document.getElementById('applicantLimitInput').value;
+        if (!applicantLimit || applicantLimit < 1) {
+            showError('applicantLimit', 'Applicant limit must be at least 1');
+            isValid = false;
+        }
+
+        // Work Tags (minimum 1)
+        if (selectedTags.length < 1) {
+            showError('tags', 'Please select at least 1 work tag');
+            isValid = false;
+        }
+
+        // Job Description
+        const jobDescription = document.getElementById('jobDescriptionTextarea').value.trim();
+        if (!jobDescription) {
+            showError('jobDescription', 'Job description is required');
+            isValid = false;
+        }
+
+        // Responsibilities
+        const responsibilities = document.getElementById('responsibilitiesTextarea').value.trim();
+        if (!responsibilities) {
+            showError('responsibilities', 'Responsibilities are required');
+            isValid = false;
+        }
+
+        // Qualification
+        const qualification = document.getElementById('qualificationTextarea').value.trim();
+        if (!qualification) {
+            showError('qualification', 'Qualification is required');
+            isValid = false;
+        }
+
+        // Skills
+        const skills = document.getElementById('skillsTextarea').value.trim();
+        if (!skills) {
+            showError('skills', 'Skills are required');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Show Error
+    function showError(fieldName, message) {
+        const errorElement = document.getElementById(`${fieldName}Error`);
+        const inputElement = document.getElementById(`${fieldName}Input`) ||
+            document.getElementById(`${fieldName}Select`) ||
+            document.getElementById(`${fieldName}Textarea`);
+
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+        }
+
+        if (inputElement) {
+            inputElement.classList.add('error');
+        }
+    }
+
+    // Clear Error
+    function clearError(fieldName) {
+        const errorElement = document.getElementById(`${fieldName}Error`);
+        const inputElement = document.getElementById(`${fieldName}Input`) ||
+            document.getElementById(`${fieldName}Select`) ||
+            document.getElementById(`${fieldName}Textarea`);
+
+        if (errorElement) {
+            errorElement.classList.remove('show');
+            errorElement.textContent = '';
+        }
+
+        if (inputElement) {
+            inputElement.classList.remove('error');
+        }
+    }
+
+    // Clear All Errors
+    function clearAllErrors() {
+        document.querySelectorAll('.error-message').forEach(el => {
+            el.classList.remove('show');
+            el.textContent = '';
+        });
+        document.querySelectorAll('.error').forEach(el => {
+            el.classList.remove('error');
+        });
+    }
+
+    // Add input event listeners to clear errors on user input
+    if (jobPostForm) {
+        const inputs = jobPostForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const fieldName = e.target.id.replace('Input', '').replace('Select', '').replace('Textarea', '');
+                clearError(fieldName);
+            });
+        });
+    }
+
+    // Form Submission Handler
+    if (jobPostForm) {
+        jobPostForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Clear previous errors
+            clearAllErrors();
+
+            // Validate form
+            if (!validateJobPostForm()) {
+                return;
+            }
+
+            // Collect form data
+            const formData = {
+                jobTitle: document.getElementById('jobTitleInput').value.trim(),
+                location: document.getElementById('locationInput').value.trim(),
+                workType: document.getElementById('workTypeSelect').value,
+                applicantLimit: parseInt(document.getElementById('applicantLimitInput').value),
+                category: document.getElementById('categorySelect').value,
+                workTags: [...selectedTags],
+                requiredDocument: document.querySelector('input[name="requiredDocument"]:checked').value,
+                jobDescription: document.getElementById('jobDescriptionTextarea').value.trim(),
+                responsibilities: document.getElementById('responsibilitiesTextarea').value.trim(),
+                qualification: document.getElementById('qualificationTextarea').value.trim(),
+                skills: document.getElementById('skillsTextarea').value.trim(),
+                datePosted: new Date().toISOString(),
+                status: 'active',
+                views: 0
+            };
+
+            // Check mode and handle accordingly
+            if (modalMode === 'edit') {
+                // Add job ID for update
+                formData.jobId = currentEditingJobId;
+
+                // Log update data for now (backend integration point)
+                console.log('=== JOB POST UPDATE ===');
+                console.log('Updating Job ID:', currentEditingJobId);
+                console.log('Updated Job Data:', formData);
+
+                // TODO: Send update to backend
+                // fetch(`/api/job-posts/${currentEditingJobId}`, { 
+                //     method: 'PUT', 
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(formData) 
+                // })
+
+                alert('Job post updated successfully! (Backend integration pending)');
+            } else {
+                // Add mode - Log create data for now (backend integration point)
+                console.log('=== NEW JOB POST ===');
+                console.log('Job Posting Data:', formData);
+
+                // TODO: Send data to backend
+                // fetch('/api/job-posts', { 
+                //     method: 'POST', 
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify(formData) 
+                // })
+
+                alert('Job post created successfully! (Backend integration pending)');
+            }
+
+            closeJobPostModal();
+        });
+    }
+
+    // Cancel Button Handler
+    if (btnCancelModal) {
+        btnCancelModal.addEventListener('click', closeJobPostModal);
+    }
+
+    // Close modal when clicking outside
+    if (jobPostModalOverlay) {
+        jobPostModalOverlay.addEventListener('click', (e) => {
+            if (e.target === jobPostModalOverlay) {
+                closeJobPostModal();
+            }
+        });
+    }
+
+    // Close modal with ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && jobPostModalOverlay && jobPostModalOverlay.style.display === 'flex') {
+            closeJobPostModal();
+        }
+    });
+
+    // ========================================
     // INITIALIZATION
     // ========================================
     populateJobDropdown();
+    loadState();
     updateDisplay();
 
     console.log('Job Listing Page Loaded Successfully!');
