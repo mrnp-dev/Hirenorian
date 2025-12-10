@@ -9,7 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../AdminStudentManagement/css/dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">
@@ -20,12 +20,12 @@
                     <span>Hirenorian</span>
                 </a>
             </div>
-            <nav class="sidebar-nav">
-                <a href="dashboard.php" class="nav-item active">
+            <nav class="sidebar-nav">   
+                <a href="../../AdminDashboard/php/dashboard.php" class="nav-item active">
                     <i class="fa-solid fa-table-columns"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="student_management.php" class="nav-item">
+                <a href="../../AdminStudentManagement/php/student_management.php" class="nav-item">
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Management</span>
                 </a>

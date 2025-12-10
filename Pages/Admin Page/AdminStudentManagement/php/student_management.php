@@ -1,3 +1,8 @@
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
+
+
 <?php
 
 session_start();
@@ -46,7 +51,7 @@ if ($data && isset($data['status'])) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../AdminStudentManagement/css/dashboard.css">
 </head>
 
 <body>
@@ -59,7 +64,7 @@ if ($data && isset($data['status'])) {
                 </a>
             </div>
             <nav class="sidebar-nav">
-                <a href="dashboard.php" class="nav-item">
+                <a href="../../AdminDashboard/php/dashboard.php" class="nav-item">
                     <i class="fa-solid fa-table-columns"></i>
                     <span>Dashboard</span>
                 </a>
@@ -97,7 +102,7 @@ if ($data && isset($data['status'])) {
                         <button class="add-new-btn"><i class="fa-solid fa-plus"></i> Add New Student</button>
                     </div>
 
-                    <table class="crud-table">
+                    <table class="crud-table" id="datatableid">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -108,7 +113,8 @@ if ($data && isset($data['status'])) {
                                 <th>Campus</th>
                                 <th>Department</th>
                                 <th>School Email</th>
-                                <th>Status</th>
+                                <th>Activation Status</th>
+                                <th>Account Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -123,36 +129,16 @@ if ($data && isset($data['status'])) {
                                     <td><?= $student['department'] ?></td>
                                     <td><?= $student['course'] ?></td>
                                     <td><?= $student['student_email'] ?></td>
-                                    <td><span class="status verified">Verified</span></td>
+                                    <td><button type="button" class="status verified activation-btn">Verified</button></td>
+                                    <td><span class="">deactivated</span></td>
                                     <td class="action-buttons">
-                                        <button class="action-btn edit-btn" title="Edit" href="../editInfo.php"><i class="fa-solid fa-pen-to-square"></i></button>
-                                        <button class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                        <button type="button" class="action-btn edit-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
-
-                    <div class="pagination-footer">
-                        <div class="page-controls">
-                            <select class="entries-select">
-                                <option value="10">10</option>
-                                <option value="25">25</option>
-                                <option value="50">50</option>
-                            </select>
-                            <span class="display-info">Displaying 01 out of 500</span>
-                        </div>
-                        <div class="pagination-nav">
-                            <button class="nav-arrow" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                            <span class="page-number active-page">1</span>
-                            <span class="page-number">2</span>
-                            <span class="page-number">3</span>
-                            <span class="page-number">4</span>
-                            <span class="page-number">5</span>
-                            <span class="page-number">6</span>
-                            <button class="nav-arrow"><i class="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
 
                 </div>
 
@@ -160,8 +146,38 @@ if ($data && isset($data['status'])) {
         </div>
     </div>
 
-    <script src="../js/dashboard.js"></script>
-    <script src="../js/student_management.js"></script>
+    <script src="../../AdminStudentManagement/js/dashboard.js"></script>
+    <script src="../../AdminStudentManagement/js/student_management.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#datatableid').DataTable();
+        });
+    </script>
+
+    <script src="sweetalert.min.js"></script>
+    <script>
+        function submitForm(form) {
+        swal({
+            title: "Are you sure?",
+            text: "This form will be submitted",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then(function (isOkay) {
+            if (isOkay) {
+                form.submit();
+            }
+        });
+        return false;
+    }
+    </script>
 </body>
 
 </html>

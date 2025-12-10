@@ -55,7 +55,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
   <div class="form-container">
     <h2>Edit Student Record</h2>
     <form action="update_student.php" method="POST">
-      <!-- Hidden ID field -->
+
       <input type="hidden" name="id" value="<?php echo $id; ?>">
 
       <label for="firstName">First Name:</label>
