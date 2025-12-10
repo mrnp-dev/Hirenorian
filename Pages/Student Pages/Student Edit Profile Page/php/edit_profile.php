@@ -190,7 +190,7 @@ else
                             </div>
                             <div class="skills-category">
                                 <h3>Technical</h3>
-                                <div class="tags">
+                                <div class="tags" id="technical-skills-display">
                                     <?php if(!empty($tech_arr)): foreach($tech_arr as $skill): ?>
                                     <span><?php echo htmlspecialchars($skill); ?></span>
                                     <?php endforeach; else: echo "<span>No technical skills added</span>"; endif; ?>
@@ -198,7 +198,7 @@ else
                             </div>
                             <div class="skills-category">
                                 <h3>Soft Skills</h3>
-                                <div class="tags">
+                                <div class="tags" id="soft-skills-display">
                                     <?php if(!empty($soft_arr)): foreach($soft_arr as $skill): ?>
                                     <span><?php echo htmlspecialchars($skill); ?></span>
                                     <?php endforeach; else: echo "<span>No soft skills added</span>"; endif; ?>

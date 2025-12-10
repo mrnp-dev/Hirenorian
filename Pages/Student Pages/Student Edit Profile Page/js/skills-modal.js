@@ -122,11 +122,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 updateHiddenInputs();
 
-                console.log('Technical Skills:', document.getElementById('technicalSkillsData').value);
-                console.log('Soft Skills:', document.getElementById('softSkillsData').value);
+                const studentId = document.getElementsByName('student_id')[0].value;
+                const technicalSkills = document.getElementById('technicalSkillsData').value;
+                const softSkills = document.getElementById('softSkillsData').value;
 
-                // TODO: Add actual form submission logic here
-                alert('Skills updated! Form submission logic to be implemented.');
+                fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/update_skills_bg.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        studentId: studentId,
+                        technical_skills: technicalSkills,
+                        soft_skills: softSkills
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            // Update Static Display
+                            const techDisplay = document.getElementById('technical-skills-display');
+                            const softDisplay = document.getElementById('soft-skills-display');
+
+                            if (techDisplay) {
+                                const techList = technicalSkills.split(',').filter(s => s.trim() !== '');
+                                techDisplay.innerHTML = techList.length > 0
+                                    ? techList.map(skill => `<span>${skill.trim()}</span>`).join('')
+                                    : '<span>No technical skills added</span>';
+                            }
+
+                            if (softDisplay) {
+                                const softList = softSkills.split(',').filter(s => s.trim() !== '');
+                                softDisplay.innerHTML = softList.length > 0
+                                    ? softList.map(skill => `<span>${skill.trim()}</span>`).join('')
+                                    : '<span>No soft skills added</span>';
+                            }
+
+                            // Close modal
+                            if (skillsModal) closeModal(skillsModal);
+
+                            ToastSystem.show('Skills updated successfully', "success");
+                        } else {
+                            ToastSystem.show('Failed to update skills', "error");
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Fetch error:", err);
+                        ToastSystem.show('Network error', "error");
+                    });
             });
         }
     }
