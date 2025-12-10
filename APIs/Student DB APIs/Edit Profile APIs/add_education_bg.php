@@ -24,11 +24,11 @@ $query = "INSERT INTO StudentEducationHistory (student_id, degree, institution, 
         VALUES (:studentId, :degree, :institution, :start_year, :end_year)";
 $stmt = $conn->prepare($query);
 $stmt->execute([
-    'studentId' => $studentId,
-    'degree' => $degree,
-    'institution' => $institution,
-    'start_year' => $start_year,
-    'end_year' => $end_year
+    ':studentId' => $studentId,
+    ':degree' => $degree,
+    ':institution' => $institution,
+    ':start_year' => $start_year,
+    ':end_year' => $end_year
 ]);
 
 if ($stmt->rowCount() > 0) {

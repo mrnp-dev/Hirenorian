@@ -23,16 +23,16 @@ $end_year = $data['end_year'];
 $description = $data['description'];
 $studentId = $data['studentId'];
 
-$query = "INSERT INTO StudentExperience (student_id, job_title, company, start_year, end_year, description)
+$query = "INSERT INTO StudentExperience (student_id, job_title, company_name, start_date, end_date, description)
         VALUES (:studentId, :job_title, :company, :start_year, :end_year, :description)";
 $stmt = $conn->prepare($query);
 $stmt->execute([
-    'studentId' => $studentId,
-    'job_title' => $job_title,
-    'company' => $company,
-    'start_year' => $start_year,
-    'end_year' => $end_year,
-    'description' => $description
+    ':studentId' => $studentId,
+    ':job_title' => $job_title,
+    ':company' => $company,
+    ':start_year' => $start_year,
+    ':end_year' => $end_year,
+    ':description' => $description
 ]);
 
 if ($stmt->rowCount() > 0) {
