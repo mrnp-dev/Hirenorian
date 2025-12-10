@@ -229,9 +229,9 @@ else
                                 <h2>Account Manager</h2>
                             </div>
                             <div class="account-actions">
-                                <button class="btn-outline">Change Password</button>
-                                <button class="btn-outline">Privacy Settings</button>
+                                <button class="btn-outline" data-modal-target="#changePasswordModal">Change Password</button>
                                 <button class="btn-danger">Verify Account</button>
+
                             </div>
                         </div>
 
@@ -370,10 +370,60 @@ else
                         <label for="suffix">Suffix</label>
                         <input type="text" id="suffix" name="suffix" value="<?php echo htmlspecialchars($suffix); ?>" placeholder="e.g. Jr., III">
                     </div>
-                </div>
+                    </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
                     <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-header">
+            <h3>Change Password</h3>
+            <button class="close-modal" data-close-button>&times;</button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="POST" id="passwordForm">
+                <input type="hidden" name="student_id" id="studentIdPassword" value="<?php echo htmlspecialchars($student_id); ?>">
+                
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <div class="input-wrapper" style="position: relative;">
+                        <input type="password" id="currentPassword" name="current_password" required style="padding-right: 40px;">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <div class="input-wrapper" style="position: relative;">
+                        <input type="password" id="newPassword" name="Password" data-strength="" required style="padding-right: 40px;">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <p class="error-text" style="color: red; font-size: 0.8em; margin-top: 5px; visibility: hidden;">Error message</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <div class="input-wrapper" style="position: relative;">
+                        <input type="password" id="confirmPassword" name="Confirm Password" required style="padding-right: 40px;">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <p class="error-text" style="color: red; font-size: 0.8em; margin-top: 5px; visibility: hidden;">Error message</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-button>Cancel</button>
+                    <button type="submit" class="btn-primary">Change Password</button>
                 </div>
             </form>
         </div>
@@ -658,6 +708,7 @@ else
     <script src="../js/experience-modal.js"></script>
     <script src="../js/skills-modal.js"></script>
     <script src="../js/personal-modal.js"></script>
+    <script src="../js/password-modal.js"></script>
     
     <!-- Main entry point -->
     <script src="../js/edit_profile.js"></script>
