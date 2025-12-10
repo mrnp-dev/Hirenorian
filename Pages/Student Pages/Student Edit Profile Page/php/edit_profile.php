@@ -532,8 +532,8 @@ else
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST">
-            <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+            <form action="" method="POST" id="addExperienceForm">
+            <input type="hidden" name="student_id" id="studentIdExp" value="<?php echo htmlspecialchars($student_id); ?>">
             <div class="form-group">
                 <label for="jobTitle">Job Title / Role</label>
                 <input type="text" id="jobTitle" name="job_title" placeholder="e.g. Web Developer Intern">

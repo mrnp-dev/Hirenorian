@@ -9,6 +9,106 @@
 document.addEventListener('DOMContentLoaded', () => {
     const editExperienceModal = document.getElementById('editExperienceModal');
     const editExperienceForm = document.getElementById('editExperienceForm');
+    const addExperienceForm = document.getElementById('addExperienceForm');
+    const addExperienceModal = document.getElementById('addExperienceModal');
+
+    // Handle Add Experience Form Submission
+    if (addExperienceForm) {
+        addExperienceForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const studentId = document.getElementById('studentIdExp').value;
+            const jobTitle = addExperienceForm.querySelector('#jobTitle').value.trim();
+            const company = addExperienceForm.querySelector('#company').value.trim();
+            const startYear = addExperienceForm.querySelector('#expStartDate').value.trim();
+            const endYear = addExperienceForm.querySelector('#expEndDate').value.trim();
+            const description = addExperienceForm.querySelector('#description').value.trim();
+
+            if (!jobTitle || !company || !startYear || !endYear) {
+                ToastSystem.show('Please fill in required fields', 'warning');
+                return;
+            }
+
+            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/add_experience_bg.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    studentId,
+                    job_title: jobTitle,
+                    company,
+                    start_year: startYear,
+                    end_year: endYear,
+                    description: description
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        ToastSystem.show('Experience added successfully', "success");
+                        if (addExperienceModal) closeModal(addExperienceModal);
+
+                        // SPA Update: Add new item to timeline
+                        const timeline = document.querySelector('.experience-section .timeline');
+                        if (timeline) {
+                            // Check if it was empty state
+                            if (timeline.querySelector('p') && timeline.querySelector('p').textContent.includes('No experience')) {
+                                timeline.innerHTML = '';
+                            }
+
+                            const newExpId = data.exp_id || Date.now();
+
+                            const newItem = document.createElement('div');
+                            newItem.className = 'timeline-item';
+                            newItem.setAttribute('data-exp-id', newExpId);
+
+                            // Create HTML structure for new item
+                            newItem.innerHTML = `
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <div class="timeline-info">
+                                        <h3>${jobTitle}</h3>
+                                        <p class="institution">${company}</p>
+                                        <p class="date">${startYear} - ${endYear}</p>
+                                        <p class="description">${description || ''}</p>
+                                    </div>
+                                    <div class="timeline-actions">
+                                        <button class="icon-btn-sm edit-experience-btn" 
+                                            data-exp-id="${newExpId}"
+                                            data-job-title="${jobTitle}"
+                                            data-company="${company}"
+                                            data-start-date="${startYear}"
+                                            data-end-date="${endYear}"
+                                            data-description="${description || ''}">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                        <button class="icon-btn-sm delete-experience-btn" 
+                                            data-exp-id="${newExpId}">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                            // Append to timeline
+                            timeline.appendChild(newItem);
+
+                            // Clean form inputs
+                            addExperienceForm.reset();
+                        }
+                    } else {
+                        ToastSystem.show('Failed to add experience', "error");
+                    }
+                })
+                .catch(err => {
+                    console.error("Fetch error:", err);
+                    ToastSystem.show('Network error', "error");
+                });
+        });
+    }
 
     // Handle Edit Experience Button Click
     document.addEventListener('click', (e) => {
