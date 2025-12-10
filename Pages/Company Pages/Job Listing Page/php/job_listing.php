@@ -166,6 +166,11 @@ if (isset($_SESSION['email'])) {
                                     <i class="fa-solid fa-times"></i>
                                     Close Post
                                 </button>
+                                <button class="btn-action-top btn-delete-detail" id="btnDeleteDetail"
+                                    style="display: none; background: #fee2e2; color: #ef4444; border: 1px solid #fecaca;">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete Post
+                                </button>
                             </div>
                         </div>
 

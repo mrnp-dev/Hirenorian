@@ -54,7 +54,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     title: job.title,
                     location: job.location,
                     datePosted: job.datePosted,
-                    status: job.status,
+                    datePosted: job.datePosted,
+                    status: job.status, // Ensure status is mapped correctly
                     applicantLimit: job.applicantLimit,
                     currentApplicants: job.currentApplicants,
                     jobDescription: job.jobDescription
@@ -438,6 +439,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
         const acceptedApplicants = acceptedCountsCache[jobId] || 0;
         document.getElementById('detailApplicantLimit').textContent = `${acceptedApplicants}/${jobDetails.applicantLimit} Applicants`;
+
+        // ✅ HANDLE BUTTON VISIBILITY BASED ON STATUS
+        const btnEdit = document.getElementById('btnEditDetail');
+        const btnClose = document.getElementById('btnCloseDetail');
+        const btnDelete = document.getElementById('btnDeleteDetail');
+
+        // Normalize status check (backend might send 'Active'/'active')
+        const isClosed = (jobDetails.status || '').toLowerCase() === 'closed';
+
+        if (isClosed) {
+            // If closed: Hide Edit/Close, Show Delete
+            if (btnEdit) btnEdit.style.display = 'none';
+            if (btnClose) btnClose.style.display = 'none';
+            if (btnDelete) btnDelete.style.display = 'flex'; // Use flex to maintain alignment
+        } else {
+            // If active: Show Edit/Close, Hide Delete
+            if (btnEdit) btnEdit.style.display = 'flex';
+            if (btnClose) btnClose.style.display = 'flex';
+            if (btnDelete) btnDelete.style.display = 'none';
+        }
+
 
         // Map requiredDocument to readable format
         // Make case-insensitive to handle 'resume', 'Resume', 'cover-letter', 'Cover Letter', etc.
@@ -1788,21 +1810,97 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const btnCloseDetail = document.getElementById('btnCloseDetail');
     if (btnCloseDetail) {
-        btnCloseDetail.addEventListener('click', () => {
+        btnCloseDetail.addEventListener('click', async () => {
             if (!selectedJobForDetail) return;
 
-            // TODO: Backend - Close job post and reject all pending applicants
-            // fetch(`/api/company/job-posts/${selectedJobForDetail}/close`, { method: 'POST' })
+            const confirmed = confirm('Are you sure you want to CLOSE this job post?\n\nThis will REJECT all pending applicants and cannot be undone.');
 
-            const confirmed = confirm('Are you sure you want to close this job post? All pending applicants will be rejected.');
             if (confirmed) {
-                console.log(`Closing job post ID: ${selectedJobForDetail}`);
-                if (typeof ToastSystem !== 'undefined') {
-                    ToastSystem.show('Job post closed successfully! (Backend integration pending)', 'success');
-                } else {
-                    alert('Job post closed successfully! (Backend integration pending)');
+                try {
+                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/close_job_post.php", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ post_id: selectedJobForDetail })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === "success") {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show(`Job post closed! Rejected ${result.rejected_count} pending applicants.`, 'success');
+                        } else {
+                            alert(`Job post closed! Rejected ${result.rejected_count} pending applicants.`);
+                        }
+
+                        // Force refresh details to update status and UI
+                        await fetchJobDetails(selectedJobForDetail, true);
+                        await renderJobDetail(selectedJobForDetail);
+
+                        // Update lists
+                        await fetchJobPosts();
+                        await fetchAllApplicants(); // Counts changed
+                    } else {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show(result.message, 'error');
+                        } else {
+                            alert(result.message);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error closing job:', error);
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Network error.', 'error');
+                    } else {
+                        alert('Network error.');
+                    }
                 }
-                showCardView();
+            }
+        });
+    }
+
+    const btnDeleteDetail = document.getElementById('btnDeleteDetail');
+    if (btnDeleteDetail) {
+        btnDeleteDetail.addEventListener('click', async () => {
+            if (!selectedJobForDetail) return;
+
+            const confirmed = confirm('⚠️ PERMANENTLY DELETE JOB POST? ⚠️\n\nThis will remove ALL records including applicants, interviews, and statistics.\nThis action CANNOT be undone.');
+
+            if (confirmed) {
+                try {
+                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_post.php", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ post_id: selectedJobForDetail })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === "success") {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Job post deleted successfully.', 'success');
+                        } else {
+                            alert('Job post deleted successfully.');
+                        }
+
+                        // Go back to list and refresh
+                        showCardView();
+                        await fetchJobPosts();
+                        if (viewMode === 'cards') renderJobCards(jobSearchTerm);
+                    } else {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Failed to delete: ' + result.message, 'error');
+                        } else {
+                            alert('Failed to delete: ' + result.message);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error deleting job:', error);
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Network error.', 'error');
+                    } else {
+                        alert('Network error.');
+                    }
+                }
             }
         });
     }
