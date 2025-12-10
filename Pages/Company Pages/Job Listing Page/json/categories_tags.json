@@ -1,0 +1,85 @@
+{
+    "Technology & Digital": [
+        "Technology",
+        "Software Development",
+        "Cybersecurity",
+        "Data & Analytics",
+        "Artificial Intelligence / Machine Learning",
+        "Cloud Computing",
+        "IT Support & Networking",
+        "Web Development"
+    ],
+    "Media & Creative": [
+        "Media & Communications",
+        "Graphic Design",
+        "Marketing & Advertising",
+        "Content Creation",
+        "Film & Video Production",
+        "Animation & Multimedia Arts",
+        "Public Relations"
+    ],
+    "Business & Corporate": [
+        "Business Management",
+        "Finance",
+        "Human Resources",
+        "Administration & Office Support",
+        "Project Management",
+        "Consulting",
+        "Customer Service"
+    ],
+    "Education & Training": [
+        "Basic Education",
+        "Higher Education",
+        "Curriculum & Instruction",
+        "E-Learning",
+        "Academic Support"
+    ],
+    "Healthcare & Medical": [
+        "Nursing",
+        "Medical & Diagnostics",
+        "Pharmacy",
+        "Allied Health",
+        "Healthcare Support Services",
+        "Mental Health Services"
+    ],
+    "Engineering & Technical": [
+        "Civil Engineering",
+        "Electrical Engineering",
+        "Mechanical Engineering",
+        "Industrial Engineering",
+        "Architecture",
+        "Construction & Drafting"
+    ],
+    "Service & Hospitality": [
+        "Hospitality & Tourism",
+        "Food & Beverage",
+        "Retail & Sales",
+        "Personal Services",
+        "Customer Support Services"
+    ],
+    "Manufacturing & Production": [
+        "Manufacturing Operations",
+        "Quality Assurance",
+        "Supply Chain & Logistics",
+        "Warehouse & Distribution",
+        "Maintenance"
+    ],
+    "Public Sector & Non-Profit": [
+        "Government Services",
+        "Public Safety",
+        "Social Services",
+        "Non-Profit & Community Development"
+    ],
+    "Agriculture & Environment": [
+        "Agriculture & Farming",
+        "Environmental Science",
+        "Sustainability",
+        "Forestry & Fisheries"
+    ],
+    "Transportation": [
+        "Driving & Delivery",
+        "Aviation",
+        "Maritime",
+        "Vehicle Maintenance"
+    ]
+}

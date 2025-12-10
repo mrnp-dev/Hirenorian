@@ -1,3 +1,47 @@
+<?php
+session_start();
+if (isset($_SESSION['email'])) {
+    $company_email = $_SESSION['email'];
+    echo "<script>console.log('Company Email: " . $company_email . "');</script>";
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "email" => $company_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    } else {
+        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
+
+    }
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data['status'] === "success") {
+        echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
+
+    } else {
+        echo "<script>console.log('Err: " . $data['message'] . "');</script>";
+    }
+
+    $company = $data['data'][0];
+
+    // Students Table
+    $company_id = $company['company_id'];
+    $company_name = $company['company_name'];
+
+} else {
+    header("Location: ../../../Landing Page/php/landing_page.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +106,7 @@
                         <div class="user-avatar">
                             <!-- Placeholder for user image -->
                         </div>
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
