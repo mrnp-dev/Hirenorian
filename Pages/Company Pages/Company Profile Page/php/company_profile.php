@@ -193,7 +193,10 @@ if (isset($_SESSION['email'])) {
                                 <img src="" alt="Company Icon" class="company-icon" id="viewCompanyIcon">
                             </div>
                             <div class="company-main-info">
-                                <h2 class="company-name" id="viewCompanyName"><?php echo $company_name; ?></h2>
+                                <h2 class="company-name" id="viewCompanyName">
+                                    <?php echo $company_name; ?>
+                                    <span id="verificationBadge" title="Verification Status"></span>
+                                </h2>
                                 <p class="company-tagline" id="viewCompanyTagline">
                                     <?php echo $tagline ? $tagline : "No tagline provided"; ?>
                                 </p>
@@ -253,6 +256,25 @@ if (isset($_SESSION['email'])) {
                                                 <span class="stat-value"><?php echo $rejected ? $rejected : 0 ?></span>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+
+                                <!-- Account Manager Section -->
+                                <div class="card account-manager-card">
+                                    <div class="card-header">
+                                        <h3><i class="fa-solid fa-user-gear"></i> Account Manager</h3>
+                                    </div>
+                                    <div class="account-actions">
+                                        <button class="btn-account-action change-pass"
+                                            onclick="openChangePasswordModal()">
+                                            <i class="fa-solid fa-key"></i> Change Password
+                                        </button>
+                                        <?php if (strtolower($verification ?? '') !== 'verified'): ?>
+                                            <button class="btn-account-action verify-acc"
+                                                onclick="openVerifyAccountModal()">
+                                                <i class="fa-solid fa-shield-check"></i> Verify Account
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +365,7 @@ if (isset($_SESSION['email'])) {
                                             <?php foreach ($contacts as $index => $contact): ?>
                                                 <div class="contact-person-item" data-id="contact-<?php echo $index + 1; ?>">
                                                     <div class="contact-info">
-                                                        <h4><?php echo htmlspecialchars($contact['position']); ?></h4>
+                                                        <h4><?php echo htmlspecialchars($contact['contact_name']); ?></h4>
                                                         <p class="contact-position">Position:
                                                             <?php echo htmlspecialchars($contact['position']); ?>
                                                         </p>
@@ -437,7 +459,8 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                     <div class="form-group">
                                         <label><i class="fa-solid fa-envelope"></i> Email</label>
-                                        <input type="email" id="editContactEmail" value="<?php echo $company_email; ?>">
+                                        <input type="email" id="editContactEmail" value="<?php echo $company_email; ?>"
+                                            readonly style="background-color: #e9ecef; cursor: not-allowed;">
                                     </div>
                                     <div class="form-group">
                                         <label><i class="fa-solid fa-location-dot"></i> Location</label>
@@ -728,6 +751,86 @@ if (isset($_SESSION['email'])) {
     <script src="../../Company Dashboard/js/toast.js"></script>
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/company_profile.js"></script>
+
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <button class="close-modal" onclick="closeChangePasswordModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="currentPassword" placeholder="Enter current password">
+                        <i class="fa-solid fa-eye toggle-password" data-target="currentPassword"></i>
+                    </div>
+                    <small class="error-text" id="currentPasswordError"></small>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="newPassword" placeholder="Enter new password">
+                        <i class="fa-solid fa-eye toggle-password" data-target="newPassword"></i>
+                    </div>
+                    <small class="password-hint" id="passwordStrengthHint">Min 12 chars, Medium strength
+                        required.</small>
+                    <small class="error-text" id="newPasswordError"></small>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                        <i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
+                    </div>
+                    <small class="error-text" id="confirmPasswordError"></small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeChangePasswordModal()">Cancel</button>
+                <button class="btn-save" onclick="savePassword()">Save Password</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verify Account Modal -->
+    <div id="verifyAccountModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Verify Account</h3>
+                <button class="close-modal" onclick="closeVerifyAccountModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="section-text" style="margin-bottom: 20px;">Please attach the following documents to verify
+                    your account.</p>
+                <div class="form-group">
+                    <label for="docPhilJobNet">PhilJobNet Registration</label>
+                    <input type="file" id="docPhilJobNet" class="file-input-control">
+                </div>
+                <div class="form-group">
+                    <label for="docDole">DOLE Permit / Registration</label>
+                    <input type="file" id="docDole" class="file-input-control">
+                </div>
+                <div class="form-group">
+                    <label for="docBir">BIR Form 2303</label>
+                    <input type="file" id="docBir" class="file-input-control">
+                </div>
+                <div class="form-group">
+                    <label for="docMayor">Mayor's Permit</label>
+                    <input type="file" id="docMayor" class="file-input-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeVerifyAccountModal()">Cancel</button>
+                <button class="btn-save" onclick="submitVerifyDocuments()">Submit Documents</button>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
