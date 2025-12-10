@@ -170,6 +170,7 @@ if (isset($_SESSION['email'])) {
                 </div>
                 <input type="hidden" name="company_id" id="company_id"
                     value="<?php echo htmlspecialchars($company_id); ?>">
+                <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
                 <!-- Company Profile Content -->
                 <section class="content-section active">
                     <!-- ==================== VIEW MODE CONTAINER ==================== -->
@@ -238,7 +239,7 @@ if (isset($_SESSION['email'])) {
                                             <i class="fa-solid fa-users"></i>
                                             <div class="stat-content">
                                                 <span class="stat-label">Total Applicants</span>
-                                                <span
+                                                <span id="viewTotalApplicants"
                                                     class="stat-value"><?php echo $employees ? $employees : 0 ?></span>
                                             </div>
                                         </div>
@@ -246,14 +247,16 @@ if (isset($_SESSION['email'])) {
                                             <i class="fa fa-check"></i>
                                             <div class="stat-content">
                                                 <span class="stat-label">Accepted</span>
-                                                <span class="stat-value"><?php echo $accepted ? $accepted : 0 ?></span>
+                                                <span id="viewAccepted"
+                                                    class="stat-value"><?php echo $accepted ? $accepted : 0 ?></span>
                                             </div>
                                         </div>
                                         <div class="stat-item">
                                             <i class="fa fa-times"></i>
                                             <div class="stat-content">
                                                 <span class="stat-label">Rejected</span>
-                                                <span class="stat-value"><?php echo $rejected ? $rejected : 0 ?></span>
+                                                <span id="viewRejected"
+                                                    class="stat-value"><?php echo $rejected ? $rejected : 0 ?></span>
                                             </div>
                                         </div>
                                     </div>

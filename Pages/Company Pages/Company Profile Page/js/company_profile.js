@@ -849,3 +849,54 @@ function loadVerificationStatus() {
     // }
 }
 
+// ========== STATISTICS FETCHING ==========
+
+/**
+ * Fetches and updates company statistics from the backend
+ */
+async function fetchCompanyStatistics() {
+    try {
+        const emailInput = document.getElementById('company_email');
+        if (!emailInput) {
+            console.warn('Company email input not found.');
+            return;
+        }
+
+        const companyEmail = emailInput.value;
+        if (!companyEmail) return;
+
+        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_statistics.php", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ company_email: companyEmail })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+            const stats = result.data;
+
+            // Update UI elements if they exist
+            const viewTotal = document.getElementById('viewTotalApplicants');
+            const viewAccepted = document.getElementById('viewAccepted');
+            const viewRejected = document.getElementById('viewRejected');
+
+            if (viewTotal) viewTotal.textContent = stats.totalApplicants;
+            if (viewAccepted) viewAccepted.textContent = stats.accepted;
+            if (viewRejected) viewRejected.textContent = stats.rejected;
+        } else {
+            console.error('Failed to fetch statistics:', result.message);
+        }
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+    }
+}
+
+// ========== INITIALIZATION ==========
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initial fetch of statistics
+    fetchCompanyStatistics();
+
+    // Any other init logic...
+});
