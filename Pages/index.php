@@ -240,6 +240,27 @@
             </div>
         </div>
 
+        <div class="section">
+            <h2 class="section-title">Admin Portal</h2>
+            <div class="link-grid">
+                <a href="Admin Page/AdminDashboard/php/dashboard.php" class="page-link">
+                    <span class="page-name">Admin Dashboard</span>
+                    <span class="page-path">Admin Page/.../dashboard.php</span>
+                    <span class="badge badge-main">Dashboard</span>
+                </a>
+                <a href="Admin Page/AdminStudentManagement/php/student_management.php" class="page-link">
+                    <span class="page-name">Student Management</span>
+                    <span class="page-path">Admin Page/.../student_management.php</span>
+                    <span class="badge badge-main">Management</span>
+                </a>
+                <a href="Admin Page/AdminCompanyManagement/php/company_management.php" class="page-link">
+                    <span class="page-name">Company Management</span>
+                    <span class="page-path">Admin Page/.../company_management.php</span>
+                    <span class="badge badge-main">Management</span>
+                </a>
+            </div>
+        </div>
+
 
     </div>
 </body>
