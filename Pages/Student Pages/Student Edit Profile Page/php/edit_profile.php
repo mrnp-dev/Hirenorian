@@ -396,6 +396,7 @@ else
                         <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
                             <i class="fa-solid fa-eye"></i>
                         </button>
+                        <p class="error-text" style="color: red; font-size: 0.8em; margin-top: 5px; visibility: hidden;">Error message</p>
                     </div>
                 </div>
 

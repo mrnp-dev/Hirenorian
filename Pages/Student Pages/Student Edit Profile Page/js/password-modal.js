@@ -238,20 +238,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function removeError(input) {
         input.classList.remove('input-error');
         const wrapper = input.closest(".input-wrapper");
-        const p = wrapper.querySelector(".error-text");
-        // Don't hide if it's showing strength or match success (green/orange)
-        // If it's red or 'Current Password is required', hide it.
-        // But wait, 'weak' is red too in my implementation of strength.
-        // Let's be careful.
+        if (!wrapper) return;
 
-        // If we are calling removeError, it's usually because we want to clear a specific error state.
-        // But for password, real-time validation is always running.
+        const p = wrapper.querySelector(".error-text");
 
         // Simpler check: if visibility is visible, hide it? 
         // No, we want strength to stay visible.
         // We only hide if we strictly want to clear it. 
         // For current password, we want to clear 'Required'.
-        if (input.id === 'currentPassword') {
+        if (input.id === 'currentPassword' && p) {
             p.style.visibility = 'hidden';
         }
     }
@@ -261,15 +256,17 @@ document.addEventListener('DOMContentLoaded', () => {
         inputs.forEach(input => {
             input.classList.remove('input-error');
             const wrapper = input.closest(".input-wrapper");
-            const p = wrapper.querySelector(".error-text");
-            if (p) {
-                p.style.visibility = 'hidden';
-                p.textContent = 'Error message'; // Reset text
-            }
-            if (input.type === 'text' && input.name.toLowerCase().includes('password')) {
-                input.type = 'password';
-                wrapper.querySelector('i').classList.remove('fa-eye-slash');
-                wrapper.querySelector('i').classList.add('fa-eye');
+            if (wrapper) {
+                const p = wrapper.querySelector(".error-text");
+                if (p) {
+                    p.style.visibility = 'hidden';
+                    p.textContent = 'Error message'; // Reset text
+                }
+                if (input.type === 'text' && input.name.toLowerCase().includes('password')) {
+                    input.type = 'password';
+                    wrapper.querySelector('i').classList.remove('fa-eye-slash');
+                    wrapper.querySelector('i').classList.add('fa-eye');
+                }
             }
         });
     }
