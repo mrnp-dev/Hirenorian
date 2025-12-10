@@ -590,3 +590,262 @@ window.addEventListener('click', function (e) {
         setTimeout(() => { e.target.style.display = 'none'; }, 300);
     }
 });
+
+// ========== ACCOUNT MANAGER LOGIC ==========
+
+document.addEventListener('DOMContentLoaded', function () {
+    // 1. Password Visibility Toggles
+    const toggleButtons = document.querySelectorAll('.toggle-password');
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    });
+
+    // 2. Real-time Password Strength (New Password)
+    const newPassInput = document.getElementById('newPassword');
+    const strengthHint = document.getElementById('passwordStrengthHint');
+    const newPassError = document.getElementById('newPasswordError');
+
+    // Hide hint initially
+    if (strengthHint) strengthHint.style.display = 'none';
+
+    if (newPassInput) {
+        newPassInput.addEventListener('input', function () {
+            // Clear error message on typing
+            newPassError.classList.remove('show');
+
+            const val = this.value;
+            const length = val.length;
+
+            if (length < 12) {
+                // Hide strength meter if length < 12
+                strengthHint.style.display = 'none';
+                return;
+            }
+
+            // Show strength meter if length >= 12
+            strengthHint.style.display = 'block';
+
+            // Logic from company_registration.js
+            const hasLetters = /[a-zA-Z]/.test(val);
+            const hasNumbers = /[0-9]/.test(val);
+            const hasSpecials = /[^a-zA-Z0-9]/.test(val);
+            const typesCount = [hasLetters, hasNumbers, hasSpecials].filter(Boolean).length;
+
+            let strengthText = "";
+            let color = "";
+
+            switch (typesCount) {
+                case 1:
+                    strengthText = "Weak";
+                    color = "#dc3545"; // Red
+                    break;
+                case 2:
+                    strengthText = "Medium";
+                    color = "#fd7e14"; // Orange
+                    break;
+                case 3:
+                    strengthText = "Strong";
+                    color = "#28a745"; // Green
+                    break;
+                default:
+                    // Should not happen if length >= 12 and input has chars, but fallback
+                    strengthText = "Weak";
+                    color = "#dc3545";
+            }
+
+            strengthHint.innerHTML = `Strength: <span style="color: ${color}">${strengthText}</span>`;
+            strengthHint.style.color = "black";
+        });
+
+        // 3. On-Blur Validation (Min Length)
+        newPassInput.addEventListener('blur', function () {
+            if (this.value.length > 0 && this.value.length < 12) {
+                newPassError.textContent = "Password must be at least 12 characters.";
+                newPassError.classList.add('show');
+            } else {
+                newPassError.classList.remove('show');
+            }
+        });
+    }
+
+    // 4. On-Blur Validation (Confirm Password Match)
+    const confirmPassInput = document.getElementById('confirmPassword');
+    const confirmPassError = document.getElementById('confirmPasswordError');
+
+    if (confirmPassInput) {
+        confirmPassInput.addEventListener('blur', function () {
+            const password = document.getElementById('newPassword').value;
+            if (this.value.length > 0 && this.value !== password) {
+                confirmPassError.textContent = "Passwords do not match.";
+                confirmPassError.classList.add('show');
+            } else {
+                confirmPassError.classList.remove('show');
+            }
+        });
+    }
+
+    // 5. Current Password Logic (Mock)
+    const currentPassInput = document.getElementById('currentPassword');
+    const currentPassError = document.getElementById('currentPasswordError');
+    if (currentPassInput) {
+        currentPassInput.addEventListener('input', function () {
+            currentPassError.classList.remove('show');
+        });
+    }
+
+    // 6. Verification Icon Placeholder Logic
+    loadVerificationStatus();
+});
+
+// --- Change Password Modal ---
+function openChangePasswordModal() {
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
+    // Reset errors/hints
+    document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
+    const strengthHint = document.getElementById('passwordStrengthHint');
+    strengthHint.textContent = "Min 12 chars, Medium strength required.";
+    strengthHint.style.color = "#666";
+    strengthHint.style.display = "block"; // Ensure it is visible initially
+    // Reset visibility
+    document.querySelectorAll('.toggle-password').forEach(icon => {
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    });
+    document.querySelectorAll('.password-wrapper input').forEach(inp => inp.type = 'password');
+
+    showModal('changePasswordModal');
+}
+
+function closeChangePasswordModal() {
+    closeModal('changePasswordModal');
+}
+
+function savePassword() {
+    const email = document.getElementById('viewContactEmail').textContent
+    const currentPass = document.getElementById('currentPassword').value;
+    const newPass = document.getElementById('newPassword').value;
+    const confirmPass = document.getElementById('confirmPassword').value;
+    const currentPassError = document.getElementById('currentPasswordError');
+    console.log(currentPass);
+
+    if (!currentPass || !newPass || !confirmPass) {
+        return ToastSystem.show('Please fill in all fields', 'warning');
+    }
+
+    if (newPass.length < 12) {
+        return ToastSystem.show('Password too short', 'warning');
+    }
+    if (newPass !== confirmPass) {
+        return ToastSystem.show('Passwords do not match', 'warning');
+    }
+
+    // Step 1: Verify current password
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/check_current_password.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, current_password: currentPass })
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === "success") {
+
+                // Step 2: If verified, update password
+                return fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/reset_password.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, new_password: newPass })
+                });
+            } else {
+                if (currentPassError) {
+                    currentPassError.textContent = "Incorrect current password.";
+                    currentPassError.classList.add('show');
+                } else {
+                    ToastSystem.show('Incorrect current password', 'error');
+                }
+                throw new Error("Password verification failed");
+            }
+        })
+        .then(response => response.json())
+        .then(updateResult => {
+            if (updateResult.status === "success") {
+                ToastSystem.show('Password changed successfully!', 'success');
+                closeChangePasswordModal();
+            } else {
+                ToastSystem.show('Failed to change password: ' + updateResult.message, 'error');
+            }
+        })
+        .catch(error => {
+            console.error("⚠️ Error:", error);
+            ToastSystem.show('An error occurred while changing password', 'error');
+        });
+}
+
+
+// --- Verify Account Modal ---
+function openVerifyAccountModal() {
+    document.getElementById('docPhilJobNet').value = '';
+    document.getElementById('docDole').value = '';
+    document.getElementById('docBir').value = '';
+    document.getElementById('docMayor').value = '';
+    showModal('verifyAccountModal');
+}
+
+function closeVerifyAccountModal() {
+    closeModal('verifyAccountModal');
+}
+
+function submitVerifyDocuments() {
+    const doc1 = document.getElementById('docPhilJobNet').files[0];
+    const doc2 = document.getElementById('docDole').files[0];
+    const doc3 = document.getElementById('docBir').files[0];
+    const doc4 = document.getElementById('docMayor').files[0];
+
+    if (!doc1 || !doc2 || !doc3 || !doc4) {
+        return ToastSystem.show('Please attach all 4 required documents', 'warning');
+    }
+
+    // Backend Logic Placeholder
+    console.log("Verify Account Documents:", { doc1, doc2, doc3, doc4 });
+    // TODO: Implement backend call here (FormData upload)
+
+    ToastSystem.show('Documents submitted for verification', 'success');
+    closeVerifyAccountModal();
+}
+
+/**
+ * Placeholder for fetching/checking verification status
+ */
+function loadVerificationStatus() {
+    // In a real scenario, this might come from the PHP session variable injected into JS 
+    // or a separate API call.
+    // For now, we will leave the icon empty or set a test state.
+
+    const badge = document.getElementById('verificationBadge');
+    if (!badge) return;
+
+    // TODO: Connect to actual backend status
+    // Example:
+    // const status = "verified"; // or "unverified"
+    // if (status === "verified") {
+    //     badge.innerHTML = '<i class="fa-solid fa-circle-check verification-icon verified"></i>';
+    //     badge.title = "Verified Account";
+    // } else {
+    //     badge.innerHTML = '<i class="fa-solid fa-shield-halved verification-icon unverified"></i>';
+    //     badge.title = "Unverified Account";
+    // }
+}
+

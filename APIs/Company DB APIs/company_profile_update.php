@@ -39,33 +39,59 @@ try {
         ':id' => $company_id
     ]);
 
-    // --- Update Additional Info (details) ---
     if (!empty($data['details'])) {
         $details = $data['details'];
-        $stmt = $conn->prepare("UPDATE company_additional_informations 
+
+        // Check if a record exists for this company_id
+        $checkStmt = $conn->prepare("SELECT COUNT(*) FROM company_additional_informations WHERE company_id = :id");
+        $checkStmt->execute([':id' => $company_id]);
+        $exists = $checkStmt->fetchColumn() > 0;
+
+        if ($exists) {
+            // Update existing record
+            $stmt = $conn->prepare("UPDATE company_additional_informations 
             SET about_us = :about, why_join_us = :why, website_link = :link, tagline = :tagline 
             WHERE company_id = :id");
+        } else {
+            // Insert new record
+            $stmt = $conn->prepare("INSERT INTO company_additional_informations 
+            (company_id, about_us, why_join_us, website_link, tagline) 
+            VALUES (:id, :about, :why, :link, :tagline)");
+        }
+
         $stmt->execute([
+            ':id' => $company_id,
             ':about' => $details['aboutUs'],
             ':why' => $details['whyJoinUs'],
             ':link' => $details['websiteUrl'],
-            ':tagline' => $details['tagline'],
-            ':id' => $company_id
+            ':tagline' => $details['tagline']
         ]);
     }
 
+
     // --- Replace Locations ---
-    $conn->prepare("DELETE FROM company_locations WHERE company_id = :id")->execute([':id' => $company_id]);
+    $conn->prepare("DELETE FROM company_locations WHERE company_id = :id")
+        ->execute([':id' => $company_id]);
+
     if (!empty($data['lists']['locations'])) {
         $stmt = $conn->prepare("INSERT INTO company_locations (company_id, location, description) VALUES (:id, :loc, :desc)");
         foreach ($data['lists']['locations'] as $loc) {
+            // Use 'name' from payload
+            $locValue = trim((string) ($loc['name'] ?? ''));
+            $descValue = trim((string) ($loc['description'] ?? ''));
+
+            if ($locValue === '') {
+                continue; // skip empty names to avoid NOT NULL violation
+            }
+
             $stmt->execute([
                 ':id' => $company_id,
-                ':loc' => $loc['location'],
-                ':desc' => $loc['description']
+                ':loc' => $locValue,
+                ':desc' => $descValue
             ]);
         }
     }
+
 
     // --- Replace Contacts ---
     $conn->prepare("DELETE FROM company_contact_persons WHERE company_id = :id")->execute([':id' => $company_id]);
@@ -84,15 +110,24 @@ try {
     }
 
     // --- Replace Perks ---
-    $conn->prepare("DELETE FROM company_perks_benefits WHERE company_id = :id")->execute([':id' => $company_id]);
-    if (!empty($data['lists']['perks'])) {
-        $stmt = $conn->prepare("INSERT INTO company_perks_benefits (company_id, perk) VALUES (:id, :perk)");
-        foreach ($data['lists']['perks'] as $perk) {
-            $stmt->execute([
-                ':id' => $company_id,
-                ':perk' => $perk['perk']
-            ]);
+    $conn->prepare("DELETE FROM company_perks_benefits WHERE company_id = :id")
+        ->execute([':id' => $company_id]);
+
+    $perksInput = $data['lists']['perks'] ?? [];
+    $insertPerk = $conn->prepare("INSERT INTO company_perks_benefits (company_id, perk) VALUES (:id, :perk)");
+
+    foreach ($perksInput as $p) {
+        // Extract 'description' field from each perk object
+        $perkValue = trim((string) ($p['description'] ?? ''));
+
+        if ($perkValue === '') {
+            continue; // skip empty perks to avoid NOT NULL violation
         }
+
+        $insertPerk->execute([
+            ':id' => $company_id,
+            ':perk' => $perkValue
+        ]);
     }
 
     $conn->commit();

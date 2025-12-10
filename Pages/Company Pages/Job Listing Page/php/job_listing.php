@@ -1,3 +1,46 @@
+<?php
+session_start();
+
+if (isset($_SESSION['email'])) {
+    $company_email = $_SESSION['email'];
+
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_information.php";
+
+    // Send JSON with "company_email"
+    $payload = json_encode([
+        "company_email" => $company_email
+    ]);
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    }
+
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data['status'] === "success") {
+        // --- Base company info ---
+        $company = $data['company'];
+        $company_id = $company['company_id'];
+        $company_name = $company['company_name'];
+        $company_email = $company['email'];
+    } else {
+        $error_message = $data['message'];
+    }
+
+} else {
+    header("Location: ../../../Landing Page/php/landing_page.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,7 +105,7 @@
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar"></div>
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -70,7 +113,7 @@
                     </div>
                 </div>
             </header>
-
+            <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
             <div class="content-wrapper">
                 <div class="page-title">
                     <h1>Job Listing</h1>
@@ -78,156 +121,235 @@
 
                 <!-- Job Listing Content -->
                 <section class="content-section active">
-                    <!-- Job Title and Actions Section -->
-                    <div class="job-title-actions-section">
-                        <div class="job-title-group">
-                            <label for="jobTitleSelect" class="job-title-label">Job Title</label>
-                            <select id="jobTitleSelect" class="job-title-dropdown">
-                                <option value="">Select a job post...</option>
-                                <!-- Populated by JavaScript -->
-                            </select>
+                    <!-- ==================== CARD VIEW CONTAINER ==================== -->
+                    <div id="card-view-container">
+                        <!-- Search and Add Button -->
+                        <div class="job-search-header">
+                            <div class="search-bar-wrapper">
+                                <i class="fa-solid fa-search"></i>
+                                <input type="text" id="jobSearchInput" class="job-search-input"
+                                    placeholder="Search job titles...">
+                            </div>
+                            <button class="btn-add-job" id="btnAddJob">
+                                <i class="fa-solid fa-plus"></i>
+                                Add Job Posting
+                            </button>
                         </div>
 
-                        <!-- Regular Action Buttons -->
-                        <div class="action-buttons" id="regularToolbar">
-                            <button class="btn-action btn-neutral" id="btnAdd">
-                                <i class="fa-solid fa-plus"></i>
-                                Add
+                        <!-- Job Cards Grid -->
+                        <div id="jobCardsGrid" class="job-cards-grid">
+                            <!-- Job cards will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Empty State for No Jobs -->
+                        <div id="noJobsState" class="empty-state-jobs" style="display: none;">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <h3>No Job Posts Yet</h3>
+                            <p>Click "Add Job Posting" to create your first job post</p>
+                        </div>
+                    </div>
+
+                    <!-- ==================== DETAIL VIEW CONTAINER ==================== -->
+                    <div id="detail-view-container" style="display: none;">
+                        <!-- Action Bar (Top) -->
+                        <div class="action-bar-top">
+                            <button class="btn-action-top btn-back" id="btnBack">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                Back
                             </button>
-                            <button class="btn-action btn-neutral" id="btnClose">
-                                <i class="fa-solid fa-times"></i>
-                                Close
-                            </button>
-                            <button class="btn-action btn-neutral" id="btnEdit">
-                                <i class="fa-solid fa-pen"></i>
-                                Edit
-                            </button>
+                            <div class="action-buttons-right">
+                                <button class="btn-action-top btn-edit-detail" id="btnEditDetail">
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+                                </button>
+                                <button class="btn-action-top btn-close-detail" id="btnCloseDetail">
+                                    <i class="fa-solid fa-times"></i>
+                                    Close Post
+                                </button>
+                                <button class="btn-action-top btn-delete-detail" id="btnDeleteDetail"
+                                    style="display: none; background: #fee2e2; color: #ef4444; border: 1px solid #fecaca;">
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete Post
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Job Detail Information -->
+                        <div class="job-detail-card">
+                            <div class="job-detail-header">
+                                <div class="company-badge">
+                                    <img id="detailCompanyIcon" src="" alt="Company Icon" class="detail-company-icon">
+                                    <span id="detailCompanyName" class="detail-company-name"></span>
+                                </div>
+                                <h2 id="detailJobTitle" class="detail-job-title"></h2>
+
+                                <!-- Work Tags under Job Title -->
+                                <div id="detailWorkTags" class="job-detail-tags">
+                                    <!-- Tags will be populated dynamically -->
+                                </div>
+                            </div>
+
+                            <div class="job-detail-meta">
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                    <span id="detailLocation"></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <span id="detailWorkType"></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-users"></i>
+                                    <span id="detailApplicantLimit"></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-file-alt"></i>
+                                    <span id="detailRequiredDoc"></span>
+                                </div>
+                            </div>
+
+                            <!-- Job Detail Sections in Horizontal Layout -->
+                            <div class="job-detail-sections-grid">
+                                <div class="job-detail-section">
+                                    <h3>Job Description</h3>
+                                    <p id="detailJobDescription"></p>
+                                </div>
+
+                                <div class="job-detail-section">
+                                    <h3>Responsibilities</h3>
+                                    <p id="detailResponsibilities"></p>
+                                </div>
+
+                                <div class="job-detail-section">
+                                    <h3>Qualifications</h3>
+                                    <p id="detailQualifications"></p>
+                                </div>
+
+                                <div class="job-detail-section">
+                                    <h3>Skills</h3>
+                                    <p id="detailSkills"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Statistics and Applicants Layout -->
+                        <div class="detail-content-layout">
+                            <!-- Statistics Sidebar -->
+                            <div class="statistics-sidebar">
+                                <div class="stats-card">
+                                    <h3>Post Statistics</h3>
+                                    <div class="stats-stack">
+                                        <!-- Applicants Stat -->
+                                        <div class="stat-card-item applicants">
+                                            <div class="stat-icon">
+                                                <i class="fa-solid fa-users"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="totalCount">0</span>
+                                                <span class="stat-label">Applicants</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pending Stat -->
+                                        <div class="stat-card-item pending">
+                                            <div class="stat-icon">
+                                                <i class="fa-solid fa-clock"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="pendingCount">0</span>
+                                                <span class="stat-label">Pending</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Accepted Stat -->
+                                        <div class="stat-card-item accepted">
+                                            <div class="stat-icon">
+                                                <i class="fa-solid fa-check"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="acceptedCount">0</span>
+                                                <span class="stat-label">Accepted</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Rejected Stat -->
+                                        <div class="stat-card-item rejected">
+                                            <div class="stat-icon">
+                                                <i class="fa-solid fa-times"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <span class="stat-value" id="rejectedCount">0</span>
+                                                <span class="stat-label">Rejected</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Applicants Container -->
+                            <div class="applicants-container-detail">
+                                <!-- Batch Actions Toolbar (Hidden by default) -->
+                                <div class="batch-actions-toolbar" id="batchActionsToolbar" style="display: none;">
+                                    <span class="selected-count" id="selectedCount">0 selected</span>
+                                    <div class="batch-actions-buttons">
+                                        <button class="batch-btn batch-accept" id="batchAcceptBtn">
+                                            <i class="fa-solid fa-check"></i>
+                                            Accept Selected
+                                        </button>
+                                        <button class="batch-btn batch-reject" id="batchRejectBtn">
+                                            <i class="fa-solid fa-times"></i>
+                                            Reject Selected
+                                        </button>
+                                        <button class="batch-btn batch-cancel" id="batchCancelBtn">
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- List Controls (Search & Filter) -->
+                                <div class="list-controls">
+                                    <div class="filter-pills">
+                                        <button class="filter-pill active" data-status="all">All</button>
+                                        <button class="filter-pill" data-status="pending">Pending</button>
+                                        <button class="filter-pill" data-status="accepted">Accepted</button>
+                                        <button class="filter-pill" data-status="rejected">Rejected</button>
+                                    </div>
+                                    <div class="search-box-inline">
+                                        <i class="fa-solid fa-search"></i>
+                                        <input type="text" id="searchInput" placeholder="Search applicants...">
+                                    </div>
+                                </div>
+
+                                <!-- Table Header -->
+                                <div class="applicants-header">
+                                    <div class="header-cell checkbox-cell">
+                                        <input type="checkbox" id="selectAll" class="checkbox-master">
+                                    </div>
+                                    <div class="header-cell name-cell">Name</div>
+                                    <div class="header-cell course-cell">Course</div>
+                                    <div class="header-cell document-cell">Document Type</div>
+                                    <div class="header-cell date-cell">Date Applied</div>
+                                    <div class="header-cell actions-cell">Actions</div>
+                                </div>
+
+                                <!-- Applicants List (Dynamically Populated) -->
+                                <div id="applicantsList" class="applicants-list">
+                                    <!-- Items will be populated by JavaScript -->
+                                </div>
+
+                                <!-- Empty State -->
+                                <div id="emptyState" class="empty-state" style="display: none;">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <h3>No Applicants Found</h3>
+                                    <p>Try adjusting your search or filter criteria</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Batch Actions Toolbar (Hidden by default) -->
-                    <div class="batch-actions-toolbar" id="batchActionsToolbar" style="display: none;">
-                        <span class="selected-count" id="selectedCount">0 selected</span>
-                        <div class="batch-actions-buttons">
-                            <button class="batch-btn batch-accept" id="batchAcceptBtn">
-                                <i class="fa-solid fa-check"></i>
-                                Accept Selected
-                            </button>
-                            <button class="batch-btn batch-reject" id="batchRejectBtn">
-                                <i class="fa-solid fa-times"></i>
-                                Reject Selected
-                            </button>
-                            <button class="batch-btn batch-cancel" id="batchCancelBtn">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Main Content Area -->
-                    <div class="job-listing-main">
-                        <!-- Statistics Sidebar -->
-                        <div class="statistics-sidebar">
-                            <div class="stats-card">
-                                <h3>Post Statistics</h3>
-                                <div class="stats-stack">
-                                    <!-- Views Stat -->
-                                    <div class="stat-card-item views">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-eye"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <span class="stat-value" id="viewsCount">0</span>
-                                            <span class="stat-label">Views</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Applicants Stat -->
-                                    <div class="stat-card-item applicants">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-users"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <span class="stat-value" id="totalCount">0</span>
-                                            <span class="stat-label">Applicants</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Pending Stat -->
-                                    <div class="stat-card-item pending">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-clock"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <span class="stat-value" id="pendingCount">0</span>
-                                            <span class="stat-label">Pending</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Accepted Stat -->
-                                    <div class="stat-card-item accepted">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-check"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <span class="stat-value" id="acceptedCount">0</span>
-                                            <span class="stat-label">Accepted</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Rejected Stat -->
-                                    <div class="stat-card-item rejected">
-                                        <div class="stat-icon">
-                                            <i class="fa-solid fa-times"></i>
-                                        </div>
-                                        <div class="stat-info">
-                                            <span class="stat-value" id="rejectedCount">0</span>
-                                            <span class="stat-label">Rejected</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Applicants List -->
-                        <div class="applicants-container">
-                            <!-- List Controls (Search & Filter) -->
-                            <div class="list-controls">
-                                <div class="filter-pills">
-                                    <button class="filter-pill active" data-status="all">All</button>
-                                    <button class="filter-pill" data-status="pending">Pending</button>
-                                    <button class="filter-pill" data-status="accepted">Accepted</button>
-                                    <button class="filter-pill" data-status="rejected">Rejected</button>
-                                </div>
-                                <div class="search-box-inline">
-                                    <i class="fa-solid fa-search"></i>
-                                    <input type="text" id="searchInput" placeholder="Search applicants...">
-                                </div>
-                            </div>
-
-                            <!-- Table Header -->
-                            <div class="applicants-header">
-                                <div class="header-cell checkbox-cell">
-                                    <input type="checkbox" id="selectAll" class="checkbox-master">
-                                </div>
-                                <div class="header-cell name-cell">Name</div>
-                                <div class="header-cell course-cell">Course</div>
-                                <div class="header-cell document-cell">Document Type</div>
-                                <div class="header-cell date-cell">Date Applied</div>
-                                <div class="header-cell actions-cell">Actions</div>
-                            </div>
-
-                            <!-- Applicants List (Dynamically Populated) -->
-                            <div id="applicantsList" class="applicants-list">
-                                <!-- Items will be populated by JavaScript -->
-                            </div>
-
-                            <!-- Empty State -->
-                            <div id="emptyState" class="empty-state" style="display: none;">
-                                <i class="fa-solid fa-inbox"></i>
-                                <h3>No Applicants Found</h3>
-                                <p>Try adjusting your search or filter criteria</p>
-                            </div>
-                        </div>
+                    <div class="batch-actions-toolbar-placeholder" style="display: none;">
+                        <!--keeping this structure for script compatibility -->
                     </div>
                 </section>
             </div>
@@ -354,10 +476,31 @@
                         required></textarea>
                     <p class="error-message" id="skillsError"></p>
                 </div>
-            </form>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Hidden Inputs for JS -->
+    <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email ?? ''); ?>">
+    <input type="hidden" id="company_name" value="<?php echo htmlspecialchars($company_name ?? ''); ?>">
+
+    <!-- Custom Confirmation Modal -->
+    <div class="confirmation-modal-overlay" id="confirmationModalOverlay" style="display: none;">
+        <div class="confirmation-modal">
+            <div class="confirmation-icon-wrapper" id="confirmationIconWrapper">
+                <i class="fa-solid fa-triangle-exclamation" id="confirmationIcon"></i>
+            </div>
+            <h3 class="confirmation-title" id="confirmationTitle">Confirmation</h3>
+            <p class="confirmation-message" id="confirmationMessage">Are you sure you want to proceed?</p>
+            <div class="confirmation-actions">
+                <button class="btn-confirm-cancel" id="btnConfirmCancel">Cancel</button>
+                <button class="btn-confirm-proceed" id="btnConfirmProceed">Confirm</button>
+            </div>
         </div>
     </div>
 
+    <script src="../../Company Dashboard/js/toast.js"></script>
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/job_listing.js"></script>
 </body>

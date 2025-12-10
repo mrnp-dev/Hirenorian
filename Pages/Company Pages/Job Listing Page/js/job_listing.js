@@ -2,209 +2,311 @@
 // JOB LISTING PAGE - INTERACTIVE FUNCTIONALITY
 // ========================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
     // ========================================
-    // MOCK DATA (Backend Integration Ready)
+    // BACKEND DATA STORAGE
     // ========================================
+    let jobPostsData = [];      // Will store: [{id, title, location, datePosted, status, applicantLimit, currentApplicants, jobDescription}, ...]
+    let jobDetailsCache = {};   // Will store: {jobId: {full job details object}}
+    let applicantsData = [];    // Will store: [{id, jobId, name, course, documentType, documentUrl, dateApplied, status, contactInfo}, ...]
+    let acceptedCountsCache = {}; // ✅ FIX: Store accepted counts per job {jobId: acceptedCount}
 
-    // Job Posts Data - Replace with: fetch('/api/job-posts').then(res => res.json())
-    const jobPostsData = [
-        {
-            id: 1,
-            title: "Marketing Intern",
-            datePosted: "November 15, 2025",
-            status: "active",
-            views: 15
-        },
-        {
-            id: 2,
-            title: "Software Engineer",
-            datePosted: "October 20, 2025",
-            status: "active",
-            views: 42
-        },
-        {
-            id: 3,
-            title: "Data Analyst",
-            datePosted: "December 1, 2025",
-            status: "active",
-            views: 28
+    // ========================================
+    // STATE MANAGEMENT VARIABLES
+    // ========================================
+    let viewMode = 'cards';             // 'cards' or 'detail'
+    let selectedJobId = null;           // Currently selected job post
+    let selectedJobForDetail = null;    // Job ID for detail view
+    let currentFilter = 'all';          // Applicant filter: 'all', 'pending', 'accepted', 'rejected'
+    let searchTerm = '';                // Search term for applicant name/course
+    let jobSearchTerm = '';             // Search term for job titles
+    let selectedApplicants = new Set(); // Set of selected applicant IDs for batch actions
+    let batchMode = false;              // Track if in batch selection mode
+
+    // ========================================
+    // BACKEND INTEGRATION - FETCH JOB POSTS
+    // ========================================
+    // ✅ PERFECTLY IMPLEMENTED!
+    // - Correctly gets company email from DOM
+    // - Calls your backend endpoint
+    // - Maps response data to jobPostsData array
+    // - This data is used by renderJobCards() to display job post cards
+
+    // ========================================
+    // HELPER: CUSTOM CONFIRMATION MODAL
+    // ========================================
+    function showConfirmationModal(title, message, type, onConfirm) {
+        const overlay = document.getElementById('confirmationModalOverlay');
+        const titleEl = document.getElementById('confirmationTitle');
+        const messageEl = document.getElementById('confirmationMessage');
+        const modalEl = document.querySelector('.confirmation-modal');
+        const iconEl = document.getElementById('confirmationIcon');
+        const btnCancel = document.getElementById('btnConfirmCancel');
+        const btnProceed = document.getElementById('btnConfirmProceed');
+
+        if (!overlay) return;
+
+        // Reset state
+        modalEl.classList.remove('danger');
+
+        // Remove old event listeners by cloning
+        const newBtnProceed = btnProceed.cloneNode(true);
+        btnProceed.parentNode.replaceChild(newBtnProceed, btnProceed);
+
+        const newBtnCancel = btnCancel.cloneNode(true);
+        btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+
+        // Set content
+        titleEl.textContent = title;
+        messageEl.innerHTML = message.replace(/\n/g, '<br>');
+
+        // Handle type
+        if (type === 'danger') {
+            modalEl.classList.add('danger');
+            iconEl.className = 'fa-solid fa-trash-can';
+        } else {
+            iconEl.className = 'fa-solid fa-triangle-exclamation';
         }
-    ];
 
-    // Applicants Data - Now linked to job posts via jobId
-    // Replace with: fetch('/api/applicants').then(res => res.json())
-    const applicantsData = [
-        {
-            id: 1,
-            jobId: 1, // Marketing Intern
-            name: "Jose E. Batumbakal",
-            course: "Bachelor of Science in Computer Science",
-            documentType: "Cover Letter",
-            documentUrl: "#",
-            dateApplied: "December 1, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "jose@email.com",
-                studentEmail: "202300001@student.dhvsu.edu.ph",
-                phone: "09123456789"
+        // Show modal
+        overlay.style.display = 'flex';
+
+        // Handlers
+        const close = () => { overlay.style.display = 'none'; };
+
+        newBtnCancel.addEventListener('click', close);
+        newBtnProceed.addEventListener('click', () => {
+            close();
+            onConfirm();
+        });
+    }
+
+    async function fetchJobPosts() {
+        try {
+            // ✅ Get company email from session/context or DOM
+            const companyEmail = document.getElementById("company_email").value;
+
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_job_posts.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ company_email: companyEmail })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // ✅ Map API response directly into jobPostsData
+                jobPostsData = result.data.map(job => ({
+                    id: job.id,
+                    title: job.title,
+                    location: job.location,
+                    datePosted: job.datePosted,
+                    datePosted: job.datePosted,
+                    status: job.status, // Ensure status is mapped correctly
+                    applicantLimit: job.applicantLimit,
+                    currentApplicants: job.currentApplicants,
+                    jobDescription: job.jobDescription
+                }));
+                return jobPostsData;
+            } else {
+                console.error("Failed to fetch job posts:", result.message);
+                return [];
             }
-        },
-        {
-            id: 2,
-            jobId: 1, // Marketing Intern
-            name: "Pedro Dee Z. Nuts",
-            course: "Bachelor of Science in Information and Communications Technology",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "November 16, 2025",
-            status: "accepted",
-            contactInfo: {
-                personalEmail: "pedro@email.com",
-                studentEmail: "202300002@student.dhvsu.edu.ph",
-                phone: "09234567890"
-            }
-        },
-        {
-            id: 3,
-            jobId: 1, // Marketing Intern
-            name: "Jebron G. Lames",
-            course: "Bachelor of Science in Accounting Technology",
-            documentType: "None",
-            documentUrl: null,
-            dateApplied: "October 3, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "jebron@email.com",
-                studentEmail: "202300003@student.dhvsu.edu.ph",
-                phone: "09345678901"
-            }
-        },
-        {
-            id: 4,
-            jobId: 1, // Marketing Intern
-            name: "Tobay D. Brown",
-            course: "Bachelor of Science in Information Technology",
-            documentType: "None",
-            documentUrl: null,
-            dateApplied: "October 12, 2025",
-            status: "rejected",
-            contactInfo: {
-                personalEmail: "tobay@email.com",
-                studentEmail: "202300004@student.dhvsu.edu.ph",
-                phone: "09456789012"
-            }
-        },
-        {
-            id: 5,
-            jobId: 2, // Software Engineer
-            name: "Sakha M. Adibix",
-            course: "Bachelor of Science in Information Systems",
-            documentType: "Cover Letter",
-            documentUrl: "#",
-            dateApplied: "September 3, 2025",
-            status: "accepted",
-            contactInfo: {
-                personalEmail: "sakha@email.com",
-                studentEmail: "202300005@student.dhvsu.edu.ph",
-                phone: "09567890123"
-            }
-        },
-        {
-            id: 6,
-            jobId: 2, // Software Engineer
-            name: "Seyda Z. Elven",
-            course: "Bachelor of Science in Computer Engineering",
-            documentType: "Cover Letter",
-            documentUrl: "#",
-            dateApplied: "September 13, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "seyda@email.com",
-                studentEmail: "202300006@student.dhvsu.edu.ph",
-                phone: "09678901234"
-            }
-        },
-        {
-            id: 7,
-            jobId: 2, // Software Engineer
-            name: "DayMo N. Taim",
-            course: "Bachelor of Science in Data Science",
-            documentType: "None",
-            documentUrl: null,
-            dateApplied: "September 12, 2025",
-            status: "rejected",
-            contactInfo: {
-                personalEmail: "daymo@email.com",
-                studentEmail: "202300007@student.dhvsu.edu.ph",
-                phone: "09789012345"
-            }
-        },
-        {
-            id: 8,
-            jobId: 3, // Data Analyst
-            name: "Koby L. Jay",
-            course: "Bachelor of Science in Software Engineering",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "August 10, 2025",
-            status: "accepted",
-            contactInfo: {
-                personalEmail: "koby@email.com",
-                studentEmail: "202300008@student.dhvsu.edu.ph",
-                phone: "09890123456"
-            }
-        },
-        {
-            id: 9,
-            jobId: 3, // Data Analyst
-            name: "Jaydos D. Crist",
-            course: "Bachelor of Science in Cybersecurity",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "June 12, 2025",
-            status: "pending",
-            contactInfo: {
-                personalEmail: "jaydos@email.com",
-                studentEmail: "202300009@student.dhvsu.edu.ph",
-                phone: "09901234567"
-            }
-        },
-        {
-            id: 10,
-            jobId: 3, // Data Analyst
-            name: "Rayd Ohm M. Dih",
-            course: "Bachelor of Science in Game Development",
-            documentType: "Resume",
-            documentUrl: "#",
-            dateApplied: "May 10, 2025",
-            status: "rejected",
-            contactInfo: {
-                personalEmail: "rayd@email.com",
-                studentEmail: "202300010@student.dhvsu.edu.ph",
-                phone: "09012345678"
-            }
+        } catch (error) {
+            console.error("Error fetching job posts:", error);
+            return [];
         }
-    ];
+    }
 
     // ========================================
-    // STATE MANAGEMENT
+    // BACKEND INTEGRATION - FETCH JOB DETAILS
     // ========================================
-    let selectedJobId = null; // Currently selected job post
-    let currentFilter = 'all';
-    let searchTerm = '';
-    let selectedApplicants = new Set();
-    let batchMode = false; // Track if in batch selection mode
+    // ✅ PERFECTLY IMPLEMENTED!
+    // - Includes caching to avoid repeated fetches
+    // - Calls your backend endpoint with job_id
+    // - Returns full job details for the detail view
+    async function fetchJobDetails(jobId, forceRefresh = false) {
+        // Check cache first (unless forced)
+        if (!forceRefresh && jobDetailsCache[jobId]) {
+            return jobDetailsCache[jobId];
+        }
+
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_job_details.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ job_id: jobId })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Cache the details
+                jobDetailsCache[jobId] = result.data;
+                return result.data;
+            } else {
+                console.error("Failed to fetch job details:", result.message);
+                return null;
+            }
+        } catch (error) {
+            console.error("Error fetching job details:", error);
+            return null;
+        }
+    }
+
+    // ========================================
+    // BACKEND INTEGRATION - FETCH APPLICANTS
+    // ========================================
+    // ✅ FIXED! Your PHP already returns the correct structure, so no need to remap
+    async function fetchApplicants(jobId) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_applicants.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ job_id: jobId })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // ✅ Your PHP already returns the correct structure with nested contactInfo
+                // So we can use it directly without remapping
+                applicantsData = result.data;
+
+                // ✅ FIX: Also update the accepted count cache
+                const acceptedCount = result.data.filter(a => a.status === 'accepted').length;
+                acceptedCountsCache[jobId] = acceptedCount;
+
+                return applicantsData;
+            } else {
+                console.error("Failed to fetch applicants:", result.message);
+                return [];
+            }
+        } catch (error) {
+            console.error("Error fetching applicants:", error);
+            return [];
+        }
+    }
+
+    // ========================================
+    // HELPER FUNCTIONS
+    // ========================================
+    /**
+     * Gets the company ID from session/context
+     * ✅ PERFECTLY IMPLEMENTED!
+     * - Uses backend API to get company_id from PHP session
+     * - Properly handles async/await
+     */
+    async function getCompanyId() {
+        try {
+            // Fetch company_id using backend API
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/get_company_id.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                // PHP session already knows $_SESSION['email'],
+                // so backend can resolve company_id without needing JS to send it
+                body: JSON.stringify({})
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                return result.company_id;
+            } else {
+                throw new Error("Failed to get company ID: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error fetching company ID:", error);
+            return null;
+        }
+    }
+
+    /**
+     * Gets applicants for a specific job from the loaded data
+     */
+    function getApplicantsForJob(jobId) {
+        if (!jobId) return [];
+        return applicantsData.filter(a => a.jobId === jobId);
+    }
+
+    /**
+     * Fetches applicants for ALL jobs at once and caches accepted counts
+     * Called during initialization to pre-load all applicant data
+     * ✅ This fixes the bug where accepted counts show 0 until detail view is opened
+     */
+    async function fetchAllApplicants() {
+        try {
+            // Fetch applicants for each job and calculate accepted counts
+            const fetchPromises = jobPostsData.map(async (job) => {
+                const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_applicants.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ job_id: job.id })
+                });
+
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    // Count accepted applicants for this job
+                    const acceptedCount = result.data.filter(a => a.status === 'accepted').length;
+                    // Store in cache
+                    acceptedCountsCache[job.id] = acceptedCount;
+                }
+            });
+
+            // Wait for all fetches to complete
+            await Promise.all(fetchPromises);
+
+            console.log(`✅ Pre-loaded accepted counts for ${jobPostsData.length} jobs:`, acceptedCountsCache);
+        } catch (error) {
+            console.error('Error pre-loading applicants:', error);
+        }
+    }
+
+    // ========================================
+    // INITIALIZATION - LOAD DATA
+    // ========================================
+    try {
+        // Load initial data
+        await fetchJobPosts();
+
+        // ✅ FIX: Pre-load all applicants data so counts show correctly from the start
+        await fetchAllApplicants();
+
+        // Restore saved state or show card view
+        loadState();
+
+        // If no saved state, show card view by default
+        if (viewMode === 'cards') {
+            showCardView();
+        }
+    } catch (error) {
+        console.error('Failed to initialize job listing:', error);
+        // Show error state to user
+    }
+
 
     // ========================================
     // STATE PERSISTENCE
     // ========================================
     function saveState() {
         const state = {
-            selectedJobId,
+            viewMode,
+            selectedJobId: selectedJobForDetail || selectedJobId,
             currentFilter,
-            searchTerm
+            searchTerm,
+            jobSearchTerm
         };
         sessionStorage.setItem('jobListingState', JSON.stringify(state));
     }
@@ -215,21 +317,30 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const state = JSON.parse(savedState);
 
+                // Load view mode
+                if (state.viewMode) viewMode = state.viewMode;
+
                 // Validate if job ID still exists in our current data
                 if (state.selectedJobId) {
                     const jobExists = jobPostsData.some(j => j.id === state.selectedJobId);
                     if (jobExists) {
                         selectedJobId = state.selectedJobId;
+                        selectedJobForDetail = state.selectedJobId;
                     }
                 }
 
                 if (state.currentFilter) currentFilter = state.currentFilter;
                 if (state.searchTerm !== undefined) searchTerm = state.searchTerm;
+                if (state.jobSearchTerm !== undefined) jobSearchTerm = state.jobSearchTerm;
 
                 // Sync UI elements
-                if (jobTitleSelect) jobTitleSelect.value = selectedJobId || "";
+                const jobSearchInput = document.getElementById('jobSearchInput');
+                if (jobSearchInput && jobSearchTerm) jobSearchInput.value = jobSearchTerm;
+
+                const searchInput = document.getElementById('searchInput');
                 if (searchInput) searchInput.value = searchTerm;
 
+                const filterPills = document.querySelectorAll('.filter-pill');
                 if (filterPills) {
                     filterPills.forEach(pill => {
                         if (pill.dataset.status === currentFilter) {
@@ -239,11 +350,192 @@ document.addEventListener('DOMContentLoaded', () => {
                         }
                     });
                 }
+
+                // Restore view based on state
+                if (viewMode === 'detail' && selectedJobForDetail) {
+                    showDetailView(selectedJobForDetail);
+                } else {
+                    showCardView();
+                }
             } catch (e) {
                 console.error("Error loading state:", e);
                 sessionStorage.removeItem('jobListingState');
             }
         }
+    }
+
+    // ========================================
+    // CARD VIEW FUNCTIONS
+    // ========================================
+    function renderJobCards(searchQuery = '') {
+        const jobCardsGrid = document.getElementById('jobCardsGrid');
+        const noJobsState = document.getElementById('noJobsState');
+        // ✅ Get company name from hidden input
+        const companyName = document.getElementById('company_name')?.value || 'Company Name';
+
+        if (!jobCardsGrid) return;
+
+        const filteredJobs = searchQuery
+            ? jobPostsData.filter(job =>
+                job.title.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+            : jobPostsData;
+
+        if (filteredJobs.length === 0) {
+            jobCardsGrid.style.display = 'none';
+            noJobsState.style.display = 'block';
+            return;
+        }
+
+        jobCardsGrid.style.display = 'grid';
+        noJobsState.style.display = 'none';
+
+        jobCardsGrid.innerHTML = filteredJobs.map(job => {
+            // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
+            const acceptedCount = acceptedCountsCache[job.id] || 0;
+            return `
+                <div class="job-card" data-job-id="${job.id}">
+                    <div class="job-card-header">
+                        <img src="${job.companyIcon || 'https://via.placeholder.com/40'}" alt="Company Logo" class="card-company-icon">
+                        <span class="card-company-name">${companyName}</span>
+                    </div>
+                    <h3 class="job-card-title">${job.title}</h3>
+                    <div class="job-card-meta">
+                        <div class="card-meta-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>${job.location}</span>
+                        </div>
+                    </div>
+                    <div class="card-applicant-status">${acceptedCount}/${job.applicantLimit}</div>
+                    <p class="job-card-description">${job.jobDescription}</p>
+                </div>
+            `;
+        }).join('');
+
+        // Add click handlers to cards
+        document.querySelectorAll('.job-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const jobId = parseInt(card.dataset.jobId);
+                showDetailView(jobId);
+            });
+        });
+    }
+
+    function showCardView() {
+        viewMode = 'cards';
+        const cardViewContainer = document.getElementById('card-view-container');
+        const detailViewContainer = document.getElementById('detail-view-container');
+
+        if (cardViewContainer) cardViewContainer.style.display = 'block';
+        if (detailViewContainer) detailViewContainer.style.display = 'none';
+
+        renderJobCards(jobSearchTerm);
+        saveState();
+    }
+
+    // ========================================
+    // DETAIL VIEW FUNCTIONS
+    // ========================================
+    /**
+     * Shows detail view for a specific job
+     * ✅ BACKEND INTEGRATED - Fetches job details and applicants from server
+     */
+    async function showDetailView(jobId) {
+        viewMode = 'detail';
+        selectedJobForDetail = jobId;
+        selectedJobId = jobId;
+
+        const cardViewContainer = document.getElementById('card-view-container');
+        const detailViewContainer = document.getElementById('detail-view-container');
+
+        if (cardViewContainer) cardViewContainer.style.display = 'none';
+        if (detailViewContainer) detailViewContainer.style.display = 'block';
+
+        // ✅ BACKEND: Fetch job details and applicants
+        await renderJobDetail(jobId);
+        await fetchApplicants(jobId);
+
+        updateStatistics(jobId);
+        renderApplicants();
+        saveState();
+    }
+
+    /**
+     * Renders job detail information in the detail view
+     * ✅ BACKEND INTEGRATED - Uses fetchJobDetails() to get data from server
+     */
+    async function renderJobDetail(jobId) {
+        // ✅ BACKEND: Fetch job details from server (uses cache if available)
+        const jobDetails = await fetchJobDetails(jobId);
+
+        if (!jobDetails) {
+            console.error('Failed to load job details for job ID:', jobId);
+            if (typeof ToastSystem !== 'undefined') {
+                ToastSystem.show('Failed to load job details. Please try again.', 'error');
+            } else {
+                alert('Failed to load job details. Please try again.');
+            }
+            return;
+        }
+
+        // Update company badge
+        document.getElementById('detailCompanyIcon').src = jobDetails.companyIcon;
+        document.getElementById('detailCompanyName').textContent = jobDetails.companyName;
+
+        // Update job title
+        document.getElementById('detailJobTitle').textContent = jobDetails.jobTitle;
+
+        // Update meta information
+        document.getElementById('detailLocation').textContent = jobDetails.location;
+        document.getElementById('detailWorkType').textContent = jobDetails.workType;
+        // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
+        const acceptedApplicants = acceptedCountsCache[jobId] || 0;
+        document.getElementById('detailApplicantLimit').textContent = `${acceptedApplicants}/${jobDetails.applicantLimit} Applicants`;
+
+        // ✅ HANDLE BUTTON VISIBILITY BASED ON STATUS
+        const btnEdit = document.getElementById('btnEditDetail');
+        const btnClose = document.getElementById('btnCloseDetail');
+        const btnDelete = document.getElementById('btnDeleteDetail');
+
+        // Normalize status check (backend might send 'Active'/'active')
+        const isClosed = (jobDetails.status || '').toLowerCase() === 'closed';
+
+        if (isClosed) {
+            // If closed: Hide Edit/Close, Show Delete
+            if (btnEdit) btnEdit.style.display = 'none';
+            if (btnClose) btnClose.style.display = 'none';
+            if (btnDelete) btnDelete.style.display = 'flex'; // Use flex to maintain alignment
+        } else {
+            // If active: Show Edit/Close, Hide Delete
+            if (btnEdit) btnEdit.style.display = 'flex';
+            if (btnClose) btnClose.style.display = 'flex';
+            if (btnDelete) btnDelete.style.display = 'none';
+        }
+
+
+        // Map requiredDocument to readable format
+        // Make case-insensitive to handle 'resume', 'Resume', 'cover-letter', 'Cover Letter', etc.
+        const docTypeMap = {
+            'resume': 'Resume/CV',
+            'cover-letter': 'Cover Letter',
+            'cover letter': 'Cover Letter',
+            'none': 'None'
+        };
+        const requiredDoc = (jobDetails.requiredDocument || '').toLowerCase().trim();
+        document.getElementById('detailRequiredDoc').textContent = docTypeMap[requiredDoc] || jobDetails.requiredDocument || 'None';
+
+        // Update work tags
+        const tagsContainer = document.getElementById('detailWorkTags');
+        tagsContainer.innerHTML = jobDetails.workTags.map(tag =>
+            `<span class="detail-tag">${tag}</span>`
+        ).join('');
+
+        // Update job sections
+        // ✅ FIX: Changed from 'qualification' (singular) to 'qualifications' (plural)
+        document.getElementById('detailJobDescription').textContent = jobDetails.jobDescription;
+        document.getElementById('detailResponsibilities').textContent = jobDetails.responsibilities;
+        document.getElementById('detailQualifications').textContent = jobDetails.qualifications;
+        document.getElementById('detailSkills').textContent = jobDetails.skills;
     }
 
     // ========================================
@@ -307,10 +599,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // RENDER APPLICANTS
     // ========================================
-    function renderApplicants(data) {
+    function renderApplicants(data = null) {
+        // If no data provided, get filtered data based on current filter
+        const applicantsToRender = data || getFilteredData();
+
         applicantsList.innerHTML = '';
 
-        if (data.length === 0) {
+        if (applicantsToRender.length === 0) {
             emptyState.style.display = 'block';
 
             // Show context-aware empty state message
@@ -352,7 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         emptyState.style.display = 'none';
 
-        data.forEach(applicant => {
+        applicantsToRender.forEach(applicant => {
             const card = createApplicantCard(applicant);
             applicantsList.appendChild(card);
         });
@@ -607,53 +902,193 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================
     // ACCEPT/REJECT ACTIONS
     // ========================================
-    function acceptApplicant(id) {
-        const applicant = applicantsData.find(a => a.id === id);
-        if (applicant && applicant.status === 'pending') {
-            applicant.status = 'accepted';
-            // Backend integration point:
-            // fetch('/api/applicants/accept', { method: 'POST', body: JSON.stringify({ id }) })
-            updateDisplay();
+    async function acceptApplicant(id) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_applicant_status.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_id: id, status: "accepted" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                const applicant = applicantsData.find(a => a.id === id);
+                if (applicant) {
+                    applicant.status = 'accepted';
+                }
+
+                // Update cache
+                if (selectedJobForDetail) {
+                    acceptedCountsCache[selectedJobForDetail] = result.accepted_count;
+                    // ✅ FIX: Update the detail view header count immediately
+                    const detailApplicantLimit = document.getElementById('detailApplicantLimit');
+                    if (detailApplicantLimit && selectedJobForDetail) {
+                        const job = jobPostsData.find(j => j.id === selectedJobForDetail);
+                        if (job) {
+                            detailApplicantLimit.textContent = `${result.accepted_count}/${job.applicantLimit} Applicants`;
+                        }
+                    }
+                }
+
+                // If job was closed, update job status
+                if (result.job_closed) {
+                    const job = jobPostsData.find(j => j.id === selectedJobForDetail);
+                    if (job) job.status = 'closed';
+                    alert(`Job post has been automatically closed (${result.accepted_count}/${result.applicant_limit} applicants accepted)`);
+                }
+
+                updateDisplay();
+            } else if (result.code === "LIMIT_REACHED") {
+                alert(result.message);
+            } else {
+                alert("Failed to accept applicant: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error accepting applicant:", error);
+            alert("Network error. Please try again.");
         }
     }
 
-    function rejectApplicant(id) {
-        const applicant = applicantsData.find(a => a.id === id);
-        if (applicant && applicant.status === 'pending') {
-            applicant.status = 'rejected';
-            // Backend integration point:
-            // fetch('/api/applicants/reject', { method: 'POST', body: JSON.stringify({ id }) })
-            updateDisplay();
+    async function rejectApplicant(id) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_applicant_status.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_id: id, status: "rejected" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                const applicant = applicantsData.find(a => a.id === id);
+                if (applicant) {
+                    applicant.status = 'rejected';
+                }
+
+                // Update cache (rejecting decreases accepted count if previously accepted)
+                if (selectedJobForDetail) {
+                    acceptedCountsCache[selectedJobForDetail] = result.accepted_count;
+                    // ✅ FIX: Update the detail view header count immediately
+                    const detailApplicantLimit = document.getElementById('detailApplicantLimit');
+                    if (detailApplicantLimit && selectedJobForDetail) {
+                        const job = jobPostsData.find(j => j.id === selectedJobForDetail);
+                        if (job) {
+                            detailApplicantLimit.textContent = `${result.accepted_count}/${job.applicantLimit} Applicants`;
+                        }
+                    }
+                }
+
+                updateDisplay();
+            } else {
+                alert("Failed to reject applicant: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error rejecting applicant:", error);
+            alert("Network error. Please try again.");
         }
     }
 
     // Batch operations
-    function acceptSelectedApplicants() {
-        selectedApplicants.forEach(id => {
-            const applicant = applicantsData.find(a => a.id === id);
-            if (applicant && applicant.status === 'pending') {
-                applicant.status = 'accepted';
-            }
-        });
-        // Backend integration point:
-        // fetch('/api/applicants/batch-accept', { method: 'POST', body: JSON.stringify({ ids: Array.from(selectedApplicants) }) })
+    async function acceptSelectedApplicants() {
+        const ids = Array.from(selectedApplicants);
+        if (ids.length === 0) return;
 
-        clearSelection();
-        updateDisplay();
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/batch_update_applicants.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_ids: ids, status: "accepted" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                ids.forEach(id => {
+                    const applicant = applicantsData.find(a => a.id === id);
+                    if (applicant) {
+                        applicant.status = 'accepted';
+                    }
+                });
+
+                // Refresh accepted counts for all affected jobs
+                if (selectedJobForDetail) {
+                    await fetchApplicants(selectedJobForDetail);
+                }
+
+                // Notify if jobs were closed
+                if (result.closed_jobs && result.closed_jobs.length > 0) {
+                    alert(`${result.updated_count} applicant(s) accepted. ${result.closed_jobs.length} job post(s) automatically closed due to reaching limit.`);
+                    // Update job statuses
+                    result.closed_jobs.forEach(jobId => {
+                        const job = jobPostsData.find(j => j.id === jobId);
+                        if (job) job.status = 'closed';
+                    });
+                } else {
+                    alert(`${result.updated_count} applicant(s) accepted successfully.`);
+                }
+
+                clearSelection();
+                updateDisplay();
+            } else if (result.code === "LIMIT_REACHED") {
+                alert(result.message);
+            } else {
+                alert("Failed to accept applicants: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error accepting applicants:", error);
+            alert("Network error. Please try again.");
+        }
     }
 
-    function rejectSelectedApplicants() {
-        selectedApplicants.forEach(id => {
-            const applicant = applicantsData.find(a => a.id === id);
-            if (applicant && applicant.status === 'pending') {
-                applicant.status = 'rejected';
-            }
-        });
-        // Backend integration point:
-        // fetch('/api/applicants/batch-reject', { method: 'POST', body: JSON.stringify({ ids: Array.from(selectedApplicants) }) })
+    async function rejectSelectedApplicants() {
+        const ids = Array.from(selectedApplicants);
+        if (ids.length === 0) return;
 
-        clearSelection();
-        updateDisplay();
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/batch_update_applicants.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ applicant_ids: ids, status: "rejected" })
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Update local data
+                ids.forEach(id => {
+                    const applicant = applicantsData.find(a => a.id === id);
+                    if (applicant) {
+                        applicant.status = 'rejected';
+                    }
+                });
+
+                // Refresh accepted counts
+                if (selectedJobForDetail) {
+                    await fetchApplicants(selectedJobForDetail);
+                }
+
+                alert(`${result.updated_count} applicant(s) rejected successfully.`);
+                clearSelection();
+                updateDisplay();
+            } else {
+                alert("Failed to reject applicants: " + result.message);
+            }
+        } catch (error) {
+            console.error("Error rejecting applicants:", error);
+            alert("Network error. Please try again.");
+        }
     }
 
     function clearSelection() {
@@ -971,13 +1406,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Populate required document
+        // Populate required document
         if (jobData.requiredDocument) {
             const docRadios = document.getElementsByName('requiredDocument');
+            const requiredDocValue = jobData.requiredDocument.toLowerCase();
+
+            let matched = false;
             docRadios.forEach(radio => {
-                if (radio.value === jobData.requiredDocument) {
+                // Check if values match or if the radio value is contained in the DB value (e.g. 'resume' in 'Resume/CV')
+                // This handles potential variations like 'Resume' vs 'resume'
+                if (radio.value === requiredDocValue ||
+                    requiredDocValue.includes(radio.value) ||
+                    (radio.value === 'resume' && requiredDocValue.includes('cv'))) {
+
                     radio.checked = true;
+                    matched = true;
                 }
             });
+
+            // If no match found but we have a value, try to map it specifically
+            if (!matched) {
+                if (requiredDocValue.includes('cover')) {
+                    const coverRadio = document.querySelector('input[value="cover-letter"]');
+                    if (coverRadio) coverRadio.checked = true;
+                } else if (requiredDocValue.includes('resume') || requiredDocValue.includes('cv')) {
+                    const resumeRadio = document.querySelector('input[value="resume"]');
+                    if (resumeRadio) resumeRadio.checked = true;
+                }
+            }
         }
 
         // Populate text areas
@@ -988,7 +1444,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (responsibilitiesTextarea) responsibilitiesTextarea.value = jobData.responsibilities || '';
 
         const qualificationTextarea = document.getElementById('qualificationTextarea');
-        if (qualificationTextarea) qualificationTextarea.value = jobData.qualification || '';
+        if (qualificationTextarea) qualificationTextarea.value = jobData.qualifications || jobData.qualification || '';
 
         const skillsTextarea = document.getElementById('skillsTextarea');
         if (skillsTextarea) skillsTextarea.value = jobData.skills || '';
@@ -1237,7 +1693,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Form Submission Handler
     if (jobPostForm) {
-        jobPostForm.addEventListener('submit', (e) => {
+        jobPostForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             // Clear previous errors
@@ -1250,56 +1706,158 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Collect form data
             const formData = {
-                jobTitle: document.getElementById('jobTitleInput').value.trim(),
+                title: document.getElementById('jobTitleInput').value.trim(),
                 location: document.getElementById('locationInput').value.trim(),
-                workType: document.getElementById('workTypeSelect').value,
-                applicantLimit: parseInt(document.getElementById('applicantLimitInput').value),
+                work_type: document.getElementById('workTypeSelect').value,
+                applicant_limit: parseInt(document.getElementById('applicantLimitInput').value),
                 category: document.getElementById('categorySelect').value,
-                workTags: [...selectedTags],
-                requiredDocument: document.querySelector('input[name="requiredDocument"]:checked').value,
-                jobDescription: document.getElementById('jobDescriptionTextarea').value.trim(),
+                work_tags: [...selectedTags],
+                required_document: document.querySelector('input[name="requiredDocument"]:checked').value,
+                description: document.getElementById('jobDescriptionTextarea').value.trim(),
                 responsibilities: document.getElementById('responsibilitiesTextarea').value.trim(),
-                qualification: document.getElementById('qualificationTextarea').value.trim(),
-                skills: document.getElementById('skillsTextarea').value.trim(),
-                datePosted: new Date().toISOString(),
-                status: 'active',
-                views: 0
+                qualifications: document.getElementById('qualificationTextarea').value.trim(),
+                skills: document.getElementById('skillsTextarea').value.trim()
             };
 
             // Check mode and handle accordingly
             if (modalMode === 'edit') {
                 // Add job ID for update
-                formData.jobId = currentEditingJobId;
+                formData.post_id = currentEditingJobId;
 
-                // Log update data for now (backend integration point)
-                console.log('=== JOB POST UPDATE ===');
-                console.log('Updating Job ID:', currentEditingJobId);
-                console.log('Updated Job Data:', formData);
+                try {
+                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_job_post.php", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
 
-                // TODO: Send update to backend
-                // fetch(`/api/job-posts/${currentEditingJobId}`, { 
-                //     method: 'PUT', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(formData) 
-                // })
+                    const result = await response.json();
 
-                alert('Job post updated successfully! (Backend integration pending)');
+                    if (result.status === "success") {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Job post updated successfully!', 'success');
+                        } else {
+                            alert('Job post updated successfully!');
+                        }
+
+                        // Refresh job details (FORCE REFRESH)
+                        await fetchJobDetails(currentEditingJobId, true);
+
+                        // Re-render the detail view immediately
+                        await renderJobDetail(currentEditingJobId);
+
+                        // Update cache in jobPostsData as well for card view
+                        const jobIndex = jobPostsData.findIndex(j => j.id === currentEditingJobId);
+                        if (jobIndex !== -1) {
+                            jobPostsData[jobIndex].title = formData.title;
+                            jobPostsData[jobIndex].location = formData.location;
+                            jobPostsData[jobIndex].applicantLimit = formData.applicant_limit;
+                            jobPostsData[jobIndex].jobDescription = formData.description;
+
+                            // Re-render view if in cards mode
+                            if (viewMode === 'cards') {
+                                showCardView();
+                            }
+                        }
+
+                        closeJobPostModal();
+                    } else if (result.code === "LIMIT_BELOW_ACCEPTED") {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show(result.message, 'error');
+                        } else {
+                            alert(result.message);
+                        }
+                    } else {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Failed to update job post: ' + result.message, 'error');
+                        } else {
+                            alert('Failed to update job post: ' + result.message);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error updating job post:', error);
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Network error. Please try again.', 'error');
+                    } else {
+                        alert('Network error. Please try again.');
+                    }
+                }
             } else {
-                // Add mode - Log create data for now (backend integration point)
-                console.log('=== NEW JOB POST ===');
-                console.log('Job Posting Data:', formData);
+                // ========================================
+                // CREATE MODE
+                // ========================================
+                try {
+                    const companyEmail = document.getElementById('company_email')?.value || '';
+                    if (!companyEmail) {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Error: Company email not found. Please reload.', 'error');
+                        } else {
+                            alert('Error: Company email not found. Please reload.');
+                        }
+                        return;
+                    }
 
-                // TODO: Send data to backend
-                // fetch('/api/job-posts', { 
-                //     method: 'POST', 
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(formData) 
-                // })
+                    const payload = {
+                        company_email: companyEmail,
+                        jobTitle: formData.title,
+                        location: formData.location,
+                        workType: formData.work_type,
+                        applicantLimit: formData.applicant_limit,
+                        category: formData.work_tags.length > 0 ? formData.work_tags[0] : '',
+                        tags: formData.work_tags,
+                        requiredDocument: formData.document,
+                        jobDescription: formData.description,
+                        responsibilities: formData.responsibilities,
+                        qualifications: formData.qualifications,
+                        skills: formData.skills
+                    };
 
-                alert('Job post created successfully! (Backend integration pending)');
+                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/post_job.php", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === "success") {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Job post created successfully!', 'success');
+                        } else {
+                            alert('Job post created successfully!');
+                        }
+
+                        closeJobPostModal();
+
+                        // Refresh data
+                        await fetchJobPosts();
+                        if (viewMode === 'cards') {
+                            renderJobCards(jobSearchTerm);
+                        }
+                    } else {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Failed to create job: ' + result.message, 'error');
+                        } else {
+                            alert('Failed to create job: ' + result.message);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error creating job post:', error);
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Network error.', 'error');
+                    } else {
+                        alert('Network error.');
+                    }
+                }
             }
+        });
+    }
 
-            closeJobPostModal();
+    // Open Modal for New Post
+    const btnAddJob = document.getElementById('btnAddJob');
+    if (btnAddJob) {
+        btnAddJob.addEventListener('click', () => {
+            openJobPostModal('add');
         });
     }
 
@@ -1325,13 +1883,167 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========================================
-    // INITIALIZATION
+    // NEW EVENT HANDLERS FOR CARD VIEW UI
     // ========================================
-    populateJobDropdown();
+    const jobSearchInput = document.getElementById('jobSearchInput');
+    if (jobSearchInput) {
+        jobSearchInput.addEventListener('input', (e) => {
+            jobSearchTerm = e.target.value;
+            saveState();
+            renderJobCards(jobSearchTerm);
+        });
+    }
+
+    const btnBack = document.getElementById('btnBack');
+    if (btnBack) {
+        btnBack.addEventListener('click', () => {
+            showCardView();
+        });
+    }
+
+    const btnEditDetail = document.getElementById('btnEditDetail');
+    if (btnEditDetail) {
+        btnEditDetail.addEventListener('click', async () => {
+            if (selectedJobForDetail) {
+                // Use cached details if available, otherwise fetch
+                let jobDetails = jobDetailsCache[selectedJobForDetail];
+                if (!jobDetails) {
+                    await fetchJobDetails(selectedJobForDetail);
+                    jobDetails = jobDetailsCache[selectedJobForDetail];
+                }
+
+                if (jobDetails) {
+                    openJobPostModal('edit', jobDetails);
+                } else {
+                    console.error('Job details not found for ID:', selectedJobForDetail);
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Could not load job details for editing.', 'error');
+                    } else {
+                        alert('Could not load job details for editing.');
+                    }
+                }
+            }
+        });
+    }
+
+    const btnCloseDetail = document.getElementById('btnCloseDetail');
+    if (btnCloseDetail) {
+        btnCloseDetail.addEventListener('click', async () => {
+            if (!selectedJobForDetail) return;
+
+            showConfirmationModal(
+                'Close Job Post?',
+                'Are you sure you want to CLOSE this job post?\n\nThis will REJECT all pending applicants and cannot be undone.',
+                'warning',
+                async () => {
+                    try {
+                        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/close_job_post.php", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ post_id: selectedJobForDetail })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.status === "success") {
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show(`Job post closed! Rejected ${result.rejected_count} pending applicants.`, 'success');
+                            } else {
+                                alert(`Job post closed! Rejected ${result.rejected_count} pending applicants.`);
+                            }
+
+                            // Force refresh details to update status and UI
+                            await fetchJobDetails(selectedJobForDetail, true);
+                            await renderJobDetail(selectedJobForDetail);
+
+                            // Update lists
+                            await fetchJobPosts();
+                            await fetchAllApplicants(); // Counts changed
+                        } else {
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show(result.message, 'error');
+                            } else {
+                                alert(result.message);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error closing job:', error);
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Network error.', 'error');
+                        } else {
+                            alert('Network error.');
+                        }
+                    }
+                }
+            );
+        });
+    }
+
+    const btnDeleteDetail = document.getElementById('btnDeleteDetail');
+    if (btnDeleteDetail) {
+        btnDeleteDetail.addEventListener('click', async () => {
+            if (!selectedJobForDetail) return;
+
+            showConfirmationModal(
+                'Delete Job Post?',
+                '⚠️ PERMANENTLY DELETE JOB POST? ⚠️\n\nThis will remove ALL records including applicants, interviews, and statistics.\nThis action CANNOT be undone.',
+                'danger',
+                async () => {
+                    try {
+                        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_post.php", {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ post_id: selectedJobForDetail })
+                        });
+
+                        const result = await response.json();
+
+                        if (result.status === "success") {
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show('Job post deleted successfully.', 'success');
+                            } else {
+                                alert('Job post deleted successfully.');
+                            }
+
+                            // Go back to list and refresh
+                            showCardView();
+                            await fetchJobPosts();
+                            if (viewMode === 'cards') renderJobCards(jobSearchTerm);
+                        } else {
+                            if (typeof ToastSystem !== 'undefined') {
+                                ToastSystem.show('Failed to delete: ' + result.message, 'error');
+                            } else {
+                                alert('Failed to delete: ' + result.message);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error deleting job:', error);
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Network error.', 'error');
+                        } else {
+                            alert('Network error.');
+                        }
+                    }
+                }
+            );
+        });
+    }
+
+
+
+    // ========================================
+    // INITIALIZATION
+    // ========================================    
+    // Load saved state and restore appropriate view
     loadState();
-    updateDisplay();
+
+    // If no saved state, show card view by default
+    if (viewMode === 'cards') {
+        showCardView();
+    }
 
     console.log('Job Listing Page Loaded Successfully!');
     console.log('Job Posts:', jobPostsData);
     console.log('Applicants:', applicantsData);
+    console.log('View Mode:', viewMode);
 });
