@@ -370,6 +370,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     function renderJobCards(searchQuery = '') {
         const jobCardsGrid = document.getElementById('jobCardsGrid');
         const noJobsState = document.getElementById('noJobsState');
+        // ✅ Get company name from hidden input
+        const companyName = document.getElementById('company_name')?.value || 'Company Name';
 
         if (!jobCardsGrid) return;
 
@@ -394,8 +396,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return `
                 <div class="job-card" data-job-id="${job.id}">
                     <div class="job-card-header">
-                        <img src="https://via.placeholder.com/48" alt="Company Icon" class="card-company-icon">
-                        <span class="card-company-name">Sample Company Inc.</span>
+                        <img src="${job.companyIcon || 'https://via.placeholder.com/40'}" alt="Company Logo" class="card-company-icon">
+                        <span class="card-company-name">${companyName}</span>
                     </div>
                     <h3 class="job-card-title">${job.title}</h3>
                     <div class="job-card-meta">

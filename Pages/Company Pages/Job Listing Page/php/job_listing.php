@@ -476,9 +476,13 @@ if (isset($_SESSION['email'])) {
                         required></textarea>
                     <p class="error-message" id="skillsError"></p>
                 </div>
-            </form>
         </div>
+        </form>
     </div>
+    </div>
+
+    <!-- Hidden Inputs for JS -->
+    <input type="hidden" id="company_name" value="<?php echo htmlspecialchars($company_name ?? ''); ?>">
 
     <!-- Custom Confirmation Modal -->
     <div class="confirmation-modal-overlay" id="confirmationModalOverlay" style="display: none;">
