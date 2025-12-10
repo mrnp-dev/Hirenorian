@@ -1,10 +1,592 @@
-// ========================================
-// COMPANY PROFILE PAGE LOGIC
-// Future-proof for backend integration
-// ========================================
+/**
+ * COMPANY PROFILE - Interactive JavaScript
+ * Handles view/edit mode toggling, image uploads, and data synchronization.
+ */
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Company Profile section loaded');
+// ========== GLOBAL STATE ==========
+let currentImageType = ''; // 'banner' or 'icon'
+let currentEditItem = null;
+let currentEditSection = '';
+let itemCounter = {
+    perks: 4, // Starting after initial 3
+    locations: 3, // Starting after initial 2
+    contacts: 2 // Starting after initial 1
+};
 
-    // Add section-specific JavaScript logic here as needed
+// ========== VALIDATION CONSTANTS ==========
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_REGEX = /^(\+63|0)9\d{9}$/;
+
+// ========== VIEW / EDIT MODE TOGGLE ==========
+
+/**
+ * Toggles between View Mode and Edit Mode
+ * @param {boolean} isEditMode - true to show Edit container, false to show View container
+ */
+function toggleEditMode(isEditMode) {
+    const viewContainer = document.getElementById('view-profile-container');
+    const editContainer = document.getElementById('edit-profile-container');
+
+    if (isEditMode) {
+        // Show Edit, Hide View
+        viewContainer.style.display = 'none';
+        editContainer.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+        // Show View, Hide Edit
+        editContainer.style.display = 'none';
+        viewContainer.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+/**
+ * Saves changes from Edit Mode to View Mode (and Backend)
+ */
+function saveProfileChanges() {
+    let hasChanges = false;
+
+    // --- 1. Gather Data using Helper Functions ---
+    const basicInfo = getCompanyBasicInfo();
+    const stats = getCompanyStats();
+    const details = getCompanyDetails();
+    const locations = getLocationsList();
+    const contacts = getContactsList();
+    const perks = getPerksList(); // Optional
+
+    // --- 2. Check for Changes & Validation Reverts ---
+
+    // Validation: Company Name
+    const originalCompanyName = document.getElementById('viewCompanyName').textContent;
+    if (!basicInfo.name) {
+        document.getElementById('editCompanyName').value = originalCompanyName;
+        basicInfo.name = originalCompanyName; // Fix payload
+    }
+    if (basicInfo.name !== originalCompanyName) hasChanges = true;
+
+    // Validation: Email
+    const originalEmail = document.getElementById('viewContactEmail').textContent;
+    if (!basicInfo.email || !EMAIL_REGEX.test(basicInfo.email)) {
+        document.getElementById('editContactEmail').value = originalEmail;
+        basicInfo.email = originalEmail; // Fix payload
+    }
+    if (basicInfo.email !== originalEmail) hasChanges = true;
+
+    // Check other basic info changes
+    if (basicInfo.industry !== document.getElementById('viewCompanyIndustry').textContent) hasChanges = true;
+    if (basicInfo.address !== document.getElementById('viewContactLocation').textContent) hasChanges = true;
+
+    // Check details changes
+    if (details.tagline !== document.getElementById('viewCompanyTagline').textContent) hasChanges = true;
+
+    const originalAbout = document.getElementById('viewAboutUsText').textContent;
+    if ((details.aboutUs || "No about us provided") !== originalAbout) hasChanges = true;
+
+    const originalWhy = document.getElementById('viewWhyJoinText').textContent;
+    if ((details.whyJoinUs || "No why join us provided") !== originalWhy) hasChanges = true;
+
+    const originalWebsite = document.getElementById('viewContactWebsite').getAttribute('href');
+    const newWebsite = details.websiteUrl || "#";
+    if (newWebsite !== (originalWebsite === "#" ? "" : originalWebsite) && newWebsite !== "#") hasChanges = true;
+
+
+    // Check Lists & Images
+    if (syncListToView('editPerksList', 'viewPerksList', 'perks')) hasChanges = true;
+    if (syncListToView('editLocationsList', 'viewLocationsList', 'locations')) hasChanges = true;
+    if (syncListToView('editContactsList', 'viewContactsList', 'contacts')) hasChanges = true;
+
+    const currentBannerSrc = document.getElementById('viewCompanyBanner').src;
+    const newBannerSrc = document.getElementById('editCompanyBanner').src;
+    if (currentBannerSrc !== newBannerSrc) hasChanges = true;
+
+    const currentIconSrc = document.getElementById('viewCompanyIcon').src;
+    const newIconSrc = document.getElementById('editCompanyIcon').src;
+    if (currentIconSrc !== newIconSrc) hasChanges = true;
+
+
+    // --- 3. Backend Integration Point ---
+    const payload = {
+        company_id: document.getElementById('company_id').value,
+        basic_info: basicInfo,
+        details: details,
+        lists: {
+            locations: locations,
+            contacts: contacts,
+            perks: perks
+        }
+    };
+
+    // Debugging
+    console.log("Payload prepared for Backend:", payload);
+
+    // Send to backend API
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_profile_update.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.status === "success") {
+                console.log("✅ Profile updated successfully:", result.message);
+                // Optionally show a success alert or redirect
+            } else {
+                console.error("❌ Update failed:", result.message);
+                // Optionally show an error alert
+            }
+        })
+        .catch(error => {
+            console.error("⚠️ Network or server error:", error);
+        });
+
+
+    // --- 4. Update UI (View Mode) ---
+
+    updateViewModeUI(basicInfo, details);
+
+    // Images
+    if (currentBannerSrc !== newBannerSrc) document.getElementById('viewCompanyBanner').src = newBannerSrc;
+    if (currentIconSrc !== newIconSrc) document.getElementById('viewCompanyIcon').src = newIconSrc;
+
+    if (hasChanges) {
+        ToastSystem.show('Profile updated successfully!', 'success');
+    }
+
+    toggleEditMode(false);
+}
+
+/**
+ * Updates the View Mode DOM elements with the gathered data.
+ */
+function updateViewModeUI(basicInfo, details) {
+    document.getElementById('viewCompanyName').textContent = basicInfo.name;
+    document.getElementById('viewCompanyIndustry').textContent = basicInfo.industry;
+    document.getElementById('viewContactEmail').textContent = basicInfo.email;
+    document.getElementById('viewContactLocation').textContent = basicInfo.address;
+
+    document.getElementById('viewCompanyTagline').textContent = details.tagline || "No tagline provided";
+    document.getElementById('viewAboutUsText').textContent = details.aboutUs || "No about us provided";
+    document.getElementById('viewWhyJoinText').textContent = details.whyJoinUs || "No why join us provided";
+
+    const websiteLink = document.getElementById('viewContactWebsite');
+    websiteLink.textContent = details.websiteUrl || "Set Website Link";
+    websiteLink.href = details.websiteUrl || "#";
+}
+
+/**
+ * Helper to sync a list from Edit container to View container
+ * Removes 'item-actions' buttons from the cloned content.
+ * Returns true if changes were made.
+ */
+function syncListToView(editListId, viewListId, type) {
+    const editList = document.getElementById(editListId);
+    const viewList = document.getElementById(viewListId);
+
+    // Clone the entire list
+    const clone = editList.cloneNode(true);
+    clone.id = viewListId; // Update ID
+
+    // Remove all .item-actions divs
+    const actionDivs = clone.querySelectorAll('.item-actions');
+    actionDivs.forEach(div => div.remove());
+
+    // If list is empty (no items left), inject empty state HTML
+    if (clone.children.length === 0) {
+        let emptyHTML = '';
+        if (type === 'perks') {
+            emptyHTML = `<li class="benefit-item no-perks"><span>No perks listed</span></li>`;
+        } else if (type === 'locations') {
+            emptyHTML = `
+                <div class="location-item no-locations">
+                    <div class="location-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                    <div class="location-content">
+                        <h4>No office locations listed</h4>
+                    </div>
+                </div>`;
+        } else if (type === 'contacts') {
+            emptyHTML = `
+                <div class="contact-person-item no-contacts">
+                    <div class="contact-info">
+                        <h4>No contact persons listed</h4>
+                    </div>
+                </div>`;
+        }
+        clone.innerHTML = emptyHTML;
+    }
+
+    // Compare innerHTML to detect changes
+    if (viewList.innerHTML !== clone.innerHTML) {
+        viewList.parentNode.replaceChild(clone, viewList);
+        return true;
+    }
+
+    return false;
+}
+
+
+// ========== DATA RETRIEVAL HELPERS ==========
+
+function getCompanyBasicInfo() {
+    return {
+        name: document.getElementById('editCompanyName').value.trim(),
+        industry: document.getElementById('editCompanyIndustry').value,
+        email: document.getElementById('editContactEmail').value.trim(),
+        address: document.getElementById('editContactLocation').value.trim(),
+        phoneNumber: "" // Placeholder
+    };
+}
+
+function getCompanyStats() {
+    const employees = document.querySelector('.card.stats-card .stat-item:nth-child(1) .stat-value')?.textContent || 0;
+    const accepted = document.querySelector('.card.stats-card .stat-item:nth-child(2) .stat-value')?.textContent || 0;
+    const rejected = document.querySelector('.card.stats-card .stat-item:nth-child(3) .stat-value')?.textContent || 0;
+
+    return {
+        totalApplicants: parseInt(employees),
+        accepted: parseInt(accepted),
+        rejected: parseInt(rejected)
+    };
+}
+
+function getCompanyDetails() {
+    return {
+        tagline: document.getElementById('editCompanyTagline').value.trim(),
+        aboutUs: document.getElementById('editAboutUsText').value.trim(),
+        whyJoinUs: document.getElementById('editWhyJoinText').value.trim(),
+        websiteUrl: document.getElementById('editContactWebsite').value.trim()
+    };
+}
+
+function getLocationsList() {
+    const listItems = document.querySelectorAll('#editLocationsList .location-item');
+    const locations = [];
+    listItems.forEach(item => {
+        locations.push({
+            name: item.querySelector('h4').textContent.trim(),
+            description: item.querySelector('.location-description').textContent.trim()
+        });
+    });
+    return locations;
+}
+
+function getContactsList() {
+    const listItems = document.querySelectorAll('#editContactsList .contact-person-item');
+    const contacts = [];
+    listItems.forEach(item => {
+        const name = item.querySelector('h4').textContent.trim();
+        const position = item.querySelector('.contact-position').textContent.replace('Position:', '').trim();
+        const email = item.querySelector('.contact-email').textContent.replace('Email:', '').trim();
+        const phone = item.querySelector('.contact-phone').textContent.replace('Number:', '').trim();
+
+        contacts.push({
+            name: name,
+            position: position,
+            email: email,
+            phoneNumber: phone
+        });
+    });
+    return contacts;
+}
+
+function getPerksList() {
+    const listItems = document.querySelectorAll('#editPerksList .benefit-item');
+    const perks = [];
+    listItems.forEach(item => {
+        perks.push({
+            description: item.querySelector('span').textContent.trim()
+        });
+    });
+    return perks;
+}
+
+
+// ========== IMAGE UPLOAD MODAL ==========
+
+function openImageUploadModal(type) {
+    currentImageType = type;
+    const modal = document.getElementById('imageUploadModal');
+    const title = document.getElementById('imageModalTitle');
+
+    title.textContent = type === 'banner' ? 'Update Company Banner' : 'Update Company Icon';
+    resetImagePreview();
+
+    modal.classList.add('show');
+    modal.style.display = 'flex';
+}
+
+function closeImageUploadModal() {
+    const modal = document.getElementById('imageUploadModal');
+    modal.classList.remove('show');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        resetImagePreview();
+    }, 300);
+}
+
+function resetImagePreview() {
+    const preview = document.getElementById('imagePreview');
+    const placeholder = document.getElementById('uploadPlaceholder');
+    const fileInput = document.getElementById('imageFileInput');
+
+    preview.style.display = 'none';
+    preview.src = '';
+    placeholder.style.display = 'block';
+    fileInput.value = '';
+}
+
+// File Selection
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('imageFileInput');
+
+    fileInput?.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const preview = document.getElementById('imagePreview');
+                const placeholder = document.getElementById('uploadPlaceholder');
+                preview.src = event.target.result;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+});
+
+/**
+ * Updates the image in the EDIT container.
+ * Changes are only finalized to View container on "Save Profile".
+ */
+function saveImageChanges() {
+    const preview = document.getElementById('imagePreview');
+
+    if (preview.style.display === 'none') {
+        ToastSystem.show('Please select an image first', 'warning');
+        return;
+    }
+
+    if (currentImageType === 'banner') {
+        document.getElementById('editCompanyBanner').src = preview.src;
+    } else if (currentImageType === 'icon') {
+        document.getElementById('editCompanyIcon').src = preview.src;
+    }
+
+    closeImageUploadModal();
+}
+
+
+// ========== ADD/EDIT LIST ITEMS (PERKS, LOCATIONS, CONTACTS) ==========
+// These operate on the EDIT Container lists.
+
+function openAddModal(section) {
+    currentEditSection = section;
+    currentEditItem = null;
+
+    if (section === 'perks') {
+        document.getElementById('perkModalTitle').textContent = 'Add Perk';
+        document.getElementById('perkText').value = '';
+        showModal('perkModal');
+    } else if (section === 'locations') {
+        document.getElementById('locationModalTitle').textContent = 'Add Office Location';
+        document.getElementById('locationName').value = '';
+        document.getElementById('locationDescription').value = '';
+        showModal('locationModal');
+    } else if (section === 'contacts') {
+        document.getElementById('contactPersonModalTitle').textContent = 'Add Contact Person';
+        document.getElementById('personName').value = '';
+        document.getElementById('personPosition').value = '';
+        document.getElementById('personEmail').value = '';
+        document.getElementById('personPhone').value = '';
+        showModal('contactPersonModal');
+    }
+}
+
+function editListItem(itemId, section) {
+    currentEditItem = itemId;
+    currentEditSection = section;
+
+    // Use currentEditItem to find the element in the EDIT list
+    const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
+    if (!item) return;
+
+    if (section === 'perks') {
+        const text = item.querySelector('span').textContent;
+        document.getElementById('perkModalTitle').textContent = 'Edit Perk';
+        document.getElementById('perkText').value = text;
+        showModal('perkModal');
+    } else if (section === 'locations') {
+        const name = item.querySelector('h4').textContent;
+        const description = item.querySelector('.location-description').textContent;
+        document.getElementById('locationModalTitle').textContent = 'Edit Office Location';
+        document.getElementById('locationName').value = name;
+        document.getElementById('locationDescription').value = description;
+        showModal('locationModal');
+    } else if (section === 'contacts') {
+        const name = item.querySelector('h4').textContent;
+        const position = item.querySelector('.contact-position').textContent.replace('Position: ', '');
+        const email = item.querySelector('.contact-email').textContent.replace('Email: ', '');
+        const phone = item.querySelector('.contact-phone').textContent.replace('Number: ', '');
+
+        document.getElementById('contactPersonModalTitle').textContent = 'Edit Contact Person';
+        document.getElementById('personName').value = name;
+        document.getElementById('personPosition').value = position;
+        document.getElementById('personEmail').value = email;
+        document.getElementById('personPhone').value = phone;
+        showModal('contactPersonModal');
+    }
+}
+
+function deleteListItem(itemId, section) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+
+    // Find item to delete in Edit Container
+    const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
+    if (item) {
+        item.remove();
+        ToastSystem.show('Item deleted', 'info');
+    }
+}
+
+// ========== SAVE LIST ITEMS (INTERNAL TO EDIT CONTAINER) ==========
+
+function savePerk() {
+    const text = document.getElementById('perkText').value.trim();
+    if (!text) return ToastSystem.show('Please enter text', 'warning');
+
+    if (currentEditItem) {
+        // Edit existing
+        const item = document.querySelector(`#edit-profile-container [data-id="${currentEditItem}"]`);
+        if (item) item.querySelector('span').textContent = text;
+    } else {
+        // Add new
+        const newId = `perk-${itemCounter.perks++}`;
+        const list = document.getElementById('editPerksList');
+        const li = document.createElement('li');
+        li.className = 'benefit-item';
+        li.setAttribute('data-id', newId);
+        li.innerHTML = `
+            <span>${text}</span>
+            <div class="item-actions">
+                <button class="action-btn edit" onclick="editListItem('${newId}', 'perks')"><i class="fa-solid fa-pen"></i></button>
+                <button class="action-btn delete" onclick="deleteListItem('${newId}', 'perks')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+        list.appendChild(li);
+    }
+    closePerkModal();
+}
+
+function saveLocation() {
+    const name = document.getElementById('locationName').value.trim();
+    const desc = document.getElementById('locationDescription').value.trim();
+    if (!name || !desc) return ToastSystem.show('Fill all fields', 'warning');
+
+    if (currentEditItem) {
+        const item = document.querySelector(`#edit-profile-container [data-id="${currentEditItem}"]`);
+        if (item) {
+            item.querySelector('h4').textContent = name;
+            item.querySelector('.location-description').textContent = desc;
+        }
+    } else {
+        const newId = `loc-${itemCounter.locations++}`;
+        const list = document.getElementById('editLocationsList');
+        const div = document.createElement('div');
+        div.className = 'location-item';
+        div.setAttribute('data-id', newId);
+        div.innerHTML = `
+            <div class="location-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+            <div class="location-content">
+                <h4>${name}</h4>
+                <p class="location-description">${desc}</p>
+            </div>
+            <div class="item-actions">
+                <button class="action-btn edit" onclick="editListItem('${newId}', 'locations')"><i class="fa-solid fa-pen"></i></button>
+                <button class="action-btn delete" onclick="deleteListItem('${newId}', 'locations')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+        list.appendChild(div);
+    }
+    closeLocationModal();
+}
+
+function saveContactPerson() {
+    const name = document.getElementById('personName').value.trim();
+    const pos = document.getElementById('personPosition').value.trim();
+    const email = document.getElementById('personEmail').value.trim();
+    const phone = document.getElementById('personPhone').value.trim();
+
+    // Basic empty check
+    if (!name || !pos || !email || !phone) return ToastSystem.show('Fill all fields', 'warning');
+
+    // Validation: Email
+    if (!EMAIL_REGEX.test(email)) {
+        return ToastSystem.show('Please enter a valid email address', 'warning');
+    }
+
+    // Validation: Phone (+63 or 09)
+    if (!PHONE_REGEX.test(phone)) {
+        return ToastSystem.show('Invalid phone number. Use +639... or 09...', 'warning');
+    }
+
+    if (currentEditItem) {
+        const item = document.querySelector(`#edit-profile-container [data-id="${currentEditItem}"]`);
+        if (item) {
+            item.querySelector('h4').textContent = name;
+            item.querySelector('.contact-position').textContent = `Position: ${pos}`;
+            item.querySelector('.contact-email').textContent = `Email: ${email}`;
+            item.querySelector('.contact-phone').textContent = `Number: ${phone}`;
+        }
+    } else {
+        const newId = `contact-${itemCounter.contacts++}`;
+        const list = document.getElementById('editContactsList');
+        const div = document.createElement('div');
+        div.className = 'contact-person-item';
+        div.setAttribute('data-id', newId);
+        div.innerHTML = `
+            <div class="contact-info">
+                <h4>${name}</h4>
+                <p class="contact-position">Position: ${pos}</p>
+                <p class="contact-email">Email: ${email}</p>
+                <p class="contact-phone">Number: ${phone}</p>
+            </div>
+            <div class="item-actions">
+                <button class="action-btn edit" onclick="editListItem('${newId}', 'contacts')"><i class="fa-solid fa-pen"></i></button>
+                <button class="action-btn delete" onclick="deleteListItem('${newId}', 'contacts')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+        list.appendChild(div);
+    }
+    closeContactPersonModal();
+}
+
+
+// ========== UTILITY ==========
+
+function showModal(id) {
+    const modal = document.getElementById(id);
+    modal.style.display = 'flex';
+    // Force reflow to enable transition
+    void modal.offsetWidth;
+    modal.classList.add('show');
+}
+
+function closePerkModal() { closeModal('perkModal'); }
+function closeLocationModal() { closeModal('locationModal'); }
+function closeContactPersonModal() { closeModal('contactPersonModal'); }
+
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove('show');
+    setTimeout(() => { modal.style.display = 'none'; }, 300);
+}
+
+// Close modals on outside click
+window.addEventListener('click', function (e) {
+    if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('show');
+        setTimeout(() => { e.target.style.display = 'none'; }, 300);
+    }
 });
