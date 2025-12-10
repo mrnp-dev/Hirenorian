@@ -482,6 +482,7 @@ if (isset($_SESSION['email'])) {
     </div>
 
     <!-- Hidden Inputs for JS -->
+    <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email ?? ''); ?>">
     <input type="hidden" id="company_name" value="<?php echo htmlspecialchars($company_name ?? ''); ?>">
 
     <!-- Custom Confirmation Modal -->

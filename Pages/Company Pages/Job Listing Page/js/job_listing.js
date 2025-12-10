@@ -1783,15 +1783,81 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
             } else {
-                // Create mode - keeping existing placeholder logic or TOD0
-                // For now, just alert as requested previously for create
-                if (typeof ToastSystem !== 'undefined') {
-                    ToastSystem.show('Job post created successfully! (Backend integration for CREATE pending)', 'success');
-                } else {
-                    alert('Job post created successfully! (Backend integration for CREATE pending)');
+                // ========================================
+                // CREATE MODE
+                // ========================================
+                try {
+                    const companyEmail = document.getElementById('company_email')?.value || '';
+                    if (!companyEmail) {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Error: Company email not found. Please reload.', 'error');
+                        } else {
+                            alert('Error: Company email not found. Please reload.');
+                        }
+                        return;
+                    }
+
+                    const payload = {
+                        company_email: companyEmail,
+                        jobTitle: formData.title,
+                        location: formData.location,
+                        workType: formData.work_type,
+                        applicantLimit: formData.applicant_limit,
+                        category: formData.work_tags.length > 0 ? formData.work_tags[0] : '',
+                        tags: formData.work_tags,
+                        requiredDocument: formData.document,
+                        jobDescription: formData.description,
+                        responsibilities: formData.responsibilities,
+                        qualifications: formData.qualifications,
+                        skills: formData.skills
+                    };
+
+                    const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/post_job.php", {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.status === "success") {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Job post created successfully!', 'success');
+                        } else {
+                            alert('Job post created successfully!');
+                        }
+
+                        closeJobPostModal();
+
+                        // Refresh data
+                        await fetchJobPosts();
+                        if (viewMode === 'cards') {
+                            renderJobCards(jobSearchTerm);
+                        }
+                    } else {
+                        if (typeof ToastSystem !== 'undefined') {
+                            ToastSystem.show('Failed to create job: ' + result.message, 'error');
+                        } else {
+                            alert('Failed to create job: ' + result.message);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error creating job post:', error);
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Network error.', 'error');
+                    } else {
+                        alert('Network error.');
+                    }
                 }
-                closeJobPostModal();
             }
+        });
+    }
+
+    // Open Modal for New Post
+    const btnAddJob = document.getElementById('btnAddJob');
+    if (btnAddJob) {
+        btnAddJob.addEventListener('click', () => {
+            openJobPostModal('add');
         });
     }
 
@@ -1963,12 +2029,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    const btnAddJob = document.getElementById('btnAddJob');
-    if (btnAddJob) {
-        btnAddJob.addEventListener('click', () => {
-            openJobPostModal('add');
-        });
-    }
+
 
     // ========================================
     // INITIALIZATION
