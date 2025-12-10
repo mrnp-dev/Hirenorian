@@ -154,7 +154,10 @@ else
                                     <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture">
                                     <button class="edit-photo-btn" data-modal-target="#editPhotoModal"><i class="fa-solid fa-camera"></i></button>
                                 </div>
-                                <h2 class="profile-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></h2>
+                                <h2 class="profile-name">
+                                    <span id="display-full-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></span>
+                                    <button class="icon-btn" data-modal-target="#editPersonalModal" style="font-size: 0.8em; margin-left: 10px;"><i class="fa-solid fa-pen"></i></button>
+                                </h2>
                                 <p class="profile-role"><?php echo htmlspecialchars($course); ?></p>
                                 <p class="profile-university"><?php echo htmlspecialchars($university); ?></p>
                             </div>
@@ -331,6 +334,43 @@ else
                 <label for="profilePhoto">Select Image</label>
                 <input type="file" id="profilePhoto" name="profile_photo" accept="image/*">
             </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" data-close-button>Cancel</button>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Personal Details Modal -->
+    <div class="modal" id="editPersonalModal">
+        <div class="modal-header">
+            <h3>Edit Personal Details</h3>
+            <button class="close-modal" data-close-button>&times;</button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="POST" id="personalForm">
+                <input type="hidden" name="student_id" id="studentIdPersonal" value="<?php echo htmlspecialchars($student_id); ?>">
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="first_name" value="<?php echo htmlspecialchars($first_name); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="last_name" value="<?php echo htmlspecialchars($last_name); ?>">
+                    </div>
+                </div>
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="middleInitial">Middle Initial</label>
+                        <input type="text" id="middleInitial" name="middle_initial" value="<?php echo htmlspecialchars($middle_initial); ?>" maxlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="suffix">Suffix</label>
+                        <input type="text" id="suffix" name="suffix" value="<?php echo htmlspecialchars($suffix); ?>" placeholder="e.g. Jr., III">
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary" data-close-button>Cancel</button>
                     <button type="submit" class="btn-primary">Save Changes</button>
@@ -613,10 +653,11 @@ else
     <script src="../js/toast.js"></script>
     <script src="../js/confirm.js"></script>
     <script src="../js/contact-modal.js"></script>
-    <script src="../js/skills-modal.js"></script>
+    <script src="../js/about-modal.js"></script>
     <script src="../js/education-modal.js"></script>
     <script src="../js/experience-modal.js"></script>
-    <script src="../js/about-modal.js"></script>
+    <script src="../js/skills-modal.js"></script>
+    <script src="../js/personal-modal.js"></script>
     
     <!-- Main entry point -->
     <script src="../js/edit_profile.js"></script>
