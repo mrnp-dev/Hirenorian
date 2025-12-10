@@ -198,22 +198,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const jobTitle = timelineItem.querySelector('h3').textContent;
 
             // Confirm deletion
-            if (confirm(`Are you sure you want to delete "${jobTitle}"? This action cannot be undone.`)) {
-                // TODO: Add API call to delete the experience entry
-                console.log('Deleting experience entry ID:', expId);
+            // Confirm deletion
+            ConfirmSystem.show(
+                `Are you sure you want to delete "${jobTitle}"? This action cannot be undone.`,
+                () => {
+                    fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/delete_experience_bg.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            exp_id: expId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === "success") {
+                                // Remove from DOM
+                                timelineItem.remove();
 
-                // Remove from DOM
-                timelineItem.remove();
+                                // Check if timeline is empty
+                                const timeline = document.querySelector('.experience-section .timeline');
+                                if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
+                                    timeline.innerHTML = '<p>No experience added.</p>';
+                                }
 
-                // Check if timeline is empty
-                const timeline = document.querySelector('.experience-section .timeline');
-                if (timeline && timeline.querySelectorAll('.timeline-item').length === 0) {
-                    timeline.innerHTML = '<p>No experience added.</p>';
-                }
-
-                // Show success message
-                alert('Experience entry deleted successfully!');
-            }
+                                ToastSystem.show('Experience entry deleted successfully', "success");
+                            } else {
+                                ToastSystem.show('Failed to delete experience entry', "error");
+                            }
+                        })
+                        .catch(err => {
+                            console.error("Fetch error:", err);
+                            ToastSystem.show('Network error', "error");
+                        });
+                },
+                'danger',
+                'Delete Experience'
+            );
         }
     });
 });
