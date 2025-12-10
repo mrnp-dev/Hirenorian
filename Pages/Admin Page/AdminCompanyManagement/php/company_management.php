@@ -115,7 +115,8 @@ $companies = [
                                 <th>Industry</th>
                                 <th>Contact Person</th>
                                 <th>Email</th>
-                                <th>Status</th>
+                                <th>Account Status</th>
+                                <th>Activation Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -133,6 +134,13 @@ $companies = [
                                             <button type="button" class="status verified activation-btn" data-id="<?= $company['id'] ?>">Verified</button>
                                         <?php else: ?>
                                             <button type="button" class="status unverified activation-btn" data-id="<?= $company['id'] ?>">Unverified</button>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php if ($company['account_status'] === 'active'): ?>
+                                            <span class="badge bg-success">Active</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-danger">Deactivated</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="action-buttons">
