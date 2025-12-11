@@ -9,7 +9,7 @@ session_start();
 
 $students = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/admin_student_information.php";
+$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -31,8 +31,6 @@ if ($data && isset($data['status'])) {
         echo "<p>Error: $message</p>";
     }
 } else {
-    // If JSON decode failed, it might be due to spaces/newlines in the output before json_encode
-    // or the URL is returning a 404 HTML page.
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 ?>
@@ -72,7 +70,7 @@ if ($data && isset($data['status'])) {
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Management</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="../../AdminCompanyManagement/php/company_management.php" class="nav-item">
                     <i class="fa-solid fa-building"></i>
                     <span>Company Management</span>
                 </a>
@@ -96,11 +94,7 @@ if ($data && isset($data['status'])) {
 
             <main class="dashboard-body">
                 <h1 class="page-title">Student Management</h1>
-
                 <div class="card student-management-card">
-                    <div class="table-actions">
-                        <button class="add-new-btn"><i class="fa-solid fa-plus"></i> Add New Student</button>
-                    </div>
 
                     <table class="crud-table" id="datatableid">
                         <thead>
@@ -113,8 +107,8 @@ if ($data && isset($data['status'])) {
                                 <th>Campus</th>
                                 <th>Department</th>
                                 <th>School Email</th>
-                                <th>Activation Status</th>
                                 <th>Account Status</th>
+                                <th>Activation Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -129,8 +123,19 @@ if ($data && isset($data['status'])) {
                                     <td><?= $student['department'] ?></td>
                                     <td><?= $student['course'] ?></td>
                                     <td><?= $student['student_email'] ?></td>
-                                    <td><button type="button" class="status verified activation-btn">Verified</button></td>
-                                    <td><span class="">deactivated</span></td>
+                                    <td>
+                                        <button type="button" class="status verification-btn 
+                                            <?= (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1) ? 'verified' : 'unverified' ?>">
+                                            <?= (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1) ? 'verified' : 'unverified' ?>
+                                        </button>
+                                    </td>
+
+                                    <td>
+                                        <button type="button" class="status activation-btn 
+                                            <?= (trim(strtolower($student['activated'])) === 'true' || $student['activated'] == 1) ? 'activated' : 'deactivated' ?>">
+                                            <?= (trim(strtolower($student['activated'])) === 'true' || $student['activated'] == 1) ? 'activated' : 'deactivated' ?>
+                                        </button>
+                                    </td>
                                     <td class="action-buttons">
                                         <button type="button" class="action-btn edit-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
                                         <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
@@ -153,6 +158,7 @@ if ($data && isset($data['status'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -160,24 +166,6 @@ if ($data && isset($data['status'])) {
         });
     </script>
 
-    <script src="sweetalert.min.js"></script>
-    <script>
-        function submitForm(form) {
-        swal({
-            title: "Are you sure?",
-            text: "This form will be submitted",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-        .then(function (isOkay) {
-            if (isOkay) {
-                form.submit();
-            }
-        });
-        return false;
-    }
-    </script>
 </body>
 
 </html>

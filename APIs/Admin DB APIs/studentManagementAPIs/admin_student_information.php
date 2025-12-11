@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include "dbCon.php";
+include("../dbCon.php");
 header("Content-type: application/json");
 
 $query = "SELECT 
@@ -18,6 +18,8 @@ $query = "SELECT
             s.last_name,
             s.suffix,
             s.student_email, 
+            s.activated,
+            s.verified,
             e.course, 
             e.department
           FROM Students s
@@ -29,8 +31,26 @@ $stmt->execute();
 
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$verified = 0;
+
+foreach ($data as $row) {
+    if ($row['verified'] == 'verified') {
+        $verified++;
+    }
+}
+
+$unverified = 0;
+
+foreach ($data as $row) {
+    if ($row['verified'] == 'unverified') {
+        $unverified++;
+    }
+}
+
 echo json_encode([
     "status" => "success",
     "count" => count($data),
-    "data" => $data
+    "data" => $data,
+    "verified" => $verified,
+    "unverified" => $unverified
 ]);

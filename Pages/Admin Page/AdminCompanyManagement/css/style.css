@@ -511,6 +511,26 @@ body {
     opacity: 0.7;
 }
 
+.status.verified {
+    background-color: #e5f5e5; 
+    color: #38761D;
+}
+
+.status.unverified {
+    background-color: #ffe5e5; 
+    color: #CC0000;
+}
+
+.status.activated {
+    background-color: #e5f5e5; 
+    color: #38761D;
+}
+
+.status.deactivated {
+    background-color: #ffe5e5; 
+    color: #CC0000;
+}
+
 /* Pagination container padding */
 .dataTables_wrapper .dataTables_paginate {
     padding: 10px 15px 10px 15px !important;

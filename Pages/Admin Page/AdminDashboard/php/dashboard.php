@@ -1,3 +1,68 @@
+<?php
+
+session_start();
+
+    //students
+    $students = [];
+
+    $apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    }
+
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data && isset($data['status'])) {
+        if ($data['status'] === "success") {
+            $students = $data['data'];
+        } else {
+            $message = isset($data['message']) ? $data['message'] : "Unknown error";
+            echo "<p>Error: $message</p>";
+        }
+    } else {
+        echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
+    }
+
+
+    //companies
+    $companies = [];
+
+    $apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/admin_company_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    }
+
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data && isset($data['status'])) {
+        if ($data['status'] === "success") {
+            $companies = $data['data'];
+        } else {
+            $message = isset($data['message']) ? $data['message'] : "Unknown error";
+            echo "<p>Error: $message</p>";
+        }
+    } else {
+        echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
+    }
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,14 +124,14 @@
                         <div class="stat-icon-admin"><i class="fa-solid fa-graduation-cap"></i></div>
                         <div class="stat-info-admin">
                             <h3>Number of Students</h3>
-                            <p class="stat-number-admin">50</p>
+                            <p class="stat-number-admin"><?= count($students) ?></p>
                         </div>
                     </div>
                     <div class="stat-card-admin yellow">
                         <div class="stat-icon-admin"><i class="fa-solid fa-city"></i></div>
                         <div class="stat-info-admin">
                             <h3>Number of Companies</h3>
-                            <p class="stat-number-admin">50</p>
+                            <p class="stat-number-admin"><?= count($companies) ?></p>
                         </div>
                     </div>
                     <div class="stat-card-admin green">
@@ -87,15 +152,14 @@
 
                 <div class="stats-summary-grid admin-bottom-grid">
                     <div class="card applicants-chart-card">
-                        <h2>Total Applicants Number</h2>
+                        <h2>Total Students Number</h2>
                         <div class="chart-content-wrapper">
                             <div class="chart-container">
                                 <canvas id="applicantsChart"></canvas>
                             </div>
                             <div class="chart-legend-admin">
-                                <div class="legend-item"><span class="legend-color accepted"></span>Accepted</div>
-                                <div class="legend-item"><span class="legend-color pending"></span>Pending</div>
-                                <div class="legend-item"><span class="legend-color rejected"></span>Rejected</div>
+                                <div class="legend-item"><span class="legend-color accepted"></span>Verified</div>
+                                <div class="legend-item"><span class="legend-color pending"></span>Unverified</div>
                             </div>
                         </div>
                         <p class="chart-description">A clear overview of total accepted, pending and rejected applicants of students.</p>
