@@ -778,6 +778,101 @@
     color: var(--text-dark);
 }
 
+/* Selected Filters Bar */
+.selected-filters-bar {
+    padding: 16px 24px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    display: none;
+    /* Hidden by default, shown when filters are selected */
+}
+
+.selected-filters-bar.active {
+    display: block;
+}
+
+.selected-filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.selected-count {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.btn-clear-selected {
+    background: transparent;
+    border: 1px solid var(--primary-maroon);
+    color: var(--primary-maroon);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-clear-selected:hover {
+    background: var(--primary-maroon);
+    color: white;
+}
+
+.selected-filters-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.selected-tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+}
+
+.selected-tag-chip .tag-label {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.selected-tag-chip .tag-category {
+    font-size: 0.75rem;
+    color: #888;
+    background: #f0f0f0;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.selected-tag-chip .remove-tag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    background: #f0f0f0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #666;
+    font-size: 0.7rem;
+}
+
+.selected-tag-chip .remove-tag:hover {
+    background: var(--primary-maroon);
+    color: white;
+}
+
 /* Modal Main - Sidebar + Content */
 .filters-modal-main {
     display: flex;

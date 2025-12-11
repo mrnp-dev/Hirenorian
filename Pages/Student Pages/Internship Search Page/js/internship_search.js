@@ -630,13 +630,74 @@ document.addEventListener('DOMContentLoaded', function () {
         selectedFilters.courses = Array.from(
             document.querySelectorAll('#studentCoursesContainer input[type="checkbox"]:checked')
         ).map(cb => cb.value);
+        updateSelectedFiltersDisplay();
     }
 
     function updateSelectedTags() {
         selectedFilters.careerTags = Array.from(
             document.querySelectorAll('#careerTagsContainer input[type="checkbox"]:checked')
         ).map(cb => cb.value);
+        updateSelectedFiltersDisplay();
     }
+
+    // Update the selected filters display
+    function updateSelectedFiltersDisplay() {
+        const selectedBar = document.getElementById('selectedFiltersBar');
+        const selectedTagsContainer = document.getElementById('selectedFiltersTags');
+        const selectedCountEl = document.querySelector('.selected-count');
+        const clearSelectedBtn = document.getElementById('clearSelectedBtn');
+
+        // Combine all selected filters
+        const allSelected = [
+            ...selectedFilters.courses.map(c => ({ type: 'course', value: c })),
+            ...selectedFilters.careerTags.map(t => ({ type: 'tag', value: t }))
+        ];
+
+        const totalCount = allSelected.length;
+
+        // Update count
+        selectedCountEl.textContent = `${totalCount} filter${totalCount !== 1 ? 's' : ''} selected`;
+
+        // Show/hide the bar
+        if (totalCount > 0) {
+            selectedBar.classList.add('active');
+            clearSelectedBtn.style.display = 'block';
+        } else {
+            selectedBar.classList.remove('active');
+            clearSelectedBtn.style.display = 'none';
+        }
+
+        // Build tags HTML
+        selectedTagsContainer.innerHTML = allSelected.map(item => {
+            const categoryLabel = item.type === 'course' ? 'Course' : 'Tag';
+            return `
+                <div class="selected-tag-chip" data-type="${item.type}" data-value="${item.value}">
+                    <span class="tag-category">${categoryLabel}</span>
+                    <span class="tag-label">${item.value}</span>
+                    <span class="remove-tag" onclick="removeSelectedFilter('${item.type}', '${item.value.replace(/'/g, "\\'")}')">
+                        <i class="fa-solid fa-xmark"></i>
+                    </span>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Remove individual filter
+    window.removeSelectedFilter = function (type, value) {
+        if (type === 'course') {
+            const checkbox = document.querySelector(`#studentCoursesContainer input[value="${value}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+                updateSelectedCourses();
+            }
+        } else if (type === 'tag') {
+            const checkbox = document.querySelector(`#careerTagsContainer input[value="${value}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+                updateSelectedTags();
+            }
+        }
+    };
 
     // Search functionality
     if (filterSearchInput) {
@@ -723,6 +784,9 @@ document.addEventListener('DOMContentLoaded', function () {
             filterSearchInput.value = '';
             filterSearchInput.dispatchEvent(new Event('input'));
         }
+
+        // Update display
+        updateSelectedFiltersDisplay();
     }
 
     // Event listeners
@@ -744,6 +808,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (clearAllFiltersBtn) {
         clearAllFiltersBtn.addEventListener('click', clearAllFilters);
+    }
+
+    // Clear selected button in the selected filters bar
+    const clearSelectedBtn = document.getElementById('clearSelectedBtn');
+    if (clearSelectedBtn) {
+        clearSelectedBtn.addEventListener('click', clearAllFilters);
     }
 
     // Close modal when clicking overlay

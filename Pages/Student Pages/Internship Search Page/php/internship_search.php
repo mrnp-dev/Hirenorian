@@ -325,6 +325,17 @@ if(!isset($_SESSION['email'])) {
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
+
+            <!-- Selected Filters Display -->
+            <div class="selected-filters-bar" id="selectedFiltersBar">
+                <div class="selected-filters-header">
+                    <span class="selected-count">0 filters selected</span>
+                    <button class="btn-clear-selected" id="clearSelectedBtn" style="display: none;">Clear All</button>
+                </div>
+                <div class="selected-filters-tags" id="selectedFiltersTags">
+                    <!-- Selected tags will be displayed here -->
+                </div>
+            </div>
             
             <div class="filters-modal-main">
                 <!-- Sidebar Navigation -->
