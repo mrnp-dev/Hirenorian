@@ -20,6 +20,7 @@ else
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/topbar.css">
     <link rel="stylesheet" href="../css/stats.css">
+    <link rel="stylesheet" href="../css/audit-log.css">
     <link rel="stylesheet" href="../css/recommendations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -147,6 +148,22 @@ else
                                         <p class="stat-number">1</p>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Log History Section -->
+                <div class="audit-log-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fa-solid fa-history"></i> Activity Log</h2>
+                            <span class="log-count" id="logCount">Loading...</span>
+                        </div>
+                        <div class="audit-log-container" id="auditLogContainer">
+                            <div class="loading-state">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                <p>Loading activity logs...</p>
                             </div>
                         </div>
                     </div>
