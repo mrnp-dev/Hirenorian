@@ -328,7 +328,7 @@ else
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
             <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
             <div class="form-group">
                 <label for="profilePhoto">Select Image</label>
@@ -710,6 +710,7 @@ else
     <script src="../js/skills-modal.js"></script>
     <script src="../js/personal-modal.js"></script>
     <script src="../js/password-modal.js"></script>
+    <script src="../js/photo-modal.js"></script>
     
     <!-- Main entry point -->
     <script src="../js/edit_profile.js"></script>

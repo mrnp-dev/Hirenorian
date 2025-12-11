@@ -36,7 +36,13 @@
  * 6. experience-modal.js (depends on ui-controls.js)
  *    - Work experience modal
  *    - Edit/delete experience entries
+ *    - Edit/delete experience entries
  *    - DOM updates for experience timeline
+ * 
+ * 7. photo-modal.js (depends on ui-controls.js)
+ *    - Profile photo update modal
+ *    - Image preview functionality
+ *    - AJAX form submission for photo upload
  * 
  * Loading Order:
  * =============
@@ -48,7 +54,8 @@
  * 4. skills-modal.js
  * 5. education-modal.js
  * 6. experience-modal.js
- * 7. edit_profile.js (this file)
+ * 7. photo-modal.js (depends on ui-controls.js)
+ * 8. edit_profile.js (this file)
  * 
  * Note: Ensure all module files are included in your HTML before this file.
  */
