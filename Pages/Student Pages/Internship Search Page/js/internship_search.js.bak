@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const response = await fetch('../../APIs/Student DB APIs/fetch_student_information.php', {
+            const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

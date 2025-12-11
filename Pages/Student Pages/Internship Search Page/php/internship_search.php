@@ -380,6 +380,6 @@ if(!isset($_SESSION['email'])) {
         </div>
     </div>
 
-    <script src="../js/internship_search.js"></script>
+    <script type="module" src="../js/main.js"></script>
 </body>
 </html>
