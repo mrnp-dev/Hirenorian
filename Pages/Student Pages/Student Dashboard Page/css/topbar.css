@@ -11,7 +11,7 @@
     top: 0;
     left: 0;
     right: 0;
-    margin-left: var(--sidebar-width);
+    margin-left: var(--sidebar-collapsed-width);
     z-index: 100;
     transition: margin-left var(--transition-speed);
 }

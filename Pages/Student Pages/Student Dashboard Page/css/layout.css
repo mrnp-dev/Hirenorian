@@ -1,16 +1,15 @@
 .dashboard-container {
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
 }
 
 /* Main Content */
 .main-content {
+    margin-left: var(--sidebar-collapsed-width);
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
-    background-color: var(--bg-light);
+    transition: margin-left var(--transition-speed) ease;
     background-image: url("../../../Landing Page/Images/Backgrounds/white-hexagon-bg.jpg");
     background-size: cover;
     background-position: center;
