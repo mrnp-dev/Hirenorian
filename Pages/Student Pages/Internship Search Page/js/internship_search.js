@@ -357,9 +357,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let filtersData = null;
     let selectedFilters = {
         courses: [],
-        careerTags: [],
-        experienceLevel: [],
-        datePosted: null
+        careerTags: []
     };
 
     // Load filters data
@@ -377,8 +375,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function buildFiltersUI() {
         buildStudentCourses();
         buildCareerTags();
-        buildExperienceLevel();
-        buildDatePosted();
         initializeSidebarNavigation();
     }
 
@@ -579,17 +575,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ).map(cb => cb.value);
     }
 
-    function updateSelectedExperience() {
-        selectedFilters.experienceLevel = Array.from(
-            document.querySelectorAll('#experienceLevelContainer input[type="checkbox"]:checked')
-        ).map(cb => cb.value);
-    }
-
-    function updateSelectedDate() {
-        const selected = document.querySelector('input[name="datePosted"]:checked');
-        selectedFilters.datePosted = selected ? selected.value : null;
-    }
-
     // Search functionality
     if (filterSearchInput) {
         filterSearchInput.addEventListener('input', (e) => {
@@ -667,9 +652,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Reset selected filters
         selectedFilters = {
             courses: [],
-            careerTags: [],
-            experienceLevel: [],
-            datePosted: null
+            careerTags: []
         };
 
         // Clear search

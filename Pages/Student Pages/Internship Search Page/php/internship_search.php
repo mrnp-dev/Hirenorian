@@ -279,14 +279,6 @@ if(!isset($_SESSION['email'])) {
                         <i class="fa-solid fa-briefcase"></i>
                         <span>Career Tags</span>
                     </div>
-                    <div class="sidebar-item" data-section="experience">
-                        <i class="fa-solid fa-star"></i>
-                        <span>Experience Level</span>
-                    </div>
-                    <div class="sidebar-item" data-section="date-posted">
-                        <i class="fa-solid fa-calendar"></i>
-                        <span>Date Posted</span>
-                    </div>
                 </div>
 
                 <!-- Main Content Area -->
@@ -303,22 +295,6 @@ if(!isset($_SESSION['email'])) {
                     <div class="filter-view" id="career-tags-view">
                         <h3>Career Tags / Industry</h3>
                         <div class="filter-categories" id="careerTagsContainer">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Experience Level View -->
-                    <div class="filter-view" id="experience-view">
-                        <h3>Experience Level</h3>
-                        <div class="filter-checkboxes" id="experienceLevelContainer">
-                            <!-- Populated by JS -->
-                        </div>
-                    </div>
-
-                    <!-- Date Posted View -->
-                    <div class="filter-view" id="date-posted-view">
-                        <h3>Date Posted</h3>
-                        <div class="filter-radios" id="datePostedContainer">
                             <!-- Populated by JS -->
                         </div>
                     </div>
