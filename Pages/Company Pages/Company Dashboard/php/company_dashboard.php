@@ -168,14 +168,14 @@ if (isset($_SESSION['email'])) {
                                             <div class="stat-indicator active-indicator"></div>
                                             <div class="stat-details">
                                                 <span class="stat-label">Active Posts</span>
-                                                <span class="stat-number" id="activePostCount">1</span>
+                                                <span class="stat-number" id="activePostCount">0</span>
                                             </div>
                                         </div>
                                         <div class="stat-card closed-card">
                                             <div class="stat-indicator closed-indicator"></div>
                                             <div class="stat-details">
                                                 <span class="stat-label">Closed Posts</span>
-                                                <span class="stat-number" id="closedPostCount">1</span>
+                                                <span class="stat-number" id="closedPostCount">0</span>
                                             </div>
                                         </div>
                                     </div>
@@ -185,7 +185,7 @@ if (isset($_SESSION['email'])) {
                                         <div class="chart-container">
                                             <canvas id="postsChart"></canvas>
                                             <div class="chart-center-label">
-                                                <span class="center-number" id="totalPostsCount">2</span>
+                                                <span class="center-number" id="totalPostsCount">0</span>
                                                 <span class="center-text">Total</span>
                                             </div>
                                         </div>
@@ -203,7 +203,7 @@ if (isset($_SESSION['email'])) {
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Total Applications</span>
-                                            <span class="metric-number" id="totalApplications">2,450</span>
+                                            <span class="metric-number" id="totalApplications">0</span>
                                         </div>
                                     </div>
                                     <div class="metric-card accepted">
@@ -212,7 +212,7 @@ if (isset($_SESSION['email'])) {
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Accepted</span>
-                                            <span class="metric-number" id="acceptedApplications">890</span>
+                                            <span class="metric-number" id="acceptedApplications">0</span>
                                         </div>
                                     </div>
                                     <div class="metric-card rejected">
@@ -221,7 +221,7 @@ if (isset($_SESSION['email'])) {
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Rejected</span>
-                                            <span class="metric-number" id="rejectedApplications">1,560</span>
+                                            <span class="metric-number" id="rejectedApplications">0</span>
                                         </div>
                                     </div>
                                 </div>

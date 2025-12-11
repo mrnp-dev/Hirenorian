@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('postsChart');
 
     // Initialize chart with default data
-    function initializePostsChart(activePosts = 1, closedPosts = 1) {
+    function initializePostsChart(activePosts = 0, closedPosts = 0) {
         if (!ctx) return;
 
         const totalPosts = activePosts + closedPosts;
