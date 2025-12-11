@@ -42,7 +42,7 @@ else
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/sidebar.css">
     <link rel="stylesheet" href="../css/topbar.css">
-    <link rel="stylesheet" href="../css/stats.css">
+    <link rel="stylesheet" href="../css/dashboard-pro.css">
     <link rel="stylesheet" href="../css/audit-log.css">
     <link rel="stylesheet" href="../css/recommendations.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -98,193 +98,293 @@ else
 
             <!-- Dashboard Content -->
             <main class="dashboard-body">
-                <h1 class="page-title">Dashboard</h1>
-
-                <!-- Stats and Summary Section -->
-                <div class="stats-summary-grid">
-                    <!-- Application Summary Table -->
-                    <div class="card application-summary">
-                        <div class="card-header">
-                            <h2>Application Summary</h2>
-                            <a href="#" class="view-more">View All</a>
-                        </div>
-                        <div class="table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Company</th>
-                                        <th>Position</th>
-                                        <th>Date Applied</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Tech Solutions Inc.</td>
-                                        <td>Web Developer Intern</td>
-                                        <td>Oct 24, 2023</td>
-                                        <td><span class="status pending">Pending</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Creative Studio</td>
-                                        <td>Graphic Designer</td>
-                                        <td>Oct 20, 2023</td>
-                                        <td><span class="status accepted">Accepted</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Global Systems</td>
-                                        <td>IT Support</td>
-                                        <td>Oct 15, 2023</td>
-                                        <td><span class="status rejected">Rejected</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Statistics -->
-                    <div class="stats-container">
-                        <h2>Application Status</h2>
-                        <div class="stats-content">
-                            <div class="chart-wrapper">
-                                <canvas id="applicationChart"></canvas>
+                
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <div class="hero-content">
+                        <div class="hero-main">
+                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight">Juan</span>!</h1>
+                            <p class="hero-subtitle">Here's your internship journey at a glance</p>
+                            <div class="hero-actions">
+                                <a href="../../Internship Search Page/php/internship_search.php" class="btn-hero primary">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                    Browse Internships
+                                </a>
+                                <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-hero secondary">
+                                    <i class="fa-solid fa-user-pen"></i>
+                                    Edit Profile
+                                </a>
                             </div>
-                            <div class="stats-cards">
-                                <div class="stat-card pending">
-                                    <div class="stat-icon"><i class="fa-solid fa-clock"></i></div>
-                                    <div class="stat-info">
-                                        <h3>Pending</h3>
-                                        <p class="stat-number">1</p>
-                                    </div>
-                                </div>
-                                <div class="stat-card accepted">
-                                    <div class="stat-icon"><i class="fa-solid fa-check-circle"></i></div>
-                                    <div class="stat-info">
-                                        <h3>Accepted</h3>
-                                        <p class="stat-number">1</p>
-                                    </div>
-                                </div>
-                                <div class="stat-card rejected">
-                                    <div class="stat-icon"><i class="fa-solid fa-times-circle"></i></div>
-                                    <div class="stat-info">
-                                        <h3>Rejected</h3>
-                                        <p class="stat-number">1</p>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="profile-completion">
+                            <div class="completion-header">
+                                <span class="completion-label">Profile Strength</span>
+                                <span class="completion-percentage">75%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" style="width: 75%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Audit Log and Recommendations Row -->
-                <div class="bottom-section-row">
-                    <!-- Audit Log History Section (2/5 width) -->
-                    <div class="audit-log-section">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2><i class="fa-solid fa-history"></i> Activity Log</h2>
-                                <span class="log-count" id="logCount">Loading...</span>
+                <!-- Metrics Grid -->
+                <div class="metrics-grid">
+                    <div class="metric-card total">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-file-lines"></i>
                             </div>
-                            <div class="audit-log-container" id="auditLogContainer">
+                            <div class="metric-trend up">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                +12%
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value">3</div>
+                            <div class="metric-label">Total Applications</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card active">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </div>
+                            <div class="metric-trend up">
+                                <i class="fa-solid fa-arrow-up"></i>
+                                +1
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value">1</div>
+                            <div class="metric-label">Accepted Applications</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card review">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-hourglass-half"></i>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value">1</div>
+                            <div class="metric-label">Under Review</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card offers">
+                        <div class="metric-header">
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-times-circle"></i>
+                            </div>
+                        </div>
+                        <div class="metric-body">
+                            <div class="metric-value">1</div>
+                            <div class="metric-label">Rejected Applications</div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Main Content Grid -->
+                <div class="content-grid">
+                    <!-- Application Pipeline -->
+                    <div class="pipeline-section">
+                        <div class="section-header">
+                            <h2 class="section-title">
+                                <i class="fa-solid fa-list-check"></i>
+                                Application Pipeline
+                            </h2>
+                            <div class="status-filters">
+                                <button class="filter-btn active">All</button>
+                                <button class="filter-btn">Pending</button>
+                                <button class="filter-btn">Interview</button>
+                                <button class="filter-btn">Offer</button>
+                            </div>
+                        </div>
+
+                        <div class="applications-list">
+                            <!-- Application Card 1 -->
+                            <div class="application-card pending">
+                                <div class="app-header">
+                                    <div class="app-company">
+                                        <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Company" class="company-logo-small">
+                                        <div class="app-info">
+                                            <h4>Web Developer Intern</h4>
+                                            <p>Tech Solutions Inc.</p>
+                                        </div>
+                                    </div>
+                                    <span class="app-status-badge pending">Pending</span>
+                                </div>
+                                <div class="app-meta">
+                                    <div class="app-meta-item">
+                                        <i class="fa-solid fa-calendar"></i>
+                                        Applied Oct 24, 2023
+                                    </div>
+                                    <div class="app-meta-item">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        Remote
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Application Card 2 -->
+                            <div class="application-card interview">
+                                <div class="app-header">
+                                    <div class="app-company">
+                                        <img src="../../../Landing Page/Images/google.jpg" alt="Company" class="company-logo-small">
+                                        <div class="app-info">
+                                            <h4>Graphic Designer</h4>
+                                            <p>Creative Studio</p>
+                                        </div>
+                                    </div>
+                                    <span class="app-status-badge interview">Interview</span>
+                                </div>
+                                <div class="app-meta">
+                                    <div class="app-meta-item">
+                                        <i class="fa-solid fa-calendar"></i>
+                                        Applied Oct 20, 2023
+                                    </div>
+                                    <div class="app-meta-item">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        Pampanga
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Application Card 3 -->
+                            <div class="application-card offer">
+                                <div class="app-header">
+                                    <div class="app-company">
+                                        <img src="../../../Landing Page/Images/samsung.jpg" alt="Company" class="company-logo-small">
+                                        <div class="app-info">
+                                            <h4>IT Support</h4>
+                                            <p>Global Systems</p>
+                                        </div>
+                                    </div>
+                                    <span class="app-status-badge offer">Offer</span>
+                                </div>
+                                <div class="app-meta">
+                                    <div class="app-meta-item">
+                                        <i class="fa-solid fa-calendar"></i>
+                                        Applied Oct 15, 2023
+                                    </div>
+                                    <div class="app-meta-item">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        Manila
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Widgets -->
+                    <div class="sidebar-widgets">
+                        <!-- Activity Timeline Widget -->
+                        <div class="widget">
+                            <h3 class="widget-title">
+                                <i class="fa-solid fa-history"></i>
+                                Recent Activity
+                            </h3>
+                            <div class="audit-log-container" id="auditLogContainer" style="max-height: 300px;">
                                 <div class="loading-state">
                                     <i class="fa-solid fa-spinner fa-spin"></i>
-                                    <p>Loading activity logs...</p>
+                                    <p>Loading...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Profile Strength Widget -->
+                        <div class="widget">
+                            <h3 class="widget-title">
+                                <i class="fa-solid fa-chart-line"></i>
+                                Profile Strength
+                            </h3>
+                            <div class="strength-meter">
+                                <div class="strength-score">
+                                    <span>Your Score</span>
+                                    <span class="strength-value">75%</span>
+                                </div>
+                                <div class="strength-bar">
+                                    <div class="strength-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            <ul class="strength-suggestions">
+                                <li><i class="fa-solid fa-lightbulb"></i> Add work experience</li>
+                                <li><i class="fa-solid fa-lightbulb"></i> Complete skills section</li>
+                                <li><i class="fa-solid fa-lightbulb"></i> Upload profile picture</li>
+                            </ul>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Section -->
+                <div class="recommendations-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fa-solid fa-star"></i>
+                            Recommended for You
+                        </h2>
+                    </div>
+                    <div class="recommendations-grid">
+                        <!-- Recommendation Card 1 -->
+                        <div class="recommendation-card">
+                            <img src="../../../Landing Page/Images/dhvsu-bg-image.jpg" alt="Job" class="recommendation-image">
+                            <div class="recommendation-content">
+                                <h3>UI/UX Designer Intern</h3>
+                                <p>DHVSU Innovation Hub</p>
+                                <div class="recommendation-tags">
+                                    <span class="rec-tag">Design</span>
+                                    <span class="rec-tag">Part-time</span>
+                                    <span class="rec-tag">Remote</span>
+                                </div>
+                                <div class="recommendation-footer">
+                                    <button class="btn-quick-apply">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation Card 2 -->
+                        <div class="recommendation-card">
+                            <img src="../../../Landing Page/Images/google.jpg" alt="Job" class="recommendation-image">
+                            <div class="recommendation-content">
+                                <h3>Software Engineering Intern</h3>
+                                <p>Tech Innovators Inc.</p>
+                                <div class="recommendation-tags">
+                                    <span class="rec-tag">Engineering</span>
+                                    <span class="rec-tag">Full-time</span>
+                                    <span class="rec-tag">Hybrid</span>
+                                </div>
+                                <div class="recommendation-footer">
+                                    <button class="btn-quick-apply">Apply Now</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation Card 3 -->
+                        <div class="recommendation-card">
+                            <img src="../../../Landing Page/Images/samsung.jpg" alt="Job" class="recommendation-image">
+                            <div class="recommendation-content">
+                                <h3>Data Analyst Intern</h3>
+                                <p>Analytics Pro</p>
+                                <div class="recommendation-tags">
+                                    <span class="rec-tag">Data</span>
+                                    <span class="rec-tag">Full-time</span>
+                                    <span class="rec-tag">On-site</span>
+                                </div>
+                                <div class="recommendation-footer">
+                                    <button class="btn-quick-apply">Apply Now</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Recommended Internships (3/5 width) -->
-                    <div class="recommended-section">
-                        <h2>Recommended Internships</h2>
-                        <div class="recommendation-cards">
-                        <!-- Card 1 -->
-                        <article class="company-card">
-                            <div class="company-card__image-wrapper">
-                                <img src="../../../Landing Page/Images/Companies/cloudstaff_workplace.jpg" alt="Google workplace" class="company-card__image">
-                            </div>
-                            <div class="company-card__logo">
-                                <img src="../../../Landing Page/Images/google.jpg" alt="Google logo">
-                            </div>
-                            <div class="company-card__content">
-                                <h3 class="company-card__name">Google</h3>
-                                <p class="company-card__position">Software Engineer Intern</p>
-                            </div>
-                            <button class="company-card__footer">
-                                Apply Now
-                            </button>
-                        </article>
-
-                        <!-- Card 2 -->
-                        <article class="company-card">
-                            <div class="company-card__image-wrapper">
-                                <img src="../../../Landing Page/Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="company-card__image">
-                            </div>
-                            <div class="company-card__logo">
-                                <img src="../../../Landing Page/Images/samsung.jpg" alt="Samsung logo">
-                            </div>
-                            <div class="company-card__content">
-                                <h3 class="company-card__name">Samsung</h3>
-                                <p class="company-card__position">Data Analyst Intern</p>
-                            </div>
-                            <button class="company-card__footer">
-                                Apply Now
-                            </button>
-                        </article>
-
-                        <!-- Card 3 -->
-                        <article class="company-card">
-                            <div class="company-card__image-wrapper">
-                                <img src="../../../Landing Page/Images/Companies/cloudstaff_workplace.jpg" alt="Hyundai workplace" class="company-card__image">
-                            </div>
-                            <div class="company-card__logo">
-                                <img src="../../../Landing Page/Images/hyundai.jpg" alt="Hyundai logo">
-                            </div>
-                            <div class="company-card__content">
-                                <h3 class="company-card__name">Hyundai</h3>
-                                <p class="company-card__position">Marketing Intern</p>
-                            </div>
-                            <button class="company-card__footer">
-                                Apply Now
-                            </button>
-                        </article>
-
-                        <!-- Card 4 -->
-                        <article class="company-card">
-                            <div class="company-card__image-wrapper">
-                                <img src="../../../Landing Page/Images/Companies/cloudstaff_workplace.jpg" alt="Local Corp workplace" class="company-card__image">
-                            </div>
-                            <div class="company-card__logo">
-                                <img src="../../../Landing Page/Images/job.png" alt="Local Corp logo">
-                            </div>
-                            <div class="company-card__content">
-                                <h3 class="company-card__name">Local Corp</h3>
-                                <p class="company-card__position">HR Assistant</p>
-                            </div>
-                            <button class="company-card__footer">
-                                Apply Now
-                            </button>
-                        </article>
-
-                        <!-- Card 5 -->
-                        <article class="company-card">
-                            <div class="company-card__image-wrapper">
-                                <img src="../../../Landing Page/Images/dhvsu-bg-image.jpg" alt="DHVSU workplace" class="company-card__image">
-                            </div>
-                            <div class="company-card__logo">
-                                <img src="../../../Landing Page/Images/dhvsulogo.png" alt="DHVSU logo">
-                            </div>
-                            <div class="company-card__content">
-                                <h3 class="company-card__name">DHVSU</h3>
-                                <p class="company-card__position">Student Assistant</p>
-                            </div>
-                            <button class="company-card__footer">
-                                Apply Now
-                            </button>
-                        </article>
-                    </div>
                 </div>
-                </div>
+
             </main>
         </div>
     </div>

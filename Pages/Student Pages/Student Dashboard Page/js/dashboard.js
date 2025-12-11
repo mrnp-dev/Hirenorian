@@ -207,11 +207,11 @@ function renderAuditLogs(logs) {
                 <p>No activity logged yet</p>
             </div>
         `;
-        countEl.textContent = '0 activities';
+        if (countEl) countEl.textContent = '0 activities';
         return;
     }
 
-    countEl.textContent = `${logs.length} ${logs.length === 1 ? 'activity' : 'activities'}`;
+    if (countEl) countEl.textContent = `${logs.length} ${logs.length === 1 ? 'activity' : 'activities'}`;
 
     const timeline = document.createElement('div');
     timeline.className = 'audit-log-timeline';
