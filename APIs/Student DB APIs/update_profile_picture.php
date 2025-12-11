@@ -37,15 +37,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Define target directory
         // studentDB_APIs/Student Accounts/<student_id>/Images/
-        $base_dir = "Student Accounts/";
+        $base_dir = __DIR__ . "/Student Accounts/";
         $student_dir = $base_dir . $student_id . "/";
         $target_dir = $student_dir . "Images/";
 
         // Create directories if they don't exist
         if (!file_exists($target_dir)) {
             if (!mkdir($target_dir, 0777, true)) {
+                $error = error_get_last();
                 $response['status'] = 'error';
-                $response['message'] = 'Failed to create directory structure.';
+                $response['message'] = 'Failed to create directory structure. Error: ' . ($error['message'] ?? 'Unknown');
+                // Debug info
+                $response['debug_path'] = $target_dir;
                 echo json_encode($response);
                 exit;
             }
