@@ -460,4 +460,41 @@ export function initAdvancedFilters() {
 
     // Initialize filters
     loadFiltersData();
+
+    // Listen for active filter removal events
+    document.addEventListener('removeActiveFilter', (event) => {
+        const { type, value } = event.detail;
+        console.log(`[AdvancedFilters] Removing active filter - ${type}:`, value);
+
+        // Find and uncheck the corresponding checkbox
+        const checkboxes = document.querySelectorAll('.filters-modal input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            if (cb.value === value) {
+                cb.checked = false;
+            }
+        });
+
+        // Update selected filters
+        if (type === 'course') {
+            selectedFilters.courses = selectedFilters.courses.filter(c => c !== value);
+        } else if (type === 'career') {
+            selectedFilters.careerTags = selectedFilters.careerTags.filter(t => t !== value);
+        }
+
+        updateSelectedFiltersDisplay();
+    });
+
+    // Listen for reapply filters event
+    document.addEventListener('reapplyFilters', () => {
+        console.log('[AdvancedFilters] Reapplying filters after removal');
+        applyFilters();
+    });
+
+    // Listen for clear all active filters event
+    document.addEventListener('clearAllActiveFilters', () => {
+        console.log('[AdvancedFilters] Clearing all active filters');
+        clearAllFilters();
+        // Trigger a search with no filters
+        applyFilters();
+    });
 }

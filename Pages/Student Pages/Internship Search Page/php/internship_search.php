@@ -134,6 +134,21 @@ if(!isset($_SESSION['email'])) {
                             <button class="btn-more-filters">More Filters</button>
                         </div>
 
+                        <!-- Active Filters Display -->
+                        <div class="active-filters-display" id="activeFiltersDisplay" style="display: none;">
+                            <div class="active-filters-header">
+                                <span class="active-filters-title">
+                                    <i class="fa-solid fa-filter"></i> Active Filters
+                                </span>
+                                <button class="btn-clear-all-filters" id="btnClearAllFilters">
+                                    <i class="fa-solid fa-xmark"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="active-filters-tags" id="activeFiltersTags">
+                                <!-- Active filter tags will be inserted here -->
+                            </div>
+                        </div>
+
                         <div class="job-list">
                             <!-- Job Card 1 (Active) -->
                             <div class="job-card active" data-id="1">
