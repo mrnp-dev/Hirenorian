@@ -91,14 +91,19 @@ if(!isset($_SESSION['email'])) {
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" placeholder="Job Title, Keywords...">
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group location-filter-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
-                        <select>
-                            <option value="">Location: All</option>
-                            <option value="pampanga">Pampanga</option>
-                            <option value="manila">Manila</option>
-                            <option value="remote">Remote</option>
-                        </select>
+                        <div class="location-filter">
+                            <button type="button" class="location-trigger" id="locationTrigger">
+                                <span>Location: All</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="location-dropdown" id="locationDropdown">
+                                <div class="location-option all-option" data-value="">Location: All</div>
+                                <!-- Provinces will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <input type="hidden" name="location" id="locationValue" value="">
                     </div>
                     <div class="filter-group">
                         <i class="fa-solid fa-briefcase"></i>
