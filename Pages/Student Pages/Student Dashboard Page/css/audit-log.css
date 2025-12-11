@@ -50,6 +50,8 @@
 .audit-log-container {
     max-height: 500px;
     overflow-y: auto;
+    overflow-x: hidden;
+    /* Prevent horizontal scrolling */
 }
 
 .audit-log-timeline {
@@ -205,21 +207,27 @@
     color: #ef4444;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling - Thin and Modern */
 .audit-log-container::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
 }
 
 .audit-log-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
+    background: transparent;
 }
 
 .audit-log-container::-webkit-scrollbar-thumb {
-    background: #888;
+    background: linear-gradient(180deg, #3b82f6, #2563eb);
     border-radius: 10px;
+    transition: background 0.3s ease;
 }
 
 .audit-log-container::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: linear-gradient(180deg, #2563eb, #1d4ed8);
+}
+
+/* Firefox scrollbar styling */
+.audit-log-container {
+    scrollbar-width: thin;
+    scrollbar-color: #3b82f6 transparent;
 }
