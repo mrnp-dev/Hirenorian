@@ -115,43 +115,83 @@ function getFriendlyFieldName(fieldName) {
     return names[fieldName] || fieldName.replace('_', ' ');
 }
 
-// Function to create log description
+// Function to create user-friendly log description
 function createLogDescription(log) {
-    const table = getFriendlyTableName(log.table_affected);
-    const field = getFriendlyFieldName(log.field_name);
+    const table = log.table_affected;
+    const field = log.field_name;
 
+    // CREATE operations
     if (log.action_type === 'CREATE') {
-        if (log.table_affected === 'StudentSkills') {
-            return `Added ${log.new_value} to <span class="log-table">${table}</span>`;
+        if (table === 'StudentSkills') {
+            const skillName = log.new_value ? log.new_value.split(' (')[0] : 'a skill';
+            return `Added <strong>${skillName}</strong> to your skills`;
         }
-        return `Created new entry in <span class="log-table">${table}</span>`;
+        if (table === 'StudentEducationHistory') {
+            return `Added new education entry`;
+        }
+        if (table === 'StudentExperience') {
+            return `Added new work experience`;
+        }
+        return `Added new information to your profile`;
     }
 
+    // DELETE operations
     if (log.action_type === 'DELETE') {
-        if (log.table_affected === 'StudentSkills') {
-            return `Removed ${log.old_value} from <span class="log-table">${table}</span>`;
+        if (table === 'StudentSkills') {
+            const skillName = log.old_value ? log.old_value.split(' (')[0] : 'a skill';
+            return `Removed <strong>${skillName}</strong> from your skills`;
         }
-        return `Deleted entry from <span class="log-table">${table}</span>`;
+        if (table === 'StudentEducationHistory') {
+            return `Removed an education entry`;
+        }
+        if (table === 'StudentExperience') {
+            return `Removed a work experience`;
+        }
+        return `Removed information from your profile`;
     }
 
+    // UPDATE operations
     if (log.action_type === 'UPDATE') {
-        if (log.field_name) {
-            // Truncate long values
-            let oldVal = log.old_value || '(empty)';
-            let newVal = log.new_value || '(empty)';
-
-            if (oldVal.length > 40) oldVal = oldVal.substring(0, 40) + '...';
-            if (newVal.length > 40) newVal = newVal.substring(0, 40) + '...';
-
-            return `
-                Updated <span class="log-field">${field}</span> in <span class="log-table">${table}</span><br>
-                <span class="log-value old">${oldVal}</span> → <span class="log-value new">${newVal}</span>
-            `;
+        // Personal information updates
+        if (table === 'Students') {
+            if (field === 'first_name') return `Changed your first name to <strong>${log.new_value}</strong>`;
+            if (field === 'last_name') return `Changed your last name to <strong>${log.new_value}</strong>`;
+            if (field === 'middle_initial') return `Updated your middle initial`;
+            if (field === 'suffix') {
+                if (!log.new_value) return `Removed your suffix`;
+                return `Updated your suffix to <strong>${log.new_value}</strong>`;
+            }
+            if (field === 'personal_email') return `Changed your email address`;
+            if (field === 'phone_number') return `Updated your phone number`;
+            if (field === 'password_hash') return `Changed your password`;
         }
-        return `Updated <span class="log-table">${table}</span>`;
+
+        // Profile updates
+        if (table === 'StudentProfile') {
+            if (field === 'location') return `Updated your location to <strong>${log.new_value}</strong>`;
+            if (field === 'about_me') return `Updated your bio`;
+            if (field === 'profile_picture') return `Changed your profile picture`;
+        }
+
+        // Education updates
+        if (table === 'StudentEducationHistory') {
+            if (field === 'degree') return `Updated degree information`;
+            if (field === 'institution') return `Updated school name`;
+            if (field === 'start_year' || field === 'end_year') return `Updated education dates`;
+        }
+
+        // Experience updates
+        if (table === 'StudentExperience') {
+            if (field === 'job_title') return `Updated job title`;
+            if (field === 'company_name') return `Updated company name`;
+            if (field === 'description') return `Updated job description`;
+            if (field === 'start_date' || field === 'end_date') return `Updated work dates`;
+        }
+
+        return `Updated your profile`;
     }
 
-    return `${log.action_type} on <span class="log-table">${table}</span>`;
+    return `Modified your profile`;
 }
 
 // Function to render audit logs
