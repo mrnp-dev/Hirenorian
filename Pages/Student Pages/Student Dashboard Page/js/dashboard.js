@@ -56,7 +56,9 @@ window.addEventListener('click', (e) => {
 
 // Helper function to format timestamp
 function formatTimestamp(timestamp) {
-    const date = new Date(timestamp);
+    // MySQL datetime format: "2025-12-11 07:21:26"
+    // Replace space with 'T' for ISO format, or add timezone
+    const date = new Date(timestamp.replace(' ', 'T'));
     const now = new Date();
     const diffMs = now - date;
     const diffMins = Math.floor(diffMs / 60000);

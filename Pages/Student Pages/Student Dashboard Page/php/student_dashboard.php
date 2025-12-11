@@ -176,26 +176,28 @@ else
                     </div>
                 </div>
 
-                <!-- Audit Log History Section -->
-                <div class="audit-log-section">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2><i class="fa-solid fa-history"></i> Activity Log</h2>
-                            <span class="log-count" id="logCount">Loading...</span>
-                        </div>
-                        <div class="audit-log-container" id="auditLogContainer">
-                            <div class="loading-state">
-                                <i class="fa-solid fa-spinner fa-spin"></i>
-                                <p>Loading activity logs...</p>
+                <!-- Audit Log and Recommendations Row -->
+                <div class="bottom-section-row">
+                    <!-- Audit Log History Section (2/5 width) -->
+                    <div class="audit-log-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2><i class="fa-solid fa-history"></i> Activity Log</h2>
+                                <span class="log-count" id="logCount">Loading...</span>
+                            </div>
+                            <div class="audit-log-container" id="auditLogContainer">
+                                <div class="loading-state">
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                    <p>Loading activity logs...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Recommended Internships -->
-                <div class="recommended-section">
-                    <h2>Recommended Internships</h2>
-                    <div class="recommendation-cards">
+                    <!-- Recommended Internships (3/5 width) -->
+                    <div class="recommended-section">
+                        <h2>Recommended Internships</h2>
+                        <div class="recommendation-cards">
                         <!-- Card 1 -->
                         <article class="company-card">
                             <div class="company-card__image-wrapper">
@@ -281,6 +283,7 @@ else
                             </button>
                         </article>
                     </div>
+                </div>
                 </div>
             </main>
         </div>

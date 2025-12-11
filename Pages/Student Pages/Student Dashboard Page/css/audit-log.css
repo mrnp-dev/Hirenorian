@@ -3,6 +3,11 @@
     margin: 30px 0;
 }
 
+/* Remove margin when inside bottom-section-row */
+.bottom-section-row .audit-log-section {
+    margin: 0;
+}
+
 .audit-log-section .card {
     background: var(--card-background);
     border-radius: 12px;
@@ -89,9 +94,17 @@
     border: 3px solid var(--card-background, white);
 }
 
-.log-icon.create { background: #10b981; }
-.log-icon.update { background: #3b82f6; }
-.log-icon.delete { background: #ef4444; }
+.log-icon.create {
+    background: #10b981;
+}
+
+.log-icon.update {
+    background: #3b82f6;
+}
+
+.log-icon.delete {
+    background: #ef4444;
+}
 
 .log-content {
     background: #f9fafb;
