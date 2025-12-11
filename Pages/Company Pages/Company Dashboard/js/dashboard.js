@@ -168,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Logic
     if (viewAllBtn && modal) {
         viewAllBtn.addEventListener('click', () => {
+            // Sor the global data before rendering
+            const sortedPosts = sortJobPosts([...jobPostsData]);
             renderTable(sortedPosts, modalJobListingBody);
             modal.style.display = 'block';
         });
