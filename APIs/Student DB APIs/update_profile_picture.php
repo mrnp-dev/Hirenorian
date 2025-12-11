@@ -69,13 +69,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response['message'] = 'Upload error code: ' . $file['error'];
         } else {
             if (move_uploaded_file($file['tmp_name'], $target_path)) {
-                // Construct the image URL
-                $base_url = 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/';
+                // Construct the absolute VPS path for database storage
+                $vps_base_path = '/var/www/html/Hirenorian/API/studentDB_APIs/';
                 $relative_path = 'Student Accounts/' . $student_id . '/Images/' . $new_filename;
                 $encoded_path = str_replace(' ', '%20', $relative_path);
+                $absolute_vps_path = $vps_base_path . $encoded_path;
+                
+                // Construct the image URL for response
+                $base_url = 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/';
                 $image_url = $base_url . $encoded_path;
                 
-                // Update the database with the profile picture path
+                // Update the database with the absolute VPS path
                 try {
                     // Check if a profile record exists for this student
                     $check_query = $conn->prepare("SELECT profile_id FROM StudentProfile WHERE student_id = :student_id");
@@ -89,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             WHERE student_id = :student_id
                         ");
                         $update_query->execute([
-                            ':profile_picture' => $image_url,
+                            ':profile_picture' => $absolute_vps_path,
                             ':student_id' => $student_id
                         ]);
                     } else {
@@ -100,14 +104,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         ");
                         $insert_query->execute([
                             ':student_id' => $student_id,
-                            ':profile_picture' => $image_url
+                            ':profile_picture' => $absolute_vps_path
                         ]);
                     }
                     
                     $response['status'] = 'success';
                     $response['message'] = 'Profile picture updated successfully.';
                     $response['data'] = [
-                        'image_url' => $image_url
+                        'image_url' => $image_url,
+                        'db_path' => $absolute_vps_path
                     ];
                 } catch (PDOException $e) {
                     $response['status'] = 'error';
