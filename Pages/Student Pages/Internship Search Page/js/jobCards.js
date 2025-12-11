@@ -1,99 +1,155 @@
 // jobCards.js - Handle job card interactions and details panel updates
 
 export function initJobCards() {
-    const jobCards = document.querySelectorAll('.job-card');
+    console.log('[JobCards] Initializing job cards module');
 
-    // Mock Data for Job Details (In a real app, this would fetch from API)
-    const jobData = {
-        1: {
-            title: "Junior UI/UX Designer",
-            company: "Cloudstaff, Pampanga",
-            logo: "../../../Landing Page/Images/Companies/cloudstaff_logo.jpg",
-            description: "We are looking for a talented fresher UI/UX Designer who is passionate about designing custom websites with proficiency in Photoshop. The candidate will work closely with our development and design teams to create visually appealing and user-friendly custom website designs for our clients.",
-            roles: [
-                "Gather and evaluate user requirements in collaboration with product managers and engineers",
-                "Illustrate design ideas using storyboards, process flows and sitemaps",
-                "Design graphic user interface elements, like menus, tabs and widgets",
-                "Build page navigation buttons and search fields",
-                "Develop UI mockups and prototypes that clearly illustrate how sites function and look like"
-            ]
-        },
-        2: {
-            title: "Software Engineer Intern",
-            company: "Google, Manila (Hybrid)",
-            logo: "../../../Landing Page/Images/google.jpg",
-            description: "Join our engineering team to build scalable software solutions and learn from the best. You will work on real-world projects, collaborate with experienced engineers, and contribute to products used by millions of people.",
-            roles: [
-                "Write clean, maintainable, and efficient code",
-                "Collaborate with cross-functional teams to define, design, and ship new features",
-                "Participate in code reviews and technical discussions",
-                "Debug and resolve technical issues",
-                "Learn and apply best practices in software development"
-            ]
-        },
-        3: {
-            title: "Data Analyst",
-            company: "Samsung, Taguig",
-            logo: "../../../Landing Page/Images/samsung.jpg",
-            description: "Analyze complex datasets to drive business decisions and improve product performance. You will be responsible for collecting, processing, and performing statistical analyses on large datasets.",
-            roles: [
-                "Interpret data, analyze results using statistical techniques and provide ongoing reports",
-                "Develop and implement databases, data collection systems, data analytics and other strategies that optimize statistical efficiency and quality",
-                "Acquire data from primary or secondary data sources and maintain databases/data systems",
-                "Identify, analyze, and interpret trends or patterns in complex data sets"
-            ]
-        },
-        4: {
-            title: "Mechanical Engineering Intern",
-            company: "Hyundai, Laguna",
-            logo: "../../../Landing Page/Images/hyundai.jpg",
-            description: "Assist in the design and testing of automotive components in a state-of-the-art facility. This internship provides hands-on experience in the automotive industry.",
-            roles: [
-                "Support the engineering team in design and development projects",
-                "Conduct tests and analyze data to ensure product quality and performance",
-                "Assist in the preparation of engineering documentation and reports",
-                "Collaborate with other departments to resolve technical issues",
-                "Participate in team meetings and design reviews"
-            ]
-        }
-    };
-
-    jobCards.forEach(card => {
-        card.addEventListener('click', function () {
-            // Remove active class from all cards
-            jobCards.forEach(c => c.classList.remove('active'));
-            // Add active class to clicked card
-            this.classList.add('active');
-
-            // Get Job ID
-            const jobId = this.getAttribute('data-id');
-            const data = jobData[jobId];
-
-            if (data) {
-                updateJobDetails(data);
-            }
-        });
+    // Listen for jobs loaded event from API
+    document.addEventListener('jobsLoaded', (event) => {
+        console.log('[JobCards] Jobs loaded event received:', event.detail);
+        const { jobs, count } = event.detail;
+        displayJobs(jobs);
     });
 
-    function updateJobDetails(data) {
-        // Update DOM elements
-        document.getElementById('detail-title').textContent = data.title;
-        document.getElementById('detail-company').textContent = data.company;
-        document.getElementById('detail-logo').src = data.logo;
-        document.getElementById('detail-desc').textContent = data.description;
+    // Function to display jobs in the DOM
+    function displayJobs(jobs) {
+        console.log(`[JobCards] Displaying ${jobs.length} jobs`);
 
-        const rolesList = document.getElementById('detail-roles');
-        rolesList.innerHTML = ''; // Clear existing list
+        const jobListingsContainer = document.querySelector('.job-list');
+        if (!jobListingsContainer) {
+            console.error('[JobCards] Job list container not found');
+            return;
+        }
 
-        data.roles.forEach(role => {
-            const li = document.createElement('li');
-            li.textContent = role;
-            rolesList.appendChild(li);
+        // Clear existing job cards
+        jobListingsContainer.innerHTML = '';
+
+        if (jobs.length === 0) {
+            jobListingsContainer.innerHTML = `
+                <div class="no-results">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <h3>No jobs found</h3>
+                    <p>Try adjusting your filters to see more results</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Create job cards
+        jobs.forEach((job, index) => {
+            const jobCard = createJobCard(job, index + 1);
+            jobListingsContainer.appendChild(jobCard);
         });
 
-        // Add animation class for smooth transition
+        // Attach click handlers
+        const jobCards = document.querySelectorAll('.job-card');
+        jobCards.forEach(card => {
+            card.addEventListener('click', function () {
+                console.log('[JobCards] Job card clicked:', this.dataset.id);
+
+                // Remove active class from all cards
+                jobCards.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked card
+                this.classList.add('active');
+
+                // Get Job ID
+                const jobId = this.dataset.id;
+                const jobData = jobs.find(j => j.post_id == jobId);
+
+                if (jobData) {
+                    updateJobDetails(jobData);
+                }
+            });
+        });
+
+        // Auto-select first job
+        if (jobCards.length > 0) {
+            jobCards[0].click();
+        }
+    }
+
+    function createJobCard(job, index) {
+        const card = document.createElement('div');
+        card.className = 'job-card';
+        card.dataset.id = job.post_id;
+
+        const companyIcon = job.company_icon || '../../../Landing Page/Images/default-company.jpg';
+
+        card.innerHTML = `
+            <div class="job-card-header">
+                <img src="${companyIcon}" alt="${job.company_name}" class="company-logo" onerror="this.src='../../../Landing Page/Images/default-company.jpg'">
+                <div class="job-info">
+                    <h3>${job.title}</h3>
+                    <p class="company-name">${job.company_name}</p>
+                </div>
+            </div>
+            <p class="job-snippet">${job.description.substring(0, 100)}...</p>
+            <div class="job-tags">
+                ${job.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
+                ${job.tags.length > 3 ? `<span class="tag-more">+${job.tags.length - 3}</span>` : ''}
+            </div>
+        `;
+
+        return card;
+    }
+
+    function updateJobDetails(data) {
+        console.log('[JobCards] Updating job details:', data.title);
+
+        // Update DOM elements
+        const elements = {
+            'detail-title': data.title,
+            'detail-company': data.company_name,
+            'detail-city': data.city,
+            'detail-province': data.province,
+            'detail-work-type': data.work_type,
+            'detail-category': data.category,
+            'detail-posted-date': `Posted ${data.created_at}`,
+            'detail-description': data.description
+        };
+
+        Object.entries(elements).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        });
+
+        // Update logo
+        const logo = document.getElementById('detail-logo');
+        if (logo) {
+            logo.src = data.company_icon || '../../../Landing Page/Images/default-company.jpg';
+            logo.onerror = () => logo.src = '../../../Landing Page/Images/default-company.jpg';
+        }
+
+        // Update tags
+        const tagsContainer = document.getElementById('detail-tags');
+        if (tagsContainer) {
+            tagsContainer.innerHTML = data.tags.map(tag =>
+                `<span class="tag">${tag}</span>`
+            ).join('');
+        }
+
+        // Update lists
+        updateList('detail-responsibilities', data.responsibilities);
+        updateList('detail-qualifications', data.qualifications);
+        updateList('detail-skills', data.skills);
+        updateList('detail-documents', data.documents);
+
+        // Add animation
         const detailsCard = document.querySelector('.job-details-card');
-        detailsCard.classList.add('fade-in');
-        setTimeout(() => detailsCard.classList.remove('fade-in'), 300);
+        if (detailsCard) {
+            detailsCard.classList.add('fade-in');
+            setTimeout(() => detailsCard.classList.remove('fade-in'), 300);
+        }
+    }
+
+    function updateList(elementId, items) {
+        const list = document.getElementById(elementId);
+        if (!list) return;
+
+        list.innerHTML = '';
+        items.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            list.appendChild(li);
+        });
     }
 }

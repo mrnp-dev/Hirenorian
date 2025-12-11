@@ -223,11 +223,63 @@ export function initAdvancedFilters() {
     }
 
     // Apply filters
-    function applyFilters() {
-        console.log('Applied Filters:', selectedFilters);
-        // TODO: Implement actual filtering logic here
-        // This would filter the job listings based on selectedFilters
-        closeFiltersModal();
+    async function applyFilters() {
+        console.log('[AdvancedFilters] Apply filters clicked');
+        console.log('[AdvancedFilters] Selected filters:', selectedFilters);
+
+        // Get location and work type values
+        const locationValue = document.getElementById('locationValue')?.value || '';
+        const typeValue = document.getElementById('typeValue')?.value || '';
+
+        console.log('[AdvancedFilters] Location:', locationValue);
+        console.log('[AdvancedFilters] Work type:', typeValue);
+
+        // Prepare request body
+        const requestBody = {
+            career_tags: selectedFilters.careerTags,
+            courses: selectedFilters.courses,
+            location: locationValue !== '' ? locationValue : null,
+            work_type: typeValue !== '' ? typeValue : null
+        };
+
+        console.log('[AdvancedFilters] Sending API request:', requestBody);
+
+        try {
+            const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/search_jobs.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            console.log('[AdvancedFilters] API response status:', response.status);
+
+            const result = await response.json();
+            console.log('[AdvancedFilters] API result:', result);
+
+            if (result.status === 'success') {
+                console.log(`[AdvancedFilters] Found ${result.count} jobs`);
+
+                // Dispatch custom event with job data
+                const jobsEvent = new CustomEvent('jobsLoaded', {
+                    detail: {
+                        jobs: result.data,
+                        count: result.count,
+                        filters: result.filters_applied
+                    }
+                });
+                document.dispatchEvent(jobsEvent);
+
+                closeFiltersModal();
+            } else {
+                console.error('[AdvancedFilters] API error:', result.message);
+                alert('Error loading jobs: ' + result.message);
+            }
+        } catch (error) {
+            console.error('[AdvancedFilters] Fetch error:', error);
+            alert('Failed to fetch jobs. Please try again.');
+        }
     }
 
     // Clear all filters
