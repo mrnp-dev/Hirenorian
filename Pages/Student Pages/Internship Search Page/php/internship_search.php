@@ -254,6 +254,66 @@ if(!isset($_SESSION['email'])) {
         </div>
     </div>
 
+    <!-- More Filters Modal -->
+    <div class="filters-modal-overlay" id="filtersModalOverlay">
+        <div class="filters-modal" id="filtersModal">
+            <div class="filters-modal-header">
+                <h2>Advanced Filters</h2>
+                <button class="close-modal-btn" id="closeFiltersModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="filters-modal-body">
+                <!-- Search Bar -->
+                <div class="filters-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="filterSearch" placeholder="Search filters...">
+                </div>
+
+                <!-- Student Courses -->
+                <div class="filter-section">
+                    <h3>Student Courses</h3>
+                    <div class="filter-categories" id="studentCoursesContainer">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Career Tags -->
+                <div class="filter-section">
+                    <h3>Career Tags / Industry</h3>
+                    <div class="filter-categories" id="careerTagsContainer">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Experience Level -->
+                <div class="filter-section">
+                    <h3>Experience Level</h3>
+                    <div class="filter-checkboxes" id="experienceLevelContainer">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Date Posted -->
+                <div class="filter-section">
+                    <h3>Date Posted</h3>
+                    <div class="filter-radios" id="datePostedContainer">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters-modal-footer">
+                <button class="btn-clear-filters" id="clearAllFilters">Clear All</button>
+                <div class="footer-actions">
+                    <button class="btn-cancel-filters" id="cancelFilters">Cancel</button>
+                    <button class="btn-apply-filters" id="applyFilters">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/internship_search.js"></script>
 </body>
 </html>

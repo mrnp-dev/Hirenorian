@@ -343,4 +343,349 @@ document.addEventListener('DOMContentLoaded', function () {
             closeTypeDropdown();
         }
     });
+
+    // ========== More Filters Modal Functionality ==========
+    const moreFiltersBtn = document.querySelector('.btn-more-filters');
+    const filtersModalOverlay = document.getElementById('filtersModalOverlay');
+    const filtersModal = document.getElementById('filtersModal');
+    const closeFiltersModalBtn = document.getElementById('closeFiltersModal');
+    const cancelFiltersBtn = document.getElementById('cancelFilters');
+    const applyFiltersBtn = document.getElementById('applyFilters');
+    const clearAllFiltersBtn = document.getElementById('clearAllFilters');
+    const filterSearchInput = document.getElementById('filterSearch');
+
+    let filtersData = null;
+    let selectedFilters = {
+        courses: [],
+        careerTags: [],
+        experienceLevel: [],
+        datePosted: null
+    };
+
+    // Load filters data
+    async function loadFiltersData() {
+        try {
+            const response = await fetch('../json/filters_data.json');
+            filtersData = await response.json();
+            buildFiltersUI();
+        } catch (error) {
+            console.error('Failed to load filters data:', error);
+        }
+    }
+
+    // Build filters UI
+    function buildFiltersUI() {
+        buildStudentCourses();
+        buildCareerTags();
+        buildExperienceLevel();
+        buildDatePosted();
+    }
+
+    // Build Student Courses section
+    function buildStudentCourses() {
+        const container = document.getElementById('studentCoursesContainer');
+        container.innerHTML = '';
+
+        filtersData.studentCourses.forEach((college, index) => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'filter-category';
+            categoryDiv.dataset.categoryName = college.college.toLowerCase();
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'category-header';
+            headerDiv.innerHTML = `
+                <h4>${college.college}</h4>
+                <div class="category-toggle">
+                    <span class="count">${college.courses.length}</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            `;
+
+            const itemsDiv = document.createElement('div');
+            itemsDiv.className = 'category-items';
+
+            college.courses.forEach(course => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'filter-checkbox';
+                checkboxDiv.dataset.searchText = course.toLowerCase();
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `course-${course.replace(/\s+/g, '-')}`;
+                checkbox.value = course;
+                checkbox.addEventListener('change', () => updateSelectedCourses());
+
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = course;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+                itemsDiv.appendChild(checkboxDiv);
+            });
+
+            categoryDiv.appendChild(headerDiv);
+            categoryDiv.appendChild(itemsDiv);
+            container.appendChild(categoryDiv);
+
+            // Toggle category
+            headerDiv.addEventListener('click', () => {
+                categoryDiv.classList.toggle('expanded');
+            });
+        });
+    }
+
+    // Build Career Tags section
+    function buildCareerTags() {
+        const container = document.getElementById('careerTagsContainer');
+        container.innerHTML = '';
+
+        filtersData.careerTags.forEach((category, index) => {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'filter-category';
+            categoryDiv.dataset.categoryName = category.category.toLowerCase();
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'category-header';
+            headerDiv.innerHTML = `
+                <h4>${category.category}</h4>
+                <div class="category-toggle">
+                    <span class="count">${category.tags.length}</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            `;
+
+            const itemsDiv = document.createElement('div');
+            itemsDiv.className = 'category-items';
+
+            category.tags.forEach(tag => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'filter-checkbox';
+                checkboxDiv.dataset.searchText = tag.toLowerCase();
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `tag-${tag.replace(/\s+/g, '-').replace(/\//g, '-')}`;
+                checkbox.value = tag;
+                checkbox.addEventListener('change', () => updateSelectedTags());
+
+                const label = document.createElement('label');
+                label.htmlFor = checkbox.id;
+                label.textContent = tag;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+                itemsDiv.appendChild(checkboxDiv);
+            });
+
+            categoryDiv.appendChild(headerDiv);
+            categoryDiv.appendChild(itemsDiv);
+            container.appendChild(categoryDiv);
+
+            // Toggle category
+            headerDiv.addEventListener('click', () => {
+                categoryDiv.classList.toggle('expanded');
+            });
+        });
+    }
+
+    // Build Experience Level section
+    function buildExperienceLevel() {
+        const container = document.getElementById('experienceLevelContainer');
+        container.innerHTML = '';
+
+        filtersData.experienceLevels.forEach(level => {
+            const checkboxDiv = document.createElement('div');
+            checkboxDiv.className = 'filter-checkbox';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `exp-${level.replace(/\s+/g, '-')}`;
+            checkbox.value = level;
+            checkbox.addEventListener('change', () => updateSelectedExperience());
+
+            const label = document.createElement('label');
+            label.htmlFor = checkbox.id;
+            label.textContent = level;
+
+            checkboxDiv.appendChild(checkbox);
+            checkboxDiv.appendChild(label);
+            container.appendChild(checkboxDiv);
+        });
+    }
+
+    // Build Date Posted section
+    function buildDatePosted() {
+        const container = document.getElementById('datePostedContainer');
+        container.innerHTML = '';
+
+        filtersData.datePosted.forEach(item => {
+            const radioDiv = document.createElement('div');
+            radioDiv.className = 'filter-radio';
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.id = `date-${item.value}`;
+            radio.name = 'datePosted';
+            radio.value = item.value;
+            radio.addEventListener('change', () => updateSelectedDate());
+
+            const label = document.createElement('label');
+            label.htmlFor = radio.id;
+            label.textContent = item.label;
+
+            radioDiv.appendChild(radio);
+            radioDiv.appendChild(label);
+            container.appendChild(radioDiv);
+        });
+    }
+
+    // Update selected filters
+    function updateSelectedCourses() {
+        selectedFilters.courses = Array.from(
+            document.querySelectorAll('#studentCoursesContainer input[type="checkbox"]:checked')
+        ).map(cb => cb.value);
+    }
+
+    function updateSelectedTags() {
+        selectedFilters.careerTags = Array.from(
+            document.querySelectorAll('#careerTagsContainer input[type="checkbox"]:checked')
+        ).map(cb => cb.value);
+    }
+
+    function updateSelectedExperience() {
+        selectedFilters.experienceLevel = Array.from(
+            document.querySelectorAll('#experienceLevelContainer input[type="checkbox"]:checked')
+        ).map(cb => cb.value);
+    }
+
+    function updateSelectedDate() {
+        const selected = document.querySelector('input[name="datePosted"]:checked');
+        selectedFilters.datePosted = selected ? selected.value : null;
+    }
+
+    // Search functionality
+    if (filterSearchInput) {
+        filterSearchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase().trim();
+
+            // Search in all checkboxes
+            const allCheckboxes = document.querySelectorAll('.filter-checkbox[data-search-text]');
+            const allCategories = document.querySelectorAll('.filter-category');
+
+            if (searchTerm === '') {
+                // Show all
+                allCheckboxes.forEach(cb => cb.classList.remove('hidden'));
+                allCategories.forEach(cat => cat.classList.remove('hidden'));
+            } else {
+                // Hide non-matching
+                allCheckboxes.forEach(cb => {
+                    const text = cb.dataset.searchText;
+                    if (text.includes(searchTerm)) {
+                        cb.classList.remove('hidden');
+                    } else {
+                        cb.classList.add('hidden');
+                    }
+                });
+
+                // Hide empty categories
+                allCategories.forEach(cat => {
+                    const visibleItems = cat.querySelectorAll('.filter-checkbox:not(.hidden)');
+                    if (visibleItems.length === 0) {
+                        cat.classList.add('hidden');
+                    } else {
+                        cat.classList.remove('hidden');
+                        cat.classList.add('expanded'); // Auto-expand when searching
+                    }
+                });
+            }
+        });
+    }
+
+    // Open modal
+    function openFiltersModal() {
+        filtersModalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeFiltersModal() {
+        filtersModalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Apply filters
+    function applyFilters() {
+        console.log('Applied Filters:', selectedFilters);
+        // TODO: Implement actual filtering logic here
+        // This would filter the job listings based on selectedFilters
+        closeFiltersModal();
+    }
+
+    // Clear all filters
+    function clearAllFilters() {
+        // Uncheck all checkboxes
+        document.querySelectorAll('.filters-modal input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+        });
+
+        // Uncheck all radio buttons
+        document.querySelectorAll('.filters-modal input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+        });
+
+        // Reset selected filters
+        selectedFilters = {
+            courses: [],
+            careerTags: [],
+            experienceLevel: [],
+            datePosted: null
+        };
+
+        // Clear search
+        if (filterSearchInput) {
+            filterSearchInput.value = '';
+            filterSearchInput.dispatchEvent(new Event('input'));
+        }
+    }
+
+    // Event listeners
+    if (moreFiltersBtn) {
+        moreFiltersBtn.addEventListener('click', openFiltersModal);
+    }
+
+    if (closeFiltersModalBtn) {
+        closeFiltersModalBtn.addEventListener('click', closeFiltersModal);
+    }
+
+    if (cancelFiltersBtn) {
+        cancelFiltersBtn.addEventListener('click', closeFiltersModal);
+    }
+
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', applyFilters);
+    }
+
+    if (clearAllFiltersBtn) {
+        clearAllFiltersBtn.addEventListener('click', clearAllFilters);
+    }
+
+    // Close modal when clicking overlay
+    if (filtersModalOverlay) {
+        filtersModalOverlay.addEventListener('click', (e) => {
+            if (e.target === filtersModalOverlay) {
+                closeFiltersModal();
+            }
+        });
+    }
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && filtersModalOverlay.classList.contains('active')) {
+            closeFiltersModal();
+        }
+    });
+
+    // Initialize filters
+    loadFiltersData();
 });
