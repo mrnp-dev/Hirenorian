@@ -276,9 +276,9 @@ function getContactsList() {
     const contacts = [];
     listItems.forEach(item => {
         const name = item.querySelector('h4').textContent.trim();
-        const position = item.querySelector('.contact-position').textContent.replace('Position:', '').trim();
-        const email = item.querySelector('.contact-email').textContent.replace('Email:', '').trim();
-        const phone = item.querySelector('.contact-phone').textContent.replace('Number:', '').trim();
+        const position = item.querySelector('.contact-position').textContent.replace(/^Position:\s*/i, '').trim();
+        const email = item.querySelector('.contact-email').textContent.replace(/^Email:\s*/i, '').trim();
+        const phone = item.querySelector('.contact-phone').textContent.replace(/^Number:\s*/i, '').trim();
 
         contacts.push({
             name: name,
@@ -464,9 +464,9 @@ function editListItem(itemId, section) {
         showModal('locationModal');
     } else if (section === 'contacts') {
         const name = item.querySelector('h4').textContent;
-        const position = item.querySelector('.contact-position').textContent.replace('Position: ', '');
-        const email = item.querySelector('.contact-email').textContent.replace('Email: ', '');
-        const phone = item.querySelector('.contact-phone').textContent.replace('Number: ', '');
+        const position = item.querySelector('.contact-position').textContent.replace(/^Position:\s*/i, '').trim();
+        const email = item.querySelector('.contact-email').textContent.replace(/^Email:\s*/i, '').trim();
+        const phone = item.querySelector('.contact-phone').textContent.replace(/^Number:\s*/i, '').trim();
 
         document.getElementById('contactPersonModalTitle').textContent = 'Edit Contact Person';
         document.getElementById('personName').value = name;
