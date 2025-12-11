@@ -56,8 +56,9 @@ window.addEventListener('click', (e) => {
 
 // Helper function to format timestamp
 function formatTimestamp(timestamp) {
-    // MySQL datetime format: "2025-12-11 07:21:26"
-    // Replace space with 'T' for ISO format, or add timezone
+    // MySQL datetime format: "2025-12-11 15:21:26"
+    // Database stores in server's LOCAL timezone (PH = UTC+8), NOT in UTC
+    // Parse as local time by converting space to 'T' (no 'Z')
     const date = new Date(timestamp.replace(' ', 'T'));
     const now = new Date();
     const diffMs = now - date;
