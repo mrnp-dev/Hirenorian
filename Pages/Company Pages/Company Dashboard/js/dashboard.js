@@ -118,18 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('applicantsModal');
     const closeModal = document.querySelector('.close-modal');
 
-    // Mock Data for Job Posts (Replace this with your backend data)
-    let jobPostsData = [
-        { title: 'Senior UX Designer', applicants: '8/10', datePosted: '2025-10-28', status: 'Active' },
-        { title: 'Full Stack Developer', applicants: '10/10', datePosted: '2025-10-30', status: 'Closed' },
-        { title: 'Data Scientist', applicants: '3/5', datePosted: '2025-11-01', status: 'Active' },
-        { title: 'Frontend Developer', applicants: '5/8', datePosted: '2025-11-02', status: 'Active' },
-        { title: 'Backend Engineer', applicants: '10/10', datePosted: '2025-10-25', status: 'Closed' },
-        { title: 'Product Manager', applicants: '2/5', datePosted: '2025-11-03', status: 'Active' },
-        { title: 'QA Engineer', applicants: '4/6', datePosted: '2025-11-04', status: 'Active' },
-        { title: 'DevOps Engineer', applicants: '1/3', datePosted: '2025-11-05', status: 'Active' },
-        { title: 'UI Designer', applicants: '6/6', datePosted: '2025-11-06', status: 'Closed' }
-    ];
+    // Store fetched data globally for modal use
+    let jobPostsData = [];
 
     // Sorting Logic: Active first, then Closed
     const statusOrder = {
@@ -173,9 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial render
-    const sortedPosts = sortJobPosts(jobPostsData);
-    renderTable(sortedPosts, jobListingBody);
+
 
     // Modal Logic
     if (viewAllBtn && modal) {
@@ -357,9 +345,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial Load
     fetchDashboardData();
-
-    // Refresh every 60 seconds
-    setInterval(fetchDashboardData, 60000);
 
     // ========================================
     // CONSOLE HELPERS (For Testing)

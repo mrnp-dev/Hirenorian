@@ -8,7 +8,7 @@ if (isset($_SESSION['email'])) {
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        "email" => $company_email
+        "company_email" => $company_email
     ]));
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -32,11 +32,15 @@ if (isset($_SESSION['email'])) {
         echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
 
-    $company = $data['data'][0];
-
-    // Students Table
-    $company_id = $company['company_id'];
-    $company_name = $company['company_name'];
+    // Updated to match new API structure
+    if (isset($data['company'])) {
+        $company = $data['company'];
+        $company_id = $company['company_id'];
+        $company_name = $company['company_name'];
+    } else {
+        $company_name = "Unknown";
+        $company_id = 0;
+    }
 
 } else {
     header("Location: ../../../Landing Page/php/landing_page.php");
@@ -106,7 +110,7 @@ if (isset($_SESSION['email'])) {
                         <div class="user-avatar">
                             <!-- Placeholder for user image -->
                         </div>
-                        <span class="user-name"><?php echo $company_name; ?></span>
+                        <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
