@@ -390,13 +390,17 @@ function saveImageChanges() {
             if (data.status === 'success') {
                 const newUrl = data.data.image_url;
 
+                // Appending timestamp to force reload image even if URL name is same
+                const timestamp = new Date().getTime();
+                const cacheBustedUrl = newUrl + '?t=' + timestamp;
+
                 // Update both View and Edit images immediately
                 if (currentImageType === 'banner') {
-                    document.getElementById('editCompanyBanner').src = newUrl;
-                    document.getElementById('viewCompanyBanner').src = newUrl;
+                    document.getElementById('editCompanyBanner').src = cacheBustedUrl;
+                    document.getElementById('viewCompanyBanner').src = cacheBustedUrl;
                 } else if (currentImageType === 'icon') {
-                    document.getElementById('editCompanyIcon').src = newUrl;
-                    document.getElementById('viewCompanyIcon').src = newUrl;
+                    document.getElementById('editCompanyIcon').src = cacheBustedUrl;
+                    document.getElementById('viewCompanyIcon').src = cacheBustedUrl;
                 }
 
                 ToastSystem.show(data.message, 'success');
