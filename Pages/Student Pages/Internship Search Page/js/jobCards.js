@@ -192,6 +192,31 @@ export function initJobCards() {
             detailsCard.classList.add('fade-in');
             setTimeout(() => detailsCard.classList.remove('fade-in'), 300);
         }
+        
+        // Store job data for application form
+        if (data.post_id) {
+            sessionStorage.setItem('applicationJobId', data.post_id);
+            sessionStorage.setItem('applicationJobData', JSON.stringify({
+                title: data.title,
+                company_name: data.company_name,
+                city: data.city,
+                province: data.province,
+                work_type: data.work_type,
+                category: data.category
+            }));
+        }
+        
+        // Add Apply Now button handler
+        const applyNowBtn = detailsCard?.querySelector('.btn-apply-now');
+        if (applyNowBtn) {
+            applyNowBtn.onclick = () => {
+                if (data.post_id) {
+                    window.location.href = `../../Application Form Page/php/application_form.php?job_id=${data.post_id}`;
+                } else {
+                    alert('Job information is missing. Please select a job again.');
+                }
+            };
+        }
     }
 
     function updateList(elementId, items) {
