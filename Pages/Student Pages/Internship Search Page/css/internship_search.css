@@ -1150,6 +1150,41 @@
     font-size: 0.9rem;
 }
 
+/* Job Details Placeholder */
+.job-details-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 400px;
+    /* Ensure enough height */
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.job-details-placeholder i {
+    font-size: 3rem;
+    color: #ddd;
+    margin-bottom: 1rem;
+}
+
+.job-details-placeholder h3 {
+    font-size: 1.25rem;
+    color: #444;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.job-details-placeholder p {
+    color: #888;
+    font-size: 0.95rem;
+}
+
 /* Custom Confirmation Dialog */
 .confirm-dialog-overlay {
     position: fixed;

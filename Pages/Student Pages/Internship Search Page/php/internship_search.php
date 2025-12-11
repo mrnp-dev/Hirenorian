@@ -156,16 +156,24 @@ if(!isset($_SESSION['email'])) {
 
                     <!-- Right Column: Job Details Panel -->
                     <div class="job-details-section">
-                        <div class="job-details-card">
+                        <!-- Placeholder State (Shown when no job is selected) -->
+                        <div class="job-details-placeholder" id="jobDetailsPlaceholder">
+                            <i class="fa-regular fa-folder-open"></i>
+                            <h3>Select a Job</h3>
+                            <p>Click on a job card to view full details</p>
+                        </div>
+
+                        <!-- Job Details Card (Hidden by default) -->
+                        <div class="job-details-card" id="jobDetailsCard" style="display: none;">
                             <div class="details-header">
                                 <div class="header-main">
-                                    <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Logo" class="details-logo" id="detail-logo">
+                                    <img src="" alt="Logo" class="details-logo" id="detail-logo">
                                     <div class="header-info">
-                                        <h2 id="detail-title">Junior UI/UX Designer</h2>
-                                        <p id="detail-company">Cloudstaff</p>
+                                        <h2 id="detail-title"></h2>
+                                        <p id="detail-company"></p>
                                         <p class="detail-location">
                                             <i class="fa-solid fa-location-dot"></i>
-                                            <span id="detail-city">Angeles City</span>, <span id="detail-province">Pampanga</span>
+                                            <span id="detail-city"></span>, <span id="detail-province"></span>
                                         </p>
                                     </div>
                                 </div>
@@ -178,79 +186,48 @@ if(!isset($_SESSION['email'])) {
                             <div class="job-meta">
                                 <div class="meta-item">
                                     <i class="fa-solid fa-briefcase"></i>
-                                    <span id="detail-work-type">Internship</span>
+                                    <span id="detail-work-type"></span>
                                 </div>
                                 <div class="meta-item">
                                     <i class="fa-solid fa-tag"></i>
-                                    <span id="detail-category">Design</span>
+                                    <span id="detail-category"></span>
                                 </div>
                                 <div class="meta-item">
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    <span id="detail-posted-date">Posted 2 days ago</span>
+                                    <i class="fa-regular fa-clock"></i>
+                                    <span id="detail-posted-date"></span>
                                 </div>
                             </div>
 
-                            <div class="job-tags-section">
+                            <div class="details-section">
+                                <h3>From the job post</h3>
+                                <p id="detail-description"></p>
+                            </div>
+
+                            <div class="details-section">
+                                <h3>Tags</h3>
                                 <div class="job-tags" id="detail-tags">
-                                    <span class="tag">UI Design</span>
-                                    <span class="tag">UX Design</span>
-                                    <span class="tag">Figma</span>
-                                    <span class="tag">Prototyping</span>
+                                    <!-- Tags will be populated here -->
                                 </div>
                             </div>
 
-                            <div class="details-body">
-                                <div class="details-section">
-                                    <h3>Job Description</h3>
-                                    <p id="detail-description">
-                                        We are looking for a talented fresher UI/UX Designer who is passionate about designing custom websites with proficiency in Photoshop. 
-                                        The candidate will work closely with our development and design teams to create visually appealing and user-friendly custom website designs for our clients.
-                                    </p>
-                                </div>
+                            <div class="details-section">
+                                <h3>Responsibilities</h3>
+                                <ul id="detail-responsibilities"></ul>
+                            </div>
 
-                                <div class="details-section">
-                                    <h3>Responsibilities</h3>
-                                    <ul id="detail-responsibilities">
-                                        <li>Gather and evaluate user requirements in collaboration with product managers and engineers</li>
-                                        <li>Illustrate design ideas using storyboards, process flows and sitemaps</li>
-                                        <li>Design graphic user interface elements, like menus, tabs and widgets</li>
-                                        <li>Build page navigation buttons and search fields</li>
-                                        <li>Develop UI mockups and prototypes that clearly illustrate how sites function and look like</li>
-                                        <li>Create original graphic designs (e.g. images, sketches and tables)</li>
-                                        <li>Prepare and present rough drafts to internal teams and key stakeholders</li>
-                                        <li>Identify and troubleshoot UX problems (e.g. responsiveness)</li>
-                                    </ul>
-                                </div>
+                            <div class="details-section">
+                                <h3>Qualifications</h3>
+                                <ul id="detail-qualifications"></ul>
+                            </div>
 
-                                <div class="details-section">
-                                    <h3>Qualifications</h3>
-                                    <ul id="detail-qualifications">
-                                        <li>Bachelor's degree in Design, Computer Science, or related field</li>
-                                        <li>Portfolio of design projects</li>
-                                        <li>Strong communication skills</li>
-                                        <li>Ability to work in a fast-paced environment</li>
-                                        <li>Team player with excellent problem-solving skills</li>
-                                    </ul>
-                                </div>
+                            <div class="details-section">
+                                <h3>Required Skills</h3>
+                                <ul id="detail-skills"></ul>
+                            </div>
 
-                                <div class="details-section">
-                                    <h3>Required Skills</h3>
-                                    <ul id="detail-skills">
-                                        <li>Proficiency in Figma, Adobe XD, or Sketch</li>
-                                        <li>Knowledge of HTML/CSS basics</li>
-                                        <li>Understanding of responsive design principles</li>
-                                        <li>Familiarity with user research and usability testing</li>
-                                        <li>Strong visual design skills</li>
-                                    </ul>
-                                </div>
-
-                                <div class="details-section">
-                                    <h3>Required Documents</h3>
-                                    <ul id="detail-documents">
-                                        <li>Resume/CV</li>
-                                        <li>Portfolio</li>
-                                    </ul>
-                                </div>
+                            <div class="details-section">
+                                <h3>Required Documents</h3>
+                                <ul id="detail-documents"></ul>
                             </div>
                         </div>
                     </div>

@@ -137,6 +137,13 @@ export function initJobCards() {
     function updateJobDetails(data) {
         console.log('[JobCards] Updating job details:', data.title);
 
+        const placeholder = document.getElementById('jobDetailsPlaceholder');
+        const detailsCard = document.getElementById('jobDetailsCard');
+
+        // Toggle visibility
+        if (placeholder) placeholder.style.display = 'none';
+        if (detailsCard) detailsCard.style.display = 'block';
+
         // Update DOM elements
         const elements = {
             'detail-title': data.title,
@@ -176,7 +183,6 @@ export function initJobCards() {
         updateList('detail-documents', data.documents);
 
         // Add animation
-        const detailsCard = document.querySelector('.job-details-card');
         if (detailsCard) {
             detailsCard.classList.add('fade-in');
             setTimeout(() => detailsCard.classList.remove('fade-in'), 300);
