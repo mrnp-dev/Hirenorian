@@ -69,7 +69,8 @@ mysql> DESCRIBE Job_Details;
 +-------------------+--------------------------------------------+------+-----+------------+-------+
 | post_id           | int                                        | NO   | PRI | NULL       |       |
 | title             | varchar(255)                               | NO   |     | NULL       |       |
-| location          | varchar(255)                               | YES  |     | NULL       |       |
+| province          | varchar(100)                               | YES  |     | NULL       |       |
+| city              | varchar(100)                               | YES  |     | NULL       |       |
 | description       | text                                       | YES  |     | NULL       |       |
 | work_type         | enum('Full-time','Part-time','Internship') | YES  |     | Internship |       |
 | required_document | enum('Resume','Cover-Letter','None')       | YES  |     | Resume     |       |

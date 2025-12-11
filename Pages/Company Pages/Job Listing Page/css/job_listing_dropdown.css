@@ -1,0 +1,151 @@
+/* ========================================
+   CASCADING LOCATION DROPDOWN STYLES
+======================================== */
+.cascading-dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-display {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    background: white;
+    transition: all 0.3s ease;
+    color: #333;
+    font-weight: 500;
+}
+
+.dropdown-display:focus {
+    outline: none;
+    border-color: var(--secondary-yellow);
+    box-shadow: 0 0 0 3px rgba(244, 196, 48, 0.1);
+}
+
+.dropdown-display::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.cascading-dropdown .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 1000;
+}
+
+.cascading-dropdown.open .dropdown-menu {
+    display: block;
+    animation: dropdownSlide 0.2s ease;
+}
+
+@keyframes dropdownSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.province-item {
+    position: relative;
+    padding: 12px 16px;
+    cursor: default;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid #e5e7eb;
+    transition: background 0.2s ease;
+}
+
+.province-item:last-child {
+    border-bottom: none;
+}
+
+.province-item:hover {
+    background: #e9ecef;
+}
+
+.province-item::after {
+    content: '▶';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 10px;
+}
+
+.city-submenu {
+    position: fixed;
+    left: auto;
+    top: auto;
+    width: 300px;
+    max-height: 350px;
+    overflow-y: auto;
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.15);
+    display: none;
+    z-index: 2000;
+}
+
+.city-item {
+    padding: 10px 16px;
+    cursor: pointer;
+    color: #555;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: 500;
+}
+
+.city-item:last-child {
+    border-bottom: none;
+}
+
+.city-item:hover {
+    background: var(--secondary-yellow);
+    color: #333;
+    padding-left: 20px;
+    font-weight: 600;
+}
+
+/* Scrollbar Styling for Dropdown */
+.cascading-dropdown .dropdown-menu::-webkit-scrollbar,
+.city-submenu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.cascading-dropdown .dropdown-menu::-webkit-scrollbar-track,
+.city-submenu::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.cascading-dropdown .dropdown-menu::-webkit-scrollbar-thumb,
+.city-submenu::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.cascading-dropdown .dropdown-menu::-webkit-scrollbar-thumb:hover,
+.city-submenu::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
