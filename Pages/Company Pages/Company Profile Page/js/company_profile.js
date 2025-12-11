@@ -451,13 +451,13 @@ function editListItem(itemId, section) {
     if (!item) return;
 
     if (section === 'perks') {
-        const text = item.querySelector('span').textContent;
+        const text = item.querySelector('span').textContent.trim();
         document.getElementById('perkModalTitle').textContent = 'Edit Perk';
         document.getElementById('perkText').value = text;
         showModal('perkModal');
     } else if (section === 'locations') {
-        const name = item.querySelector('h4').textContent;
-        const description = item.querySelector('.location-description').textContent;
+        const name = item.querySelector('h4').textContent.trim();
+        const description = item.querySelector('.location-description').textContent.trim();
         document.getElementById('locationModalTitle').textContent = 'Edit Office Location';
         document.getElementById('locationName').value = name;
         document.getElementById('locationDescription').value = description;
