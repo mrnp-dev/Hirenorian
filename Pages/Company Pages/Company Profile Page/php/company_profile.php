@@ -176,7 +176,8 @@ if (isset($_SESSION['email'])) {
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <!-- Placeholder for user image -->
+                            <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
                         <span class="user-name"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
@@ -207,14 +208,15 @@ if (isset($_SESSION['email'])) {
 
                         <!-- Company Banner -->
                         <div class="profile-banner-container">
-                            <img src="<?php echo $company_banner_url; ?>"
-                                alt="Company Banner" class="company-banner" id="viewCompanyBanner">
+                            <img src="<?php echo $company_banner_url; ?>" alt="Company Banner" class="company-banner"
+                                id="viewCompanyBanner">
                         </div>
 
                         <!-- Company Header -->
                         <div class="company-header">
                             <div class="company-icon-wrapper">
-                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon" id="viewCompanyIcon">
+                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon"
+                                    id="viewCompanyIcon">
                             </div>
                             <div class="company-main-info">
                                 <h2 class="company-name" id="viewCompanyName">
@@ -431,8 +433,8 @@ if (isset($_SESSION['email'])) {
 
                         <!-- Company Banner Edit -->
                         <div class="profile-banner-container edit-mode">
-                            <img src="<?php echo $company_banner_url; ?>"
-                                alt="Company Banner" class="company-banner" id="editCompanyBanner">
+                            <img src="<?php echo $company_banner_url; ?>" alt="Company Banner" class="company-banner"
+                                id="editCompanyBanner">
                             <button class="edit-banner-btn" onclick="openImageUploadModal('banner')"
                                 title="Update Banner">
                                 <i class="fa-solid fa-camera"></i> Change Banner
@@ -442,7 +444,8 @@ if (isset($_SESSION['email'])) {
                         <!-- Company Header Edit -->
                         <div class="company-header">
                             <div class="company-icon-wrapper">
-                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon" id="editCompanyIcon">
+                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon"
+                                    id="editCompanyIcon">
                                 <button class="edit-icon-btn" onclick="openImageUploadModal('icon')"
                                     title="Update Company Icon">
                                     <i class="fa-solid fa-camera"></i>

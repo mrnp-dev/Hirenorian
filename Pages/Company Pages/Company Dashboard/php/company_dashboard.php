@@ -37,9 +37,17 @@ if (isset($_SESSION['email'])) {
         $company = $data['company'];
         $company_id = $company['company_id'];
         $company_name = $company['company_name'];
+
+        $company_icon_url = "https://via.placeholder.com/40"; // Default
+        if (!empty($data['icons'])) {
+            $url = $data['icons'][0]['icon_url'];
+            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
+        }
+
     } else {
         $company_name = "Unknown";
         $company_id = 0;
+        $company_icon_url = "https://via.placeholder.com/40";
     }
 
 } else {
@@ -108,7 +116,7 @@ if (isset($_SESSION['email'])) {
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <!-- Placeholder for user image -->
+                            <img src="<?php echo $company_icon_url; ?>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
                         <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>

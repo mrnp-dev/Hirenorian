@@ -108,7 +108,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     status: job.status, // Ensure status is mapped correctly
                     applicantLimit: job.applicantLimit,
                     currentApplicants: job.currentApplicants,
-                    jobDescription: job.jobDescription
+                    jobDescription: job.jobDescription,
+                    companyIcon: job.companyIcon // Map company icon
                 }));
                 return jobPostsData;
             } else {
