@@ -84,3 +84,20 @@ mysql> describe StudentSkills;
 | skill_category | enum('Technical','Soft') | NO   |     | NULL    |                |
 +----------------+--------------------------+------+-----+---------+----------------+
 4 rows in set (0.00 sec)
+
+mysql> describe StudentProfileAuditLog;
++------------------+----------------------------------+------+-----+-------------------+-------------------+
+| Field            | Type                             | Null | Key | Default           | Extra             |
++------------------+----------------------------------+------+-----+-------------------+-------------------+
+| log_id           | int                              | NO   | PRI | NULL              | auto_increment    |
+| student_id       | int                              | NO   | MUL | NULL              |                   |
+| action_type      | enum('CREATE','UPDATE','DELETE') | NO   |     | NULL              |                   |
+| table_affected   | varchar(100)                     | NO   | MUL | NULL              |                   |
+| record_id        | int                              | YES  |     | NULL              |                   |
+| field_name       | varchar(100)                     | YES  |     | NULL              |                   |
+| old_value        | text                             | YES  |     | NULL              |                   |
+| new_value        | text                             | YES  |     | NULL              |                   |
+| action_timestamp | timestamp                        | YES  | MUL | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| ip_address       | varchar(45)                      | YES  |     | NULL              |                   |
+| user_agent       | text                             | YES  |     | NULL              |                   |
++------------------+----------------------------------+------+-----+-------------------+-------------------+
