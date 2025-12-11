@@ -1297,8 +1297,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Open Job Post Modal
-    function openJobPostModal(mode = 'add', jobData = null) {
+    async function openJobPostModal(mode = 'add', jobData = null) {
         if (jobPostModalOverlay) {
+            // Fetch data if not already loaded (Wait for it before populating)
+            if (Object.keys(categoriesTagsData).length === 0) {
+                await fetchCategoriesAndTags();
+            }
+            if (workTypesData.length === 0) {
+                await fetchWorkTypes();
+            }
+
             modalMode = mode;
 
             jobPostModalOverlay.style.display = 'flex';
@@ -1336,14 +1344,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 currentEditingJobId = null;
-            }
-
-            // Fetch data if not already loaded
-            if (Object.keys(categoriesTagsData).length === 0) {
-                fetchCategoriesAndTags();
-            }
-            if (workTypesData.length === 0) {
-                fetchWorkTypes();
             }
         }
     }
