@@ -46,9 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const formData = new FormData();
-        formData.append('local_file', file); // Matches client_sender.php logic
+        formData.append('uploaded_file', file); // Sending as 'uploaded_file' to match API
         formData.append('student_id', studentId);
-        formData.append('submit', 'true'); // Simulate submit button press for PHP check
 
         // Show loading state
         const submitBtn = photoForm.querySelector('button[type="submit"]');
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submitBtn.disabled = true;
         submitBtn.innerText = 'Uploading...';
 
-        fetch('update_photo.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/update_profile_picture.php', {
             method: 'POST',
             body: formData
         })
