@@ -275,25 +275,27 @@ export function initAdvancedFilters() {
         document.body.style.overflow = 'hidden';
     }
 
-    // Close modal
-    function closeFiltersModal() {
+    // Close modal (with optional force close)
+    function closeFiltersModal(forceClose = false) {
         // Check if there are any selected filters
         const hasSelectedFilters = selectedFilters.courses.length > 0 || selectedFilters.careerTags.length > 0;
 
-        if (hasSelectedFilters) {
+        if (hasSelectedFilters && !forceClose) {
             // Show custom confirmation dialog
             const filterCount = selectedFilters.courses.length + selectedFilters.careerTags.length;
             showConfirmDialog(filterCount);
         } else {
-            // No filters selected, close directly
+            // Close directly
             filtersModalOverlay.classList.remove('active');
             document.body.style.overflow = '';
+            console.log('[AdvancedFilters] Modal closed');
         }
     }
 
     // Handle dialog Apply button
     if (btnConfirmApply) {
         btnConfirmApply.addEventListener('click', () => {
+            console.log('[AdvancedFilters] Confirm Apply clicked');
             hideConfirmDialog();
             applyFilters();
         });
@@ -302,13 +304,12 @@ export function initAdvancedFilters() {
     // Handle dialog Discard button
     if (btnConfirmDiscard) {
         btnConfirmDiscard.addEventListener('click', () => {
+            console.log('[AdvancedFilters] Confirm Discard clicked');
             // Restore original state
             restoreFiltersState();
             // Close both dialogs
             hideConfirmDialog();
-            filtersModalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-            console.log('[AdvancedFilters] Changes discarded, state restored');
+            closeFiltersModal(true); // Force close without showing dialog again
         });
     }
 
@@ -325,6 +326,9 @@ export function initAdvancedFilters() {
     async function applyFilters() {
         console.log('[AdvancedFilters] Apply filters clicked');
         console.log('[AdvancedFilters] Selected filters:', selectedFilters);
+
+        // Close modal immediately (no confirmation needed when explicitly applying)
+        closeFiltersModal(true);
 
         // Dispatch search started event to show loading state
         document.dispatchEvent(new CustomEvent('searchStarted'));
@@ -372,8 +376,6 @@ export function initAdvancedFilters() {
                     }
                 });
                 document.dispatchEvent(jobsEvent);
-
-                closeFiltersModal();
             } else {
                 console.error('[AdvancedFilters] API error:', result.message);
                 // Dispatch error event
