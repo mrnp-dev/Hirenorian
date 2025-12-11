@@ -361,20 +361,58 @@ document.addEventListener('DOMContentLoaded', function () {
  * Changes are only finalized to View container on "Save Profile".
  */
 function saveImageChanges() {
-    const preview = document.getElementById('imagePreview');
+    const fileInput = document.getElementById('imageFileInput');
+    const file = fileInput.files[0];
+    const companyId = document.getElementById('company_id').value;
 
-    if (preview.style.display === 'none') {
+    if (!file) {
         ToastSystem.show('Please select an image first', 'warning');
         return;
     }
 
-    if (currentImageType === 'banner') {
-        document.getElementById('editCompanyBanner').src = preview.src;
-    } else if (currentImageType === 'icon') {
-        document.getElementById('editCompanyIcon').src = preview.src;
-    }
+    const formData = new FormData();
+    formData.append('uploaded_file', file);
+    formData.append('company_id', companyId);
+    formData.append('image_type', currentImageType); // 'banner' or 'icon'
 
-    closeImageUploadModal();
+    // Show loading state (optional)
+    const saveBtn = document.querySelector('#imageUploadModal .btn-save');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Uploading...';
+    saveBtn.disabled = true;
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_company_images.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const newUrl = data.data.image_url;
+
+                // Update both View and Edit images immediately
+                if (currentImageType === 'banner') {
+                    document.getElementById('editCompanyBanner').src = newUrl;
+                    document.getElementById('viewCompanyBanner').src = newUrl;
+                } else if (currentImageType === 'icon') {
+                    document.getElementById('editCompanyIcon').src = newUrl;
+                    document.getElementById('viewCompanyIcon').src = newUrl;
+                }
+
+                ToastSystem.show(data.message, 'success');
+                closeImageUploadModal();
+            } else {
+                ToastSystem.show(data.message || 'Upload failed', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            ToastSystem.show('An error occurred during upload', 'error');
+        })
+        .finally(() => {
+            saveBtn.textContent = originalText;
+            saveBtn.disabled = false;
+        });
 }
 
 
@@ -849,3 +887,54 @@ function loadVerificationStatus() {
     // }
 }
 
+// ========== STATISTICS FETCHING ==========
+
+/**
+ * Fetches and updates company statistics from the backend
+ */
+async function fetchCompanyStatistics() {
+    try {
+        const emailInput = document.getElementById('company_email');
+        if (!emailInput) {
+            console.warn('Company email input not found.');
+            return;
+        }
+
+        const companyEmail = emailInput.value;
+        if (!companyEmail) return;
+
+        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_statistics.php", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ company_email: companyEmail })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+            const stats = result.data;
+
+            // Update UI elements if they exist
+            const viewTotal = document.getElementById('viewTotalApplicants');
+            const viewAccepted = document.getElementById('viewAccepted');
+            const viewRejected = document.getElementById('viewRejected');
+
+            if (viewTotal) viewTotal.textContent = stats.totalApplicants;
+            if (viewAccepted) viewAccepted.textContent = stats.accepted;
+            if (viewRejected) viewRejected.textContent = stats.rejected;
+        } else {
+            console.error('Failed to fetch statistics:', result.message);
+        }
+    } catch (error) {
+        console.error('Error loading statistics:', error);
+    }
+}
+
+// ========== INITIALIZATION ==========
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initial fetch of statistics
+    fetchCompanyStatistics();
+
+    // Any other init logic...
+});

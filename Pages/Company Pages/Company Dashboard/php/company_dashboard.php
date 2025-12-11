@@ -8,7 +8,7 @@ if (isset($_SESSION['email'])) {
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        "email" => $company_email
+        "company_email" => $company_email
     ]));
     curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -32,11 +32,23 @@ if (isset($_SESSION['email'])) {
         echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
 
-    $company = $data['data'][0];
+    // Updated to match new API structure
+    if (isset($data['company'])) {
+        $company = $data['company'];
+        $company_id = $company['company_id'];
+        $company_name = $company['company_name'];
 
-    // Students Table
-    $company_id = $company['company_id'];
-    $company_name = $company['company_name'];
+        $company_icon_url = "https://via.placeholder.com/40"; // Default
+        if (!empty($data['icons'])) {
+            $url = $data['icons'][0]['icon_url'];
+            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
+        }
+
+    } else {
+        $company_name = "Unknown";
+        $company_id = 0;
+        $company_icon_url = "https://via.placeholder.com/40";
+    }
 
 } else {
     header("Location: ../../../Landing Page/php/landing_page.php");
@@ -104,9 +116,9 @@ if (isset($_SESSION['email'])) {
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <!-- Placeholder for user image -->
+                            <img src="<?php echo $company_icon_url; ?>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
-                        <span class="user-name"><?php echo $company_name; ?></span>
+                        <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -119,6 +131,8 @@ if (isset($_SESSION['email'])) {
                 <div class="page-title">
                     <h1>Dashboard</h1>
                 </div>
+                <!-- Hidden Input for JS -->
+                <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
 
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
@@ -162,14 +176,14 @@ if (isset($_SESSION['email'])) {
                                             <div class="stat-indicator active-indicator"></div>
                                             <div class="stat-details">
                                                 <span class="stat-label">Active Posts</span>
-                                                <span class="stat-number" id="activePostCount">1</span>
+                                                <span class="stat-number" id="activePostCount">0</span>
                                             </div>
                                         </div>
                                         <div class="stat-card closed-card">
                                             <div class="stat-indicator closed-indicator"></div>
                                             <div class="stat-details">
                                                 <span class="stat-label">Closed Posts</span>
-                                                <span class="stat-number" id="closedPostCount">1</span>
+                                                <span class="stat-number" id="closedPostCount">0</span>
                                             </div>
                                         </div>
                                     </div>
@@ -179,7 +193,7 @@ if (isset($_SESSION['email'])) {
                                         <div class="chart-container">
                                             <canvas id="postsChart"></canvas>
                                             <div class="chart-center-label">
-                                                <span class="center-number" id="totalPostsCount">2</span>
+                                                <span class="center-number" id="totalPostsCount">0</span>
                                                 <span class="center-text">Total</span>
                                             </div>
                                         </div>
@@ -197,7 +211,7 @@ if (isset($_SESSION['email'])) {
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Total Applications</span>
-                                            <span class="metric-number" id="totalApplications">2,450</span>
+                                            <span class="metric-number" id="totalApplications">0</span>
                                         </div>
                                     </div>
                                     <div class="metric-card accepted">
@@ -206,7 +220,7 @@ if (isset($_SESSION['email'])) {
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Accepted</span>
-                                            <span class="metric-number" id="acceptedApplications">890</span>
+                                            <span class="metric-number" id="acceptedApplications">0</span>
                                         </div>
                                     </div>
                                     <div class="metric-card rejected">
@@ -215,7 +229,7 @@ if (isset($_SESSION['email'])) {
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Rejected</span>
-                                            <span class="metric-number" id="rejectedApplications">1,560</span>
+                                            <span class="metric-number" id="rejectedApplications">0</span>
                                         </div>
                                     </div>
                                 </div>
