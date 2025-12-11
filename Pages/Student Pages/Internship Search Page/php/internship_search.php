@@ -336,6 +336,14 @@ if(!isset($_SESSION['email'])) {
                     <!-- Selected tags will be displayed here -->
                 </div>
             </div>
+
+            <!-- Loading Overlay -->
+            <div class="filters-loading-overlay" id="filtersLoadingOverlay">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading your preferences...</p>
+                </div>
+            </div>
             
             <div class="filters-modal-main">
                 <!-- Sidebar Navigation -->
@@ -380,6 +388,15 @@ if(!isset($_SESSION['email'])) {
         </div>
     </div>
 
+    <!-- Pass PHP session data to JavaScript -->
+    <script>
+        // Store session email in sessionStorage for JavaScript modules
+        <?php if(isset($_SESSION['email'])): ?>
+        sessionStorage.setItem('email', '<?php echo addslashes($_SESSION['email']); ?>');
+        console.log('[Session] Email stored in sessionStorage:', sessionStorage.getItem('email'));
+        <?php endif; ?>
+    </script>
+    
     <script type="module" src="../js/main.js"></script>
 </body>
 </html>

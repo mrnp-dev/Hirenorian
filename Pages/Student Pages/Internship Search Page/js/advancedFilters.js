@@ -27,12 +27,12 @@ export function initAdvancedFilters() {
     }
 
     // Build filters UI
-    function buildFiltersUI() {
+    async function buildFiltersUI() {
         buildStudentCourses();
         buildCareerTags();
         initializeSidebarNavigation();
-        // Auto-check student's tags after UI is built
-        loadStudentTags();
+        // Auto-check student's tags after UI is built (wait for it to complete)
+        await loadStudentTags();
     }
 
     // Initialize Sidebar Navigation
