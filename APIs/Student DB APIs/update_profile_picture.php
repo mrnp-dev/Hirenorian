@@ -70,10 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $response['message'] = 'Profile picture updated successfully.';
                 // Return the public URL. Assuming standard path structure on VPS.
                 $response['data'] = [
-                     // Construct URL based on where this script is accessed from
-                     // If script is at http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/update_profile_picture.php
-                     // Then image is at http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Student Accounts/...
-                    'image_url' => 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/' . $target_path
+                    $base_url = 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/',
+                    $relative_path = 'Student Accounts/' . $student_id . '/Images/' . $new_filename,
+                    $encoded_path = str_replace(' ', '%20', $relative_path),
+                    'image_url' => $base_url . $encoded_path
                 ];
             } else {
                 $response['status'] = 'error';
