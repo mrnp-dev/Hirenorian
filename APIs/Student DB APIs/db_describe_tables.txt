@@ -30,8 +30,10 @@ mysql> describe Students;
 | tag2           | varchar(50)  | YES  |     | NULL              |                   |
 | tag3           | varchar(50)  | YES  |     | NULL              |                   |
 | ideal_location | varchar(100) | YES  |     | NULL              |                   |
+| verified       | varchar(15)  | YES  |     | false             |                   |
+| activated      | varchar(15)  | YES  |     | true              |                   |
 +----------------+--------------+------+-----+-------------------+-------------------+
-15 rows in set (0.01 sec)
+
 
 mysql> describe StudentEducationHistory;
 +-------------+--------------+------+-----+---------+----------------+

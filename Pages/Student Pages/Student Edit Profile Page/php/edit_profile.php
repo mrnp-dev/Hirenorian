@@ -52,7 +52,16 @@ if(isset($_SESSION['email']))
 
         $location = $prof['location'] ?? "";
         $about_me = $prof['about_me'] ?? "";
-        $profile_picture = $prof['profile_picture'] ?? "";
+        $profile_picture_db = $prof['profile_picture'] ?? "";
+        
+        // Convert VPS absolute path to HTTP URL
+        if (!empty($profile_picture_db)) {
+            // Path is stored as: /var/www/html/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            // Convert to: http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
+        } else {
+            $profile_picture = "";
+        }
 
         if (!empty($edu_data) && isset($edu_data[0])) {
             $course = $edu_data[0]['course'] ?? "";
@@ -129,7 +138,7 @@ else
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img">
+                        <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Student" class="user-img">
                         <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
@@ -328,7 +337,7 @@ else
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
             <input type="hidden" name="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
             <div class="form-group">
                 <label for="profilePhoto">Select Image</label>
@@ -710,6 +719,7 @@ else
     <script src="../js/skills-modal.js"></script>
     <script src="../js/personal-modal.js"></script>
     <script src="../js/password-modal.js"></script>
+    <script src="../js/photo-modal.js"></script>
     
     <!-- Main entry point -->
     <script src="../js/edit_profile.js"></script>
