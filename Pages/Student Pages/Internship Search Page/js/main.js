@@ -6,6 +6,7 @@ import { initTypeFilter } from './typeFilter.js';
 import { initAdvancedFilters } from './advancedFilters.js';
 import { initActiveFilters } from './activeFilters.js';
 import { initSearchInput } from './searchInput.js';
+import { initApplyFilterButton } from './applyFilterButton.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all modules
@@ -15,4 +16,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initAdvancedFilters();
     initActiveFilters();
     initSearchInput();
+    initApplyFilterButton();
 });
