@@ -40,7 +40,7 @@ $query = "
     SELECT
         jp.post_id AS id,
         jd.title,
-        jd.location,
+        CONCAT(jd.province, ', ', jd.city) AS location,
         DATE_FORMAT(jp.created_at, '%M %d, %Y') AS datePosted,
         jp.status,
         jp.applicant_limit AS applicantLimit,

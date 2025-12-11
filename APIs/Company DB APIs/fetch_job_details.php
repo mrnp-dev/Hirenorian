@@ -27,7 +27,8 @@ $query = "
     SELECT 
         jp.post_id AS jobId,
         jd.title AS jobTitle,
-        jd.location,
+        jd.province,
+        jd.city,
         jd.work_type AS workType,
         jp.status, /* Added status field */
         jp.applicant_limit AS applicantLimit,
@@ -73,7 +74,8 @@ try {
         "data" => [
             "jobId" => $row["jobId"],
             "jobTitle" => $row["jobTitle"],
-            "location" => $row["location"],
+            "province" => $row["province"],
+            "city" => $row["city"],
             "workType" => $row["workType"],
             "status" => $row["status"],
             "applicantLimit" => $row["applicantLimit"],

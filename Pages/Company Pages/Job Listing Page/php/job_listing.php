@@ -60,6 +60,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="../../Company Dashboard/css/dashboard.css">
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="../css/job_listing.css">
+    <link rel="stylesheet" href="../css/job_listing_dropdown.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -395,8 +396,16 @@ if (isset($_SESSION['email'])) {
                 <!-- Job Details Row -->
                 <div class="job-details-row">
                     <div class="input-group">
-                        <label for="locationInput">Location</label>
-                        <input type="text" id="locationInput" name="location" placeholder="Location" required>
+                        <label for="locationDropdown">Location</label>
+                        <div class="cascading-dropdown" id="locationDropdown">
+                            <input type="text" class="dropdown-display" id="locationDisplay"
+                                placeholder="Select Province and City..." readonly>
+                            <div class="dropdown-menu" id="locationDropdownMenu">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="provinceInput" name="province">
+                        <input type="hidden" id="cityInput" name="city">
                         <p class="error-message" id="locationError"></p>
                     </div>
                     <div class="input-group">

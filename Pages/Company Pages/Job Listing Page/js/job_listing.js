@@ -207,15 +207,17 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     async function getCompanyId() {
         try {
+            // Try to get email from hidden input if available
+            const companyEmailInput = document.getElementById('company_email');
+            const companyEmail = companyEmailInput ? companyEmailInput.value : '';
+
             // Fetch company_id using backend API
             const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/get_company_id.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                // PHP session already knows $_SESSION['email'],
-                // so backend can resolve company_id without needing JS to send it
-                body: JSON.stringify({})
+                body: JSON.stringify({ company_email: companyEmail })
             });
 
             const result = await response.json();
@@ -487,7 +489,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('detailJobTitle').textContent = jobDetails.jobTitle;
 
         // Update meta information
-        document.getElementById('detailLocation').textContent = jobDetails.location;
+        const locationText = jobDetails.province && jobDetails.city
+            ? `${jobDetails.province}, ${jobDetails.city}`
+            : (jobDetails.location || 'N/A');
+        document.getElementById('detailLocation').textContent = locationText;
         document.getElementById('detailWorkType').textContent = jobDetails.workType;
         // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
         const acceptedApplicants = acceptedCountsCache[jobId] || 0;
@@ -1268,6 +1273,134 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // ========================================
+    // PHILIPPINES LOCATIONS - CASCADING DROPDOWN
+    // ========================================
+    let philippinesLocations = {};
+    let currentSubmenu = null;
+
+    // Fetch Philippines Locations Data
+    async function fetchPhilippinesLocations() {
+        try {
+            const response = await fetch(`../json/philippines_locations.json?t=${new Date().getTime()}`);
+            philippinesLocations = await response.json();
+            console.log('✅ Philippines locations loaded:', Object.keys(philippinesLocations).length, 'provinces');
+        } catch (error) {
+            console.error('Error fetching Philippines locations:', error);
+        }
+    }
+
+    // Render Location Dropdown
+    function renderLocationDropdown() {
+        const dropdownMenu = document.getElementById('locationDropdownMenu');
+        if (!dropdownMenu) return;
+
+        dropdownMenu.innerHTML = '';
+
+        Object.keys(philippinesLocations).forEach(province => {
+            const provinceItem = document.createElement('div');
+            provinceItem.className = 'province-item';
+            provinceItem.textContent = province;
+
+            const citySubmenu = document.createElement('div');
+            citySubmenu.className = 'city-submenu';
+
+            philippinesLocations[province].forEach(city => {
+                const cityItem = document.createElement('div');
+                cityItem.className = 'city-item';
+                cityItem.textContent = city;
+                cityItem.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectLocation(province, city);
+                });
+                citySubmenu.appendChild(cityItem);
+            });
+
+            // Show submenu on province hover
+            provinceItem.addEventListener('mouseenter', () => {
+                // Hide any currently visible submenu
+                if (currentSubmenu && currentSubmenu !== citySubmenu) {
+                    currentSubmenu.style.display = 'none';
+                }
+
+                // Position and show this submenu
+                const rect = provinceItem.getBoundingClientRect();
+                citySubmenu.style.left = `${rect.right + 5}px`;
+                citySubmenu.style.top = `${rect.top}px`;
+                citySubmenu.style.display = 'block';
+                currentSubmenu = citySubmenu;
+            });
+
+            // Keep submenu visible when hovering over it
+            citySubmenu.addEventListener('mouseenter', () => {
+                citySubmenu.style.display = 'block';
+            });
+
+            // Hide submenu when leaving it
+            citySubmenu.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!provinceItem.matches(':hover') && !citySubmenu.matches(':hover')) {
+                        citySubmenu.style.display = 'none';
+                    }
+                }, 100);
+            });
+
+            // Hide submenu when leaving province
+            provinceItem.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (!provinceItem.matches(':hover') && !citySubmenu.matches(':hover')) {
+                        citySubmenu.style.display = 'none';
+                    }
+                }, 100);
+            });
+
+            provinceItem.appendChild(citySubmenu);
+            dropdownMenu.appendChild(provinceItem);
+        });
+
+        console.log('✅ Location dropdown populated with', Object.keys(philippinesLocations).length, 'provinces');
+    }
+
+    // Select Location
+    function selectLocation(province, city) {
+        const locationDisplay = document.getElementById('locationDisplay');
+        const provinceInput = document.getElementById('provinceInput');
+        const cityInput = document.getElementById('cityInput');
+
+        if (locationDisplay && provinceInput && cityInput) {
+            locationDisplay.value = `${province}, ${city}`;
+            provinceInput.value = province;
+            cityInput.value = city;
+            console.log(`Location selected: ${province}, ${city}`);
+        }
+
+        closeLocationDropdown();
+    }
+
+    // Open/Close Location Dropdown
+    const locationDropdown = document.getElementById('locationDropdown');
+    const locationDisplay = document.getElementById('locationDisplay');
+
+    if (locationDisplay) {
+        locationDisplay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            locationDropdown.classList.toggle('open');
+        });
+    }
+
+    function closeLocationDropdown() {
+        if (locationDropdown) {
+            locationDropdown.classList.remove('open');
+        }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (locationDropdown && !e.target.closest('#locationDropdown')) {
+            closeLocationDropdown();
+        }
+    });
+
     // Populate Category Dropdown
     function populateCategoryDropdown() {
         if (!categorySelect) return;
@@ -1343,6 +1476,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             populateCategoryDropdown();
             populateWorkTypesDropdown();
 
+            // Load Philippines locations if not already loaded
+            if (Object.keys(philippinesLocations).length === 0) {
+                await fetchPhilippinesLocations();
+            }
+            renderLocationDropdown();
+
             modalMode = mode;
 
             jobPostModalOverlay.style.display = 'flex';
@@ -1392,9 +1531,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const jobTitleInput = document.getElementById('jobTitleInput');
         if (jobTitleInput) jobTitleInput.value = jobData.jobTitle || '';
 
-        // Populate location
-        const locationInput = document.getElementById('locationInput');
-        if (locationInput) locationInput.value = jobData.location || '';
+        // Populate province and city
+        const locationDisplay = document.getElementById('locationDisplay');
+        const provinceInput = document.getElementById('provinceInput');
+        const cityInput = document.getElementById('cityInput');
+
+        if (jobData.province && jobData.city) {
+            if (locationDisplay) locationDisplay.value = `${jobData.province}, ${jobData.city}`;
+            if (provinceInput) provinceInput.value = jobData.province;
+            if (cityInput) cityInput.value = jobData.city;
+            console.log(`✅ Location set to: ${jobData.province}, ${jobData.city}`);
+        }
 
         // Populate work type - wait for dropdown to have options
         const workTypeSelect = document.getElementById('workTypeSelect');
@@ -1626,10 +1773,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             isValid = false;
         }
 
-        // Location
-        const location = document.getElementById('locationInput').value.trim();
-        if (!location) {
-            showError('location', 'Location is required');
+        // Location (Province and City)
+        const province = document.getElementById('provinceInput').value;
+        const city = document.getElementById('cityInput').value;
+        if (!province || !city) {
+            showError('location', 'Please select a province and city');
             isValid = false;
         }
 
@@ -1756,7 +1904,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Collect form data
             const formData = {
                 title: document.getElementById('jobTitleInput').value.trim(),
-                location: document.getElementById('locationInput').value.trim(),
+                province: document.getElementById('provinceInput').value,
+                city: document.getElementById('cityInput').value,
                 work_type: document.getElementById('workTypeSelect').value,
                 applicant_limit: parseInt(document.getElementById('applicantLimitInput').value),
                 category: document.getElementById('categorySelect').value,
@@ -1799,7 +1948,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const jobIndex = jobPostsData.findIndex(j => j.id === currentEditingJobId);
                         if (jobIndex !== -1) {
                             jobPostsData[jobIndex].title = formData.title;
-                            jobPostsData[jobIndex].location = formData.location;
+                            jobPostsData[jobIndex].location = `${formData.province}, ${formData.city}`;
                             jobPostsData[jobIndex].applicantLimit = formData.applicant_limit;
                             jobPostsData[jobIndex].jobDescription = formData.description;
 
@@ -1848,14 +1997,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const payload = {
                         company_email: companyEmail,
-                        jobTitle: formData.title,
-                        location: formData.location,
-                        workType: formData.work_type,
-                        applicantLimit: formData.applicant_limit,
-                        category: formData.work_tags.length > 0 ? formData.work_tags[0] : '',
-                        tags: formData.work_tags,
-                        requiredDocument: formData.document,
-                        jobDescription: formData.description,
+                        title: formData.title,
+                        province: formData.province,
+                        city: formData.city,
+                        work_type: formData.work_type,
+                        applicant_limit: formData.applicant_limit,
+                        category: formData.category,
+                        work_tags: formData.work_tags,
+                        required_document: formData.required_document,
+                        description: formData.description,
                         responsibilities: formData.responsibilities,
                         qualifications: formData.qualifications,
                         skills: formData.skills
@@ -1874,6 +2024,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                             ToastSystem.show('Job post created successfully!', 'success');
                         } else {
                             alert('Job post created successfully!');
+                        }
+
+                        // Create Job Folder for File Uploads
+                        try {
+                            const companyId = await getCompanyId();
+                            if (companyId && result.post_id) {
+                                await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/create_job_folder.php", {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        company_id: companyId,
+                                        post_id: result.post_id
+                                    })
+                                });
+                                console.log('✅ Job folder created successfully');
+                            }
+                        } catch (folderError) {
+                            console.error('Failed to create job folder:', folderError);
+                            // We don't block the UI flow for this background task, but logging it is good
                         }
 
                         closeJobPostModal();
@@ -2052,6 +2221,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 ToastSystem.show('Job post deleted successfully.', 'success');
                             } else {
                                 alert('Job post deleted successfully.');
+                            }
+
+                            // Delete Job Folder
+                            try {
+                                const companyId = await getCompanyId();
+                                if (companyId && selectedJobForDetail) {
+                                    await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_folder.php", {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            company_id: companyId,
+                                            post_id: selectedJobForDetail
+                                        })
+                                    });
+                                    console.log('✅ Job folder deleted successfully');
+                                }
+                            } catch (folderError) {
+                                console.error('Failed to delete job folder:', folderError);
                             }
 
                             // Go back to list and refresh
