@@ -1,8 +1,31 @@
 <?php
 session_start();
+$student_id = null; // Initialize student_id
+
 if(isset($_SESSION['email']))
 {
     echo "<script>console.log('email in session');</script>";
+    
+    // Fetch student information to get student_id
+    $student_email = $_SESSION['email'];
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
+    
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "student_email" => $student_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    $data = json_decode($response, true);
+    
+    if (isset($data['status']) && $data['status'] === "success") {
+        $student_id = $data['data']['basic_info']['student_id'] ?? null;
+    }
 }
 else
 {
@@ -264,7 +287,10 @@ else
     </div>
 
 
-
+    <script>
+        // Pass student_id from PHP to JavaScript
+        const STUDENT_ID = <?php echo json_encode($student_id); ?>;
+    </script>
     <script src="../js/dashboard.js"></script>
 </body>
 </html>

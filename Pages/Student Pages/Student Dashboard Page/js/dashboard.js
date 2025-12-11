@@ -95,6 +95,8 @@ function getFriendlyTableName(tableName) {
 
 // Helper function to get friendly field names
 function getFriendlyFieldName(fieldName) {
+    if (!fieldName) return 'field'; // Handle null/undefined
+
     const names = {
         'first_name': 'First Name',
         'last_name': 'Last Name',
@@ -203,7 +205,17 @@ function renderAuditLogs(logs) {
 // Function to fetch audit logs
 async function fetchAuditLogs() {
     const container = document.getElementById('auditLogContainer');
-    const studentId = 202012345; // TODO: Get from session or user context
+
+    // Check if STUDENT_ID is available
+    if (!STUDENT_ID) {
+        container.innerHTML = `
+            <div class="error-state">
+                <i class="fa-solid fa-exclamation-triangle"></i>
+                <p>Unable to load activity logs. Please log in.</p>
+            </div>
+        `;
+        return;
+    }
 
     try {
         const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_audit_logs.php', {
@@ -212,7 +224,7 @@ async function fetchAuditLogs() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                student_id: studentId,
+                student_id: STUDENT_ID,
                 limit: 20
             })
         });
