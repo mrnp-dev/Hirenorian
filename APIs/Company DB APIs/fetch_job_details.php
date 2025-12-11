@@ -64,6 +64,9 @@ try {
     $tagStmt->execute([':job_id' => $job_id]);
     $tags = $tagStmt->fetchAll(PDO::FETCH_COLUMN);
 
+    // DEBUG: Log the raw category value from database
+    error_log("🔍 DEBUG [fetch_job_details.php] - Job ID: {$job_id}, Category from DB: '{$row["category"]}', Tags: " . json_encode($tags));
+
     // Build response
     echo json_encode([
         "status" => "success",

@@ -1297,6 +1297,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    // Helper: Wait for dropdown to have options populated
+    function waitForDropdownOptions(selectElement, minOptionCount = 2) {
+        return new Promise((resolve) => {
+            const checkOptions = () => {
+                if (selectElement.options.length >= minOptionCount) {
+                    resolve();
+                } else {
+                    requestAnimationFrame(checkOptions);
+                }
+            };
+            checkOptions();
+        });
+    }
+
+    // Helper: Wait for tags to be rendered in the container
+    function waitForTagsToRender(expectedTagCount = 0) {
+        return new Promise((resolve) => {
+            const checkTags = () => {
+                const tagPills = document.querySelectorAll('.tag-pill');
+                // If we expect specific tags, wait for them; otherwise wait for any tags
+                if (expectedTagCount > 0 ? tagPills.length >= expectedTagCount : tagPills.length > 0) {
+                    resolve();
+                } else {
+                    requestAnimationFrame(checkTags);
+                }
+            };
+            // Give a small initial delay before checking
+            setTimeout(checkTags, 50);
+        });
+    }
+
     // Open Job Post Modal
     async function openJobPostModal(mode = 'add', jobData = null) {
         if (jobPostModalOverlay) {
@@ -1307,6 +1338,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (workTypesData.length === 0) {
                 await fetchWorkTypes();
             }
+
+            // Populate dropdowns AFTER data is fetched
+            populateCategoryDropdown();
+            populateWorkTypesDropdown();
 
             modalMode = mode;
 
@@ -1331,8 +1366,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     submitBtnText.textContent = 'Update';
                 }
 
-                // Populate form
-                populateFormForEdit(jobData);
+                // Populate form - now async
+                await populateFormForEdit(jobData);
             } else {
                 // Add mode - hide indicator
                 if (modalModeIndicator) {
@@ -1350,7 +1385,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Populate Form for Edit Mode
-    function populateFormForEdit(jobData) {
+    async function populateFormForEdit(jobData) {
+        console.log('📝 Populating form for edit with data:', jobData);
+
         // Populate job title
         const jobTitleInput = document.getElementById('jobTitleInput');
         if (jobTitleInput) jobTitleInput.value = jobData.jobTitle || '';
@@ -1359,13 +1396,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const locationInput = document.getElementById('locationInput');
         if (locationInput) locationInput.value = jobData.location || '';
 
-        // Populate work type
+        // Populate work type - wait for dropdown to have options
         const workTypeSelect = document.getElementById('workTypeSelect');
         if (workTypeSelect && jobData.workType) {
-            // Wait for options to load
-            setTimeout(() => {
-                workTypeSelect.value = jobData.workType;
-            }, 100);
+            await waitForDropdownOptions(workTypeSelect);
+            workTypeSelect.value = jobData.workType;
+            console.log('✅ Work type set to:', jobData.workType);
         }
 
         // Populate applicant limit
@@ -1374,39 +1410,51 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Populate category and tags
         if (jobData.category && jobData.workTags) {
-            setTimeout(() => {
-                // Set category
-                if (categorySelect) {
-                    categorySelect.value = jobData.category;
-                    // Trigger change event to render tags
-                    const event = new Event('change');
-                    categorySelect.dispatchEvent(event);
+            console.log('📂 Setting category:', jobData.category, 'with tags:', jobData.workTags);
 
-                    // Select tags after they're rendered
-                    setTimeout(() => {
-                        selectedTags = [...jobData.workTags];
-                        const tagPills = document.querySelectorAll('.tag-pill');
-                        tagPills.forEach(pill => {
-                            const tagName = pill.dataset.tag;
-                            if (selectedTags.includes(tagName)) {
-                                pill.classList.add('selected');
-                            }
-                        });
+            // Wait for category dropdown to have options
+            if (categorySelect) {
+                await waitForDropdownOptions(categorySelect);
 
-                        // Disable non-selected tags if max reached
-                        if (selectedTags.length >= MAX_TAGS) {
-                            document.querySelectorAll('.tag-pill:not(.selected)').forEach(pill => {
-                                pill.classList.add('disabled');
-                            });
-                        }
+                // Set category value
+                categorySelect.value = jobData.category;
+                console.log('✅ Category dropdown set to:', categorySelect.value);
 
-                        updateTagCounter();
-                    }, 200);
+                // Trigger change event to render tags for this category
+                const changeEvent = new Event('change');
+                categorySelect.dispatchEvent(changeEvent);
+
+                // Wait for tags to be rendered (wait for at least 1 tag pill)
+                await waitForTagsToRender(1);
+                console.log('✅ Tags rendered, now selecting...');
+
+                // Now select the tags
+                selectedTags = [...jobData.workTags];
+                const tagPills = document.querySelectorAll('.tag-pill');
+
+                let selectedCount = 0;
+                tagPills.forEach(pill => {
+                    const tagName = pill.dataset.tag;
+                    if (selectedTags.includes(tagName)) {
+                        pill.classList.add('selected');
+                        selectedCount++;
+                        console.log(`  ✓ Selected tag: ${tagName}`);
+                    }
+                });
+
+                console.log(`✅ Pre-selected ${selectedCount} tags out of ${selectedTags.length} expected`);
+
+                // Disable non-selected tags if max reached
+                if (selectedTags.length >= MAX_TAGS) {
+                    document.querySelectorAll('.tag-pill:not(.selected)').forEach(pill => {
+                        pill.classList.add('disabled');
+                    });
                 }
-            }, 150);
+
+                updateTagCounter();
+            }
         }
 
-        // Populate required document
         // Populate required document
         if (jobData.requiredDocument) {
             const docRadios = document.getElementsByName('requiredDocument');
