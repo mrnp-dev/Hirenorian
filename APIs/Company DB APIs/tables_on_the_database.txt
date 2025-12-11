@@ -22,7 +22,7 @@ mysql> show tables;
 | company_statistics              |
 +---------------------------------+
 
-mysql> DESCRIBE Applicants;
+mysql> describe Applicants;
 +---------------+---------------------------------------+------+-----+-------------------+-------------------+
 | Field         | Type                                  | Null | Key | Default           | Extra             |
 +---------------+---------------------------------------+------+-----+-------------------+-------------------+
@@ -32,7 +32,10 @@ mysql> DESCRIBE Applicants;
 | document_type | varchar(100)                          | YES  |     | NULL              |                   |
 | date_applied  | timestamp                             | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 | status        | enum('Pending','Accepted','Rejected') | YES  |     | Pending           |                   |
+| resume        | varchar(10)                           | YES  |     | false             |                   |
+| coverletter   | varchar(10)                           | YES  |     | false             |                   |
 +---------------+---------------------------------------+------+-----+-------------------+-------------------+
+
 
 mysql> DESCRIBE Company;
 +---------------+---------------------------------+------+-----+------------+----------------+
