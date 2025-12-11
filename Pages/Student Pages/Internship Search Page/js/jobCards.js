@@ -103,10 +103,15 @@ export function initJobCards() {
             });
         });
 
-        // Auto-select first job
-        if (jobCards.length > 0) {
-            jobCards[0].click();
-        }
+        // Ensure no job card is auto-selected - show placeholder instead
+        // Remove any active class from all cards
+        jobCards.forEach(card => card.classList.remove('active'));
+        
+        // Ensure placeholder is visible and details card is hidden
+        const placeholder = document.getElementById('jobDetailsPlaceholder');
+        const detailsCard = document.getElementById('jobDetailsCard');
+        if (placeholder) placeholder.style.display = 'block';
+        if (detailsCard) detailsCard.style.display = 'none';
     }
 
     function createJobCard(job, index) {
