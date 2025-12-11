@@ -119,6 +119,8 @@ if (isset($_SESSION['email'])) {
                 <div class="page-title">
                     <h1>Dashboard</h1>
                 </div>
+                <!-- Hidden Input for JS -->
+                <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
 
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
