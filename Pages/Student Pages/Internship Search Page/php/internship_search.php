@@ -105,14 +105,21 @@ if(!isset($_SESSION['email'])) {
                         </div>
                         <input type="hidden" name="location" id="locationValue" value="">
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group type-filter-wrapper">
                         <i class="fa-solid fa-briefcase"></i>
-                        <select>
-                            <option value="">Type: All</option>
-                            <option value="full-time">Full Time</option>
-                            <option value="part-time">Part Time</option>
-                            <option value="internship">Internship</option>
-                        </select>
+                        <div class="type-filter">
+                            <button type="button" class="type-trigger" id="typeTrigger">
+                                <span>Type: All</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="type-dropdown" id="typeDropdown">
+                                <div class="type-option" data-value="">Type: All</div>
+                                <div class="type-option" data-value="full-time">Full Time</div>
+                                <div class="type-option" data-value="part-time">Part Time</div>
+                                <div class="type-option" data-value="internship">Internship</div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="type" id="typeValue" value="">
                     </div>
                     <button class="btn-apply-filter">Apply Filter</button>
                 </div>
