@@ -30,12 +30,14 @@ $career_tags = isset($data['career_tags']) && is_array($data['career_tags']) ? $
 $courses = isset($data['courses']) && is_array($data['courses']) ? $data['courses'] : [];
 $location = isset($data['location']) && !empty($data['location']) ? $data['location'] : null;
 $work_type = isset($data['work_type']) && !empty($data['work_type']) ? $data['work_type'] : null;
+$keyword = isset($data['keyword']) && !empty($data['keyword']) ? trim($data['keyword']) : null;
 
 error_log("[SearchJobs] Filters received:");
 error_log("[SearchJobs]   - Career tags: " . json_encode($career_tags));
 error_log("[SearchJobs]   - Courses: " . json_encode($courses));
 error_log("[SearchJobs]   - Location: " . ($location ?? 'null'));
 error_log("[SearchJobs]   - Work type: " . ($work_type ?? 'null'));
+error_log("[SearchJobs]   - Keyword: " . ($keyword ?? 'null'));
 
 try {
     // Build the base query
@@ -95,6 +97,18 @@ try {
         $query .= " AND jd.work_type = :work_type";
         $params[':work_type'] = $work_type;
         error_log("[SearchJobs] Added work type filter: {$work_type}");
+    }
+
+    // Add keyword search filter
+    if ($keyword !== null) {
+        $query .= " AND (
+            jd.title LIKE :keyword 
+            OR c.company_name LIKE :keyword
+            OR jd.description LIKE :keyword
+            OR jd.category LIKE :keyword
+        )";
+        $params[':keyword'] = "%$keyword%";
+        error_log("[SearchJobs] Added keyword filter: {$keyword}");
     }
 
     $query .= " GROUP BY jp.post_id ORDER BY jp.created_at DESC";
@@ -171,7 +185,8 @@ try {
             "career_tags" => $career_tags,
             "courses" => $courses,
             "location" => $location,
-            "work_type" => $work_type
+            "work_type" => $work_type,
+            "keyword" => $keyword
         ],
         "data" => $jobs
     ], JSON_PRETTY_PRINT);

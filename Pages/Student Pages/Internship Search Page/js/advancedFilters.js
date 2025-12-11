@@ -336,17 +336,21 @@ export function initAdvancedFilters() {
         // Get location and work type values
         const locationValue = document.getElementById('locationValue')?.value || '';
         const typeValue = document.getElementById('typeValue')?.value || '';
+        const searchKeyword = window.getCurrentSearchKeyword ? window.getCurrentSearchKeyword() : '';
 
         console.log('[AdvancedFilters] Location:', locationValue);
         console.log('[AdvancedFilters] Work type:', typeValue);
+        console.log('[AdvancedFilters] Search keyword:', searchKeyword);
 
         // Prepare request body
         const requestBody = {
             career_tags: selectedFilters.careerTags,
             courses: selectedFilters.courses,
             location: locationValue !== '' ? locationValue : null,
-            work_type: typeValue !== '' ? typeValue : null
+            work_type: typeValue !== '' ? typeValue : null,
+            keyword: searchKeyword !== '' ? searchKeyword : null
         };
+
 
         console.log('[AdvancedFilters] Sending API request:', requestBody);
 
@@ -495,6 +499,13 @@ export function initAdvancedFilters() {
         console.log('[AdvancedFilters] Clearing all active filters');
         clearAllFilters();
         // Trigger a search with no filters
+        applyFilters();
+    });
+
+    // Listen for search triggered from search input
+    document.addEventListener('searchTriggered', (event) => {
+        console.log('[AdvancedFilters] Search triggered with keyword:', event.detail.keyword);
+        // Apply filters with the new keyword
         applyFilters();
     });
 }

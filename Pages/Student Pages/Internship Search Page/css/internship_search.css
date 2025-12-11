@@ -1362,6 +1362,11 @@
     border-left: 3px solid var(--primary-maroon);
 }
 
+.active-filter-tag.keyword-tag {
+    border-left: 3px solid #27ae60;
+    font-weight: 600;
+}
+
 .filters-content {
     flex: 1;
     overflow-y: auto;

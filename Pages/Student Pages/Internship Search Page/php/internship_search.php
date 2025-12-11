@@ -89,7 +89,7 @@ if(!isset($_SESSION['email'])) {
                 <div class="filter-bar">
                     <div class="filter-group search-input">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Job Title, Keywords...">
+                        <input type="text" id="searchInput" placeholder="Search for job title, company...">
                     </div>
                     <div class="filter-group location-filter-wrapper">
                         <i class="fa-solid fa-location-dot"></i>

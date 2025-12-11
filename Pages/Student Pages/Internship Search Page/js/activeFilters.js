@@ -21,7 +21,8 @@ export function initActiveFilters() {
 
         const courses = filters.courses || [];
         const careerTags = filters.career_tags || [];
-        const totalFilters = courses.length + careerTags.length;
+        const keyword = filters.keyword || null;
+        const totalFilters = courses.length + careerTags.length + (keyword ? 1 : 0);
 
         if (totalFilters === 0) {
             // Hide if no filters
@@ -31,6 +32,12 @@ export function initActiveFilters() {
 
         // Show display
         activeFiltersDisplay.style.display = 'block';
+
+        // Add keyword as first filter if present
+        if (keyword) {
+            const keywordTag = createFilterTag(`Search: "${keyword}"`, 'keyword', () => removeFilter('keyword', keyword));
+            activeFiltersTags.appendChild(keywordTag);
+        }
 
         // Add course tags
         courses.forEach(course => {
@@ -69,6 +76,14 @@ export function initActiveFilters() {
     // Remove individual filter
     function removeFilter(type, value) {
         console.log(`[ActiveFilters] Removing ${type} filter:`, value);
+
+        if (type === 'keyword') {
+            // Clear search input
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+        }
 
         // Dispatch custom event to update filters
         const removeEvent = new CustomEvent('removeActiveFilter', {
