@@ -1249,7 +1249,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch Categories and Tags Data
     async function fetchCategoriesAndTags() {
         try {
-            const response = await fetch('../json/categories_tags.json');
+            const response = await fetch(`../json/categories_tags.json?t=${new Date().getTime()}`);
             categoriesTagsData = await response.json();
             populateCategoryDropdown();
         } catch (error) {
@@ -1260,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Fetch Work Types Data
     async function fetchWorkTypes() {
         try {
-            const response = await fetch('../json/work_types.json');
+            const response = await fetch(`../json/work_types.json?t=${new Date().getTime()}`);
             workTypesData = await response.json();
             populateWorkTypesDropdown();
         } catch (error) {
