@@ -388,6 +388,25 @@ if(!isset($_SESSION['email'])) {
         </div>
     </div>
 
+    <!-- Custom Confirmation Dialog -->
+    <div class="confirm-dialog-overlay" id="confirmDialogOverlay">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog-icon">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+            <h3>Apply Filters?</h3>
+            <p id="confirmDialogMessage">You have filters selected. Do you want to apply them before closing?</p>
+            <div class="confirm-dialog-actions">
+                <button class="btn-confirm-apply" id="btnConfirmApply">
+                    <i class="fa-solid fa-check"></i> Apply Filters
+                </button>
+                <button class="btn-confirm-discard" id="btnConfirmDiscard">
+                    <i class="fa-solid fa-xmark"></i> Discard Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Pass PHP session data to JavaScript -->
     <script>
         // Store session email in sessionStorage for JavaScript modules

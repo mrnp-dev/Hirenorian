@@ -1,9 +1,8 @@
-// advancedFilters.js - Advanced Filters modal core functionality
-
 import { updateSelectedCourses, updateSelectedTags, selectedFilters, updateSelectedFiltersDisplay } from './selectedFilters.js';
 import { loadStudentTags } from './studentTags.js';
 
 let filtersData = null;
+let originalFiltersState = null; // Store original state when modal opens
 
 export function initAdvancedFilters() {
     const moreFiltersBtn = document.querySelector('.btn-more-filters');
@@ -14,6 +13,64 @@ export function initAdvancedFilters() {
     const applyFiltersBtn = document.getElementById('applyFilters');
     const clearAllFiltersBtn = document.getElementById('clearAllFilters');
     const filterSearchInput = document.getElementById('filterSearch');
+
+    // Custom confirmation dialog elements
+    const confirmDialogOverlay = document.getElementById('confirmDialogOverlay');
+    const confirmDialogMessage = document.getElementById('confirmDialogMessage');
+    const btnConfirmApply = document.getElementById('btnConfirmApply');
+    const btnConfirmDiscard = document.getElementById('btnConfirmDiscard');
+
+    // Save current filter state (snapshot)
+    function saveFiltersState() {
+        originalFiltersState = {
+            courses: [...selectedFilters.courses],
+            careerTags: [...selectedFilters.careerTags],
+            checkboxStates: {}
+        };
+
+        // Save checkbox states
+        document.querySelectorAll('.filters-modal input[type="checkbox"]').forEach(cb => {
+            originalFiltersState.checkboxStates[cb.id] = cb.checked;
+        });
+
+        console.log('[AdvancedFilters] Saved original state:', originalFiltersState);
+    }
+
+    // Restore filter state to original
+    function restoreFiltersState() {
+        if (!originalFiltersState) return;
+
+        console.log('[AdvancedFilters] Restoring original state:', originalFiltersState);
+
+        // Restore selectedFilters object
+        selectedFilters.courses = [...originalFiltersState.courses];
+        selectedFilters.careerTags = [...originalFiltersState.careerTags];
+
+        // Restore checkbox states
+        document.querySelectorAll('.filters-modal input[type="checkbox"]').forEach(cb => {
+            if (originalFiltersState.checkboxStates.hasOwnProperty(cb.id)) {
+                cb.checked = originalFiltersState.checkboxStates[cb.id];
+            }
+        });
+
+        // Update display
+        updateSelectedFiltersDisplay();
+    }
+
+    // Show custom confirmation dialog
+    function showConfirmDialog(filterCount) {
+        confirmDialogMessage.textContent = `You have ${filterCount} filter${filterCount !== 1 ? 's' : ''} selected. Do you want to apply them before closing?`;
+        confirmDialogOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Hide custom confirmation dialog
+    function hideConfirmDialog() {
+        confirmDialogOverlay.classList.remove('active');
+        if (!filtersModalOverlay.classList.contains('active')) {
+            document.body.style.overflow = '';
+        }
+    }
 
     // Load filters data
     async function loadFiltersData() {
@@ -212,6 +269,8 @@ export function initAdvancedFilters() {
 
     // Open modal
     function openFiltersModal() {
+        // Save current state when opening modal
+        saveFiltersState();
         filtersModalOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -222,20 +281,44 @@ export function initAdvancedFilters() {
         const hasSelectedFilters = selectedFilters.courses.length > 0 || selectedFilters.careerTags.length > 0;
 
         if (hasSelectedFilters) {
-            // Prompt user to apply filters
-            const confirmMessage = `You have ${selectedFilters.courses.length + selectedFilters.careerTags.length} filter(s) selected.\n\nDo you want to apply these filters before closing?`;
-
-            if (confirm(confirmMessage)) {
-                // User wants to apply filters
-                applyFilters();
-                return; // applyFilters will close the modal after applying
-            }
-            // User chose not to apply - continue closing
+            // Show custom confirmation dialog
+            const filterCount = selectedFilters.courses.length + selectedFilters.careerTags.length;
+            showConfirmDialog(filterCount);
+        } else {
+            // No filters selected, close directly
+            filtersModalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
+    }
 
-        // Close the modal
-        filtersModalOverlay.classList.remove('active');
-        document.body.style.overflow = '';
+    // Handle dialog Apply button
+    if (btnConfirmApply) {
+        btnConfirmApply.addEventListener('click', () => {
+            hideConfirmDialog();
+            applyFilters();
+        });
+    }
+
+    // Handle dialog Discard button
+    if (btnConfirmDiscard) {
+        btnConfirmDiscard.addEventListener('click', () => {
+            // Restore original state
+            restoreFiltersState();
+            // Close both dialogs
+            hideConfirmDialog();
+            filtersModalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            console.log('[AdvancedFilters] Changes discarded, state restored');
+        });
+    }
+
+    // Close dialog when clicking overlay
+    if (confirmDialogOverlay) {
+        confirmDialogOverlay.addEventListener('click', (e) => {
+            if (e.target === confirmDialogOverlay) {
+                hideConfirmDialog();
+            }
+        });
     }
 
     // Apply filters

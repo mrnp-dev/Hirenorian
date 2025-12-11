@@ -28,13 +28,13 @@ export function initJobCards() {
         if (!jobListingsContainer) return;
 
         jobListingsContainer.innerHTML = `
-    < div class="loading-state" >
+            <div class="loading-state">
                 <div class="loading-spinner">
                     <div class="spinner"></div>
                 </div>
                 <p>Searching for jobs...</p>
-            </div >
-    `;
+            </div>
+        `;
     }
 
     // Show error state
@@ -43,13 +43,13 @@ export function initJobCards() {
         if (!jobListingsContainer) return;
 
         jobListingsContainer.innerHTML = `
-    < div class="error-state" >
+            <div class="error-state">
                 <i class="fa-solid fa-circle-exclamation"></i>
                 <h3>Search Error</h3>
                 <p>${message}</p>
                 <p class="error-hint">Please try again or adjust your filters</p>
-            </div >
-    `;
+            </div>
+        `;
     }
 
     // Function to display jobs in the DOM
@@ -67,12 +67,12 @@ export function initJobCards() {
 
         if (jobs.length === 0) {
             jobListingsContainer.innerHTML = `
-    < div class="no-results" >
+                <div class="no-results">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <h3>No jobs found</h3>
                     <p>Try adjusting your filters to see more results</p>
-                </div >
-    `;
+                </div>
+            `;
             return;
         }
 
@@ -117,7 +117,7 @@ export function initJobCards() {
         const companyIcon = job.company_icon || '../../../Landing Page/Images/default-company.jpg';
 
         card.innerHTML = `
-    < div class="job-card-header" >
+            <div class="job-card-header">
                 <img src="${companyIcon}" alt="${job.company_name}" class="company-logo" onerror="this.src='../../../Landing Page/Images/default-company.jpg'">
                 <div class="job-info">
                     <h3>${job.title}</h3>
@@ -129,7 +129,7 @@ export function initJobCards() {
                 ${job.tags.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}
                 ${job.tags.length > 3 ? `<span class="tag-more">+${job.tags.length - 3}</span>` : ''}
             </div>
-`;
+        `;
 
         return card;
     }
@@ -165,7 +165,7 @@ export function initJobCards() {
         const tagsContainer = document.getElementById('detail-tags');
         if (tagsContainer) {
             tagsContainer.innerHTML = data.tags.map(tag =>
-                `< span class="tag" > ${tag}</span > `
+                `<span class="tag">${tag}</span>`
             ).join('');
         }
 
