@@ -48,7 +48,16 @@ if (isset($_SESSION['email'])) {
         // Profile Info
         $location       = $profile['location'];
         $about_me       = $profile['about_me'];
-        $profile_picture = $profile['profile_picture']; // Not currently used in HTML but available
+        $profile_picture_db = $profile['profile_picture']; // Database path
+        
+        // Convert VPS absolute path to HTTP URL
+        if (!empty($profile_picture_db)) {
+            // Path is stored as: /var/www/html/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            // Convert to: http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
+        } else {
+            $profile_picture = "";
+        }
 
         // Current Education (Assuming one active record for now, or taking the first one)
         $university     = !empty($education_current) ? $education_current[0]['university'] : '';

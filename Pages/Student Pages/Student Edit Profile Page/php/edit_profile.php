@@ -52,7 +52,16 @@ if(isset($_SESSION['email']))
 
         $location = $prof['location'] ?? "";
         $about_me = $prof['about_me'] ?? "";
-        $profile_picture = $prof['profile_picture'] ?? "";
+        $profile_picture_db = $prof['profile_picture'] ?? "";
+        
+        // Convert VPS absolute path to HTTP URL
+        if (!empty($profile_picture_db)) {
+            // Path is stored as: /var/www/html/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            // Convert to: http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
+        } else {
+            $profile_picture = "";
+        }
 
         if (!empty($edu_data) && isset($edu_data[0])) {
             $course = $edu_data[0]['course'] ?? "";
@@ -129,7 +138,7 @@ else
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img">
+                        <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Student" class="user-img">
                         <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
