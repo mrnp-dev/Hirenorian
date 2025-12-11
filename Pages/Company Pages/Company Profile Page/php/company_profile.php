@@ -83,6 +83,29 @@ if (isset($_SESSION['email'])) {
         //     $perk_id   = $perk['perk_id'];
         //     $perk_name = $perk['perk'];
         // }
+
+        // --- Images (Icons & Banners) ---
+        $company_icon_url = "";
+        if (!empty($data['icons'])) {
+            $company_icon_url = $data['icons'][0]['icon_url'];
+            // If the URL is a local path (starts with /var/www...), convert to HTTP URL or use the one provided if API provides full URL.
+            // Our API update_company_images.php returns 'image_url' in 'data' but fetch_company_information.php returns row 'icon_url'. 
+            // In update_company_images.php, we saved the absolute path to DB? 
+            // Wait, we saved 'absolute_vps_path' to DB: /var/www/html/...
+            // The frontend cannot access /var/www/html... 
+            // We need to convert it to http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/Company_Images/...
+            // The update logic saved: $absolute_vps_path = $vps_base_path . $new_filename;
+            // It should have saved the HTTP URL or we need to convert it here.
+            // Let's assume we need to convert or fix the API to save HTTP URL. 
+            // For now, let's fix it here by replacing the path.
+            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $company_icon_url);
+        }
+
+        $company_banner_url = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"; // Default
+        if (!empty($data['banners'])) {
+            $url = $data['banners'][0]['banner_url'];
+            $company_banner_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
+        }
     } else {
         $error_message = $data['message'];
     }
@@ -184,14 +207,14 @@ if (isset($_SESSION['email'])) {
 
                         <!-- Company Banner -->
                         <div class="profile-banner-container">
-                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                            <img src="<?php echo $company_banner_url; ?>"
                                 alt="Company Banner" class="company-banner" id="viewCompanyBanner">
                         </div>
 
                         <!-- Company Header -->
                         <div class="company-header">
                             <div class="company-icon-wrapper">
-                                <img src="" alt="Company Icon" class="company-icon" id="viewCompanyIcon">
+                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon" id="viewCompanyIcon">
                             </div>
                             <div class="company-main-info">
                                 <h2 class="company-name" id="viewCompanyName">
@@ -408,7 +431,7 @@ if (isset($_SESSION['email'])) {
 
                         <!-- Company Banner Edit -->
                         <div class="profile-banner-container edit-mode">
-                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
+                            <img src="<?php echo $company_banner_url; ?>"
                                 alt="Company Banner" class="company-banner" id="editCompanyBanner">
                             <button class="edit-banner-btn" onclick="openImageUploadModal('banner')"
                                 title="Update Banner">
@@ -419,7 +442,7 @@ if (isset($_SESSION['email'])) {
                         <!-- Company Header Edit -->
                         <div class="company-header">
                             <div class="company-icon-wrapper">
-                                <img src="" alt="Company Icon" class="company-icon" id="editCompanyIcon">
+                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon" id="editCompanyIcon">
                                 <button class="edit-icon-btn" onclick="openImageUploadModal('icon')"
                                     title="Update Company Icon">
                                     <i class="fa-solid fa-camera"></i>

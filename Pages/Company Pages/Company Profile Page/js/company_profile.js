@@ -361,20 +361,58 @@ document.addEventListener('DOMContentLoaded', function () {
  * Changes are only finalized to View container on "Save Profile".
  */
 function saveImageChanges() {
-    const preview = document.getElementById('imagePreview');
+    const fileInput = document.getElementById('imageFileInput');
+    const file = fileInput.files[0];
+    const companyId = document.getElementById('company_id').value;
 
-    if (preview.style.display === 'none') {
+    if (!file) {
         ToastSystem.show('Please select an image first', 'warning');
         return;
     }
 
-    if (currentImageType === 'banner') {
-        document.getElementById('editCompanyBanner').src = preview.src;
-    } else if (currentImageType === 'icon') {
-        document.getElementById('editCompanyIcon').src = preview.src;
-    }
+    const formData = new FormData();
+    formData.append('uploaded_file', file);
+    formData.append('company_id', companyId);
+    formData.append('image_type', currentImageType); // 'banner' or 'icon'
 
-    closeImageUploadModal();
+    // Show loading state (optional)
+    const saveBtn = document.querySelector('#imageUploadModal .btn-save');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = 'Uploading...';
+    saveBtn.disabled = true;
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_company_images.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const newUrl = data.data.image_url;
+
+                // Update both View and Edit images immediately
+                if (currentImageType === 'banner') {
+                    document.getElementById('editCompanyBanner').src = newUrl;
+                    document.getElementById('viewCompanyBanner').src = newUrl;
+                } else if (currentImageType === 'icon') {
+                    document.getElementById('editCompanyIcon').src = newUrl;
+                    document.getElementById('viewCompanyIcon').src = newUrl;
+                }
+
+                ToastSystem.show(data.message, 'success');
+                closeImageUploadModal();
+            } else {
+                ToastSystem.show(data.message || 'Upload failed', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            ToastSystem.show('An error occurred during upload', 'error');
+        })
+        .finally(() => {
+            saveBtn.textContent = originalText;
+            saveBtn.disabled = false;
+        });
 }
 
 
