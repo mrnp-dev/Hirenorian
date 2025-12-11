@@ -487,7 +487,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('detailJobTitle').textContent = jobDetails.jobTitle;
 
         // Update meta information
-        document.getElementById('detailLocation').textContent = jobDetails.location;
+        const locationText = jobDetails.province && jobDetails.city
+            ? `${jobDetails.province}, ${jobDetails.city}`
+            : (jobDetails.location || 'N/A');
+        document.getElementById('detailLocation').textContent = locationText;
         document.getElementById('detailWorkType').textContent = jobDetails.workType;
         // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
         const acceptedApplicants = acceptedCountsCache[jobId] || 0;
@@ -1943,7 +1946,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         const jobIndex = jobPostsData.findIndex(j => j.id === currentEditingJobId);
                         if (jobIndex !== -1) {
                             jobPostsData[jobIndex].title = formData.title;
-                            jobPostsData[jobIndex].location = formData.location;
+                            jobPostsData[jobIndex].location = `${formData.province}, ${formData.city}`;
                             jobPostsData[jobIndex].applicantLimit = formData.applicant_limit;
                             jobPostsData[jobIndex].jobDescription = formData.description;
 
