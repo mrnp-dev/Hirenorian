@@ -9,7 +9,7 @@
     height: 100vh;
     left: 0;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     transition: width var(--transition-speed) ease;
     overflow: hidden;
     white-space: nowrap;
