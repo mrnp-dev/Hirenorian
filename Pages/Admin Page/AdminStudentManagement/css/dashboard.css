@@ -295,11 +295,12 @@ body {
     margin-bottom: 20px;
 }
 
+
 .chart-content-wrapper {
     display: flex;
     align-items: center;
     gap: 30px;
-    flex: 1;
+
 }
 
 .chart-container {
@@ -528,16 +529,16 @@ body {
 
 .dataTables_wrapper .dataTables_filter,
 .dataTables_wrapper .dataTables_length {
-    padding: 10px 15px 10px 15px !important;
+    padding: 20px 15px 10px 15px !important;
 }
 
 .dataTables_wrapper .dataTables_length {
-    padding: 10px 15px 10px 15px !important;
+    padding: 20px 15px 10px 15px !important;
 }
 
 .dataTables_wrapper .dataTables_info {
-    padding: 10px 15px 10px 15px !important;
-    color: var(mar);
+    padding: 20px 15px 10px 15px !important;
+    color: var(--primary-maroon);
 }
 
 /* Specific Column Widths */

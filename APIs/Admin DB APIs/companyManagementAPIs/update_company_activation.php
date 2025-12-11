@@ -16,18 +16,18 @@ if ($data === null) {
     exit();
 }
 
-$studentId = $data['student_id'];
-$activated = $data['activated'];
+$companyID = $data['company_id'];
+$activation = $data['activation'];
 
-$query = "UPDATE Students
-          SET activated = :activated
-          WHERE student_id = :student_id";
+$query = "UPDATE Company
+          SET activation = :activation
+          WHERE company_id = :company_id";
 
 $stmt = $conn->prepare($query);
 $stmt->execute([
-    ':student_id' => $studentId,
-    ':activated' => $activated,
+    ':company_id' => $companyID,
+    ':activation' => $activation,
 ]);
 
 // Return success even if rowCount is 0 (no changes made), as long as query didn't fail.
-echo json_encode(["status" => "success", "message" => "Student activation updated successfully"]);
+echo json_encode(["status" => "success", "message" => "Company activation updated successfully"]);
