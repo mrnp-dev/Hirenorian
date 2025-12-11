@@ -2,6 +2,7 @@
 
 .application-form-body {
     padding: 30px;
+    padding-top: 90px; /* Account for fixed top bar (70px height + 20px spacing) */
     background: var(--bg-light);
 }
 
@@ -594,6 +595,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .application-form-body {
+        padding-top: 80px; /* Slightly less padding on mobile */
+    }
+    
     .application-container {
         padding: 20px;
     }
