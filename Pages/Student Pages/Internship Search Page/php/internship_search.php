@@ -213,7 +213,11 @@ if(!isset($_SESSION['email'])) {
                                     <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Logo" class="details-logo" id="detail-logo">
                                     <div class="header-info">
                                         <h2 id="detail-title">Junior UI/UX Designer</h2>
-                                        <p id="detail-company">Cloudstaff, Pampanga</p>
+                                        <p id="detail-company">Cloudstaff</p>
+                                        <p class="detail-location">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <span id="detail-city">Angeles City</span>, <span id="detail-province">Pampanga</span>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="header-actions">
@@ -222,18 +226,42 @@ if(!isset($_SESSION['email'])) {
                                 </div>
                             </div>
 
+                            <div class="job-meta">
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <span id="detail-work-type">Internship</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-tag"></i>
+                                    <span id="detail-category">Design</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span id="detail-posted-date">Posted 2 days ago</span>
+                                </div>
+                            </div>
+
+                            <div class="job-tags-section">
+                                <div class="job-tags" id="detail-tags">
+                                    <span class="tag">UI Design</span>
+                                    <span class="tag">UX Design</span>
+                                    <span class="tag">Figma</span>
+                                    <span class="tag">Prototyping</span>
+                                </div>
+                            </div>
+
                             <div class="details-body">
                                 <div class="details-section">
                                     <h3>Job Description</h3>
-                                    <p id="detail-desc">
+                                    <p id="detail-description">
                                         We are looking for a talented fresher UI/UX Designer who is passionate about designing custom websites with proficiency in Photoshop. 
                                         The candidate will work closely with our development and design teams to create visually appealing and user-friendly custom website designs for our clients.
                                     </p>
                                 </div>
 
                                 <div class="details-section">
-                                    <h3>Roles & Responsibilities</h3>
-                                    <ul id="detail-roles">
+                                    <h3>Responsibilities</h3>
+                                    <ul id="detail-responsibilities">
                                         <li>Gather and evaluate user requirements in collaboration with product managers and engineers</li>
                                         <li>Illustrate design ideas using storyboards, process flows and sitemaps</li>
                                         <li>Design graphic user interface elements, like menus, tabs and widgets</li>
@@ -242,6 +270,36 @@ if(!isset($_SESSION['email'])) {
                                         <li>Create original graphic designs (e.g. images, sketches and tables)</li>
                                         <li>Prepare and present rough drafts to internal teams and key stakeholders</li>
                                         <li>Identify and troubleshoot UX problems (e.g. responsiveness)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="details-section">
+                                    <h3>Qualifications</h3>
+                                    <ul id="detail-qualifications">
+                                        <li>Bachelor's degree in Design, Computer Science, or related field</li>
+                                        <li>Portfolio of design projects</li>
+                                        <li>Strong communication skills</li>
+                                        <li>Ability to work in a fast-paced environment</li>
+                                        <li>Team player with excellent problem-solving skills</li>
+                                    </ul>
+                                </div>
+
+                                <div class="details-section">
+                                    <h3>Required Skills</h3>
+                                    <ul id="detail-skills">
+                                        <li>Proficiency in Figma, Adobe XD, or Sketch</li>
+                                        <li>Knowledge of HTML/CSS basics</li>
+                                        <li>Understanding of responsive design principles</li>
+                                        <li>Familiarity with user research and usability testing</li>
+                                        <li>Strong visual design skills</li>
+                                    </ul>
+                                </div>
+
+                                <div class="details-section">
+                                    <h3>Required Documents</h3>
+                                    <ul id="detail-documents">
+                                        <li>Resume/CV</li>
+                                        <li>Portfolio</li>
                                     </ul>
                                 </div>
                             </div>

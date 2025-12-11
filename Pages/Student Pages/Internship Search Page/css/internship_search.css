@@ -811,9 +811,64 @@
     text-align: center;
 }
 
-.sidebar-item span {
+.si.details-header #detail-company {
+    color: #666;
     font-weight: 500;
     font-size: 0.95rem;
+    margin: 0;
+}
+
+.detail-location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #666;
+    font-size: 0.9rem;
+    margin: 8px 0 0 0;
+}
+
+.detail-location i {
+    color: var(--primary-maroon);
+    font-size: 0.85rem;
+}
+
+/* Job Meta Information */
+.job-meta {
+    display: flex;
+    gap: 24px;
+    padding: 16px 24px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.meta-item i {
+    color: var(--primary-maroon);
+    font-size: 1rem;
+}
+
+.meta-item span {
+    font-weight: 500;
+}
+
+/* Job Tags Section */
+.job-tags-section {
+    padding: 16px 24px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.job-tags-section .job-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .sidebar-item:hover {
