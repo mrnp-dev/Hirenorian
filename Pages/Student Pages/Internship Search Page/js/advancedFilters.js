@@ -218,6 +218,22 @@ export function initAdvancedFilters() {
 
     // Close modal
     function closeFiltersModal() {
+        // Check if there are any selected filters
+        const hasSelectedFilters = selectedFilters.courses.length > 0 || selectedFilters.careerTags.length > 0;
+
+        if (hasSelectedFilters) {
+            // Prompt user to apply filters
+            const confirmMessage = `You have ${selectedFilters.courses.length + selectedFilters.careerTags.length} filter(s) selected.\n\nDo you want to apply these filters before closing?`;
+
+            if (confirm(confirmMessage)) {
+                // User wants to apply filters
+                applyFilters();
+                return; // applyFilters will close the modal after applying
+            }
+            // User chose not to apply - continue closing
+        }
+
+        // Close the modal
         filtersModalOverlay.classList.remove('active');
         document.body.style.overflow = '';
     }
@@ -226,6 +242,9 @@ export function initAdvancedFilters() {
     async function applyFilters() {
         console.log('[AdvancedFilters] Apply filters clicked');
         console.log('[AdvancedFilters] Selected filters:', selectedFilters);
+
+        // Dispatch search started event to show loading state
+        document.dispatchEvent(new CustomEvent('searchStarted'));
 
         // Get location and work type values
         const locationValue = document.getElementById('locationValue')?.value || '';
@@ -274,10 +293,18 @@ export function initAdvancedFilters() {
                 closeFiltersModal();
             } else {
                 console.error('[AdvancedFilters] API error:', result.message);
+                // Dispatch error event
+                document.dispatchEvent(new CustomEvent('searchError', {
+                    detail: { message: result.message }
+                }));
                 alert('Error loading jobs: ' + result.message);
             }
         } catch (error) {
             console.error('[AdvancedFilters] Fetch error:', error);
+            // Dispatch error event
+            document.dispatchEvent(new CustomEvent('searchError', {
+                detail: { message: error.message }
+            }));
             alert('Failed to fetch jobs. Please try again.');
         }
     }
