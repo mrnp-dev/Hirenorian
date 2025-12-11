@@ -825,6 +825,27 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.selected-filters-tags::-webkit-scrollbar {
+    width: 6px;
+}
+
+.selected-filters-tags::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 3px;
+}
+
+.selected-filters-tags::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.selected-filters-tags::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }
 
 .selected-tag-chip {
