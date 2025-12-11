@@ -28,6 +28,8 @@ export async function loadStudentTags() {
     isLoading = true;
     showLoadingOverlay();
 
+    let checkedCount = 0; // Track number of auto-checked tags
+
     try {
         // Get student email from session storage
         const studentEmail = sessionStorage.getItem('email');
@@ -71,7 +73,7 @@ export async function loadStudentTags() {
 
             if (studentTags.length > 0) {
                 console.log('[StudentTags] Calling autoCheckStudentTags...');
-                autoCheckStudentTags();
+                checkedCount = autoCheckStudentTags();
             } else {
                 console.warn('[StudentTags] No valid tags found to auto-check');
             }
@@ -82,6 +84,18 @@ export async function loadStudentTags() {
         console.error('[StudentTags] Failed to load student tags:', error);
         console.error('[StudentTags] Error details:', error.message, error.stack);
     } finally {
+        console.log('[StudentTags] Auto-checked ' + checkedCount + ' matching tags');
+        console.log('[StudentTags] Loading complete');
+
+        // Dispatch event to trigger initial search with auto-selected tags
+        if (checkedCount > 0) {
+            console.log('[StudentTags] Dispatching initial search event');
+            setTimeout(() => {
+                const initialSearchEvent = new CustomEvent('initialSearchReady');
+                document.dispatchEvent(initialSearchEvent);
+            }, 500); // Small delay to ensure everything is initialized
+        }
+
         // Hide loading indicator
         isLoading = false;
         hideLoadingOverlay();
@@ -129,6 +143,8 @@ export function autoCheckStudentTags() {
         const changeEvent = new Event('change', { bubbles: true });
         careerTagCheckboxes[0].dispatchEvent(changeEvent);
     }
+
+    return matchedCount; // Return the count of matched tags
 }
 
 export function isLoadingTags() {

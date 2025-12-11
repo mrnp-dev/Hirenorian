@@ -150,73 +150,7 @@ if(!isset($_SESSION['email'])) {
                         </div>
 
                         <div class="job-list">
-                            <!-- Job Card 1 (Active) -->
-                            <div class="job-card active" data-id="1">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Junior UI/UX Designer</h3>
-                                        <p class="company-name">Cloudstaff</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">We are looking for a young talented designer to help us create stunning websites and apps.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Full Time</span>
-                                    <span class="tag">Design</span>
-                                    <span class="tag">Remote</span>
-                                </div>
-                            </div>
-
-                            <!-- Job Card 2 -->
-                            <div class="job-card" data-id="2">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/google.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Software Engineer Intern</h3>
-                                        <p class="company-name">Google</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">Join our engineering team to build scalable software solutions and learn from the best.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Internship</span>
-                                    <span class="tag">Engineering</span>
-                                    <span class="tag">Hybrid</span>
-                                </div>
-                            </div>
-
-                            <!-- Job Card 3 -->
-                            <div class="job-card" data-id="3">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/samsung.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Data Analyst</h3>
-                                        <p class="company-name">Samsung</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">Analyze complex datasets to drive business decisions and improve product performance.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Full Time</span>
-                                    <span class="tag">Data</span>
-                                    <span class="tag">On-site</span>
-                                </div>
-                            </div>
-
-                             <!-- Job Card 4 -->
-                             <div class="job-card" data-id="4">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/hyundai.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Mechanical Engineering Intern</h3>
-                                        <p class="company-name">Hyundai</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">Assist in the design and testing of automotive components in a state-of-the-art facility.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Internship</span>
-                                    <span class="tag">Engineering</span>
-                                    <span class="tag">On-site</span>
-                                </div>
-                            </div>
+                            <!-- Jobs will be loaded dynamically here -->
                         </div>
                     </div>
 

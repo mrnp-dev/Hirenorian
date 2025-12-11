@@ -508,4 +508,10 @@ export function initAdvancedFilters() {
         // Apply filters with the new keyword
         applyFilters();
     });
+
+    // Listen for initial search ready (after student tags auto-selected)
+    document.addEventListener('initialSearchReady', () => {
+        console.log('[AdvancedFilters] Initial search triggered with auto-selected tags');
+        applyFilters();
+    });
 }
