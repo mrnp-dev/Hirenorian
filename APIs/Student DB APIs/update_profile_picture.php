@@ -4,6 +4,9 @@ header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST");
 
+// Include database connection
+include 'db_con.php';
+
 $response = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,15 +69,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $response['message'] = 'Upload error code: ' . $file['error'];
         } else {
             if (move_uploaded_file($file['tmp_name'], $target_path)) {
-                $response['status'] = 'success';
-                $response['message'] = 'Profile picture updated successfully.';
-                // Return the public URL. Assuming standard path structure on VPS.
-                $response['data'] = [
-                    $base_url = 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/',
-                    $relative_path = 'Student Accounts/' . $student_id . '/Images/' . $new_filename,
-                    $encoded_path = str_replace(' ', '%20', $relative_path),
-                    'image_url' => $base_url . $encoded_path
-                ];
+                // Construct the image URL
+                $base_url = 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/';
+                $relative_path = 'Student Accounts/' . $student_id . '/Images/' . $new_filename;
+                $encoded_path = str_replace(' ', '%20', $relative_path);
+                $image_url = $base_url . $encoded_path;
+                
+                // Update the database with the profile picture path
+                try {
+                    // Check if a profile record exists for this student
+                    $check_query = $conn->prepare("SELECT profile_id FROM StudentProfile WHERE student_id = :student_id");
+                    $check_query->execute([':student_id' => $student_id]);
+                    
+                    if ($check_query->rowCount() > 0) {
+                        // Update existing profile
+                        $update_query = $conn->prepare("
+                            UPDATE StudentProfile 
+                            SET profile_picture = :profile_picture 
+                            WHERE student_id = :student_id
+                        ");
+                        $update_query->execute([
+                            ':profile_picture' => $image_url,
+                            ':student_id' => $student_id
+                        ]);
+                    } else {
+                        // Insert new profile record
+                        $insert_query = $conn->prepare("
+                            INSERT INTO StudentProfile (student_id, profile_picture) 
+                            VALUES (:student_id, :profile_picture)
+                        ");
+                        $insert_query->execute([
+                            ':student_id' => $student_id,
+                            ':profile_picture' => $image_url
+                        ]);
+                    }
+                    
+                    $response['status'] = 'success';
+                    $response['message'] = 'Profile picture updated successfully.';
+                    $response['data'] = [
+                        'image_url' => $image_url
+                    ];
+                } catch (PDOException $e) {
+                    $response['status'] = 'error';
+                    $response['message'] = 'File uploaded but database update failed: ' . $e->getMessage();
+                }
             } else {
                 $response['status'] = 'error';
                 $response['message'] = 'Failed to move uploaded file.';
