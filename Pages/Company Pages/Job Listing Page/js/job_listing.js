@@ -207,15 +207,17 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     async function getCompanyId() {
         try {
+            // Try to get email from hidden input if available
+            const companyEmailInput = document.getElementById('company_email');
+            const companyEmail = companyEmailInput ? companyEmailInput.value : '';
+
             // Fetch company_id using backend API
             const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/get_company_id.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                // PHP session already knows $_SESSION['email'],
-                // so backend can resolve company_id without needing JS to send it
-                body: JSON.stringify({})
+                body: JSON.stringify({ company_email: companyEmail })
             });
 
             const result = await response.json();
@@ -2024,6 +2026,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                             alert('Job post created successfully!');
                         }
 
+                        // Create Job Folder for File Uploads
+                        try {
+                            const companyId = await getCompanyId();
+                            if (companyId && result.post_id) {
+                                await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/create_job_folder.php", {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        company_id: companyId,
+                                        post_id: result.post_id
+                                    })
+                                });
+                                console.log('✅ Job folder created successfully');
+                            }
+                        } catch (folderError) {
+                            console.error('Failed to create job folder:', folderError);
+                            // We don't block the UI flow for this background task, but logging it is good
+                        }
+
                         closeJobPostModal();
 
                         // Refresh data
@@ -2200,6 +2221,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 ToastSystem.show('Job post deleted successfully.', 'success');
                             } else {
                                 alert('Job post deleted successfully.');
+                            }
+
+                            // Delete Job Folder
+                            try {
+                                const companyId = await getCompanyId();
+                                if (companyId && selectedJobForDetail) {
+                                    await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_folder.php", {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({
+                                            company_id: companyId,
+                                            post_id: selectedJobForDetail
+                                        })
+                                    });
+                                    console.log('✅ Job folder deleted successfully');
+                                }
+                            } catch (folderError) {
+                                console.error('Failed to delete job folder:', folderError);
                             }
 
                             // Go back to list and refresh
