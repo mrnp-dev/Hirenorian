@@ -379,6 +379,32 @@ document.addEventListener('DOMContentLoaded', function () {
         buildCareerTags();
         buildExperienceLevel();
         buildDatePosted();
+        initializeSidebarNavigation();
+    }
+
+    // Initialize Sidebar Navigation
+    function initializeSidebarNavigation() {
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const filterViews = document.querySelectorAll('.filter-view');
+
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const section = item.dataset.section;
+
+                // Remove active class from all items and views
+                sidebarItems.forEach(si => si.classList.remove('active'));
+                filterViews.forEach(fv => fv.classList.remove('active'));
+
+                // Add active class to clicked item
+                item.classList.add('active');
+
+                // Show corresponding view
+                const targetView = document.getElementById(`${section}-view`);
+                if (targetView) {
+                    targetView.classList.add('active');
+                }
+            });
+        });
     }
 
     // Build Student Courses section
@@ -569,9 +595,13 @@ document.addEventListener('DOMContentLoaded', function () {
         filterSearchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase().trim();
 
-            // Search in all checkboxes
-            const allCheckboxes = document.querySelectorAll('.filter-checkbox[data-search-text]');
-            const allCategories = document.querySelectorAll('.filter-category');
+            // Get active view
+            const activeView = document.querySelector('.filter-view.active');
+            if (!activeView) return;
+
+            // Search only in active view's checkboxes
+            const allCheckboxes = activeView.querySelectorAll('.filter-checkbox[data-search-text]');
+            const allCategories = activeView.querySelectorAll('.filter-category');
 
             if (searchTerm === '') {
                 // Show all

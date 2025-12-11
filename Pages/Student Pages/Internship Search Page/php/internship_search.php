@@ -259,47 +259,68 @@ if(!isset($_SESSION['email'])) {
         <div class="filters-modal" id="filtersModal">
             <div class="filters-modal-header">
                 <h2>Advanced Filters</h2>
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="filterSearch" placeholder="Search filters...">
+                </div>
                 <button class="close-modal-btn" id="closeFiltersModal">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             
-            <div class="filters-modal-body">
-                <!-- Search Bar -->
-                <div class="filters-search">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="filterSearch" placeholder="Search filters...">
-                </div>
-
-                <!-- Student Courses -->
-                <div class="filter-section">
-                    <h3>Student Courses</h3>
-                    <div class="filter-categories" id="studentCoursesContainer">
-                        <!-- Will be populated by JavaScript -->
+            <div class="filters-modal-main">
+                <!-- Sidebar Navigation -->
+                <div class="filters-sidebar">
+                    <div class="sidebar-item active" data-section="student-courses">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Student Courses</span>
+                    </div>
+                    <div class="sidebar-item" data-section="career-tags">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Career Tags</span>
+                    </div>
+                    <div class="sidebar-item" data-section="experience">
+                        <i class="fa-solid fa-star"></i>
+                        <span>Experience Level</span>
+                    </div>
+                    <div class="sidebar-item" data-section="date-posted">
+                        <i class="fa-solid fa-calendar"></i>
+                        <span>Date Posted</span>
                     </div>
                 </div>
 
-                <!-- Career Tags -->
-                <div class="filter-section">
-                    <h3>Career Tags / Industry</h3>
-                    <div class="filter-categories" id="careerTagsContainer">
-                        <!-- Will be populated by JavaScript -->
+                <!-- Main Content Area -->
+                <div class="filters-content">
+                    <!-- Student Courses View -->
+                    <div class="filter-view active" id="student-courses-view">
+                        <h3>Student Courses</h3>
+                        <div class="filter-categories" id="studentCoursesContainer">
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
-                </div>
 
-                <!-- Experience Level -->
-                <div class="filter-section">
-                    <h3>Experience Level</h3>
-                    <div class="filter-checkboxes" id="experienceLevelContainer">
-                        <!-- Will be populated by JavaScript -->
+                    <!-- Career Tags View -->
+                    <div class="filter-view" id="career-tags-view">
+                        <h3>Career Tags / Industry</h3>
+                        <div class="filter-categories" id="careerTagsContainer">
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
-                </div>
 
-                <!-- Date Posted -->
-                <div class="filter-section">
-                    <h3>Date Posted</h3>
-                    <div class="filter-radios" id="datePostedContainer">
-                        <!-- Will be populated by JavaScript -->
+                    <!-- Experience Level View -->
+                    <div class="filter-view" id="experience-view">
+                        <h3>Experience Level</h3>
+                        <div class="filter-checkboxes" id="experienceLevelContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Date Posted View -->
+                    <div class="filter-view" id="date-posted-view">
+                        <h3>Date Posted</h3>
+                        <div class="filter-radios" id="datePostedContainer">
+                            <!-- Populated by JS -->
+                        </div>
                     </div>
                 </div>
             </div>
