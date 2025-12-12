@@ -5,94 +5,7 @@ if (!isset($_SESSION['company_email'])) {
     // Handling session check
 }
 
-// Mock Data (Mirrors job_listing.js)
-$applicants = [
-    1 => [
-        "name" => "Jose E. Batumbakal",
-        "course" => "Bachelor of Science in Computer Science",
-        "email" => "jose@email.com",
-        "phone" => "09123456789",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    2 => [
-        "name" => "Pedro Dee Z. Nuts",
-        "course" => "Bachelor of Science in Information and Communications Technology",
-        "email" => "pedro@email.com",
-        "phone" => "09234567890",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    3 => [
-        "name" => "Jebron G. Lames",
-        "course" => "Bachelor of Science in Accounting Technology",
-        "email" => "jebron@email.com",
-        "phone" => "09345678901",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    4 => [
-        "name" => "Tobay D. Brown",
-        "course" => "Bachelor of Science in Information Technology",
-        "email" => "tobay@email.com",
-        "phone" => "09456789012",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    5 => [
-        "name" => "Sakha M. Adibix",
-        "course" => "Bachelor of Science in Information Systems",
-        "email" => "sakha@email.com",
-        "phone" => "09567890123",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    6 => [
-        "name" => "Seyda Z. Elven",
-        "course" => "Bachelor of Science in Computer Engineering",
-        "email" => "seyda@email.com",
-        "phone" => "09678901234",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    7 => [
-        "name" => "DayMo N. Taim",
-        "course" => "Bachelor of Science in Data Science",
-        "email" => "daymo@email.com",
-        "phone" => "09789012345",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    8 => [
-        "name" => "Koby L. Jay",
-        "course" => "Bachelor of Science in Software Engineering",
-        "email" => "koby@email.com",
-        "phone" => "09890123456",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    9 => [
-        "name" => "Jaydos D. Crist",
-        "course" => "Bachelor of Science in Cybersecurity",
-        "email" => "jaydos@email.com",
-        "phone" => "09901234567",
-        "university" => "Don Honorio Ventura State University"
-    ],
-    10 => [
-        "name" => "Rayd Ohm M. Dih",
-        "course" => "Bachelor of Science in Game Development",
-        "email" => "rayd@email.com",
-        "phone" => "09012345678",
-        "university" => "Don Honorio Ventura State University"
-    ]
-];
-
-// Get ID from URL
-$id = isset($_GET['id']) ? (int) $_GET['id'] : 1;
-$data = isset($applicants[$id]) ? $applicants[$id] : $applicants[1];
-
-// Populate variables
-$full_name = $data['name'];
-$course = $data['course'];
-$university = $data['university'];
-$personal_email = $data['email'];
-$phone_number = $data['phone'];
-
-// Default values for others
-$department = "College of Computing Studies";
-$organization = "Student Organization";
+// Data will be loaded dynamically via JavaScript
 ?>
 
 <!DOCTYPE html>
@@ -188,13 +101,9 @@ $organization = "Student Organization";
                                     class="profile-avatar">
                             </div>
                             <div class="profile-info">
-                                <h1 class="profile-name">
-                                    <?php echo $full_name; ?>
-                                </h1>
-                                <p class="profile-headline"><?php echo $course; ?> Student at <?php echo $university; ?>
-                                </p>
-                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> San Fernando,
-                                    Pampanga</p>
+                                <h1 class="profile-name">Loading...</h1>
+                                <p class="profile-headline">Loading profile information...</p>
+                                <p class="profile-location"><i class="fa-solid fa-location-dot"></i> Loading...</p>
                             </div>
                             <!-- No Edit Button for Company View -->
                         </div>
@@ -208,11 +117,11 @@ $organization = "Student Organization";
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span><?php echo $personal_email; ?></span>
+                                    <span>Loading...</span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span><?php echo $phone_number; ?></span>
+                                    <span>Loading...</span>
                                 </div>
                             </div>
 
@@ -246,41 +155,14 @@ $organization = "Student Organization";
                             <!-- About Me -->
                             <div class="card section-card">
                                 <h2>About Me</h2>
-                                <p class="section-text">
-                                    I am a motivated 3rd-year Information Technology student with a passion for web
-                                    development and software engineering.
-                                    I am currently looking for an internship opportunity where I can apply my skills in
-                                    building user-friendly applications
-                                    and learn from experienced professionals in the industry. I am a quick learner and
-                                    eager to contribute to real-world projects.
-                                </p>
+                                <p class="section-text">Loading...</p>
                             </div>
 
                             <!-- Experience -->
                             <div class="card section-card">
                                 <h2>Experience</h2>
                                 <div class="timeline-v2">
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
-                                        <div class="timeline-content">
-                                            <h3>Web Development Lead</h3>
-                                            <p class="institution">DHVSU Computer Society</p>
-                                            <p class="date">2023 - Present</p>
-                                            <p class="description">Led a team of 5 students in developing the
-                                                organization's official website. Organized coding workshops for
-                                                freshmen.</p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                                        <div class="timeline-content">
-                                            <h3>Volunteer</h3>
-                                            <p class="institution">Community Tech Outreach</p>
-                                            <p class="date">2022</p>
-                                            <p class="description">Assisted in teaching basic computer literacy to
-                                                senior citizens in the local community.</p>
-                                        </div>
-                                    </div>
+                                    <p style="color: #999; text-align: center;">Loading...</p>
                                 </div>
                             </div>
 
@@ -288,22 +170,7 @@ $organization = "Student Organization";
                             <div class="card section-card">
                                 <h2>Education</h2>
                                 <div class="timeline-v2">
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                                        <div class="timeline-content">
-                                            <h3><?php echo $course; ?></h3>
-                                            <p class="institution"><?php echo $university; ?></p>
-                                            <p class="date">2021 - Present</p>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon"><i class="fa-solid fa-school"></i></div>
-                                        <div class="timeline-content">
-                                            <h3>Senior High School (STEM Strand)</h3>
-                                            <p class="institution">Pampanga High School</p>
-                                            <p class="date">2019 - 2021</p>
-                                        </div>
-                                    </div>
+                                    <p style="color: #999; text-align: center;">Loading...</p>
                                 </div>
                             </div>
                         </div>
