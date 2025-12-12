@@ -94,7 +94,7 @@ function openOTPModal() {
 
 function sendOTPToEmail(email) {
     console.log("Sending OTP to:", email);
-    fetch("../php/send_otp.php", {
+    fetch("send_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })
