@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const verificationButtons = document.querySelectorAll('.verification-btn');
 
 
-
-    // --- CRUD Actions (Front-end only simulation) ---
     editButtons.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -115,22 +113,34 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
                     });
 
+            } else if (actionBtn.classList.contains('delete-btn')) {
+                const studentID = row.querySelector('td:first-child').textContent.trim();
+
+                swal({
+                    title: "Delete Student?",
+                    text: "Do you want to proceed with deleting the student?",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            row.remove();
+
+                            deleteStudent(studentID);
+                            auditLogs('Delete', 'deleted student information for student id: ' + studentID);
+                            swal("Student deleted!", {
+                                icon: "success",
+                            });
+                        } else {
+                            swal("Action cancelled.");
+                        }
+                    });
             }
         }
     });
 
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const row = this.closest('tr');
-            const studentId = row.querySelector('td:first-child').textContent;
 
-            if (confirm('Are you sure you want to delete student ID: ' + studentId + '?')) {
-                row.remove();
-                auditLogs('Delete', 'deleted information for student id: ' + studentId);
-                alert('Student ID ' + studentId + ' deleted (front-end simulation).');
-            }
-        });
-    });
 
     document.addEventListener('click', function (e) {
         if (e.target && e.target.classList.contains('verification-btn')) {
@@ -232,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 verified: status
             })
         })
-            //TODO: update dialog notification
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
@@ -271,6 +280,32 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error updating activation status.');
+            });
+    }
+
+    function deleteStudent(studentId) {
+        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/delete.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: studentId,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Student deleted: ' + studentId);
+                    auditLogs('Delete', 'deleted information for student id: ' + studentId);
+                } else {
+                    console.error('Failed to delete student:', data.message);
+                    alert('Error deleting student: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error Deleting Student');
             });
     }
 

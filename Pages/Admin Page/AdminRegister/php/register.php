@@ -26,16 +26,16 @@
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        // Hardcoded Credentials
+        
         $valid_user = "HireAdmin@01";
         $valid_pass = "1PSU8Adm6nCode1";
 
         if ($username === $valid_user && $password === $valid_pass) {
-            // Redirect to Dashboard if credentials match
+            
             header("Location: ../../AdminDashboard/php/dashboard.php");
             exit();
         } else {
-            // Show error alert if credentials fail
+          
             echo "<script>alert('Invalid Credentials! Please try again.');</script>";
         }
     }
@@ -65,7 +65,11 @@
                                             </div>
                                        
                                         <button type="submit" class="register-btn-new">Log In</button>
-                                       
+                                      </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 

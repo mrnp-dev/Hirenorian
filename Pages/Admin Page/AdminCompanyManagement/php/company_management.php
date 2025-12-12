@@ -81,7 +81,7 @@ if ($data && isset($data['status'])) {
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name">Admin</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">

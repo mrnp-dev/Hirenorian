@@ -2,7 +2,6 @@
 
 session_start();
 
-// Set timezone to Philippines (UTC+8)
 date_default_timezone_set('Asia/Manila');
 
 //students
@@ -179,7 +178,7 @@ function timeAgo($timestamp)
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn" onclick="document.getElementById('profileDropdown').classList.toggle('show')">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name">Admin</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -189,7 +188,7 @@ function timeAgo($timestamp)
             </header>
 
             <main class="dashboard-body">
-                <!-- Breadcrumb Navigation -->
+            
                 <nav class="breadcrumb-nav">
                     <i class="fa-solid fa-house"></i>
                     <span class="breadcrumb-separator">/</span>
@@ -198,7 +197,7 @@ function timeAgo($timestamp)
 
                 <h1 class="page-title">Dashboard Overview</h1>
 
-                <!-- Top Summary Cards -->
+               
                 <div class="summary-cards-grid">
                     <div class="summary-card maroon">
                         <div class="summary-card-icon">
@@ -223,7 +222,6 @@ function timeAgo($timestamp)
                     </div>
                 </div>
 
-                <!-- Main Charts Section -->
                 <div class="charts-grid">
                     <div class="card chart-card">
                         <div class="chart-header">
@@ -280,7 +278,6 @@ function timeAgo($timestamp)
                     </div>
                 </div>
 
-                <!-- Audit Trail Section -->
                 <div class="card audit-trail-section">
                     <div class="audit-trail-header">
                         <h2><i class="fa-solid fa-clock-rotate-left"></i> Audit Trails</h2>
