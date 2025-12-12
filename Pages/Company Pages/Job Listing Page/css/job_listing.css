@@ -1141,6 +1141,19 @@ input[type="checkbox"] {
    font-weight: 500;
 }
 
+/* Stacked Document Display */
+.doc-stack {
+   display: flex;
+   flex-direction: column;
+   gap: 6px;
+}
+
+.doc-item {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+}
+
 /* Empty State */
 .empty-state {
    text-align: center;

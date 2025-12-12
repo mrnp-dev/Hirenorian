@@ -22,17 +22,19 @@ mysql> show tables;
 | company_statistics              |
 +---------------------------------+
 
-mysql> DESCRIBE Applicants;
-+---------------+---------------------------------------+------+-----+-------------------+-------------------+
-| Field         | Type                                  | Null | Key | Default           | Extra             |
-+---------------+---------------------------------------+------+-----+-------------------+-------------------+
-| applicant_id  | int                                   | NO   | PRI | NULL              | auto_increment    |
-| post_id       | int                                   | NO   | MUL | NULL              |                   |
-| student_id    | int                                   | NO   | MUL | NULL              |                   |
-| document_type | varchar(100)                          | YES  |     | NULL              |                   |
-| date_applied  | timestamp                             | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
-| status        | enum('Pending','Accepted','Rejected') | YES  |     | Pending           |                   |
-+---------------+---------------------------------------+------+-----+-------------------+-------------------+
+mysql> Describe Applicants;
++------------------+---------------------------------------+------+-----+-------------------+-------------------+
+| Field            | Type                                  | Null | Key | Default           | Extra             |
++------------------+---------------------------------------+------+-----+-------------------+-------------------+
+| applicant_id     | int                                   | NO   | PRI | NULL              | auto_increment    |
+| post_id          | int                                   | NO   | MUL | NULL              |                   |
+| student_id       | int                                   | NO   | MUL | NULL              |                   |
+| document_type    | varchar(100)                          | YES  |     | NULL              |                   |
+| date_applied     | timestamp                             | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| status           | enum('Pending','Accepted','Rejected') | YES  |     | Pending           |                   |
+| resume_path      | varchar(255)                          | YES  |     | NULL              |                   |
+| coverletter_path | varchar(255)                          | YES  |     | NULL              |                   |
++------------------+---------------------------------------+------+-----+-------------------+-------------------+
 
 mysql> DESCRIBE Company;
 +---------------+---------------------------------+------+-----+------------+----------------+

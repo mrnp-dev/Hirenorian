@@ -246,6 +246,47 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
+     * Format document cell for applicant list
+     * Shows resume/cover letter with View links in stacked format when both exist
+     */
+    function formatDocumentCell(resumeUrl, coverLetterUrl) {
+        const hasResume = resumeUrl && resumeUrl !== '';
+        const hasCoverLetter = coverLetterUrl && coverLetterUrl !== '';
+
+        if (!hasResume && !hasCoverLetter) {
+            return '<span class="doc-label">None</span>';
+        }
+
+        if (hasResume && hasCoverLetter) {
+            // Stacked format for both documents
+            return `
+                <div class="doc-stack">
+                    <div class="doc-item">
+                        <span class="doc-label">Resume</span>
+                        <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-label">Cover Letter</span>
+                        <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (hasResume) {
+            return `
+                <span class="doc-label">Resume</span>
+                <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
+            `;
+        }
+
+        return `
+            <span class="doc-label">Cover Letter</span>
+            <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
+        `;
+    }
+
+    /**
      * Gets applicants for a specific job from the loaded data
      */
     function getApplicantsForJob(jobId) {
@@ -694,8 +735,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="cell course-cell">${applicant.course}</div>
        <div class="cell document-cell">
-                    <span class="doc-label">${applicant.documentType}</span>
-                    ${applicant.documentUrl ? `<a href="${applicant.documentUrl}" class="doc-view-link" target="_blank">View</a>` : ''}
+                    ${formatDocumentCell(applicant.resumeUrl, applicant.coverLetterUrl)}
                 </div>
                 <div class="cell date-cell">${applicant.dateApplied}</div>
                 <div class="cell actions-cell">

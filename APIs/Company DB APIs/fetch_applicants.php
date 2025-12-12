@@ -36,6 +36,8 @@ $query = "
         )) AS name,
         e.course,
         a.document_type AS documentType,
+        a.resume_path,
+        a.coverletter_path,
         s.student_email AS studentEmail,
         s.personal_email AS personalEmail,
         s.phone_number AS phone,
@@ -53,6 +55,16 @@ try {
     $stmt->execute([':job_id' => $job_id]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Helper function to convert VPS path to HTTP URL
+    function convertToHttpUrl($vpsPath)
+    {
+        if (empty($vpsPath)) {
+            return null;
+        }
+        // Convert /var/www/html to http://mrnp.site:8080
+        return str_replace('/var/www/html', 'http://mrnp.site:8080', $vpsPath);
+    }
+
     // Transform into expected JSON structure
     // ✅ Now includes full applicant details from Students and Education tables
     $applicants = array_map(function ($row) {
@@ -62,7 +74,8 @@ try {
             "name" => $row["name"],
             "course" => $row["course"] ?? "N/A",
             "documentType" => $row["documentType"],
-            "documentUrl" => null, // Column doesn't exist in Applicants table
+            "resumeUrl" => convertToHttpUrl($row["resume_path"]),
+            "coverLetterUrl" => convertToHttpUrl($row["coverletter_path"]),
             "dateApplied" => $row["dateApplied"],
             "status" => strtolower($row["status"]), // normalize to "pending" | "accepted" | "rejected"
             "contactInfo" => [
