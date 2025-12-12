@@ -234,6 +234,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /**
+     * Format document requirements for display
+     * Converts boolean resume/coverLetter values to readable string
+     */
+    function formatDocumentRequirements(resume, coverLetter) {
+        if (!resume && !coverLetter) return 'None';
+        if (resume && coverLetter) return 'Resume & Cover Letter';
+        if (resume) return 'Resume';
+        if (coverLetter) return 'Cover Letter';
+        return 'None';
+    }
+
+    /**
+     * Format document cell for applicant list
+     * Shows resume/cover letter with View links in stacked format when both exist
+     */
+    function formatDocumentCell(resumeUrl, coverLetterUrl) {
+        const hasResume = resumeUrl && resumeUrl !== '';
+        const hasCoverLetter = coverLetterUrl && coverLetterUrl !== '';
+
+        if (!hasResume && !hasCoverLetter) {
+            return '<span class="doc-label">None</span>';
+        }
+
+        if (hasResume && hasCoverLetter) {
+            // Stacked format for both documents
+            return `
+                <div class="doc-stack">
+                    <div class="doc-item">
+                        <span class="doc-label">Resume</span>
+                        <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
+                    </div>
+                    <div class="doc-item">
+                        <span class="doc-label">Cover Letter</span>
+                        <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (hasResume) {
+            return `
+                <span class="doc-label">Resume</span>
+                <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
+            `;
+        }
+
+        return `
+            <span class="doc-label">Cover Letter</span>
+            <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
+        `;
+    }
+
+    /**
      * Gets applicants for a specific job from the loaded data
      */
     function getApplicantsForJob(jobId) {
@@ -519,16 +572,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
 
-        // Map requiredDocument to readable format
-        // Make case-insensitive to handle 'resume', 'Resume', 'cover-letter', 'Cover Letter', etc.
-        const docTypeMap = {
-            'resume': 'Resume/CV',
-            'cover-letter': 'Cover Letter',
-            'cover letter': 'Cover Letter',
-            'none': 'None'
-        };
-        const requiredDoc = (jobDetails.requiredDocument || '').toLowerCase().trim();
-        document.getElementById('detailRequiredDoc').textContent = docTypeMap[requiredDoc] || jobDetails.requiredDocument || 'None';
+        // Format and display required documents
+        const detailRequiredDoc = document.getElementById('detailRequiredDoc');
+        if (detailRequiredDoc) {
+            detailRequiredDoc.textContent = formatDocumentRequirements(
+                jobDetails.resume,
+                jobDetails.coverLetter
+            );
+        }
 
         // Update work tags
         const tagsContainer = document.getElementById('detailWorkTags');
@@ -684,8 +735,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="cell course-cell">${applicant.course}</div>
        <div class="cell document-cell">
-                    <span class="doc-label">${applicant.documentType}</span>
-                    ${applicant.documentUrl ? `<a href="${applicant.documentUrl}" class="doc-view-link" target="_blank">View</a>` : ''}
+                    ${formatDocumentCell(applicant.resumeUrl, applicant.coverLetterUrl)}
                 </div>
                 <div class="cell date-cell">${applicant.dateApplied}</div>
                 <div class="cell actions-cell">
@@ -1602,35 +1652,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // Populate required document
-        if (jobData.requiredDocument) {
-            const docRadios = document.getElementsByName('requiredDocument');
-            const requiredDocValue = jobData.requiredDocument.toLowerCase();
+        // Populate required documents checkboxes
+        const resumeCheckbox = document.getElementById('requireResume');
+        const coverLetterCheckbox = document.getElementById('requireCoverLetter');
 
-            let matched = false;
-            docRadios.forEach(radio => {
-                // Check if values match or if the radio value is contained in the DB value (e.g. 'resume' in 'Resume/CV')
-                // This handles potential variations like 'Resume' vs 'resume'
-                if (radio.value === requiredDocValue ||
-                    requiredDocValue.includes(radio.value) ||
-                    (radio.value === 'resume' && requiredDocValue.includes('cv'))) {
-
-                    radio.checked = true;
-                    matched = true;
-                }
-            });
-
-            // If no match found but we have a value, try to map it specifically
-            if (!matched) {
-                if (requiredDocValue.includes('cover')) {
-                    const coverRadio = document.querySelector('input[value="cover-letter"]');
-                    if (coverRadio) coverRadio.checked = true;
-                } else if (requiredDocValue.includes('resume') || requiredDocValue.includes('cv')) {
-                    const resumeRadio = document.querySelector('input[value="resume"]');
-                    if (resumeRadio) resumeRadio.checked = true;
-                }
-            }
-        }
+        if (resumeCheckbox) resumeCheckbox.checked = jobData.resume || false;
+        if (coverLetterCheckbox) coverLetterCheckbox.checked = jobData.coverLetter || false;
 
         // Populate text areas
         const jobDescriptionTextarea = document.getElementById('jobDescriptionTextarea');
@@ -1910,7 +1937,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 applicant_limit: parseInt(document.getElementById('applicantLimitInput').value),
                 category: document.getElementById('categorySelect').value,
                 work_tags: [...selectedTags],
-                required_document: document.querySelector('input[name="requiredDocument"]:checked').value,
+                resume: document.getElementById('requireResume')?.checked || false,
+                cover_letter: document.getElementById('requireCoverLetter')?.checked || false,
                 description: document.getElementById('jobDescriptionTextarea').value.trim(),
                 responsibilities: document.getElementById('responsibilitiesTextarea').value.trim(),
                 qualifications: document.getElementById('qualificationTextarea').value.trim(),
@@ -2004,7 +2032,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         applicant_limit: formData.applicant_limit,
                         category: formData.category,
                         work_tags: formData.work_tags,
-                        required_document: formData.required_document,
+                        resume: formData.resume,
+                        cover_letter: formData.cover_letter,
                         description: formData.description,
                         responsibilities: formData.responsibilities,
                         qualifications: formData.qualifications,
