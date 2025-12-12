@@ -60,21 +60,28 @@ function populateProfile(data) {
 
     // Location
     const profileLocation = document.querySelector('.profile-location');
-    if (profileLocation && data.location) {
-        profileLocation.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.location}`;
+    if (profileLocation) {
+        if (data.location && data.location.trim() !== '') {
+            profileLocation.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${data.location}`;
+        } else {
+            profileLocation.innerHTML = `<i class="fa-solid fa-location-dot"></i> Location not set`;
+        }
     }
-
     // Contact Information
-    const contactInfo = document.querySelector('.info-card .info-item:nth-child(2) span');
-    if (contactInfo) {
-        contactInfo.textContent = data.personalEmail || data.studentEmail;
+    const contactPersonalEmail = document.getElementById('contactPersonalEmail');
+    if (contactPersonalEmail) {
+        contactPersonalEmail.textContent = data.personalEmail || 'N/A';
     }
 
-    const phoneInfo = document.querySelector('.info-card .info-item:nth-child(3) span');
-    if (phoneInfo) {
-        phoneInfo.textContent = data.phoneNumber || 'N/A';
+    const contactStudentEmail = document.getElementById('contactStudentEmail');
+    if (contactStudentEmail) {
+        contactStudentEmail.textContent = data.studentEmail || 'N/A';
     }
 
+    const contactPhone = document.getElementById('contactPhone');
+    if (contactPhone) {
+        contactPhone.textContent = data.phoneNumber || 'N/A';
+    }
     // About Me
     const aboutMe = document.querySelector('.section-card:nth-of-type(1) .section-text');
     if (aboutMe) {
@@ -93,7 +100,7 @@ function populateProfile(data) {
 
 function populateSkills(skills) {
     // Technical Skills
-    const technicalSkillsContainer = document.querySelector('.skill-category:nth-child(1) .tags');
+    const technicalSkillsContainer = document.getElementById('technicalSkillsTags');
     if (technicalSkillsContainer) {
         if (skills.technical && skills.technical.length > 0) {
             technicalSkillsContainer.innerHTML = skills.technical.map(skill =>
@@ -105,7 +112,7 @@ function populateSkills(skills) {
     }
 
     // Soft Skills
-    const softSkillsContainer = document.querySelector('.skill-category:nth-child(2) .tags');
+    const softSkillsContainer = document.getElementById('softSkillsTags');
     if (softSkillsContainer) {
         if (skills.soft && skills.soft.length > 0) {
             softSkillsContainer.innerHTML = skills.soft.map(skill =>

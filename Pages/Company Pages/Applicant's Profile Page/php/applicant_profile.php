@@ -117,11 +117,15 @@ if (!isset($_SESSION['company_email'])) {
                                 <h3>Contact Information</h3>
                                 <div class="info-item">
                                     <i class="fa-solid fa-envelope"></i>
-                                    <span>Loading...</span>
+                                    <span id="contactPersonalEmail">Loading...</span>
+                                </div>
+                                <div class="info-item">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <span id="contactStudentEmail">Loading...</span>
                                 </div>
                                 <div class="info-item">
                                     <i class="fa-solid fa-phone"></i>
-                                    <span>Loading...</span>
+                                    <span id="contactPhone">Loading...</span>
                                 </div>
                             </div>
 
@@ -130,21 +134,14 @@ if (!isset($_SESSION['company_email'])) {
                                 <h3>Skills</h3>
                                 <div class="skill-category">
                                     <h4>Technical</h4>
-                                    <div class="tags">
-                                        <span>HTML/CSS</span>
-                                        <span>JavaScript</span>
-                                        <span>PHP</span>
-                                        <span>MySQL</span>
-                                        <span>React</span>
+                                    <div class="tags" id="technicalSkillsTags">
+                                        <span style="color: #999;">Loading...</span>
                                     </div>
                                 </div>
                                 <div class="skill-category">
                                     <h4>Soft Skills</h4>
-                                    <div class="tags">
-                                        <span>Communication</span>
-                                        <span>Teamwork</span>
-                                        <span>Problem Solving</span>
-                                        <span>Time Management</span>
+                                    <div class="tags" id="softSkillsTags">
+                                        <span style="color: #999;">Loading...</span>
                                     </div>
                                 </div>
                             </div>
