@@ -1,204 +1,271 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 :root {
     --primary-maroon: #7b1113;
-    --secondary-yellow: #f1c40f;
-    --text-dark: #333;
-    --text-light: #fff;
-    --bg-light: #f4f6f9;
-    --dark-column-bg: #292929;
+    --primary-maroon-dark: #5c0d0e;
+    --accent-gold: #f1c40f;
+    --text-dark: #2c3e50;
+    --text-muted: #7f8c8d;
+    --text-light: #ffffff;
+    --bg-page: #f8f9fa;
+    --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    --input-bg: #f8f9fa;
+    --input-border: #e0e0e0;
+    --radius-lg: 16px;
+    --radius-md: 10px;
 }
 
-/* Page Background */
-.registration-body {
-    background-color: var(--bg-light);
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-page);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     padding: 20px;
+}
+
+/* Page Background Gradient (Optional subtle pattern) */
+.registration-body {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
 }
 
 .registration-container {
     width: 100%;
-    max-width: 900px;
+    max-width: 950px;
+    margin: 0 auto;
 }
 
-/* Two-Column Card Structure */
+/* Card Design - Centered Single Column */
 .registration-card-new {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
     overflow: hidden;
-    min-height: 500px;
+    min-height: auto;
+    width: 100%;
+    max-width: 500px;
+    /* Limit width for centered look */
+    margin: 0 auto;
+    animation: slideUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
 }
 
-/* --- Left Column (Form) --- */
+@keyframes slideUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Column (Full Width) */
 .form-column {
-    background-color: var(--dark-column-bg);
-    color: var(--text-light);
-    padding: 40px;
+    padding: 60px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    /* Center horizontally */
+    text-align: center;
+    /* Center text */
+    background: #ffffff;
+    position: relative;
+    z-index: 2;
+    width: 100%;
 }
 
 .logo-header {
     margin-bottom: 25px;
-    text-align: left;
 }
 
 .logo-header .logo {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: auto;
+    display: block;
 }
 
 .form-title-new {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 2.2rem;
+    color: var(--primary-maroon);
+    font-weight: 700;
     margin-bottom: 30px;
-    color: var(--secondary-yellow);
+    letter-spacing: -0.5px;
+}
+
+.registration-form {
+    width: 100%;
 }
 
 .input-group-new {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    position: relative;
 }
 
 .input-group-new label {
     display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.7);
     margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    text-align: left;
+    /* Keep labels readable */
 }
 
 .input-group-new input {
     width: 100%;
-    padding: 12px;
-    border: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-    background: transparent;
-    color: var(--text-light);
+    padding: 14px 16px;
+    border: 2px solid var(--input-border);
+    border-radius: var(--radius-md);
+    background-color: var(--input-bg);
+    color: var(--text-dark);
     font-size: 1rem;
-    transition: border-color 0.2s;
+    font-family: inherit;
+    transition: all 0.3s ease;
 }
 
 .input-group-new input:focus {
     outline: none;
-    border-bottom-color: var(--secondary-yellow);
+    border-color: var(--primary-maroon);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(123, 17, 19, 0.1);
+}
+
+.input-group-new input::placeholder {
+    color: #aab0b6;
 }
 
 .register-btn-new {
     width: 100%;
-    background-color: var(--secondary-yellow);
-    color: var(--text-dark);
+    padding: 15px;
     border: none;
-    padding: 14px;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 700;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--primary-maroon), var(--primary-maroon-dark));
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
-    margin-top: 30px;
+    box-shadow: 0 4px 15px rgba(123, 17, 19, 0.2);
+    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 .register-btn-new:hover {
-    background-color: #e0b40e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(123, 17, 19, 0.3);
+    background: linear-gradient(135deg, #8e1517, #7b1113);
+}
+
+.register-btn-new:active {
+    transform: translateY(0);
 }
 
 .login-link-new {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    margin-top: 25px;
     text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted);
 }
 
 .login-link-new a {
-    color: var(--secondary-yellow);
+    color: var(--primary-maroon);
     text-decoration: none;
     font-weight: 600;
+    transition: color 0.2s;
 }
 
 .login-link-new a:hover {
+    color: var(--primary-maroon-dark);
     text-decoration: underline;
 }
 
-/* --- Right Column (Info) --- */
+/* Info Column (Hidden for centered single card design) */
 .info-column {
-    background-color: var(--secondary-yellow);
-    color: var(--text-dark);
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
+    display: none;
 }
 
 .info-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--primary-maroon);
-    margin-bottom: 30px;
-    line-height: 1.4;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+    line-height: 1.3;
 }
 
 .info-list {
     list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .info-list li {
-    font-size: 1.1rem;
-    font-weight: 500;
     display: flex;
     align-items: center;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    opacity: 0.95;
+    transition: transform 0.3s ease;
 }
 
-.info-list i {
-    font-size: 1.4rem;
-    margin-right: 15px;
-    color: var(--primary-maroon);
-    min-width: 25px;
+.info-list li:hover {
+    transform: translateX(5px);
+    opacity: 1;
 }
 
-/* --- Responsiveness --- */
-@media (max-width: 768px) {
+.info-list li i {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.info-list li:hover i {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
     .registration-card-new {
         grid-template-columns: 1fr;
+        max-width: 500px;
+        margin: 0 auto;
         min-height: auto;
     }
 
-    /* Info goes on top */
     .info-column {
-        order: 1;
-        padding: 25px 20px;
-        text-align: center;
-        align-items: center;
+        display: none;
+        /* Hide info column on smaller screens like many modern logins */
     }
 
     .form-column {
-        order: 2;
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-column {
         padding: 30px 20px;
     }
 
-    .info-title {
-        text-align: center;
-        font-size: 1.3rem;
-    }
-
-    .info-list {
-        align-items: center;
-    }
-
-    .info-list li {
-        justify-content: center;
-        text-align: center;
-    }
-
-    .info-list i {
-        margin-right: 10px;
+    .form-title-new {
+        font-size: 1.8rem;
     }
 }

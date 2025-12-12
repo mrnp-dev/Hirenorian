@@ -5,34 +5,34 @@
 
 <?php
 
-    session_start();
+session_start();
 
-    $students = [];
+$students = [];
 
-    $apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
+$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
 
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    $response = curl_exec($ch);
-    if ($response === false) {
-        die("Curl error: " . curl_error($ch));
-    }
+$response = curl_exec($ch);
+if ($response === false) {
+    die("Curl error: " . curl_error($ch));
+}
 
-    curl_close($ch);
+curl_close($ch);
 
-    $data = json_decode($response, true);
+$data = json_decode($response, true);
 
-    if ($data && isset($data['status'])) {
-        if ($data['status'] === "success") {
-            $students = $data['data'];
-        } else {
-            $message = isset($data['message']) ? $data['message'] : "Unknown error";
-            echo "<p>Error: $message</p>";
-        }
+if ($data && isset($data['status'])) {
+    if ($data['status'] === "success") {
+        $students = $data['data'];
     } else {
-        echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
+        $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<p>Error: $message</p>";
     }
+} else {
+    echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
+}
 ?>
 
 
@@ -49,7 +49,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../../AdminStudentManagement/css/dashboard.css">
+    <link rel="stylesheet" href="../../AdminStudentManagement/css/dashboard.css?v=<?php echo time(); ?>">
     <link rel="stylesheet" href="../css/student_management_modern.css">
 </head>
 
@@ -58,8 +58,9 @@
         <aside class="sidebar">
             <div class="logo-container">
                 <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
-                    <span>Hirenorian</span>
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
+                    <span>Hirenorian 
+                    </span>
                 </a>
             </div>
             <nav class="sidebar-nav">
@@ -96,9 +97,7 @@
             <main class="dashboard-body">
                 <h1 class="page-title">Student Management</h1>
                 <div class="card student-management-card">
-                    <div class="table-actions">
-                        <h2><i class="fa-solid fa-users"></i> Student Records</h2>
-                    </div>
+
 
                     <table class="crud-table" id="datatableid">
                         <thead>

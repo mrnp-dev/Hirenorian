@@ -146,7 +146,7 @@ function timeAgo($timestamp)
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../AdminStudentManagement/css/dashboard.css">
-    <link rel="stylesheet" href="../css/dashboard_two.css">
+    <link rel="stylesheet" href="../css/dashboard_two.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -154,7 +154,7 @@ function timeAgo($timestamp)
         <aside class="sidebar">
             <div class="logo-container">
                 <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
                     <span>Hirenorian</span>
                 </a>
             </div>
@@ -167,7 +167,7 @@ function timeAgo($timestamp)
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Management</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="../../AdminCompanyManagement/php/company_management.php" class="nav-item">
                     <i class="fa-solid fa-building"></i>
                     <span>Company Management</span>
                 </a>
@@ -177,14 +177,13 @@ function timeAgo($timestamp)
         <div class="main-content">
             <header class="top-bar">
                 <div class="top-bar-right">
-                    <div class="user-profile" id="userProfileBtn">
+                    <div class="user-profile" id="userProfileBtn" onclick="document.getElementById('profileDropdown').classList.toggle('show')">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
                         <span class="user-name">Juan Dela Cruz</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                     </div>
                 </div>
             </header>
@@ -287,7 +286,6 @@ function timeAgo($timestamp)
                         <h2><i class="fa-solid fa-clock-rotate-left"></i> Audit Trails</h2>
                         <div class="audit-trail-actions">
                             <input type="text" id="auditSearch" class="audit-search-input" placeholder="Search audit logs...">
-                            <button class="filter-btn"><i class="fa-solid fa-filter"></i> Filter</button>
                         </div>
                     </div>
 
@@ -307,8 +305,8 @@ function timeAgo($timestamp)
                                     <tr>
                                         <td><?php echo $auditLog['created_at']; ?></td>
                                         <td><span class="time-ago-badge"><?php echo timeAgo($auditLog['created_at']); ?></span></td>
-                                        <td><?php echo $auditLog['role']; ?></td>
-                                        <td><?php echo $auditLog['action']; ?></td>
+                                        <td><span class="role-badge <?php echo strtolower($auditLog['role']); ?>"><?php echo ucfirst($auditLog['role']); ?></span></td>
+                                        <td><span class="action-badge <?php echo strtolower($auditLog['action']); ?>"><?php echo ucfirst($auditLog['action']); ?></span></td>
                                         <td><?php echo $auditLog['description']; ?></td>
                                     </tr>
                                 <?php } ?>
@@ -325,7 +323,6 @@ function timeAgo($timestamp)
     </div>
 
     <script>
-        // Pass PHP data to JavaScript
         window.dashboardData = {
             students: {
                 verified: <?= $studentsVerified ?>,
@@ -337,7 +334,6 @@ function timeAgo($timestamp)
             }
         };
 
-        // Debug: Log the data to console
         console.log('Dashboard Data Loaded:', window.dashboardData);
         console.log('Students - Verified:', <?= $studentsVerified ?>, 'Unverified:', <?= $studentsUnverified ?>);
         console.log('Companies - Verified:', <?= $companiesVerified ?>, 'Unverified:', <?= $companiesUnverified ?>);

@@ -37,7 +37,7 @@
 /* Summary Cards Grid (Top Section) */
 .summary-cards-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
     margin-bottom: 30px;
 }
@@ -119,15 +119,27 @@
 /* Charts Grid (Middle Section) */
 .charts-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 15px;
     margin-bottom: 30px;
 }
 
 .chart-card {
     display: flex;
     flex-direction: column;
-    min-height: 400px;
+    min-height: 250px;
+}
+
+.chart-body canvas {
+    max-height: 200px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transition: all 0.3s ease;
 }
 
 .chart-header {
@@ -221,8 +233,11 @@
 /* Audit Trail Section (Full Width Bottom) */
 .audit-trail-section {
     margin-top: 10px;
-    padding: 0;
+    padding: 20px;
     overflow: hidden;
+    background: linear-gradient(135deg, #f9fafb, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .audit-trail-header {
@@ -386,28 +401,34 @@
 }
 
 .action-badge.update {
-    background-color: #fff3e0;
-    color: #f57c00;
+    background-color: #ffb74d;
+    /* vibrant orange */
+    color: #ffffff;
+    /* white text */
 }
 
 .action-badge.create {
-    background-color: #e8f5e9;
-    color: #388e3c;
+    background-color: #81c784;
+    /* fresh green */
+    color: #ffffff;
 }
 
 .action-badge.delete {
-    background-color: #ffebee;
-    color: #d32f2f;
+    background-color: #e57373;
+    /* strong red */
+    color: #ffffff;
 }
 
 .action-badge.login {
-    background-color: #e1f5fe;
-    color: #0288d1;
+    background-color: #64b5f6;
+    /* bright blue */
+    color: #ffffff;
 }
 
 .action-badge.verify {
-    background-color: #f1f8e9;
-    color: #689f38;
+    background-color: #4db6ac;
+    /* teal */
+    color: #ffffff;
 }
 
 .status-badge.success {
@@ -427,8 +448,8 @@
     font-size: 0.8rem;
     font-weight: 600;
     display: inline-block;
-    background: linear-gradient(135deg, #e8eaf6, #c5cae9);
-    color: #3f51b5;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+    color: #2e7d32;
     letter-spacing: 0.3px;
     white-space: nowrap;
 }

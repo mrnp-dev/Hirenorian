@@ -48,7 +48,7 @@ if ($data && isset($data['status'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css">
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/style.css?v=<?php echo time(); ?>">
 </head>
 
 <body>
@@ -56,7 +56,7 @@ if ($data && isset($data['status'])) {
         <aside class="sidebar">
             <div class="logo-container">
                 <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
                     <span>Hirenorian</span>
                 </a>
             </div>

@@ -51,7 +51,7 @@ body {
 .card {
     background: #fff;
     border-radius: 12px;
-    padding: 20px;
+    padding: 15px;
     box-shadow: var(--card-shadow);
 }
 
@@ -567,13 +567,15 @@ body {
 .crud-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    /* Smaller font */
     table-layout: fixed;
 }
 
 .crud-table th,
 .crud-table td {
-    padding: 15px 20px;
+    padding: 6px 10px;
+    /* Much smaller padding */
     text-align: left;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -582,6 +584,7 @@ body {
     background-color: var(--bg-light);
     color: #555;
     font-weight: 600;
+    font-size: 0.8rem;
 }
 
 .crud-table tbody tr:hover {
@@ -590,10 +593,12 @@ body {
 
 /* Status Badges */
 .status {
-    padding: 5px 12px;
+    padding: 3px 10px;
+    /* Compact badges */
     border-radius: 20px;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
+    /* Smaller text */
     display: inline-block;
 }
 
@@ -620,17 +625,19 @@ body {
 /* Action Buttons (Edit/Delete) */
 .action-buttons {
     text-align: center;
-    width: 100px;
+    white-space: nowrap;
 }
 
 .action-btn {
     background: none;
     border: none;
     cursor: pointer;
-    margin: 0 5px;
-    font-size: 1rem;
+    margin: 0 2px;
+    font-size: 0.9rem;
+    /* Smaller icons */
     transition: color 0.2s;
-    padding: 5px;
+    padding: 2px 4px;
+    /* Tighter interaction area */
     border-radius: 4px;
 }
 
@@ -683,21 +690,20 @@ body {
 
 /* Pagination container padding */
 .dataTables_wrapper .dataTables_paginate {
-    padding: 10px 15px 10px 15px !important;
+    padding: 5px 10px 5px 10px !important;
+    font-size: 0.85rem;
 }
 
 .dataTables_wrapper .dataTables_filter,
 .dataTables_wrapper .dataTables_length {
-    padding: 20px 15px 10px 15px !important;
-}
-
-.dataTables_wrapper .dataTables_length {
-    padding: 20px 15px 10px 15px !important;
+    padding: 10px 10px 5px 10px !important;
+    font-size: 0.85rem;
 }
 
 .dataTables_wrapper .dataTables_info {
-    padding: 20px 15px 10px 15px !important;
+    padding: 10px 10px 5px 10px !important;
     color: var(--primary-maroon);
+    font-size: 0.85rem;
 }
 
 /* Specific Column Widths */
@@ -706,10 +712,6 @@ body {
     width: 5%;
 }
 
-.crud-table th:nth-child(11),
-.crud-table td:nth-child(11) {
-    width: 10%;
-}
 
 .crud-table th:nth-child(5),
 .crud-table td:nth-child(5) {
@@ -729,7 +731,7 @@ body {
 
 .crud-table th:nth-child(11),
 .crud-table td:nth-child(11) {
-    width: 7%;
+    width: 10%;
 }
 
 .crud-table th:nth-child(7),
