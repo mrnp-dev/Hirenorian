@@ -304,6 +304,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch application counts
     fetchApplicationCounts();
+
+    // Fetch recommended jobs
+    fetchRecommendedJobs();
 });
 
 // ============================================================================
@@ -373,4 +376,154 @@ async function fetchApplicationCounts() {
         console.error('[Dashboard] Error fetching application counts:', error);
         // Keep default values if request fails
     }
+}
+
+// ============================================================================
+// RECOMMENDATIONS FUNCTIONALITY
+// ============================================================================
+
+// Function to fetch recommended jobs based on student tags
+async function fetchRecommendedJobs() {
+    console.log('[Dashboard] Fetching recommended jobs');
+
+    // Check if STUDENT_ID is available
+    if (!STUDENT_ID) {
+        console.error('[Dashboard] Student ID not available for recommendations');
+        return;
+    }
+
+    try {
+        // Step 1: Get student tags from Student API
+        const emailResponse = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: STUDENT_ID
+            })
+        });
+
+        const studentData = await emailResponse.json();
+        console.log('[Dashboard] Student data response:', studentData);
+
+        if (studentData.status !== 'success' || !studentData.data || !studentData.data.basic_info) {
+            console.error('[Dashboard] Failed to fetch student information');
+            return;
+        }
+
+        // Get student tags (top 3 tags)
+        const basic = studentData.data.basic_info;
+        const studentTags = [
+            basic.tag1,
+            basic.tag2,
+            basic.tag3
+        ].filter(tag => tag && tag.trim() !== '');
+
+        console.log('[Dashboard] Student tags:', studentTags);
+
+        if (studentTags.length === 0) {
+            console.warn('[Dashboard] No student tags found, showing generic recommendations');
+            // Could show generic/popular jobs here
+            return;
+        }
+
+        // Step 2: Search jobs using student tags
+        const jobsResponse = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/search_jobs.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                career_tags: studentTags,
+                courses: [],
+                location: null,
+                work_type: null,
+                keyword: null
+            })
+        });
+
+        const jobsData = await jobsResponse.json();
+        console.log('[Dashboard] Jobs API response:', jobsData);
+
+        if (jobsData.status === 'success' && jobsData.data) {
+            // Display top 3 recommended jobs
+            displayRecommendations(jobsData.data.slice(0, 3));
+        } else {
+            console.error('[Dashboard] Failed to fetch jobs:', jobsData.message);
+        }
+
+    } catch (error) {
+        console.error('[Dashboard] Error fetching recommendations:', error);
+    }
+}
+
+// Function to display recommended jobs
+function displayRecommendations(jobs) {
+    console.log('[Dashboard] Displaying', jobs.length, 'recommended jobs');
+
+    const recommendationsGrid = document.querySelector('.recommendations-grid');
+    if (!recommendationsGrid) {
+        console.error('[Dashboard] Recommendations grid not found');
+        return;
+    }
+
+    // Clear existing recommendations
+    recommendationsGrid.innerHTML = '';
+
+    if (jobs.length === 0) {
+        recommendationsGrid.innerHTML = `
+            <div class="no-recommendations">
+                <i class="fa-solid fa-inbox"></i>
+                <p>No recommendations available at the moment</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Create job cards
+    jobs.forEach(job => {
+        const card = createRecommendationCard(job);
+        recommendationsGrid.appendChild(card);
+    });
+}
+
+// Function to create a recommendation card
+function createRecommendationCard(job) {
+    const card = document.createElement('div');
+    card.className = 'recommendation-card';
+
+    // Use company icon or fallback image
+    const imageUrl = job.company_icon || '../../../Landing Page/Images/dhvsu-bg-image.jpg';
+
+    // Extract top 3 tags
+    const tagsHTML = (job.tags || []).slice(0, 3).map(tag =>
+        `<span class="rec-tag">${tag}</span>`
+    ).join('');
+
+    // Construct location
+    const location = [job.city, job.province].filter(Boolean).join(', ') || 'Location TBD';
+
+    card.innerHTML = `
+        <img src="${imageUrl}" alt="${job.title}" class="recommendation-image" onerror="this.src='../../../Landing Page/Images/dhvsu-bg-image.jpg'">
+        <div class="recommendation-content">
+            <h3>${job.title}</h3>
+            <p>${job.company_name}</p>
+            <div class="recommendation-tags">
+                ${tagsHTML}
+                ${job.work_type ? `<span class="rec-tag">${job.work_type}</span>` : ''}
+            </div>
+            <div class="recommendation-footer">
+                <button class="btn-quick-apply" data-job-id="${job.post_id}">Apply Now</button>
+            </div>
+        </div>
+    `;
+
+    // Add click handler for Apply Now button
+    const applyBtn = card.querySelector('.btn-quick-apply');
+    applyBtn.addEventListener('click', () => {
+        window.location.href = `../../Application Form Page/php/application_form.php?job_id=${job.post_id}`;
+    });
+
+    return card;
 }

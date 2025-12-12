@@ -27,13 +27,15 @@ $query = "
     SELECT 
         jp.post_id AS jobId,
         jd.title AS jobTitle,
-        jd.location,
+        jd.province,
+        jd.city,
         jd.work_type AS workType,
-        jp.status, /* Added status field */
+        jp.status,
         jp.applicant_limit AS applicantLimit,
         COUNT(a.applicant_id) AS currentApplicants,
         jd.category,
-        jd.required_document AS requiredDocument,
+        jd.resume AS resumeRequired,
+        jd.cover_letter AS coverLetterRequired,
         jd.description AS jobDescription,
         jd.responsibilities,
         jd.qualifications,
@@ -64,8 +66,11 @@ try {
     $tagStmt->execute([':job_id' => $job_id]);
     $tags = $tagStmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // DEBUG: Log the raw category value from database
-    error_log("🔍 DEBUG [fetch_job_details.php] - Job ID: {$job_id}, Category from DB: '{$row["category"]}', Tags: " . json_encode($tags));
+    // Construct location from province and city
+    $location = trim(($row["city"] ? $row["city"] . ", " : "") . ($row["province"] ?? ""));
+    if (empty($location)) {
+        $location = "Location not specified";
+    }
 
     // Build response
     echo json_encode([
@@ -73,14 +78,17 @@ try {
         "data" => [
             "jobId" => $row["jobId"],
             "jobTitle" => $row["jobTitle"],
-            "location" => $row["location"],
+            "province" => $row["province"],
+            "city" => $row["city"],
+            "location" => $location, // Constructed location for backward compatibility
             "workType" => $row["workType"],
             "status" => $row["status"],
             "applicantLimit" => $row["applicantLimit"],
             "currentApplicants" => $row["currentApplicants"],
             "category" => $row["category"],
             "workTags" => $tags,
-            "requiredDocument" => $row["requiredDocument"],
+            "resumeRequired" => (bool)$row["resumeRequired"],
+            "coverLetterRequired" => (bool)$row["coverLetterRequired"],
             "jobDescription" => $row["jobDescription"],
             "responsibilities" => $row["responsibilities"],
             "qualifications" => $row["qualifications"],
