@@ -30,7 +30,7 @@ $query = "
         jd.province,
         jd.city,
         jd.work_type AS workType,
-        jp.status, /* Added status field */
+        jp.status,
         jp.applicant_limit AS applicantLimit,
         COUNT(a.applicant_id) AS currentApplicants,
         jd.category,
@@ -66,8 +66,11 @@ try {
     $tagStmt->execute([':job_id' => $job_id]);
     $tags = $tagStmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // DEBUG: Log the raw category value from database
-    error_log("🔍 DEBUG [fetch_job_details.php] - Job ID: {$job_id}, Category from DB: '{$row["category"]}', Tags: " . json_encode($tags));
+    // Construct location from province and city
+    $location = trim(($row["city"] ? $row["city"] . ", " : "") . ($row["province"] ?? ""));
+    if (empty($location)) {
+        $location = "Location not specified";
+    }
 
     // Build response
     echo json_encode([
