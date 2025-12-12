@@ -1,3 +1,59 @@
+<?php
+session_start();
+if (isset($_SESSION['email'])) {
+    $company_email = $_SESSION['email'];
+    echo "<script>console.log('Company Email: " . $company_email . "');</script>";
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "company_email" => $company_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    } else {
+        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
+
+    }
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data['status'] === "success") {
+        echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
+
+    } else {
+        echo "<script>console.log('Err: " . $data['message'] . "');</script>";
+    }
+
+    // Updated to match new API structure
+    if (isset($data['company'])) {
+        $company = $data['company'];
+        $company_id = $company['company_id'];
+        $company_name = $company['company_name'];
+
+        $company_icon_url = "https://via.placeholder.com/40"; // Default
+        if (!empty($data['icons'])) {
+            $url = $data['icons'][0]['icon_url'];
+            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
+        }
+
+    } else {
+        $company_name = "Unknown";
+        $company_id = 0;
+        $company_icon_url = "https://via.placeholder.com/40";
+    }
+
+} else {
+    header("Location: ../../../Landing Page/php/landing_page.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,6 +61,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hirenorian - Company Dashboard</title>
+    <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,28 +82,28 @@
                 <span class="logo-text">Hirenorian</span>
             </div>
             <ul class="nav-menu">
-                <li class="nav-item active" data-section="dashboard-section">
+                <li class="nav-item active">
                     <a href="#" class="nav-link">
                         <i class="fa-solid fa-table-columns"></i>
                         <span class="link-text">Dashboard</span>
                     </a>
                 </li>
-                <li class="nav-item" data-section="company-deets-section">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="../../Company Profile Page/php/company_profile.php" class="nav-link">
                         <i class="fa-solid fa-users"></i>
-                        <span class="link-text">Company Deets</span>
+                        <span class="link-text">Company Profile</span>
                     </a>
                 </li>
-                <li class="nav-item" data-section="applicants-manager-section">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="../../Job Listing Page/php/job_listing.php" class="nav-link">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <span class="link-text">Applicants Manager</span>
+                        <span class="link-text">Job Listing</span>
                     </a>
                 </li>
-                <li class="nav-item" data-section="company-info-section">
-                    <a href="#" class="nav-link">
+                <li class="nav-item">
+                    <a href="../../Help Page/php/help.php" class="nav-link">
                         <i class="fa-solid fa-circle-info"></i>
-                        <span class="link-text">Company Info</span>
+                        <span class="link-text">Help</span>
                     </a>
                 </li>
             </ul>
@@ -59,9 +116,9 @@
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <!-- Placeholder for user image -->
+                            <img src="<?php echo $company_icon_url; ?>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -74,6 +131,8 @@
                 <div class="page-title">
                     <h1>Dashboard</h1>
                 </div>
+                <!-- Hidden Input for JS -->
+                <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
 
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
@@ -117,14 +176,14 @@
                                             <div class="stat-indicator active-indicator"></div>
                                             <div class="stat-details">
                                                 <span class="stat-label">Active Posts</span>
-                                                <span class="stat-number" id="activePostCount">1</span>
+                                                <span class="stat-number" id="activePostCount">0</span>
                                             </div>
                                         </div>
                                         <div class="stat-card closed-card">
                                             <div class="stat-indicator closed-indicator"></div>
                                             <div class="stat-details">
                                                 <span class="stat-label">Closed Posts</span>
-                                                <span class="stat-number" id="closedPostCount">1</span>
+                                                <span class="stat-number" id="closedPostCount">0</span>
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +193,7 @@
                                         <div class="chart-container">
                                             <canvas id="postsChart"></canvas>
                                             <div class="chart-center-label">
-                                                <span class="center-number" id="totalPostsCount">2</span>
+                                                <span class="center-number" id="totalPostsCount">0</span>
                                                 <span class="center-text">Total</span>
                                             </div>
                                         </div>
@@ -152,7 +211,7 @@
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Total Applications</span>
-                                            <span class="metric-number" id="totalApplications">2,450</span>
+                                            <span class="metric-number" id="totalApplications">0</span>
                                         </div>
                                     </div>
                                     <div class="metric-card accepted">
@@ -161,7 +220,7 @@
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Accepted</span>
-                                            <span class="metric-number" id="acceptedApplications">890</span>
+                                            <span class="metric-number" id="acceptedApplications">0</span>
                                         </div>
                                     </div>
                                     <div class="metric-card rejected">
@@ -170,39 +229,12 @@
                                         </div>
                                         <div class="metric-content">
                                             <span class="metric-label">Rejected</span>
-                                            <span class="metric-number" id="rejectedApplications">1,560</span>
+                                            <span class="metric-number" id="rejectedApplications">0</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-
-                <!-- Company Deets Section -->
-                <section id="company-deets-section" class="content-section">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-users placeholder-icon"></i>
-                        <h2>Company Deets</h2>
-                        <p>Manage your company details and team members here.</p>
-                    </div>
-                </section>
-
-                <!-- Applicants Manager Section -->
-                <section id="applicants-manager-section" class="content-section">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-magnifying-glass placeholder-icon"></i>
-                        <h2>Applicants Manager</h2>
-                        <p>Review and manage job applications.</p>
-                    </div>
-                </section>
-
-                <!-- Company Info Section -->
-                <section id="company-info-section" class="content-section">
-                    <div class="placeholder-content">
-                        <i class="fa-solid fa-circle-info placeholder-icon"></i>
-                        <h2>Company Info</h2>
-                        <p>Update your company profile and information.</p>
                     </div>
                 </section>
             </div>

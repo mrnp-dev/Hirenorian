@@ -8,13 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/student_registrationForm.css">
     <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../Reset Password UI/css/reset_password.css">
     <title>Student sign in 1</title>
 </head>
 
 <body>
     <div class="header">
-        <img src="../images/DHVSU-LOGO.png" alt="Logo">
-        <h1>Hirenorian</h1>
+        <div class="header-left">
+            <img src="../images/DHVSU-LOGO.png" alt="Logo">
+            <h1>Hirenorian</h1>
+        </div>
+        <a href="../../Company Registration Page/php/company.php" class="switch-registration-btn">
+            <i class="fa fa-building"></i>
+            <span>Company Registration</span>
+        </a>
     </div>
 
     <div class="wrapper">
@@ -26,11 +33,16 @@
                         <input type="email" name="Student Email" id="signup-email" placeholder="Student Email">
                         <p>error</p>
                     </div>
+                    <!-- MODIFIED: Changed type from 'email' to 'password' and added toggle button -->
                     <div class="input-wrapper">
-                        <input type="email" name="Password" id="signup-password" placeholder="Password">
+                        <input type="password" name="Password" id="signup-password" placeholder="Password">
                         <p>error</p>
+                        <button type="button" class="toggle_show_hide" id="toggleSignInPassword"
+                            onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
                     </div>
-                    <span>Forgot password? <a href="" id="forgot-pass">Reset Password</a></span>
+                    <!-- END MODIFICATION -->
+                    <span>Forgot password? <a href="javascript:void(0)" id="forgot-pass"
+                            onclick="openResetPasswordUI()">Reset Password</a></span>
                     <button type="button" id="signIn_Btn" onclick="check_LogIn_Fields()">Login</button>
                 </form>
             </div>
@@ -75,17 +87,18 @@
                                 <p>error</p>
                             </div>
 
-                            <div class="input-wrapper">
+                            <div class="input-wrapper phone-wrapper">
                                 <input type="text" id="phoneNumber-input" name="Phone Number" placeholder="Phone No *"
                                     minlength="11" maxlength="13">
                                 <p>error</p>
                             </div>
                         </div>
+                        <!-- MODIFIED: Updated onclick to pass 'this' for individual toggle -->
                         <div class="input-wrapper">
                             <input type="password" id="password-input" name="Password" placeholder="Password *">
                             <p>error</p>
                             <button type="button" class="toggle_show_hide" id="togglePassword"
-                                onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
+                                onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
                         </div>
 
                         <div class="input-wrapper">
@@ -93,8 +106,9 @@
                                 placeholder="Confirm Password *">
                             <p>error</p>
                             <button type="button" class="toggle_show_hide" id="toggleConfirmPassword"
-                                onclick="toggleShow_Hide_Password()"><i class="fa fa-eye"></i></button>
+                                onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
                         </div>
+                        <!-- END MODIFICATION -->
 
                         <div class="button-container">
                             <button type="button" class="btn btn-landing" onclick="goBackToLandingPage()">Back to
@@ -125,7 +139,7 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="input-wrapper">
+                            <div class="input-wrapper student-num-wrapper">
                                 <input type="text" id="studNum-input" name="Student Number" placeholder="Student No *">
                                 <p>error</p>
                             </div>
@@ -217,6 +231,9 @@
         </div>
     </div>
 
+    <!-- Reset Password UI -->
+    <?php include '../Reset Password UI/php/reset_password.php'; ?>
+
     <!-- OTP Verification Modal -->
     <div class="otp-modal-overlay" id="otpModalOverlay" style="display: none;">
         <div class="otp-modal-content">
@@ -260,6 +277,7 @@
     <script src="../js/student_registrationForm.js"></script>
     <script src="../js/email_verification.js"></script>
     <script src="../js/toast.js"></script>
+    <script src="../Reset Password UI/js/reset_password.js"></script>
 </body>
 
 </html>

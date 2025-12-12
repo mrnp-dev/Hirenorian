@@ -148,6 +148,32 @@
                     <span class="page-path">Account Registration Pages/.../company.php</span>
                     <span class="badge badge-company">Company</span>
                 </a>
+                <a href="Account Registration Pages/SR-Duplicate OTP Page/php/student_registrationForm.php" class="page-link">
+                    <span class="page-name">SR-Duplicate OTP Page</span>
+                    <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
+                    <span class="badge badge-auth">Dev</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Prototyping & Testing</h2>
+            <div class="link-grid">
+                <a href="../Prototyping/EmailTesting/index.html" class="page-link">
+                    <span class="page-name">Email Sending Test</span>
+                    <span class="page-path">Prototyping/EmailTesting/index.html</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
+                <a href="../Prototyping/FileUpload/client_sender.php" class="page-link">
+                    <span class="page-name">File Upload Sender</span>
+                    <span class="page-path">Prototyping/FileUpload/client_sender.php</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
+                <a href="../Prototyping/FileUpload/client_viewer.php" class="page-link">
+                    <span class="page-name">File Upload Viewer</span>
+                    <span class="page-path">Prototyping/FileUpload/client_viewer.php</span>
+                    <span class="badge badge-main">Prototype</span>
+                </a>
             </div>
         </div>
 
@@ -169,7 +195,69 @@
                     <span class="page-path">Student Pages/.../edit_profile.php</span>
                     <span class="badge badge-student">Edit Profile</span>
                 </a>
+                <a href="Student Pages/Internship Search Page/php/internship_search.php" class="page-link">
+                    <span class="page-name">Internship Search</span>
+                    <span class="page-path">Student Pages/.../internship_search.php</span>
+                    <span class="badge badge-student">Search</span>
+                </a>
 
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Company Portal</h2>
+            <div class="link-grid">
+                <a href="Company Pages/Company Dashboard/php/company_dashboard.php" class="page-link">
+                    <span class="page-name">Company Dashboard</span>
+                    <span class="page-path">Company Pages/.../company_dashboard.php</span>
+                    <span class="badge badge-company">Dashboard</span>
+                </a>
+                <a href="Company Pages/Company Profile Page/php/company_profile.php" class="page-link">
+                    <span class="page-name">Company Profile</span>
+                    <span class="page-path">Company Pages/.../company_profile.php</span>
+                    <span class="badge badge-company">Profile</span>
+                </a>
+                <a href="Company Pages/Job Listing Page/php/job_listing.php" class="page-link">
+                    <span class="page-name">Job Listing</span>
+                    <span class="page-path">Company Pages/.../job_listing.php</span>
+                    <span class="badge badge-company">Jobs</span>
+                </a>
+                <a href="Company Pages/Company Edit Profile Page/php/edit_company_profile.php" class="page-link">
+                    <span class="page-name">Edit Company Profile</span>
+                    <span class="page-path">Company Pages/.../edit_company_profile.php</span>
+                    <span class="badge badge-company">Edit Profile</span>
+                </a>
+                <a href="Company Pages/Applicant's Profile Page/php/applicant_profile.php" class="page-link">
+                    <span class="page-name">Applicant Profile</span>
+                    <span class="page-path">Company Pages/.../applicant_profile.php</span>
+                    <span class="badge badge-company">Applicant</span>
+                </a>
+                <a href="Company Pages/Help Page/php/help.php" class="page-link">
+                    <span class="page-name">Help Page</span>
+                    <span class="page-path">Company Pages/.../help.php</span>
+                    <span class="badge badge-company">Help</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Admin Portal</h2>
+            <div class="link-grid">
+                <a href="Admin Page/AdminDashboard/php/dashboard.php" class="page-link">
+                    <span class="page-name">Admin Dashboard</span>
+                    <span class="page-path">Admin Page/.../dashboard.php</span>
+                    <span class="badge badge-main">Dashboard</span>
+                </a>
+                <a href="Admin Page/AdminStudentManagement/php/student_management.php" class="page-link">
+                    <span class="page-name">Student Management</span>
+                    <span class="page-path">Admin Page/.../student_management.php</span>
+                    <span class="badge badge-main">Management</span>
+                </a>
+                <a href="Admin Page/AdminCompanyManagement/php/company_management.php" class="page-link">
+                    <span class="page-name">Company Management</span>
+                    <span class="page-path">Admin Page/.../company_management.php</span>
+                    <span class="badge badge-main">Management</span>
+                </a>
             </div>
         </div>
 

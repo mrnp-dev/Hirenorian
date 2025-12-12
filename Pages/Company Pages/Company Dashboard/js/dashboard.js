@@ -41,38 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Section Navigation Logic
-    const navItems = document.querySelectorAll('.nav-item');
-    const sections = document.querySelectorAll('.content-section');
-    const pageTitle = document.querySelector('.page-title h1');
-
-    navItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            const targetSectionId = item.getAttribute('data-section');
-            const sectionName = item.querySelector('.link-text').textContent;
-
-            // Remove active class from all nav items
-            navItems.forEach(navItem => navItem.classList.remove('active'));
-
-            // Add active class to clicked nav item
-            item.classList.add('active');
-
-            // Hide all sections
-            sections.forEach(section => section.classList.remove('active'));
-
-            // Show target section
-            const targetSection = document.getElementById(targetSectionId);
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
-
-            // Update page title
-            pageTitle.textContent = sectionName;
-        });
-    });
-
     // ========================================
     // 2. CHART.JS - PIE CHART
     // ========================================
@@ -81,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('postsChart');
 
     // Initialize chart with default data
-    function initializePostsChart(activePosts = 1, closedPosts = 1) {
+    function initializePostsChart(activePosts = 0, closedPosts = 0) {
         if (!ctx) return;
 
         const totalPosts = activePosts + closedPosts;
@@ -150,18 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('applicantsModal');
     const closeModal = document.querySelector('.close-modal');
 
-    // Mock Data for Job Posts (Replace this with your backend data)
-    let jobPostsData = [
-        { title: 'Senior UX Designer', applicants: '8/10', datePosted: '2025-10-28', status: 'Active' },
-        { title: 'Full Stack Developer', applicants: '10/10', datePosted: '2025-10-30', status: 'Closed' },
-        { title: 'Data Scientist', applicants: '3/5', datePosted: '2025-11-01', status: 'Active' },
-        { title: 'Frontend Developer', applicants: '5/8', datePosted: '2025-11-02', status: 'Active' },
-        { title: 'Backend Engineer', applicants: '10/10', datePosted: '2025-10-25', status: 'Closed' },
-        { title: 'Product Manager', applicants: '2/5', datePosted: '2025-11-03', status: 'Active' },
-        { title: 'QA Engineer', applicants: '4/6', datePosted: '2025-11-04', status: 'Active' },
-        { title: 'DevOps Engineer', applicants: '1/3', datePosted: '2025-11-05', status: 'Active' },
-        { title: 'UI Designer', applicants: '6/6', datePosted: '2025-11-06', status: 'Closed' }
-    ];
+    // Store fetched data globally for modal use
+    let jobPostsData = [];
 
     // Sorting Logic: Active first, then Closed
     const statusOrder = {
@@ -205,13 +163,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial render
-    const sortedPosts = sortJobPosts(jobPostsData);
-    renderTable(sortedPosts, jobListingBody);
+
 
     // Modal Logic
     if (viewAllBtn && modal) {
         viewAllBtn.addEventListener('click', () => {
+            // Sor the global data before rendering
+            const sortedPosts = sortJobPosts([...jobPostsData]);
             renderTable(sortedPosts, modalJobListingBody);
             modal.style.display = 'block';
         });
@@ -324,52 +282,75 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // ========================================
-    // 5. EXAMPLE: BACKEND INTEGRATION USAGE
+    // 5. BACKEND INTEGRATION
     // ========================================
 
-    /*
-    // Example: Fetch data from your PHP backend
-    async function loadDashboardData() {
+    async function fetchDashboardData() {
         try {
             setLoadingState(true);
-            
-            const response = await fetch('path/to/your/backend.php');
-            const data = await response.json();
-            
-            // Update all dashboard components
-            updateRecruitmentAnalytics({
-                total: data.totalApplications,
-                accepted: data.acceptedApplications,
-                rejected: data.rejectedApplications
+
+            const emailInput = document.getElementById('company_email');
+            if (!emailInput || !emailInput.value) {
+                console.warn('Company email not found');
+                setLoadingState(false);
+                return;
+            }
+
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_dashboard_data.php", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ company_email: emailInput.value })
             });
-            
-            updatePostsChart(data.activePosts, data.closedPosts);
-            updateJobListings(data.applicants);
-            
-            setLoadingState(false);
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                const data = result.data;
+
+                // 1. Update Recruitment Analytics
+                window.updateRecruitmentAnalytics({
+                    total: data.stats.total_applicants,
+                    accepted: data.stats.accepted,
+                    rejected: data.stats.rejected
+                });
+
+                // 2. Update Post Status Chart
+                window.updatePostsChart(data.post_stats.active_count, data.post_stats.closed_count);
+
+                // Update Total Center Count
+                const totalPostsEl = document.getElementById('totalPostsCount');
+                if (totalPostsEl) {
+                    totalPostsEl.textContent = data.post_stats.total_posts;
+                }
+
+                // 3. Update Job Listings
+                // Map backend fields to frontend expected format
+                const tableData = data.recent_jobs.map(job => ({
+                    title: job.title,
+                    applicants: `${job.applicant_count}/${job.applicant_limit}`,
+                    datePosted: job.date_posted,
+                    status: job.status
+                }));
+
+                window.updateJobListings(tableData);
+
+            } else {
+                console.error('API Error:', result.message);
+            }
+
         } catch (error) {
-            console.error('Error loading dashboard data:', error);
+            console.error('Error fetching dashboard data:', error);
+        } finally {
             setLoadingState(false);
         }
     }
-    
-    // Call on page load
-    // loadDashboardData();
-    
-    // Refresh every 30 seconds
-    // setInterval(loadDashboardData, 30000);
-    */
+
+    // Initial Load
+    fetchDashboardData();
 
     // ========================================
     // CONSOLE HELPERS (For Testing)
     // ========================================
 
     console.log('%c🎉 Dashboard Loaded Successfully!', 'color: #10b981; font-size: 14px; font-weight: bold;');
-    console.log('%cAvailable Functions:', 'color: #3b82f6; font-size: 12px; font-weight: bold;');
-    console.log('• updateRecruitmentAnalytics({ total, accepted, rejected })');
-    console.log('• updatePostsChart(activePosts, closedPosts)');
-    console.log('• updateJobListings(applicantsArray)');
-    console.log('• setLoadingState(true/false)');
-    console.log('%cExample:', 'color: #f59e0b; font-size: 12px; font-weight: bold;');
-    console.log("updateRecruitmentAnalytics({ total: 5000, accepted: 2000, rejected: 3000 })");
 });

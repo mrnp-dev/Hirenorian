@@ -1,0 +1,276 @@
+mysql> show tables;
++---------------------------------+
+| Tables_in_Hirenorian            |
++---------------------------------+
+| Applicants                      |
+| Company                         |
+| Education                       |
+| Job_Details                     |
+| Job_Posts                       |
+| Job_Requirements                |
+| Job_Tags                        |
+| StudentEducationHistory         |
+| StudentExperience               |
+| StudentProfile                  |
+| StudentProfileAuditLog          |
+| StudentSkills                   |
+| Students                        |
+| company_additional_informations |
+| company_contact_persons         |
+| company_locations               |
+| company_perks_benefits          |
+| company_statistics              |
++---------------------------------+
+
+mysql> Describe Applicants;
++------------------+---------------------------------------+------+-----+-------------------+-------------------+
+| Field            | Type                                  | Null | Key | Default           | Extra             |
++------------------+---------------------------------------+------+-----+-------------------+-------------------+
+| applicant_id     | int                                   | NO   | PRI | NULL              | auto_increment    |
+| post_id          | int                                   | NO   | MUL | NULL              |                   |
+| student_id       | int                                   | NO   | MUL | NULL              |                   |
+| document_type    | varchar(100)                          | YES  |     | NULL              |                   |
+| date_applied     | timestamp                             | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| status           | enum('Pending','Accepted','Rejected') | YES  |     | Pending           |                   |
+| resume_path      | varchar(255)                          | YES  |     | NULL              |                   |
+| coverletter_path | varchar(255)                          | YES  |     | NULL              |                   |
++------------------+---------------------------------------+------+-----+-------------------+-------------------+
+
+mysql> DESCRIBE Company;
++---------------+---------------------------------+------+-----+------------+----------------+
+| Field         | Type                            | Null | Key | Default    | Extra          |
++---------------+---------------------------------+------+-----+------------+----------------+
+| company_id    | int                             | NO   | PRI | NULL       | auto_increment |
+| company_name  | varchar(255)                    | NO   |     | NULL       |                |
+| email         | varchar(255)                    | NO   | UNI | NULL       |                |
+| password_hash | varchar(255)                    | NO   |     | NULL       |                |
+| phone_number  | varchar(20)                     | YES  |     | NULL       |                |
+| company_type  | varchar(100)                    | YES  |     | NULL       |                |
+| industry      | varchar(100)                    | YES  |     | NULL       |                |
+| address       | text                            | YES  |     | NULL       |                |
+| verification  | enum('Unverified','Verified')   | NO   |     | Unverified |                |
+| company_icon  | varchar(255)                    | YES  |     | NULL       |                |
+| activation    | enum('Activated','Deactivated') | YES  |     | Activated  |                |
++---------------+---------------------------------+------+-----+------------+----------------+
+
+mysql> DESCRIBE Education;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| edu_id       | int          | NO   | PRI | NULL    | auto_increment |
+| student_id   | int          | NO   | MUL | NULL    |                |
+| university   | varchar(100) | NO   |     | NULL    |                |
+| department   | varchar(100) | YES  |     | NULL    |                |
+| course       | varchar(100) | YES  |     | NULL    |                |
+| organization | varchar(100) | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE Job_Details;
++-------------------+--------------------------------------------+------+-----+------------+-------+
+| Field             | Type                                       | Null | Key | Default    | Extra |
++-------------------+--------------------------------------------+------+-----+------------+-------+
+| post_id           | int                                        | NO   | PRI | NULL       |       |
+| title             | varchar(255)                               | NO   |     | NULL       |       |
+| province          | varchar(100)                               | YES  |     | NULL       |       |
+| city              | varchar(100)                               | YES  |     | NULL       |       |
+| description       | text                                       | YES  |     | NULL       |       |
+| work_type         | enum('Full-time','Part-time','Internship') | YES  |     | Internship |       |
+| required_document | enum('Resume','Cover-Letter','None')       | YES  |     | Resume     |       |
+| category          | varchar(100)                               | YES  |     | NULL       |       |
+| responsibilities  | text                                       | YES  |     | NULL       |       |
+| qualifications    | text                                       | YES  |     | NULL       |       |
+| skills            | text                                       | YES  |     | NULL       |       |
++-------------------+--------------------------------------------+------+-----+------------+-------+
+
+mysql> DESCRIBE Job_Posts;
++-----------------+-------------------------+------+-----+-------------------+-----------------------------------------------+
+| Field           | Type                    | Null | Key | Default           | Extra                                         |
++-----------------+-------------------------+------+-----+-------------------+-----------------------------------------------+
+| post_id         | int                     | NO   | PRI | NULL              | auto_increment                                |
+| company_id      | int                     | NO   | MUL | NULL              |                                               |
+| status          | enum('active','closed') | YES  |     | active            |                                               |
+| applicant_limit | int                     | YES  |     | 0                 |                                               |
+| created_at      | timestamp               | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at      | timestamp               | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-----------------+-------------------------+------+-----+-------------------+-----------------------------------------------+
+
+mysql> DESCRIBE Job_Requirements;
++------------------+-----------------------------------------------------------+------+-----+---------+----------------+
+| Field            | Type                                                      | Null | Key | Default | Extra          |
++------------------+-----------------------------------------------------------+------+-----+---------+----------------+
+| requirement_id   | int                                                       | NO   | PRI | NULL    | auto_increment |
+| post_id          | int                                                       | NO   | MUL | NULL    |                |
+| requirement_type | enum('responsibility','qualification','skill','document') | NO   |     | NULL    |                |
+| requirement_text | text                                                      | NO   |     | NULL    |                |
++------------------+-----------------------------------------------------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE Job_Tags;
++---------+--------------+------+-----+---------+----------------+
+| Field   | Type         | Null | Key | Default | Extra          |
++---------+--------------+------+-----+---------+----------------+
+| tag_id  | int          | NO   | PRI | NULL    | auto_increment |
+| post_id | int          | NO   | MUL | NULL    |                |
+| tag     | varchar(100) | NO   |     | NULL    |                |
++---------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE Students;
++----------------+--------------+------+-----+-------------------+-------------------+
+| Field          | Type         | Null | Key | Default           | Extra             |
++----------------+--------------+------+-----+-------------------+-------------------+
+| account_id     | int          | NO   | PRI | NULL              | auto_increment    |
+| student_id     | int          | NO   | UNI | NULL              |                   |
+| first_name     | varchar(50)  | NO   |     | NULL              |                   |
+| last_name      | varchar(50)  | NO   |     | NULL              |                   |
+| middle_initial | varchar(2)   | YES  |     | NULL              |                   |
+| suffix         | varchar(10)  | YES  |     | NULL              |                   |
+| personal_email | varchar(100) | NO   |     | NULL              |                   |
+| phone_number   | varchar(20)  | YES  |     | NULL              |                   |
+| password_hash  | varchar(255) | NO   |     | NULL              |                   |
+| student_email  | varchar(100) | YES  | UNI | NULL              |                   |
+| created_at     | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| tag1           | varchar(50)  | YES  |     | NULL              |                   |
+| tag2           | varchar(50)  | YES  |     | NULL              |                   |
+| tag3           | varchar(50)  | YES  |     | NULL              |                   |
+| ideal_location | varchar(100) | YES  |     | NULL              |                   |
+| verified       | varchar(15)  | YES  |     | false             |                   |
+| activated      | varchar(15)  | YES  |     | true              |                   |
++----------------+--------------+------+-----+-------------------+-------------------+
+
+mysql> DESCRIBE StudentProfile;
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| profile_id      | int          | NO   | PRI | NULL    | auto_increment |
+| student_id      | int          | NO   | UNI | NULL    |                |
+| location        | varchar(255) | YES  |     | NULL    |                |
+| about_me        | text         | YES  |     | NULL    |                |
+| profile_picture | varchar(255) | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE StudentEducationHistory;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| edu_hist_id | int          | NO   | PRI | NULL    | auto_increment |
+| student_id  | int          | NO   | MUL | NULL    |                |
+| institution | varchar(100) | NO   |     | NULL    |                |
+| degree      | varchar(100) | NO   |     | NULL    |                |
+| start_year  | varchar(20)  | YES  |     | NULL    |                |
+| end_year    | varchar(20)  | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE StudentExperience;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| exp_id       | int          | NO   | PRI | NULL    | auto_increment |
+| student_id   | int          | NO   | MUL | NULL    |                |
+| job_title    | varchar(100) | NO   |     | NULL    |                |
+| company_name | varchar(100) | NO   |     | NULL    |                |
+| start_date   | varchar(50)  | YES  |     | NULL    |                |
+| end_date     | varchar(50)  | YES  |     | NULL    |                |
+| description  | text         | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE StudentProfileAuditLog;
++------------------+----------------------------------+------+-----+-------------------+-------------------+
+| Field            | Type                             | Null | Key | Default           | Extra             |
++------------------+----------------------------------+------+-----+-------------------+-------------------+
+| log_id           | int                              | NO   | PRI | NULL              | auto_increment    |
+| student_id       | int                              | NO   | MUL | NULL              |                   |
+| action_type      | enum('CREATE','UPDATE','DELETE') | NO   |     | NULL              |                   |
+| table_affected   | varchar(100)                     | NO   | MUL | NULL              |                   |
+| record_id        | int                              | YES  |     | NULL              |                   |
+| field_name       | varchar(100)                     | YES  |     | NULL              |                   |
+| old_value        | text                             | YES  |     | NULL              |                   |
+| new_value        | text                             | YES  |     | NULL              |                   |
+| action_timestamp | timestamp                        | YES  | MUL | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| ip_address       | varchar(45)                      | YES  |     | NULL              |                   |
+| user_agent       | text                             | YES  |     | NULL              |                   |
++------------------+----------------------------------+------+-----+-------------------+-------------------+
+
+mysql> DESCRIBE StudentSkills;
++----------------+--------------------------+------+-----+---------+----------------+
+| Field          | Type                     | Null | Key | Default | Extra          |
++----------------+--------------------------+------+-----+---------+----------------+
+| skill_id       | int                      | NO   | PRI | NULL    | auto_increment |
+| student_id     | int                      | NO   | MUL | NULL    |                |
+| skill_name     | varchar(100)             | NO   |     | NULL    |                |
+| skill_category | enum('Technical','Soft') | NO   |     | NULL    |                |
++----------------+--------------------------+------+-----+---------+----------------+
+
+
+
+mysql> DESCRIBE company_additional_informations;
++----------------+--------------+------+-----+---------+----------------+
+| Field          | Type         | Null | Key | Default | Extra          |
++----------------+--------------+------+-----+---------+----------------+
+| company_add_id | int unsigned | NO   | PRI | NULL    | auto_increment |
+| company_id     | int          | NO   | MUL | NULL    |                |
+| about_us       | text         | YES  |     | NULL    |                |
+| why_join_us    | text         | YES  |     | NULL    |                |
+| website_link   | varchar(255) | YES  |     | NULL    |                |
+| tagline        | varchar(255) | YES  |     | NULL    |                |
++----------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE company_contact_persons;
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| contact_person_id | int unsigned | NO   | PRI | NULL    | auto_increment |
+| company_id        | int          | NO   | MUL | NULL    |                |
+| contact_name      | varchar(255) | YES  |     | NULL    |                |
+| position          | varchar(255) | YES  |     | NULL    |                |
+| email             | varchar(255) | YES  |     | NULL    |                |
+| contact_number    | varchar(50)  | YES  |     | NULL    |                |
++-------------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE company_locations;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| loc_id      | int unsigned | NO   | PRI | NULL    | auto_increment |
+| company_id  | int          | NO   | MUL | NULL    |                |
+| location    | varchar(255) | NO   |     | NULL    |                |
+| description | text         | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE company_perks_benefits;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| perk_id    | int unsigned | NO   | PRI | NULL    | auto_increment |
+| company_id | int          | NO   | MUL | NULL    |                |
+| perk       | varchar(255) | NO   |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE company_statistics;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| stat_id      | int unsigned | NO   | PRI | NULL    | auto_increment |
+| company_id   | int          | NO   | MUL | NULL    |                |
+| employees    | int unsigned | YES  |     | 0       |                |
+| accepted     | int unsigned | YES  |     | 0       |                |
+| ex_employees | int unsigned | YES  |     | 0       |                |
++--------------+--------------+------+-----+---------+----------------+
+
+mysql> DESCRIBE company_icons;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| icon_id     | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| company_id  | int          | NO   | MUL | NULL              |                   |
+| icon_url    | varchar(255) | NO   |     | NULL              |                   |
+| uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
+
+mysql> DESCRIBE company_banners;
++-------------+--------------+------+-----+-------------------+-------------------+
+| Field       | Type         | Null | Key | Default           | Extra             |
++-------------+--------------+------+-----+-------------------+-------------------+
+| banner_id   | int unsigned | NO   | PRI | NULL              | auto_increment    |
+| company_id  | int          | NO   | MUL | NULL              |                   |
+| banner_url  | varchar(255) | NO   |     | NULL              |                   |
+| uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-------------+--------------+------+-----+-------------------+-------------------+
