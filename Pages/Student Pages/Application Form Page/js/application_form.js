@@ -6,7 +6,10 @@ let applicationData = {
     jobInfo: null,
     profileInfo: null,
     resume: null,
-    coverLetter: null
+    coverLetter: null,
+    // Document requirements from job posting
+    resumeRequired: true,  // Default to required
+    coverLetterRequired: true  // Default to required
 };
 
 // Initialize on DOM load
@@ -15,12 +18,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get job ID from sessionStorage
     applicationData.jobId = sessionStorage.getItem('applicationJobId');
+    console.log('[ApplicationForm] Job ID:', applicationData.jobId);
 
     // Initialize event listeners
     initStepNavigation();
+    console.log('[ApplicationForm] Step navigation initialized.');
     initFileUploads();
+    console.log('[ApplicationForm] File uploads initialized.');
     initReviewStep();
+    console.log('[ApplicationForm] Review step initialized.');
     loadJobInfo();
+    console.log('[ApplicationForm] Job info loaded.');
     loadProfileInfo();
 });
 
@@ -111,15 +119,19 @@ function updateProgressIndicator(fromStep, toStep) {
 }
 
 function validateCurrentStep(step) {
+    console.log('[ApplicationForm] Validating step:', step);
+
     switch (step) {
         case 3: // Resume step
-            if (!applicationData.resume) {
+            console.log('[ApplicationForm] Resume required:', applicationData.resumeRequired, 'Resume uploaded:', !!applicationData.resume);
+            if (applicationData.resumeRequired && !applicationData.resume) {
                 alert('Please upload your resume before continuing.');
                 return false;
             }
             return true;
         case 4: // Cover letter step
-            if (!applicationData.coverLetter) {
+            console.log('[ApplicationForm] Cover letter required:', applicationData.coverLetterRequired, 'Cover letter uploaded:', !!applicationData.coverLetter);
+            if (applicationData.coverLetterRequired && !applicationData.coverLetter) {
                 alert('Please upload your cover letter before continuing.');
                 return false;
             }
@@ -289,11 +301,27 @@ async function loadJobInfo() {
         return;
     }
 
-    // Try to get job data from sessionStorage first
-    const jobDataStr = sessionStorage.getItem('applicationJobData');
-    if (jobDataStr) {
-        try {
-            const jobData = JSON.parse(jobDataStr);
+    console.log('[ApplicationForm] Loading job information for job ID:', jobId);
+
+    try {
+        // Fetch job details from API to get document requirements
+        const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_job_details.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                post_id: jobId
+            })
+        });
+
+        const result = await response.json();
+        console.log('[ApplicationForm] Job details API response:', result);
+
+        if (result.status === 'success' && result.data) {
+            const jobData = result.data;
+
+            // Store job information
             applicationData.jobInfo = {
                 id: jobId,
                 title: jobData.title || 'Job Title',
@@ -302,14 +330,56 @@ async function loadJobInfo() {
                 workType: jobData.work_type || 'Full Time',
                 category: jobData.category || 'Category'
             };
+
+            // Set document requirements (1 = required, 0 = optional)
+            applicationData.resumeRequired = jobData.resume === 1 || jobData.resume === '1' || jobData.resume === true;
+            applicationData.coverLetterRequired = jobData.cover_letter === 1 || jobData.cover_letter === '1' || jobData.cover_letter === true;
+
+            console.log('[ApplicationForm] Document requirements - Resume:', applicationData.resumeRequired, 'Cover Letter:', applicationData.coverLetterRequired);
+
+            // Update UI to reflect requirements
+            updateDocumentRequirementsUI();
+
+            return;
+        }
+    } catch (error) {
+        console.error('[ApplicationForm] Error loading job details:', error);
+    }
+
+    // Fallback: Try sessionStorage
+    const jobDataStr = sessionStorage.getItem('applicationJobData');
+    if (jobDataStr) {
+        try {
+            const jobData = JSON.parse(jobDataStr);
+            applicationData.jobInfo = {
+                id: jobId,
+                title: jobData.title || 'Job Title',
+                company: jobData.company_name || 'Company Name',
+                location: `${jobData.city || ''}, ${jobData.city || ''}, ${jobData.province || ''}`.trim() || 'Location',
+                workType: jobData.work_type || 'Full Time',
+                category: jobData.category || 'Category'
+            };
+
+            // Try to get requirements from sessionStorage data
+            if ('resume' in jobData) {
+                applicationData.resumeRequired = jobData.resume === 1 || jobData.resume === '1' || jobData.resume === true;
+            }
+            if ('cover_letter' in jobData) {
+                applicationData.coverLetterRequired = jobData.cover_letter === 1 || jobData.cover_letter === '1' || jobData.cover_letter === true;
+            }
+
+            console.log('[ApplicationForm] Using sessionStorage job data');
+            console.log('[ApplicationForm] Document requirements - Resume:', applicationData.resumeRequired, 'Cover Letter:', applicationData.coverLetterRequired);
+
+            updateDocumentRequirementsUI();
             return;
         } catch (e) {
-            console.error('[ApplicationForm] Error parsing job data:', e);
+            console.error('[ApplicationForm] Error parsing job data from sessionStorage:', e);
         }
     }
 
-    // TODO: If not in sessionStorage, fetch from API
-    // For now, use placeholder
+    // Default fallback
+    console.warn('[ApplicationForm] Using default job data and requirements');
     applicationData.jobInfo = {
         id: jobId,
         title: 'Job Title',
@@ -319,6 +389,47 @@ async function loadJobInfo() {
         category: 'Category'
     };
 }
+
+// Update UI to show required/optional status for documents
+function updateDocumentRequirementsUI() {
+    console.log('[ApplicationForm] Updating document requirements UI');
+
+    // Update resume step
+    const resumeStepDesc = document.querySelector('#step-3 .step-description');
+    if (resumeStepDesc) {
+        const maxSize = '10MB'; // Updated from 5MB to match API
+        if (applicationData.resumeRequired) {
+            resumeStepDesc.textContent = `Please upload your resume in PDF format. Maximum file size: ${maxSize}`;
+        } else {
+            resumeStepDesc.textContent = `Upload your resume (Optional). PDF format. Maximum file size: ${maxSize}`;
+        }
+    }
+
+    // Update cover letter step  
+    const coverLetterStepDesc = document.querySelector('#step-4 .step-description');
+    if (coverLetterStepDesc) {
+        const maxSize = '10MB'; // Updated from 5MB to match API
+        if (applicationData.coverLetterRequired) {
+            coverLetterStepDesc.textContent = `Please upload your cover letter in PDF format. Maximum file size: ${maxSize}`;
+        } else {
+            coverLetterStepDesc.textContent = `Upload your cover letter (Optional). PDF format. Maximum file size: ${maxSize}`;
+        }
+    }
+
+    // Enable next button for optional documents if no file uploaded
+    const resumeNextBtn = document.getElementById('resumeNextBtn');
+    if (resumeNextBtn && !applicationData.resumeRequired) {
+        resumeNextBtn.disabled = false;
+        console.log('[ApplicationForm] Resume is optional, next button enabled');
+    }
+
+    const coverLetterNextBtn = document.getElementById('coverLetterNextBtn');
+    if (coverLetterNextBtn && !applicationData.coverLetterRequired) {
+        coverLetterNextBtn.disabled = false;
+        console.log('[ApplicationForm] Cover letter is optional, next button enabled');
+    }
+}
+
 
 // Load Profile Information
 async function loadProfileInfo() {
@@ -483,19 +594,31 @@ function populateReviewStep() {
 
 // Submit Application
 async function submitApplication() {
-    // Validate all required fields
-    if (!applicationData.resume) {
+    console.log('[ApplicationForm] Submit application called');
+    console.log('[ApplicationForm] Current application data:', {
+        jobId: applicationData.jobId,
+        resumeRequired: applicationData.resumeRequired,
+        coverLetterRequired: applicationData.coverLetterRequired,
+        hasResume: !!applicationData.resume,
+        hasCoverLetter: !!applicationData.coverLetter
+    });
+
+    // Validate required fields based on job requirements
+    if (applicationData.resumeRequired && !applicationData.resume) {
         alert('Please upload your resume.');
+        console.error('[ApplicationForm] Resume is required but not uploaded');
         return;
     }
 
-    if (!applicationData.coverLetter) {
+    if (applicationData.coverLetterRequired && !applicationData.coverLetter) {
         alert('Please upload your cover letter.');
+        console.error('[ApplicationForm] Cover letter is required but not uploaded');
         return;
     }
 
     if (!applicationData.jobId) {
         alert('Job information is missing. Please go back and try again.');
+        console.error('[ApplicationForm] Job ID is missing');
         return;
     }
 
@@ -512,6 +635,8 @@ async function submitApplication() {
             throw new Error('Email not found in session. Please log in again.');
         }
 
+        console.log('[ApplicationForm] Fetching student information for email:', email);
+
         // Fetch student information to get student_id
         const profileResponse = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
             method: 'POST',
@@ -524,6 +649,7 @@ async function submitApplication() {
         });
 
         const profileResult = await profileResponse.json();
+        console.log('[ApplicationForm] Profile API response:', profileResult);
 
         if (profileResult.status !== 'success' || !profileResult.data || !profileResult.data.basic_info) {
             throw new Error('Failed to retrieve student information.');
@@ -535,13 +661,30 @@ async function submitApplication() {
             throw new Error('Student ID not found.');
         }
 
+        console.log('[ApplicationForm] Student ID:', studentId);
+
         // Step 2: Prepare form data for application submission
         const formData = new FormData();
         formData.append('post_id', applicationData.jobId);
         formData.append('student_id', studentId);
         formData.append('document_type', 'Standard Application');
-        formData.append('resume', applicationData.resume);
-        formData.append('cover_letter', applicationData.coverLetter);
+
+        // Only append files if they exist
+        if (applicationData.resume) {
+            formData.append('resume', applicationData.resume);
+            console.log('[ApplicationForm] Resume attached:', applicationData.resume.name);
+        } else {
+            console.log('[ApplicationForm] No resume attached (optional)');
+        }
+
+        if (applicationData.coverLetter) {
+            formData.append('cover_letter', applicationData.coverLetter);
+            console.log('[ApplicationForm] Cover letter attached:', applicationData.coverLetter.name);
+        } else {
+            console.log('[ApplicationForm] No cover letter attached (optional)');
+        }
+
+        console.log('[ApplicationForm] Calling submit_application API...');
 
         // Step 3: Submit application to API
         const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/submit_application.php', {
