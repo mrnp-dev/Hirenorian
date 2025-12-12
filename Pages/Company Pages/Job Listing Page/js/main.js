@@ -8,9 +8,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Sign Out Logic
     const signOutBtn = document.getElementById('signOutBtn');
     if (signOutBtn) {
-        signOutBtn.addEventListener('click', (e) => {
+        signOutBtn.addEventListener('click', async (e) => {
             e.preventDefault();
-            window.location.href = '../../../../APIs/Company DB APIs/company_logout.php';
+
+            try {
+                const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/logout.php', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    window.location.href = '../../../Landing Page/php/landing_page.php';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '../../../Landing Page/php/landing_page.php';
+            }
         });
     }
 
