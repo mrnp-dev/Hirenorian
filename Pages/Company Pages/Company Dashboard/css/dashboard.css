@@ -653,8 +653,15 @@ body {
     margin: 3% auto;
     padding: 0;
     border-radius: 12px;
+    width: 60%;
+    /* Reduced width as requested "don't rely the width of it on the job posts" - implicit request for fixed/smaller width? Or just fixed? default is 85% usually. User said "don't rely the width". I'll stick to a reasonable fixed percentage or max-width. Recent was 85%. I will keep standard but enforce fixed height. User meant "don't expand based on content". */
+    /* Let's keep 85% but maybe max-width 800px */
     width: 85%;
     max-width: 900px;
+    height: 80vh;
+    /* Fixed height */
+    display: flex;
+    flex-direction: column;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
@@ -666,6 +673,8 @@ body {
     justify-content: space-between;
     align-items: center;
     background: #f8f9fa;
+    flex-shrink: 0;
+    /* Don't shrink header */
 }
 
 .close-modal {
@@ -681,8 +690,10 @@ body {
 
 .modal-body {
     padding: 25px;
-    max-height: 70vh;
+    flex: 1;
+    /* Fill remaining space */
     overflow-y: auto;
+    /* Scroll if content overflows */
 }
 
 .full-width {

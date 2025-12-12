@@ -39,7 +39,7 @@ $query = "
         jd.qualifications,
         jd.skills,
         c.company_name AS companyName,
-        c.company_icon AS companyIcon
+        (SELECT icon_url FROM company_icons WHERE company_id = c.company_id ORDER BY uploaded_at DESC LIMIT 1) AS companyIcon
     FROM Job_Posts jp
     JOIN Job_Details jd ON jp.post_id = jd.post_id
     JOIN Company c ON jp.company_id = c.company_id
@@ -64,6 +64,9 @@ try {
     $tagStmt->execute([':job_id' => $job_id]);
     $tags = $tagStmt->fetchAll(PDO::FETCH_COLUMN);
 
+    // DEBUG: Log the raw category value from database
+    error_log("🔍 DEBUG [fetch_job_details.php] - Job ID: {$job_id}, Category from DB: '{$row["category"]}', Tags: " . json_encode($tags));
+
     // Build response
     echo json_encode([
         "status" => "success",
@@ -83,7 +86,7 @@ try {
             "qualifications" => $row["qualifications"],
             "skills" => $row["skills"],
             "companyName" => $row["companyName"],
-            "companyIcon" => $row["companyIcon"] ?? "https://via.placeholder.com/80?text=Company"
+            "companyIcon" => $row["companyIcon"] ? str_replace('/var/www/html', 'http://mrnp.site:8080', $row["companyIcon"]) : "https://via.placeholder.com/80?text=Company"
         ]
     ], JSON_PRETTY_PRINT);
 

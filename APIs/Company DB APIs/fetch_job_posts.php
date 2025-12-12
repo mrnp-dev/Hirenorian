@@ -45,7 +45,8 @@ $query = "
         jp.status,
         jp.applicant_limit AS applicantLimit,
         COUNT(a.applicant_id) AS currentApplicants,
-        jd.description AS jobDescription
+        jd.description AS jobDescription,
+        (SELECT icon_url FROM company_icons WHERE company_id = jp.company_id ORDER BY uploaded_at DESC LIMIT 1) AS companyIcon
     FROM Job_Posts jp
     JOIN Job_Details jd ON jp.post_id = jd.post_id
         LEFT JOIN Applicants a ON jp.post_id = a.post_id
@@ -58,6 +59,14 @@ try {
     $stmt = $conn->prepare($query);
     $stmt->execute([':company_id' => $company_id]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Process results to fix image URLs
+    $results = array_map(function ($row) {
+        if (!empty($row['companyIcon'])) {
+            $row['companyIcon'] = str_replace('/var/www/html', 'http://mrnp.site:8080', $row['companyIcon']);
+        }
+        return $row;
+    }, $results);
 
     // Return JSON response
     echo json_encode([

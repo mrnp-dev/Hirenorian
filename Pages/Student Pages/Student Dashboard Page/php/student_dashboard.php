@@ -141,7 +141,7 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">3</div>
+                            <div class="metric-value">0</div>
                             <div class="metric-label">Total Applications</div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">1</div>
+                            <div class="metric-value">0</div>
                             <div class="metric-label">Accepted Applications</div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">1</div>
+                            <div class="metric-value">0</div>
                             <div class="metric-label">Under Review</div>
                         </div>
                     </div>
@@ -181,7 +181,7 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">1</div>
+                            <div class="metric-value">0</div>
                             <div class="metric-label">Rejected Applications</div>
                         </div>
                     </div>

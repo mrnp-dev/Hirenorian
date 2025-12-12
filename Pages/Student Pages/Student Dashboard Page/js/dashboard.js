@@ -301,4 +301,76 @@ document.addEventListener('DOMContentLoaded', () => {
     if (auditContainer) {
         fetchAuditLogs();
     }
+
+    // Fetch application counts
+    fetchApplicationCounts();
 });
+
+// ============================================================================
+// APPLICATION COUNTS FUNCTIONALITY
+// ============================================================================
+
+// Function to update metric card values
+function updateMetricCards(counts) {
+    // Update Total Applications
+    const totalCard = document.querySelector('.metric-card.total .metric-value');
+    if (totalCard) {
+        totalCard.textContent = counts.total || 0;
+    }
+
+    // Update Accepted Applications
+    const acceptedCard = document.querySelector('.metric-card.active .metric-value');
+    if (acceptedCard) {
+        acceptedCard.textContent = counts.accepted || 0;
+    }
+
+    // Update Under Review
+    const reviewCard = document.querySelector('.metric-card.review .metric-value');
+    if (reviewCard) {
+        reviewCard.textContent = counts.under_review || 0;
+    }
+
+    // Update Rejected Applications
+    const rejectedCard = document.querySelector('.metric-card.offers .metric-value');
+    if (rejectedCard) {
+        rejectedCard.textContent = counts.rejected || 0;
+    }
+
+    console.log('[Dashboard] Application counts updated:', counts);
+}
+
+// Function to fetch application counts
+async function fetchApplicationCounts() {
+    console.log('[Dashboard] Fetching application counts for student ID:', STUDENT_ID);
+
+    // Check if STUDENT_ID is available
+    if (!STUDENT_ID) {
+        console.error('[Dashboard] Student ID not available');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_application_counts.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: STUDENT_ID
+            })
+        });
+
+        const data = await response.json();
+        console.log('[Dashboard] Application counts API response:', data);
+
+        if (data.status === 'success') {
+            updateMetricCards(data.data);
+        } else {
+            console.error('[Dashboard] Failed to fetch application counts:', data.message);
+            // Keep default values if API fails
+        }
+    } catch (error) {
+        console.error('[Dashboard] Error fetching application counts:', error);
+        // Keep default values if request fails
+    }
+}

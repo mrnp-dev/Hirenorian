@@ -1,0 +1,54 @@
+Analysis of Profile Picture Update Process for Company
+
+1. Database Status (Based on `current tables` txt):
+   - `Company` Table:
+     - Has `company_icon` (varchar(255)) -> Can store profile picture path.
+     - **MISSING**: `company_banner` or similar column. The table does not have a field to store the banner image path.
+   - `company_additional_informations` Table:
+     - Has `about_us`, `why_join_us`, `website_link`, `tagline`.
+     - **MISSING**: Banner field here as well.
+   - **Recommendation**:
+     - Run SQL to add `company_banner` to the `Company` table:
+       ```sql
+       ALTER TABLE Company ADD COLUMN company_banner VARCHAR(255) DEFAULT NULL;
+       ```
+
+2. Frontend Status (`company_profile.js`):
+   - **Current Logic**:
+     - `openImageUploadModal(type)`: Opens modal, sets `currentImageType` ('banner' or 'icon').
+     - `saveImageChanges()`:
+       - Reads the file via `FileReader` (in event listener).
+       - Sets `preview.src` (Data URI).
+       - Updates `editCompanyIcon.src` or `editCompanyBanner.src` with this Data URI.
+       - Closes modal.
+     - `saveProfileChanges()`:
+       - Compares `currentSrc` vs `newSrc`.
+       - Detects change, but **DOES NOT** send the file to the backend.
+       - The main payload is JSON (`company_profile_update.php`), which is not suitable for file uploads (unless base64 encoded, but `update_profile_picture.php` uses `$_FILES` and `FormData` is better practise).
+
+   - **Frontend Recommendation**:
+     - Modify `saveImageChanges()` to **not just update the preview**, but to actually trigger a file upload immediately (like `update_profile_picture.php` does for students), OR store the `File` object in a variable and upload it during `saveProfileChanges` using `FormData`.
+     - **Preferred Approach (Immediate Upload)**:
+       - When user clicks "Save Changes" in the Image Modal:
+         - Create `FormData`.
+         - Append `uploaded_file` and `company_id`.
+         - Append `type` ('icon' or 'banner').
+         - Send POST request to a new API `update_company_images.php`.
+         - On success, update the specific `<img>` src with the returned URL and close modal.
+
+3. Backend Recommendations (New API):
+   - Create `APIs/Company DB APIs/update_company_images.php`.
+   - Logic similar to `Student DB APIs/update_profile_picture.php`:
+     - Accept `company_id`, `uploaded_file`, and `image_type` ('icon' or 'banner').
+     - Validate file type.
+     - Create Directory: `Company Accounts/<company_id>/Images/`.
+     - Save file.
+     - Update Database:
+       - If `image_type` == 'icon' -> UPDATE `Company` SET `company_icon` = ...
+       - If `image_type` == 'banner' -> UPDATE `Company` SET `company_banner` = ...
+     - Return JSON with `status: success` and `image_url`.
+
+4. Backend Recommendations (Fetch API):
+   - `fetch_company_information.php`:
+     - Ensure the query selects `company_icon` AND `company_banner` (after adding the column).
+     - Return these paths in the JSON response so the frontend can load them on page load.
