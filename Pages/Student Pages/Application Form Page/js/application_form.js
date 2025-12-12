@@ -12,10 +12,10 @@ let applicationData = {
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', () => {
     console.log('[ApplicationForm] Initializing application form');
-    
+
     // Get job ID from sessionStorage
     applicationData.jobId = sessionStorage.getItem('applicationJobId');
-    
+
     // Initialize event listeners
     initStepNavigation();
     initFileUploads();
@@ -62,17 +62,17 @@ function initStepNavigation() {
 function goToStep(step) {
     // Hide current step
     document.getElementById(`step-${currentStep}`).classList.remove('active');
-    
+
     // Update progress indicator
     updateProgressIndicator(currentStep, step);
-    
+
     // Show new step
     currentStep = step;
     document.getElementById(`step-${currentStep}`).classList.add('active');
-    
+
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    
+
     // Load step-specific data
     if (step === 5) {
         populateReviewStep();
@@ -88,18 +88,18 @@ function updateProgressIndicator(fromStep, toStep) {
             stepEl.classList.remove('active');
         }
     }
-    
+
     // Update active step
     document.querySelectorAll('.progress-step').forEach(step => {
         step.classList.remove('active');
     });
-    
+
     const activeStepEl = document.querySelector(`.progress-step[data-step="${toStep}"]`);
     if (activeStepEl) {
         activeStepEl.classList.add('active');
         activeStepEl.classList.remove('completed');
     }
-    
+
     // Update progress lines
     document.querySelectorAll('.progress-line').forEach((line, index) => {
         if (index < toStep - 1) {
@@ -111,7 +111,7 @@ function updateProgressIndicator(fromStep, toStep) {
 }
 
 function validateCurrentStep(step) {
-    switch(step) {
+    switch (step) {
         case 3: // Resume step
             if (!applicationData.resume) {
                 alert('Please upload your resume before continuing.');
@@ -136,50 +136,50 @@ function initFileUploads() {
     const resumeUploadArea = document.getElementById('resumeUploadArea');
     const resumeUploadLink = document.getElementById('resumeUploadLink');
     const resumeNextBtn = document.getElementById('resumeNextBtn');
-    
+
     resumeUploadLink?.addEventListener('click', (e) => {
         e.preventDefault();
         resumeFileInput?.click();
     });
-    
+
     resumeUploadArea?.addEventListener('click', () => {
         resumeFileInput?.click();
     });
-    
+
     resumeFileInput?.addEventListener('change', (e) => {
         handleFileUpload(e.target.files[0], 'resume');
     });
-    
+
     // Drag and drop for resume
     setupDragAndDrop(resumeUploadArea, resumeFileInput, 'resume');
-    
+
     // Remove resume
     document.getElementById('removeResume')?.addEventListener('click', () => {
         removeFile('resume');
     });
-    
+
     // Cover letter upload
     const coverLetterFileInput = document.getElementById('coverLetterFile');
     const coverLetterUploadArea = document.getElementById('coverLetterUploadArea');
     const coverLetterUploadLink = document.getElementById('coverLetterUploadLink');
     const coverLetterNextBtn = document.getElementById('coverLetterNextBtn');
-    
+
     coverLetterUploadLink?.addEventListener('click', (e) => {
         e.preventDefault();
         coverLetterFileInput?.click();
     });
-    
+
     coverLetterUploadArea?.addEventListener('click', () => {
         coverLetterFileInput?.click();
     });
-    
+
     coverLetterFileInput?.addEventListener('change', (e) => {
         handleFileUpload(e.target.files[0], 'coverLetter');
     });
-    
+
     // Drag and drop for cover letter
     setupDragAndDrop(coverLetterUploadArea, coverLetterFileInput, 'coverLetter');
-    
+
     // Remove cover letter
     document.getElementById('removeCoverLetter')?.addEventListener('click', () => {
         removeFile('coverLetter');
@@ -188,20 +188,20 @@ function initFileUploads() {
 
 function setupDragAndDrop(uploadArea, fileInput, type) {
     if (!uploadArea) return;
-    
+
     uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadArea.classList.add('dragover');
     });
-    
+
     uploadArea.addEventListener('dragleave', () => {
         uploadArea.classList.remove('dragover');
     });
-    
+
     uploadArea.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadArea.classList.remove('dragover');
-        
+
         const files = e.dataTransfer.files;
         if (files.length > 0) {
             handleFileUpload(files[0], type);
@@ -211,31 +211,31 @@ function setupDragAndDrop(uploadArea, fileInput, type) {
 
 function handleFileUpload(file, type) {
     if (!file) return;
-    
+
     // Validate file type
-    const allowedTypes = ['application/pdf', 'application/msword', 
-                         'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const allowedTypes = ['application/pdf', 'application/msword',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     if (!allowedTypes.includes(file.type)) {
         alert('Please upload a PDF, DOC, or DOCX file.');
         return;
     }
-    
+
     // Validate file size (5MB)
     const maxSize = 5 * 1024 * 1024; // 5MB in bytes
     if (file.size > maxSize) {
         alert('File size must be less than 5MB.');
         return;
     }
-    
+
     // Store file
     applicationData[type] = file;
-    
+
     // Display file info
     displayFileInfo(file, type);
-    
+
     // Enable next button
-    const nextBtn = type === 'resume' ? document.getElementById('resumeNextBtn') : 
-                    document.getElementById('coverLetterNextBtn');
+    const nextBtn = type === 'resume' ? document.getElementById('resumeNextBtn') :
+        document.getElementById('coverLetterNextBtn');
     if (nextBtn) {
         nextBtn.disabled = false;
     }
@@ -246,7 +246,7 @@ function displayFileInfo(file, type) {
     const fileNameEl = document.getElementById(`${type}FileName`);
     const fileSizeEl = document.getElementById(`${type}FileSize`);
     const uploadArea = document.getElementById(`${type}UploadArea`);
-    
+
     if (fileInfoEl && fileNameEl && fileSizeEl) {
         fileNameEl.textContent = file.name;
         fileSizeEl.textContent = formatFileSize(file.size);
@@ -259,13 +259,13 @@ function displayFileInfo(file, type) {
 
 function removeFile(type) {
     applicationData[type] = null;
-    
+
     const fileInfoEl = document.getElementById(`${type}FileInfo`);
     const uploadArea = document.getElementById(`${type}UploadArea`);
     const fileInput = document.getElementById(`${type}File`);
-    const nextBtn = type === 'resume' ? document.getElementById('resumeNextBtn') : 
-                    document.getElementById('coverLetterNextBtn');
-    
+    const nextBtn = type === 'resume' ? document.getElementById('resumeNextBtn') :
+        document.getElementById('coverLetterNextBtn');
+
     if (fileInfoEl) fileInfoEl.style.display = 'none';
     if (uploadArea) uploadArea.style.display = 'block';
     if (fileInput) fileInput.value = '';
@@ -283,12 +283,12 @@ function formatFileSize(bytes) {
 // Load Job Information
 async function loadJobInfo() {
     const jobId = applicationData.jobId;
-    
+
     if (!jobId) {
         console.warn('[ApplicationForm] No job ID found');
         return;
     }
-    
+
     // Try to get job data from sessionStorage first
     const jobDataStr = sessionStorage.getItem('applicationJobData');
     if (jobDataStr) {
@@ -307,7 +307,7 @@ async function loadJobInfo() {
             console.error('[ApplicationForm] Error parsing job data:', e);
         }
     }
-    
+
     // TODO: If not in sessionStorage, fetch from API
     // For now, use placeholder
     applicationData.jobInfo = {
@@ -323,12 +323,12 @@ async function loadJobInfo() {
 // Load Profile Information
 async function loadProfileInfo() {
     const email = sessionStorage.getItem('email');
-    
+
     if (!email) {
         console.warn('[ApplicationForm] No email found in session');
         return;
     }
-    
+
     try {
         // TODO: Replace with actual API endpoint
         const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
@@ -340,13 +340,13 @@ async function loadProfileInfo() {
                 student_email: email
             })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.status === 'success' && result.data) {
             const basic = result.data.basic_info || {};
             const profile = result.data.profile || {};
-            
+
             applicationData.profileInfo = {
                 name: `${basic.first_name || ''} ${basic.middle_initial || ''} ${basic.last_name || ''} ${basic.suffix || ''}`.trim(),
                 email: basic.student_email || email,
@@ -355,7 +355,7 @@ async function loadProfileInfo() {
                 location: profile.location || 'Not provided',
                 about: profile.about_me || 'Not provided'
             };
-            
+
             // Populate profile preview in step 2
             populateProfilePreview();
         }
@@ -367,9 +367,9 @@ async function loadProfileInfo() {
 function populateProfilePreview() {
     const previewEl = document.getElementById('profilePreview');
     if (!previewEl || !applicationData.profileInfo) return;
-    
+
     const profile = applicationData.profileInfo;
-    
+
     previewEl.innerHTML = `
         <div class="profile-field">
             <span class="profile-field-label">Full Name</span>
@@ -427,7 +427,7 @@ function populateReviewStep() {
             </div>
         `;
     }
-    
+
     // Populate profile info
     const profileInfoEl = document.getElementById('profileInfoReview');
     if (profileInfoEl && applicationData.profileInfo) {
@@ -451,7 +451,7 @@ function populateReviewStep() {
             </div>
         `;
     }
-    
+
     // Populate resume info
     const resumeReviewEl = document.getElementById('resumeReview');
     if (resumeReviewEl && applicationData.resume) {
@@ -465,7 +465,7 @@ function populateReviewStep() {
             </div>
         `;
     }
-    
+
     // Populate cover letter info
     const coverLetterReviewEl = document.getElementById('coverLetterReview');
     if (coverLetterReviewEl && applicationData.coverLetter) {
@@ -488,55 +488,86 @@ async function submitApplication() {
         alert('Please upload your resume.');
         return;
     }
-    
+
     if (!applicationData.coverLetter) {
         alert('Please upload your cover letter.');
         return;
     }
-    
+
     if (!applicationData.jobId) {
         alert('Job information is missing. Please go back and try again.');
         return;
     }
-    
+
     // Show loading state
     const submitBtn = document.getElementById('submitApplicationBtn');
     const originalText = submitBtn.innerHTML;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
-    
+
     try {
-        // Prepare form data for backend
+        // Step 1: Get student_id from email
+        const email = sessionStorage.getItem('email');
+        if (!email) {
+            throw new Error('Email not found in session. Please log in again.');
+        }
+
+        // Fetch student information to get student_id
+        const profileResponse = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_email: email
+            })
+        });
+
+        const profileResult = await profileResponse.json();
+
+        if (profileResult.status !== 'success' || !profileResult.data || !profileResult.data.basic_info) {
+            throw new Error('Failed to retrieve student information.');
+        }
+
+        const studentId = profileResult.data.basic_info.student_id;
+
+        if (!studentId) {
+            throw new Error('Student ID not found.');
+        }
+
+        // Step 2: Prepare form data for application submission
         const formData = new FormData();
-        formData.append('job_id', applicationData.jobId);
+        formData.append('post_id', applicationData.jobId);
+        formData.append('student_id', studentId);
+        formData.append('document_type', 'Standard Application');
         formData.append('resume', applicationData.resume);
         formData.append('cover_letter', applicationData.coverLetter);
-        formData.append('student_email', sessionStorage.getItem('email'));
-        
-        // TODO: Replace with actual API endpoint
-        // const response = await fetch('http://mrnp.site:8080/Hirenorian/API/application_APIs/submit_application.php', {
-        //     method: 'POST',
-        //     body: formData
-        // });
-        
-        // const result = await response.json();
-        
-        // For now, simulate success
-        console.log('[ApplicationForm] Application data prepared:', {
-            jobId: applicationData.jobId,
-            resume: applicationData.resume.name,
-            coverLetter: applicationData.coverLetter.name
+
+        // Step 3: Submit application to API
+        const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/submit_application.php', {
+            method: 'POST',
+            body: formData
         });
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Move to completion step
-        goToStep(6);
-        
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            console.log('[ApplicationForm] Application submitted successfully:', result.data);
+
+            // Store application details for reference
+            sessionStorage.setItem('lastApplicationId', result.data.applicant_id);
+            sessionStorage.setItem('lastApplicationDate', new Date().toISOString());
+
+            // Move to completion step
+            goToStep(6);
+        } else {
+            // Handle error from API
+            throw new Error(result.message || 'Failed to submit application.');
+        }
+
     } catch (error) {
         console.error('[ApplicationForm] Error submitting application:', error);
-        alert('Failed to submit application. Please try again.');
+        alert('Failed to submit application: ' + error.message);
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalText;
     }
