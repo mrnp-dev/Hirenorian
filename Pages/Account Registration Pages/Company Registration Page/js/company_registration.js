@@ -278,7 +278,7 @@ async function checkIfValid(input) {
     let isValid = true;
     switch (input.name.trim().toLowerCase()) {
         case 'company email':
-            isValid = checkEmail(input);
+            isValid = await checkEmail(input);
             break;
         case 'phone number':
             isValid = checkPhoneNumber(input);
@@ -305,15 +305,42 @@ async function checkIfValid(input) {
     return isValid;
 }
 
-function checkEmail(input) {
+async function checkEmail(input) {
     const validEmail_RegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!validEmail_RegEx.test(input.value.trim())) {
         showError(input, `Invalid Email`);
         return false;
-    } else {
-        userInformation[input.name] = input.value;
-        return true;
     }
+
+    // Check for duplicates in backend
+    try {
+        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/check_company_email.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: input.value.trim() })
+        });
+
+        const result = await response.json();
+
+        if (result.status === "exists") {
+            showError(input, "Email is already in use.");
+            return false;
+        } else if (result.status === "error") {
+            console.error("Email check error:", result.message);
+            // Optional: Fail open or show generic error? For now, prevent blocking but log it.
+            // But allowing registration might cause issues later. 
+            // Let's assume server error shouldn't block validation unless critical.
+            // Better UX: Show generic error
+            // showError(input, "Unable to verify email availability.");
+            // return false; 
+        }
+
+    } catch (error) {
+        console.error("Network error checking email:", error);
+    }
+
+    userInformation[input.name] = input.value;
+    return true;
 }
 
 function checkPhoneNumber(input) {
