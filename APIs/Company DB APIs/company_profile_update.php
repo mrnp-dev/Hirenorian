@@ -101,10 +101,10 @@ try {
         foreach ($data['lists']['contacts'] as $contact) {
             $stmt->execute([
                 ':id' => $company_id,
-                ':name' => $contact['contact_name'],
+                ':name' => $contact['name'],
                 ':pos' => $contact['position'],
                 ':email' => $contact['email'],
-                ':num' => $contact['contact_number']
+                ':num' => $contact['phoneNumber']
             ]);
         }
     }
