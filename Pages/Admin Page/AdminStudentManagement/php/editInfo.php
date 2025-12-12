@@ -120,6 +120,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
   </div>
 
   <script>
+    const studentId = document.getElementById('studentId').value;
     $(document).ready(function() {
       $('#updateBtn').on('click', function(e) {
         e.preventDefault();
@@ -139,6 +140,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
                 timer: 1000,
               }).then(() => {
                 $('form')[0].submit();
+                auditLogs('Update', `updated student information for student ID: ${studentId}`);
               });
             } else {
               swal("Update cancelled.");
@@ -146,6 +148,34 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
           });
       });
     });
+  </script>
+
+  <script>
+    function auditLogs(actionType, description) {
+        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action_type: actionType,
+                description: description
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Audit log added successfully');
+                } else {
+                    console.error('Failed to add audit log:', data.message);
+                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error logging audit log.');
+            });
+    }
   </script>
 </body>
 

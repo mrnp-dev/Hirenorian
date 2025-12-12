@@ -34,7 +34,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $verified = 0;
 
 foreach ($data as $row) {
-    if ($row['verified'] == 'verified') {
+    if ($row['verified'] == 'true') {
         $verified++;
     }
 }
@@ -42,7 +42,7 @@ foreach ($data as $row) {
 $unverified = 0;
 
 foreach ($data as $row) {
-    if ($row['verified'] == 'unverified') {
+    if ($row['verified'] == 'false') {
         $unverified++;
     }
 }

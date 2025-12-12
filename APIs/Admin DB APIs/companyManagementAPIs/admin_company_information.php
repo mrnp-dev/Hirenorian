@@ -29,8 +29,26 @@ $stmt->execute();
 
 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$verified = 0;
+
+foreach ($data as $row) {
+    if ((trim(strtolower($row['verification'])) == 'true')) {
+        $verified++;
+    }
+}
+
+$unverified = 0;
+
+foreach ($data as $row) {
+    if ((trim(strtolower($row['verification'])) == 'false')) {
+        $unverified++;
+    }
+}
+
 echo json_encode([
     "status" => "success",
     "count" => count($data),
-    "data" => $data
+    "data" => $data,
+    "verified" => $verified,
+    "unverified" => $unverified
 ]);

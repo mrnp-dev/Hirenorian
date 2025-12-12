@@ -5,34 +5,34 @@
 
 <?php
 
-session_start();
+    session_start();
 
-$students = [];
+    $students = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
+    $apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
 
-$ch = curl_init($apiUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-$response = curl_exec($ch);
-if ($response === false) {
-    die("Curl error: " . curl_error($ch));
-}
-
-curl_close($ch);
-
-$data = json_decode($response, true);
-
-if ($data && isset($data['status'])) {
-    if ($data['status'] === "success") {
-        $students = $data['data'];
-    } else {
-        $message = isset($data['message']) ? $data['message'] : "Unknown error";
-        echo "<p>Error: $message</p>";
+    $response = curl_exec($ch);
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
     }
-} else {
-    echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
-}
+
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    if ($data && isset($data['status'])) {
+        if ($data['status'] === "success") {
+            $students = $data['data'];
+        } else {
+            $message = isset($data['message']) ? $data['message'] : "Unknown error";
+            echo "<p>Error: $message</p>";
+        }
+    } else {
+        echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
+    }
 ?>
 
 
@@ -50,6 +50,7 @@ if ($data && isset($data['status'])) {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../../AdminStudentManagement/css/dashboard.css">
+    <link rel="stylesheet" href="../css/student_management_modern.css">
 </head>
 
 <body>
@@ -95,6 +96,9 @@ if ($data && isset($data['status'])) {
             <main class="dashboard-body">
                 <h1 class="page-title">Student Management</h1>
                 <div class="card student-management-card">
+                    <div class="table-actions">
+                        <h2><i class="fa-solid fa-users"></i> Student Records</h2>
+                    </div>
 
                     <table class="crud-table" id="datatableid">
                         <thead>
@@ -131,13 +135,21 @@ if ($data && isset($data['status'])) {
                                     </td>
 
                                     <td>
-                                        <button type="button" class="status activation-btn 
-                                            <?= (trim(strtolower($student['activated'])) === 'true' || $student['activated'] == 1) ? 'activated' : 'deactivated' ?>">
-                                            <?= (trim(strtolower($student['activated'])) === 'true' || $student['activated'] == 1) ? 'activated' : 'deactivated' ?>
-                                        </button>
+                                        <?php if (trim(strtolower($student['activated'])) === 'true' || $student['activated'] == 1): ?>
+                                            <span class="badge bg-success activated">Activated</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-danger deactivated">Deactivated</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td class="action-buttons">
-                                        <button type="button" class="action-btn edit-btn" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button type="button" class="action-btn edit-btn" title="Update Info" data-id="<?= $student['student_id'] ?>"><i class="fa-solid fa-pen-to-square"></i></button>
+
+                                        <?php if (trim(strtolower($student['activated'])) === 'true' || $student['activated'] == 1): ?>
+                                            <button type="button" class="action-btn suspend-btn" title="Suspend/Deactivate" data-id="<?= $student['student_id'] ?>"><i class="fa-solid fa-ban"></i></button>
+                                        <?php else: ?>
+                                            <button type="button" class="action-btn activate-btn" title="Activate" data-id="<?= $student['student_id'] ?>"><i class="fa-solid fa-power-off"></i></button>
+                                        <?php endif; ?>
+
                                         <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
                                     </td>
                                 </tr>

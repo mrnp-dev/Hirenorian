@@ -1,0 +1,204 @@
+:root {
+    --primary-maroon: #7b1113;
+    --secondary-yellow: #f1c40f;
+    --text-dark: #333;
+    --text-light: #fff;
+    --bg-light: #f4f6f9;
+    --dark-column-bg: #292929;
+}
+
+/* Page Background */
+.registration-body {
+    background-color: var(--bg-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.registration-container {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Two-Column Card Structure */
+.registration-card-new {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    min-height: 500px;
+}
+
+/* --- Left Column (Form) --- */
+.form-column {
+    background-color: var(--dark-column-bg);
+    color: var(--text-light);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo-header {
+    margin-bottom: 25px;
+    text-align: left;
+}
+
+.logo-header .logo {
+    width: 50px;
+    height: 50px;
+}
+
+.form-title-new {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: var(--secondary-yellow);
+}
+
+.input-group-new {
+    margin-bottom: 20px;
+}
+
+.input-group-new label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px;
+}
+
+.input-group-new input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.input-group-new input:focus {
+    outline: none;
+    border-bottom-color: var(--secondary-yellow);
+}
+
+.register-btn-new {
+    width: 100%;
+    background-color: var(--secondary-yellow);
+    color: var(--text-dark);
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 30px;
+}
+
+.register-btn-new:hover {
+    background-color: #e0b40e;
+}
+
+.login-link-new {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+}
+
+.login-link-new a {
+    color: var(--secondary-yellow);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link-new a:hover {
+    text-decoration: underline;
+}
+
+/* --- Right Column (Info) --- */
+.info-column {
+    background-color: var(--secondary-yellow);
+    color: var(--text-dark);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.info-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-maroon);
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-list li {
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.info-list i {
+    font-size: 1.4rem;
+    margin-right: 15px;
+    color: var(--primary-maroon);
+    min-width: 25px;
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 768px) {
+    .registration-card-new {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    /* Info goes on top */
+    .info-column {
+        order: 1;
+        padding: 25px 20px;
+        text-align: center;
+        align-items: center;
+    }
+
+    .form-column {
+        order: 2;
+        padding: 30px 20px;
+    }
+
+    .info-title {
+        text-align: center;
+        font-size: 1.3rem;
+    }
+
+    .info-list {
+        align-items: center;
+    }
+
+    .info-list li {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .info-list i {
+        margin-right: 10px;
+    }
+}

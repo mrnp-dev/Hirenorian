@@ -124,9 +124,8 @@ if ($data && isset($data['status'])) {
                                     <td><?= $company['email'] ?></td>
                                     <td>
                                         <button type="button" class="status verification-btn 
-                                            <?= (trim(strtolower($company['verification'])) === 'verified') ? 'verified' : 'unverified' ?>"
-                                            data-id="<?= $company['company_name'] ?>">
-                                            <?= (trim(strtolower($company['verification'])) === 'verified') ? 'verified' : 'unverified' ?>
+                                           <?= (trim(strtolower($company['verification'])) === 'true' || $company['verification'] == 1) ? 'verified' : 'unverified' ?>">
+                                            <?= (trim(strtolower($company['verification'])) === 'true' || $company['verification'] == 1) ? 'verified' : 'unverified' ?>
                                         </button>
                                     </td>
 
@@ -145,6 +144,9 @@ if ($data && isset($data['status'])) {
                                         <?php else: ?>
                                             <button type="button" class="action-btn activate-btn" title="Activate" data-id="<?= $company['company_name'] ?>"><i class="fa-solid fa-power-off"></i></button>
                                         <?php endif; ?>
+
+                                        <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

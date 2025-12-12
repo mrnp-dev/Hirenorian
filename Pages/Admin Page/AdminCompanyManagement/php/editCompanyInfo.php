@@ -121,6 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 timer: 1000,
               }).then(() => {
                 $('form')[0].submit();
+                auditLogs('Update', 'updated company information for company id: ' + <?php echo $id; ?>);
               });
             } else {
               swal("Update cancelled.");
@@ -129,6 +130,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       });
     });
   </script>
+
+
+<script>
+    function auditLogs(actionType, decription) {
+        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action_type: actionType,
+                description: decription,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Audit log added successfully');
+                } else {
+                    console.error('Failed to add audit log:', data.message);
+                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error logging audit log.');
+            });
+    }
+</script>
 </body>
 
 </html>
