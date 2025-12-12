@@ -403,20 +403,63 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {String} timestamp - Database timestamp
      * @returns {String} - Relative time string
      */
+    /**
+     * Format timestamp to relative time (Philippine Time - UTC+8)
+     * Handles UTC timestamps from DB and converts to local relative time
+     * @param {String} timestamp - Database timestamp (UTC)
+     * @returns {String} - Relative time string
+     */
     function formatTimestamp(timestamp) {
-        const now = new Date();
-        const logTime = new Date(timestamp);
-        const diffMs = now - logTime;
+        // DB returns UTC time strings (e.g. "2023-12-12 14:00:00")
+        // We need to parse this as UTC
+        // Appending 'Z' tells Date.parse it's UTC
+        let utcDate;
+        if (typeof timestamp === 'string') {
+            // Replace space with T to handle "YYYY-MM-DD HH:MM:SS" format
+            let isoString = timestamp.replace(' ', 'T');
+            // If it doesn't end in Z, append specific UTC offset or Z.
+            // Assuming DB stores in UTC without timezone info:
+            if (!isoString.endsWith('Z')) {
+                isoString += 'Z';
+            }
+            utcDate = new Date(isoString);
+        } else {
+            utcDate = new Date(timestamp);
+        }
+
+        const now = new Date(); // Current local client time
+        const diffMs = now - utcDate; // Difference in milliseconds
+
+        // Debugging logs (optional, remove in prod)
+        // console.log("DB Timestamp (UTC):", timestamp);
+        // console.log("Parsed Date (Local):", utcDate.toString());
+        // console.log("Current Time (Local):", now.toString());
+
         const diffMins = Math.floor(diffMs / 60000);
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
 
+        if (diffMs < 0) return 'Just now'; // Handle slight clock skew
         if (diffMins < 1) return 'Just now';
-        if (diffMins < 60) return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
-        if (diffHours < 24) return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
-        if (diffDays < 7) return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
 
-        return logTime.toLocaleDateString();
+        if (diffMins < 60) {
+            return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+        }
+
+        if (diffHours < 24) {
+            return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+        }
+
+        if (diffDays < 7) {
+            return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+        }
+
+        // For older dates, show localized date string
+        return utcDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
     }
 
     /**
