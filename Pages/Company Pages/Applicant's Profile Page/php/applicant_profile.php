@@ -1,8 +1,40 @@
 <?php
 session_start();
-// Company Session Check
-if (!isset($_SESSION['company_email'])) {
-    // Handling session check
+if (isset($_SESSION['email'])) {
+    $company_email = $_SESSION['email'];
+
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "company_email" => $company_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    // Extract company information
+    if (isset($data['company'])) {
+        $company = $data['company'];
+        $company_name = $company['company_name'];
+
+        $company_icon_url = "https://via.placeholder.com/40"; // Default
+        if (!empty($data['icons'])) {
+            $url = $data['icons'][0]['icon_url'];
+            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
+        }
+    } else {
+        $company_name = "Company User";
+        $company_icon_url = "https://via.placeholder.com/40";
+    }
+} else {
+    header("Location: ../../../Landing Page/php/landing_page.php");
+    exit();
 }
 
 // Data will be loaded dynamically via JavaScript
@@ -71,9 +103,10 @@ if (!isset($_SESSION['company_email'])) {
                 <div class="user-profile" id="userProfileBtn">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <!-- Placeholder -->
+                            <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                 </div>
