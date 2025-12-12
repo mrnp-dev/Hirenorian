@@ -14,7 +14,7 @@ header("Content-type: application/json");
 
 // Check for email in session or JSON input
 $input_data = json_decode(file_get_contents("php://input"), true);
-$company_email = $_SESSION['email'] ?? $input_data['company_email'] ?? null;
+$company_email = $_SESSION['email'] ?? $input_data['email'] ?? $input_data['company_email'] ?? null;
 
 if (!$company_email) {
     echo json_encode(["status" => "error", "message" => "No company email in session or provided"]);
