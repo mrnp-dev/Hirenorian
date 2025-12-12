@@ -447,19 +447,14 @@ if (isset($_SESSION['email'])) {
                     <label>Require Documents</label>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="requiredDocument" value="resume" checked>
+                            <input type="checkbox" name="requireResume" id="requireResume">
                             <span class="radio-custom"></span>
                             <span class="radio-text">Resume/ CV</span>
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="requiredDocument" value="cover-letter">
+                            <input type="checkbox" name="requireCoverLetter" id="requireCoverLetter">
                             <span class="radio-custom"></span>
                             <span class="radio-text">Cover Letter</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="requiredDocument" value="none">
-                            <span class="radio-custom"></span>
-                            <span class="radio-text">None</span>
                         </label>
                     </div>
                 </div>

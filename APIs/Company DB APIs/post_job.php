@@ -48,7 +48,8 @@ $city = $data['city'] ?? '';
 $workType = $data['work_type'] ?? '';
 $applicantLimit = $data['applicant_limit'] ?? 0;
 $category = $data['category'] ?? '';
-$requiredDocument = $data['required_document'] ?? 'resume';
+$resume = !empty($data['resume']) ? 1 : 0;
+$coverLetter = !empty($data['cover_letter']) ? 1 : 0;
 $description = $data['description'] ?? '';
 $responsibilities = $data['responsibilities'] ?? '';
 $qualifications = $data['qualifications'] ?? '';
@@ -78,8 +79,8 @@ try {
     $post_id = $conn->lastInsertId();
 
     // 3. Insert into Job_Details
-    $detailsQuery = "INSERT INTO Job_Details (post_id, title, description, responsibilities, qualifications, skills, province, city, work_type, category, required_document)
-                     VALUES (:post_id, :title, :description, :responsibilities, :qualifications, :skills, :province, :city, :work_type, :category, :required_document)";
+    $detailsQuery = "INSERT INTO Job_Details (post_id, title, description, responsibilities, qualifications, skills, province, city, work_type, category, resume, cover_letter)
+                     VALUES (:post_id, :title, :description, :responsibilities, :qualifications, :skills, :province, :city, :work_type, :category, :resume, :cover_letter)";
 
     $detailsStmt = $conn->prepare($detailsQuery);
     $detailsStmt->execute([
@@ -93,7 +94,8 @@ try {
         ':city' => $city,
         ':work_type' => $workType,
         ':category' => $category,
-        ':required_document' => $requiredDocument
+        ':resume' => $resume,
+        ':cover_letter' => $coverLetter
     ]);
 
     // 4. Insert Job_Tags
