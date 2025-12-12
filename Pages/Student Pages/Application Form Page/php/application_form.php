@@ -48,10 +48,7 @@ $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Internship Search</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </a>
+
             </nav>
         </aside>
 
