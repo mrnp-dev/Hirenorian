@@ -21,9 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   exit();
 }
 
-  $companyName = isset($_GET['company_name']) ? htmlspecialchars($_GET['company_name']) : '';
-  $id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-  $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
+$companyName = isset($_GET['company_name']) ? htmlspecialchars($_GET['company_name']) : '';
+$id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
+$email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 ?>
 
 <!DOCTYPE html>
@@ -31,76 +31,156 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <head>
   <meta charset="UTF-8">
-  <title>Edit Company Info</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Company Info - Hirenorian</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Existing CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
       padding: 20px;
     }
 
-    .form-container {
-      max-width: 400px;
-      margin: auto;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-
-    input[type="text"],
-    input[type="email"] {
+    .form-card {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
+      max-width: 500px;
+      padding: 40px;
+      border-top: 5px solid var(--primary-maroon);
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-header h2 {
+      color: var(--primary-maroon);
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-maroon);
+      box-shadow: 0 0 0 3px rgba(123, 17, 19, 0.1);
     }
 
     .button-group {
-      margin-top: 20px;
       display: flex;
-      justify-content: space-between;
+      gap: 15px;
+      margin-top: 30px;
     }
 
-    button {
-      padding: 10px 20px;
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
-    .submit-btn {
-      background-color: #007BFF;
+    .btn-primary {
+      background-color: var(--primary-maroon);
       color: white;
-      border: none;
     }
 
-    .cancel-btn {
-      background-color: #ccc;
-      border: none;
+    .btn-primary:hover {
+      background-color: #5d0c0e;
+    }
+
+    .btn-secondary {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .btn-secondary:hover {
+      background-color: #d0d0d0;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
     }
   </style>
 </head>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<body>
-  <div class="form-container">
-    <h2>Edit Company Record</h2>
-    <form action="" method="POST">
 
+<body>
+
+  <div class="card form-card">
+    <div class="form-header">
+      <i class="fa-solid fa-building-user" style="font-size: 3rem; color: var(--secondary-yellow); margin-bottom: 15px;"></i>
+      <h2>Edit Company Record</h2>
+    </div>
+
+    <form action="" method="POST">
       <input type="hidden" name="id" value="<?php echo $id; ?>">
 
-      <label for="companyName">Company Name:</label>
-      <input type="text" id="companyName" name="companyName" value="<?php echo $companyName; ?>" required>
+      <div class="form-group">
+        <label for="companyName">Company Name</label>
+        <div style="position: relative;">
+          <i class="fa-solid fa-building" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+          <input type="text" class="form-control" id="companyName" name="companyName" value="<?php echo $companyName; ?>" required style="padding-left: 40px;">
+        </div>
+      </div>
 
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" value="<?php echo $email; ?>" required>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <div style="position: relative;">
+          <i class="fa-solid fa-envelope" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #999;"></i>
+          <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" required style="padding-left: 40px;">
+        </div>
+      </div>
 
       <div class="button-group">
-        <button type="submit" class="submit-btn" id="updateBtn">Update</button>
-        <button type="button" class="cancel-btn" onclick="window.history.back()">Cancel</button>
+        <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+          <i class="fa-solid fa-arrow-left"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" id="updateBtn">
+          <i class="fa-solid fa-save"></i> Update
+        </button>
       </div>
     </form>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script>
     $(document).ready(function() {
       $('#updateBtn').on('click', function(e) {
@@ -110,7 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             title: "Update Company Information?",
             text: "Are you sure you want to update this company's record?",
             icon: "warning",
-            buttons: true,
+            buttons: ["Cancel", "Yes, Update"],
             dangerMode: true,
           })
           .then((willUpdate) => {
@@ -123,8 +203,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $('form')[0].submit();
                 auditLogs('Update', 'updated company information for company id: ' + <?php echo $id; ?>);
               });
-            } else {
-              swal("Update cancelled.");
             }
           });
       });
@@ -132,33 +210,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </script>
 
 
-<script>
+  <script>
     function auditLogs(actionType, decription) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                action_type: actionType,
-                description: decription,
-            })
+      fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action_type: actionType,
+            description: decription,
+          })
         })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Audit log added successfully');
-                } else {
-                    console.error('Failed to add audit log:', data.message);
-                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error logging audit log.');
-            });
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            console.log('Audit log added successfully');
+          } else {
+            console.error('Failed to add audit log:', data.message);
+            alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error logging audit log.');
+        });
     }
-</script>
+  </script>
 </body>
 
 </html>

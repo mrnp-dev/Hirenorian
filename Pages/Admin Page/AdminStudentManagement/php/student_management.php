@@ -58,8 +58,9 @@ if ($data && isset($data['status'])) {
         <aside class="sidebar">
             <div class="logo-container">
                 <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
-                    <span>Hirenorian 
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <pre> </pre>
+                    <span>Hirenorian
                     </span>
                 </a>
             </div>
@@ -84,7 +85,7 @@ if ($data && isset($data['status'])) {
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <span class="user-name">Admin</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -163,7 +164,7 @@ if ($data && isset($data['status'])) {
     </div>
 
     <script src="../../AdminStudentManagement/js/dashboard.js"></script>
-    <script src="../../AdminStudentManagement/js/student_management.js"></script>
+    <script src="../../AdminStudentManagement/js/student_management.js?v=<?php echo time(); ?>"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -20,7 +20,7 @@ $companyId = $data['company_id'];
 
 $query = "DELETE FROM Company
           WHERE company_id = :company_id";
-    
+
 try {
     $stmt = $conn->prepare($query);
     $stmt->execute([
