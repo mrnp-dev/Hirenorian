@@ -39,10 +39,7 @@
                     <i class="fa-solid fa-briefcase"></i>
                     <span>Job Listing</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </a>
+
             </nav>
         </aside>
 
