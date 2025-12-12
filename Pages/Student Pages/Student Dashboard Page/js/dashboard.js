@@ -307,6 +307,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch recommended jobs
     fetchRecommendedJobs();
+
+    // Fetch application history
+    fetchApplicationHistory();
 });
 
 // ============================================================================
@@ -524,6 +527,113 @@ function createRecommendationCard(job) {
     applyBtn.addEventListener('click', () => {
         window.location.href = `../../Application Form Page/php/application_form.php?job_id=${job.post_id}`;
     });
+
+    return card;
+}
+
+// ============================================================================
+// APPLICATION HISTORY FUNCTIONALITY
+// ============================================================================
+
+// Function to fetch application history
+async function fetchApplicationHistory() {
+    console.log('[Dashboard] Fetching application history');
+
+    // Check if STUDENT_ID is available
+    if (!STUDENT_ID) {
+        console.error('[Dashboard] Student ID not available for application history');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_applications.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: STUDENT_ID
+            })
+        });
+
+        const data = await response.json();
+        console.log('[Dashboard] Application history API response:', data);
+
+        if (data.status === 'success') {
+            displayApplicationHistory(data.data);
+        } else {
+            console.error('[Dashboard] Failed to fetch application history:', data.message);
+        }
+
+    } catch (error) {
+        console.error('[Dashboard] Error fetching application history:', error);
+    }
+}
+
+// Function to display application history
+function displayApplicationHistory(applications) {
+    console.log('[Dashboard] Displaying', applications.length, 'applications');
+
+    const applicationsList = document.querySelector('.applications-list');
+    if (!applicationsList) {
+        console.error('[Dashboard] Applications list container not found');
+        return;
+    }
+
+    // Clear existing applications
+    applicationsList.innerHTML = '';
+
+    if (applications.length === 0) {
+        applicationsList.innerHTML = `
+            <div class="no-applications">
+                <i class="fa-solid fa-inbox"></i>
+                <p>No applications submitted yet</p>
+                <p class="hint">Start by browsing internship opportunities!</p>
+            </div>
+        `;
+        return;
+    }
+
+    // Create application cards
+    applications.forEach(app => {
+        const card = createApplicationCard(app);
+        applicationsList.appendChild(card);
+    });
+}
+
+// Function to create an application card
+function createApplicationCard(app) {
+    const card = document.createElement('div');
+    card.className = `application-card ${app.status_class}`;
+
+    // Use company icon or fallback
+    const companyIcon = app.company_icon || '../../../Landing Page/Images/default-company.jpg';
+
+    // Map status to display text
+    const statusText = app.status;
+
+    card.innerHTML = `
+        <div class="app-header">
+            <div class="app-company">
+                <img src="${companyIcon}" alt="${app.company_name}" class="company-logo-small" onerror="this.src='../../../Landing Page/Images/default-company.jpg'">
+                <div class="app-info">
+                    <h4>${app.job_title}</h4>
+                    <p>${app.company_name}</p>
+                </div>
+            </div>
+            <span class="app-status-badge ${app.status_class}">${statusText}</span>
+        </div>
+        <div class="app-meta">
+            <div class="app-meta-item">
+                <i class="fa-solid fa-calendar"></i>
+                Applied ${app.date_applied_formatted}
+            </div>
+            <div class="app-meta-item">
+                <i class="fa-solid fa-location-dot"></i>
+                ${app.location}
+            </div>
+        </div>
+    `;
 
     return card;
 }
