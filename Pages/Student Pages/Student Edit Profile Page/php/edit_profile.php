@@ -78,9 +78,7 @@ if(isset($_SESSION['email']))
         $technical_skills = implode(", ", $tech_arr);
         $soft_skills = implode(", ", $soft_arr);
     }
-}
-else
-{
+} else {
     header("Location: ../../../Landing Page/php/landing_page.php");
     exit();
 }

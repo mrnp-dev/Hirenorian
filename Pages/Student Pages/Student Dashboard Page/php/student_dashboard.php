@@ -1,13 +1,10 @@
 <?php
 session_start();
-$student_id = null; // Initialize student_id
-
-if(isset($_SESSION['email']))
-{
-    echo "<script>console.log('email in session');</script>";
-    
-    // Fetch student information to get student_id
+if (isset($_SESSION['email'])) {
     $student_email = $_SESSION['email'];
+    $student_id = $_SESSION['student_id'];
+    
+    // Fetch student information from API
     $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
     
     $ch = curl_init($apiUrl);
@@ -21,10 +18,27 @@ if(isset($_SESSION['email']))
     $response = curl_exec($ch);
     curl_close($ch);
     
-    $data = json_decode($response, true);
+    // Initialize default values
+    $first_name = "Student";
+    $last_name = "";
+    $profile_picture = "";
     
-    if (isset($data['status']) && $data['status'] === "success") {
-        $student_id = $data['data']['basic_info']['student_id'] ?? null;
+    if ($response !== false) {
+        $data = json_decode($response, true);
+        
+        if (isset($data['status']) && $data['status'] === "success") {
+            $basic_info = $data['data']['basic_info'];
+            $profile = $data['data']['profile'];
+            
+            $first_name = $basic_info['first_name'];
+            $last_name = $basic_info['last_name'];
+            $profile_picture_db = $profile['profile_picture'];
+            
+            // Convert VPS absolute path to HTTP URL
+            if (!empty($profile_picture_db)) {
+                $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
+            }
+        }
     }
 }
 else
@@ -82,8 +96,8 @@ else
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img"> <!-- Placeholder image -->
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Student" class="user-img">
+                        <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -100,7 +114,7 @@ else
                 <div class="hero-section">
                     <div class="hero-content">
                         <div class="hero-main">
-                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight">Juan</span>!</h1>
+                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight"><?php echo htmlspecialchars($first_name); ?></span>!</h1>
                             <p class="hero-subtitle">Here's your internship journey at a glance</p>
                             <div class="hero-actions">
                                 <a href="../../Internship Search Page/php/internship_search.php" class="btn-hero primary">
