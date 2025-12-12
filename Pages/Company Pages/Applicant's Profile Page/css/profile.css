@@ -1,0 +1,370 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Nav Header Styles */
+.profile-nav-header {
+    max-width: 1100px;
+    margin: 30px auto 20px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--primary-maroon);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background-color: #f9fafb;
+    transform: translateX(-5px);
+}
+
+.page-label {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+
+/* Profile V2 Styles (Reused) */
+
+/* Banner */
+.profile-banner {
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary-maroon), #5a0c0e);
+    border-bottom: 5px solid var(--secondary-yellow);
+    /* Gold bottom border */
+    border-radius: 12px 12px 12px 12px;
+    /* Rounded top too in this context if standing alone, but adhering to original logic */
+    /* Wait, original was 0 0 12 12. Let's keep it consistent or adapt. 
+       In student profile, it spans full width under topbar? No, it's inside dashboard-body.
+       Let's stick to original.
+    */
+    border-radius: 12px;
+    margin: 0 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    animation: fadeIn 0.8s ease-out;
+}
+
+.profile-container {
+    max-width: 1100px;
+    margin: -100px auto 0;
+    /* Negative margin to pull up */
+    padding: 0 20px 40px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Header Card */
+.profile-header-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-end;
+    animation: slideUp 0.8s ease-out 0.2s backwards;
+    /* 0.2s delay */
+}
+
+.profile-header-content {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    gap: 30px;
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    margin-bottom: -10px;
+    /* Slight adjustment */
+}
+
+.profile-avatar {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+    background: white;
+}
+
+.profile-info {
+    flex: 1;
+    padding-bottom: 10px;
+}
+
+.profile-name {
+    font-size: 2rem;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.profile-headline {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.profile-location {
+    font-size: 0.95rem;
+    color: #777;
+}
+
+.profile-actions {
+    padding-bottom: 15px;
+}
+
+/* Grid Layout */
+.profile-grid-v2 {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 30px;
+}
+
+/* Sidebar */
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    animation: slideUp 0.8s ease-out 0.4s backwards;
+    /* 0.4s delay */
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.card h2,
+.card h3 {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.card h2::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 3px;
+    background: var(--primary-maroon);
+    /* Maroon underline */
+    margin-top: 5px;
+    border-radius: 2px;
+}
+
+/* Info Card */
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-item i {
+    color: var(--secondary-yellow);
+    /* Gold icons */
+    width: 20px;
+    text-align: center;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.info-item span {
+    flex: 1;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+
+/* Skills Card */
+.skill-category {
+    margin-bottom: 20px;
+}
+
+.skill-category:last-child {
+    margin-bottom: 0;
+}
+
+.skill-category h4 {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tags span {
+    background: #f0f2f5;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Main Content */
+.profile-main {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    animation: slideUp 0.8s ease-out 0.6s backwards;
+    /* 0.6s delay */
+}
+
+.section-text {
+    line-height: 1.7;
+    color: #444;
+}
+
+/* Timeline V2 */
+.timeline-v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 20px;
+}
+
+.timeline-icon {
+    width: 45px;
+    height: 45px;
+    background: #fff9e6;
+    /* Light gold tint */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #bfa100;
+    /* Darker gold for icon visibility */
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    border: 1px solid var(--secondary-yellow);
+}
+
+.timeline-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+.timeline-content .institution {
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.timeline-content .date {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.timeline-content .description {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Tags Styling override/ensure */
+.tags span {
+    background: #fff9db;
+    /* Very light gold bg */
+    color: #5c4d00;
+    /* Dark gold text */
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(241, 196, 15, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .profile-header-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .profile-avatar-wrapper {
+        margin-top: -60px;
+    }
+
+    .profile-grid-v2 {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-info {
+        padding-bottom: 0;
+    }
+}
+
+/* Fix for scrollability */
+.dashboard-body {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    padding-bottom: 40px;
+}

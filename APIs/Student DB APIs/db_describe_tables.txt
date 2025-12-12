@@ -1,0 +1,39 @@
++---------------------+
+| Tables_in_studentDB |
++---------------------+
+| Education           |
+| Students            |
+| user_tokens         |
++---------------------+
+3 rows in set (0.00 sec)
+
+mysql> describe Students
+    -> ;
++----------------+--------------+------+-----+-------------------+-------------------+
+| Field          | Type         | Null | Key | Default           | Extra             |
++----------------+--------------+------+-----+-------------------+-------------------+
+| account_id     | int          | NO   | PRI | NULL              | auto_increment    |
+| student_id     | varchar(25)  | YES  | UNI | NULL              |                   |
+| first_name     | varchar(50)  | NO   |     | NULL              |                   |
+| last_name      | varchar(50)  | NO   |     | NULL              |                   |
+| middle_initial | varchar(2)   | YES  |     | NULL              |                   |
+| suffix         | varchar(5)   | NO   |     | NULL              |                   |
+| personal_email | varchar(100) | NO   |     | NULL              |                   |
+| phone_number   | varchar(15)  | NO   |     | NULL              |                   |
+| password_hash  | varchar(255) | NO   |     | NULL              |                   |
+| student_email  | varchar(100) | NO   | UNI | NULL              |                   |
+| created_at     | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++----------------+--------------+------+-----+-------------------+-------------------+
+11 rows in set (0.00 sec)
+
+mysql> describe Education;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| edu_id       | int          | NO   | PRI | NULL    | auto_increment |
+| student_id   | varchar(25)  | YES  | MUL | NULL    |                |
+| university   | varchar(100) | NO   |     | NULL    |                |
+| department   | varchar(100) | NO   |     | NULL    |                |
+| course       | varchar(100) | NO   |     | NULL    |                |
+| organization | varchar(100) | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+

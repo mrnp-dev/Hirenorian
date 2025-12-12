@@ -1,0 +1,737 @@
+/* Global Styles */
+/* Note: Variables are imported from variables.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    height: 100vh;
+    overflow-y: auto;
+    /* Allow vertical scroll if needed, fix cropped content */
+    overflow-x: hidden;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100%;
+}
+
+/* Sidebar Styles - Refined for Overlay */
+.sidebar {
+    width: var(--sidebar-collapsed-width);
+    background-color: var(--primary-maroon);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: width var(--transition-speed) ease;
+    overflow: hidden;
+    z-index: 1000;
+    position: fixed;
+    /* Changed to fixed for overlay */
+    left: 0;
+    top: 0;
+    white-space: nowrap;
+}
+
+.sidebar:hover {
+    width: var(--sidebar-width);
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+    /* Added shadow for overlay effect */
+}
+
+.logo-container {
+    height: 70px;
+    /* Matching topbar height */
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    white-space: nowrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 10px;
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--secondary-yellow);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.sidebar:hover .logo-text {
+    opacity: 1;
+    transition-delay: 0.1s;
+}
+
+.nav-menu {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.nav-item {
+    width: 100%;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    gap: 15px;
+}
+
+.nav-link i {
+    min-width: 20px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.link-text {
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.2s;
+    font-size: 1rem;
+}
+
+.sidebar:hover .link-text {
+    opacity: 1;
+    transition-delay: 0.1s;
+}
+
+.nav-item:hover .nav-link,
+.nav-item.active .nav-link {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--secondary-yellow);
+    border-right: 4px solid var(--secondary-yellow);
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-image: url("../../../Landing Page/Images/Backgrounds/white-hexagon-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin-left: var(--sidebar-collapsed-width);
+    /* Fixed margin for content */
+    /* Sidebar is not fixed here in the same way relative to margin, or is it? */
+    /* Checking Company structure: Sidebar is flex item, not fixed. Student was fixed? 
+       Student sidebar.css says 'position: fixed'. 
+       Refactoring Company to matching layout if possible or keeping flex.
+       Company layout used flex for sidebar. I will keep sidebar relative (flex) but matching styles.
+       Wait, if I change sidebar to matching style, it works. 
+       But Student sidebar is fixed. Company previous CSS sidebar was relative flex item. 
+       I will keep it flex item for now to avoid breaking layout structure unless requested.
+       The visual style matches.
+    */
+}
+
+/* Top Bar - Matching Student Dashboard */
+.top-bar {
+    height: 70px;
+    background-color: #fff;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 90;
+    border-bottom: 1px solid #eee;
+}
+
+
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: var(--transition-speed);
+}
+
+/* User Info Wrapper - added to align children */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-profile:hover {
+    background-color: #f0f0f0;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    border: 2px solid var(--primary-maroon);
+}
+
+.user-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.dropdown-arrow {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    margin-left: 5px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 60px;
+    /* adjusted */
+    right: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    padding: 10px 0;
+    min-width: 150px;
+    display: none;
+    z-index: 1000;
+    border: 1px solid #eee;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 10px 20px;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-maroon);
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.page-title {
+    margin-bottom: 10px;
+}
+
+.page-title h1 {
+    font-size: 1.8rem;
+    color: var(--primary-maroon);
+    font-weight: 700;
+}
+
+/* Section Transitions */
+.content-section {
+    display: none;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.content-section.active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   MODERN DASHBOARD LAYOUT STYLES
+======================================== */
+
+.dashboard-main-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 20px;
+    /* Removed fixed height constraint to allow content to flow naturally if needed, 
+       but keeping max-height if scrolling is intended within panels. 
+       Let's keep height constraint but cleaner. */
+    height: calc(100vh - 180px);
+    /* Approx calculation */
+    min-height: 500px;
+}
+
+/* ========================================
+   LEFT COLUMN: JOB LISTINGS PANEL (75%)
+======================================== */
+.job-listings-panel {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    /* Use variable */
+    padding: 25px;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.btn-view-all {
+    background: var(--primary-maroon);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 4px rgba(123, 17, 19, 0.2);
+}
+
+.btn-view-all:hover {
+    background-color: #5a0c0e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(123, 17, 19, 0.3);
+}
+
+.job-listing-container {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.job-listing-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.job-listing-table th {
+    text-align: left;
+    padding: 15px;
+    color: #666;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 10;
+}
+
+.job-listing-table td {
+    padding: 15px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.job-listing-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+.status-pill {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-pill.accepted {
+    background-color: var(--status-accepted-bg);
+    color: var(--status-accepted-text);
+    border: none;
+}
+
+.status-pill.rejected {
+    background-color: var(--status-rejected-bg);
+    color: var(--status-rejected-text);
+    border: none;
+}
+
+.status-pill.pending {
+    background-color: var(--status-pending-bg);
+    color: var(--status-pending-text);
+    border: none;
+}
+
+/* ========================================
+   RIGHT COLUMN: ANALYTICS PANEL (25%)
+======================================== */
+.analytics-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+/* PIE CHART SECTION */
+.pie-chart-section {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    /* Use variable */
+    padding: 20px;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    height: 35%;
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
+}
+
+.pie-chart-section h3,
+.recruitment-metrics-section h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+
+.chart-content-wrapper {
+    flex: 1;
+    display: flex;
+    gap: 15px;
+    min-height: 0;
+}
+
+.chart-stats {
+    flex: 0 0 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    border: 1px solid #eee;
+}
+
+.stat-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.active-indicator {
+    background-color: var(--green-card);
+}
+
+.closed-indicator {
+    background-color: var(--red-card);
+}
+
+.stat-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.chart-display {
+    flex: 0 0 60%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 150px;
+    /* Limit height */
+}
+
+.chart-center-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+}
+
+.center-number {
+    display: block;
+    font-size: 1.2rem;
+    /* Reduced from 1.5rem */
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.center-text {
+    display: block;
+    font-size: 0.7rem;
+    color: #666;
+}
+
+/* RECRUITMENT METRICS SECTION */
+.recruitment-metrics-section {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    /* Use variable */
+    padding: 20px;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    height: 65%;
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
+}
+
+.metrics-cards-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+.metric-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    flex: 1;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.metric-card.total {
+    background: #fff;
+    border: 1px solid #3b82f6;
+    color: var(--text-dark);
+}
+
+.metric-card.total .metric-icon {
+    background-color: #eef2ff;
+    color: #3b82f6;
+}
+
+.metric-card.accepted {
+    background: #fff;
+    border: 1px solid #10b981;
+    color: var(--text-dark);
+}
+
+.metric-card.accepted .metric-icon {
+    background-color: #ecfdf5;
+    color: #10b981;
+}
+
+.metric-card.rejected {
+    background: #fff;
+    border: 1px solid #ef4444;
+    color: var(--text-dark);
+}
+
+.metric-card.rejected .metric-icon {
+    background-color: #fef2f2;
+    color: #ef4444;
+}
+
+.metric-icon {
+    width: 36px;
+    /* Slightly smaller */
+    height: 36px;
+    border-radius: 8px;
+    /* Background set in specific classes */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.metric-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+
+.metric-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 3% auto;
+    padding: 0;
+    border-radius: 12px;
+    width: 60%;
+    /* Reduced width as requested "don't rely the width of it on the job posts" - implicit request for fixed/smaller width? Or just fixed? default is 85% usually. User said "don't rely the width". I'll stick to a reasonable fixed percentage or max-width. Recent was 85%. I will keep standard but enforce fixed height. User meant "don't expand based on content". */
+    /* Let's keep 85% but maybe max-width 800px */
+    width: 85%;
+    max-width: 900px;
+    height: 80vh;
+    /* Fixed height */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    flex-shrink: 0;
+    /* Don't shrink header */
+}
+
+.close-modal {
+    color: #999;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 25px;
+    flex: 1;
+    /* Fill remaining space */
+    overflow-y: auto;
+    /* Scroll if content overflows */
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* Placeholder Content */
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    color: #666;
+    text-align: center;
+    padding: 50px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+}
+
+.placeholder-content h2 {
+    color: var(--primary-maroon);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .dashboard-main-container {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+    }
+
+    .pie-chart-section {
+        height: auto;
+    }
+
+    .recruitment-metrics-section {
+        height: auto;
+    }
+}
