@@ -523,6 +523,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========================================
+    // 7. SIGN OUT
+    // ========================================
+
+    const signOutBtn = document.getElementById('signOutBtn');
+    if (signOutBtn) {
+        signOutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            try {
+                const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/logout.php', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Redirect to landing page
+                    window.location.href = '../../../Landing Page/php/landing_page.php';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Still redirect even if API fails
+                window.location.href = '../../../Landing Page/php/landing_page.php';
+            }
+        });
+    }
+
+    // ========================================
     // CONSOLE HELPERS (For Testing)
     // ========================================
 

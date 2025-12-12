@@ -109,6 +109,9 @@ if (isset($_SESSION['email'])) {
                         <span class="user-name"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="#" class="dropdown-item" id="signOutBtn">Sign Out</a>
+                    </div>
                 </div>
             </header>
 
