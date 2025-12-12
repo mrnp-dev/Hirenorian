@@ -349,6 +349,252 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchDashboardData();
 
     // ========================================
+    // 6. ACTIVITY LOG
+    // ========================================
+
+    /**
+     * Load activity logs from API
+     * @param {Number} companyId - The company ID
+     */
+    async function loadActivityLogs(companyId) {
+        const timeline = document.getElementById('activityLogTimeline');
+        const logCount = document.getElementById('logCount');
+
+        if (!timeline) return;
+
+        try {
+            const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_activity_log.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    company_id: companyId,
+                    limit: 20
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                displayActivityLogs(result.activities);
+                if (logCount) {
+                    logCount.textContent = result.activities.length;
+                }
+            } else {
+                timeline.innerHTML = `
+                    <div class="error-state">
+                        <i class="fa-solid fa-exclamation-triangle"></i>
+                        <p>${result.message || 'Failed to load activity logs'}</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error('Error loading activity logs:', error);
+            timeline.innerHTML = `
+                <div class="error-state">
+                    <i class="fa-solid fa-exclamation-triangle"></i>
+                    <p>Error loading activity logs</p>
+                </div>
+            `;
+        }
+    }
+
+    /**
+     * Format timestamp to relative time
+     * @param {String} timestamp - Database timestamp
+     * @returns {String} - Relative time string
+     */
+    /**
+     * Format timestamp to relative time (Philippine Time - UTC+8)
+     * Handles UTC timestamps from DB and converts to local relative time
+     * @param {String} timestamp - Database timestamp (UTC)
+     * @returns {String} - Relative time string
+     */
+    function formatTimestamp(timestamp) {
+        // DB returns UTC time strings (e.g. "2023-12-12 14:00:00")
+        // We need to parse this as UTC
+        // Appending 'Z' tells Date.parse it's UTC
+        let utcDate;
+        if (typeof timestamp === 'string') {
+            // Replace space with T to handle "YYYY-MM-DD HH:MM:SS" format
+            let isoString = timestamp.replace(' ', 'T');
+            // If it doesn't end in Z, append specific UTC offset or Z.
+            // Assuming DB stores in UTC without timezone info:
+            if (!isoString.endsWith('Z')) {
+                isoString += 'Z';
+            }
+            utcDate = new Date(isoString);
+        } else {
+            utcDate = new Date(timestamp);
+        }
+
+        const now = new Date(); // Current local client time
+        const diffMs = now - utcDate; // Difference in milliseconds
+
+        // Debugging logs (optional, remove in prod)
+        // console.log("DB Timestamp (UTC):", timestamp);
+        // console.log("Parsed Date (Local):", utcDate.toString());
+        // console.log("Current Time (Local):", now.toString());
+
+        const diffMins = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+        const diffDays = Math.floor(diffMs / 86400000);
+
+        if (diffMs < 0) return 'Just now'; // Handle slight clock skew
+        if (diffMins < 1) return 'Just now';
+
+        if (diffMins < 60) {
+            return `${diffMins} minute${diffMins !== 1 ? 's' : ''} ago`;
+        }
+
+        if (diffHours < 24) {
+            return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+        }
+
+        if (diffDays < 7) {
+            return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+        }
+
+        // For older dates, show localized date string
+        return utcDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
+    /**
+     * Get icon class for action type
+     * @param {String} actionType - CREATE, UPDATE, or DELETE
+     * @returns {String} - Font Awesome icon class
+     */
+    function getIconForAction(actionType) {
+        switch (actionType.toUpperCase()) {
+            case 'CREATE':
+                return 'fa-solid fa-plus-circle';
+            case 'UPDATE':
+                return 'fa-solid fa-edit';
+            case 'DELETE':
+                return 'fa-solid fa-trash';
+            default:
+                return 'fa-solid fa-circle';
+        }
+    }
+
+    /**
+     * Create HTML for a single log item
+     * @param {Object} log - Log entry object
+     * @returns {String} - HTML string
+     */
+    function createLogItemHTML(log) {
+        const icon = getIconForAction(log.action_type);
+        const actionClass = log.action_type.toLowerCase();
+
+        // Use action_description if available, otherwise build from field changes
+        let actionText = log.action_description;
+        if (!actionText && log.field_name) {
+            actionText = `Updated ${log.table_affected}`;
+        } else if (!actionText) {
+            actionText = `${log.action_type} ${log.table_affected}`;
+        }
+
+        // Build details section if field changes exist
+        let detailsHTML = '';
+        if (log.field_name && log.old_value && log.new_value) {
+            detailsHTML = `
+                <div class="log-details">
+                    Changed <span class="log-field">${log.field_name}</span>
+                    from <span class="log-value old">${log.old_value}</span>
+                    to <span class="log-value new">${log.new_value}</span>
+                </div>
+            `;
+        }
+
+        return `
+            <div class="audit-log-item">
+                <div class="log-icon ${actionClass}">
+                    <i class="${icon}"></i>
+                </div>
+                <div class="log-content">
+                    <div class="log-header">
+                        <span class="log-action">${actionText}</span>
+                        <span class="log-timestamp">${formatTimestamp(log.action_timestamp)}</span>
+                    </div>
+                    ${detailsHTML}
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Display activity logs in timeline
+     * @param {Array} logs - Array of log objects
+     */
+    function displayActivityLogs(logs) {
+        const timeline = document.getElementById('activityLogTimeline');
+        if (!timeline) return;
+
+        if (!logs || logs.length === 0) {
+            timeline.innerHTML = `
+                <div class="empty-state">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <p>No recent activity</p>
+                </div>
+            `;
+            return;
+        }
+
+        timeline.innerHTML = logs.map(createLogItemHTML).join('');
+    }
+
+    // Load activity logs on dashboard load
+    // Get company_id from hidden input or fetch from API
+    const emailInput = document.getElementById('company_email');
+    if (emailInput && emailInput.value) {
+        // Fetch company_id and then load activity logs
+        fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/get_company_id.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: emailInput.value })
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result.company_id) {
+                    loadActivityLogs(result.company_id);
+                }
+            })
+            .catch(error => console.error('Error fetching company ID:', error));
+    }
+
+    // ========================================
+    // 7. SIGN OUT
+    // ========================================
+
+    const signOutBtn = document.getElementById('signOutBtn');
+    if (signOutBtn) {
+        signOutBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            try {
+                const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/logout.php', {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Redirect to landing page
+                    window.location.href = '../../../Landing Page/php/landing_page.php';
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                // Still redirect even if API fails
+                window.location.href = '../../../Landing Page/php/landing_page.php';
+            }
+        });
+    }
+
+    // ========================================
     // CONSOLE HELPERS (For Testing)
     // ========================================
 

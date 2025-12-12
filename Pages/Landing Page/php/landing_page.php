@@ -7,10 +7,14 @@
     <!-- Fonts links -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Marcellus&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
     <!-- Styles -->
 
     <link href="../css/landing_page.css" rel="stylesheet">
@@ -38,7 +42,9 @@
             </section>
 
             <section id="navbar-right">
-                <button id="sign-in">Sign In</button>
+                <button id="sign-in"
+                    onclick="window.location.href='../../Account Registration Pages/Account Selection Page/php/account_selection.php'">Sign
+                    In</button>
             </section>
 
         </nav>
@@ -47,8 +53,12 @@
 
             <section id="find-your-career-left-section">
                 <h1 id="get-hired-today" class="fade-up">GET HIRED<br>TODAY</h1>
-                <p id="hirenorian-info" class="fade-up" style="animation-delay: .2s;">Hirenorian is a career hub designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your future career—all in<br>one place.</p>
-                <div id="find-your-career-div" class="fade-up" style="animation-delay: .4s;"><button id="find-your-career-button">Find your Career</button></div>
+                <p id="hirenorian-info" class="fade-up" style="animation-delay: .2s;">Hirenorian is a career hub
+                    designed for DHVSU<br>students to explore job postings and internship<br>opportunities. Discover
+                    openings tailored to<br>your skills, connect with employers, and take<br>the next step toward your
+                    future career—all in<br>one place.</p>
+                <div id="find-your-career-div" class="fade-up" style="animation-delay: .4s;"><button
+                        id="find-your-career-button">Find your Career</button></div>
                 <div></div>
             </section>
 
@@ -74,17 +84,22 @@
                     <section id="headline-right-section">
                         <h1 id="headline" class="fade-up animate-on-scroll">Headline</h1>
                         <h2 id="sub-headline" class="fade-up animate-on-scroll delay-200">sub headline</h2>
-                        <p id="headline-info" class="fade-up animate-on-scroll delay-300">This text serves as a placeholder<br>while no actual text or<br>information is posted yet.</p>
+                        <p id="headline-info" class="fade-up animate-on-scroll delay-300">This text serves as a
+                            placeholder<br>while no actual text or<br>information is posted yet.</p>
                     </section>
                 </section>
 
                 <section id="socmed-bar" class="fade-up" style="animation-delay: .1s;">
 
                     <section id="socmed-left-bar">
-                        <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon" id="fb"></button>
-                        <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon" id="in"></button>
-                        <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon" id="yt"></button>
-                        <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon" id="ig"></button>
+                        <button class="icon"><img src="../Images/fbicon.png" alt="Facebook" class="icon"
+                                id="fb"></button>
+                        <button class="icon"><img src="../Images/linkedin.png" alt="Youtube" class="icon"
+                                id="in"></button>
+                        <button class="icon"><img src="../Images/yticon.png" alt="Youtube" class="icon"
+                                id="yt"></button>
+                        <button class="icon"><img src="../Images/igicon.png" alt="Instagram" class="icon"
+                                id="ig"></button>
                     </section>
 
                     <section>
@@ -102,13 +117,15 @@
             <section id="companies-section">
                 <div id="internships-header">
                     <h2 id="internships-title" class="slide-up animate-on-scroll">Internships</h2>
-                    <p id="internships-subheading" class="slide-up animate-on-scroll delay-200">Explore fresh opportunities from trusted employer partners.</p>
+                    <p id="internships-subheading" class="slide-up animate-on-scroll delay-200">Explore fresh
+                        opportunities from trusted employer partners.</p>
                 </div>
 
                 <section class="companies-cards-holder">
                     <article class="company-card slide-left animate-on-scroll delay-100">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Cloudstaff workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Cloudstaff workplace"
+                                class="company-card__image">
                         </div>
                         <div class="company-card__logo">
                             <img src="../Images/Companies/cloudstaff_logo.jpg" alt="Cloudstaff logo">
@@ -123,7 +140,8 @@
                     </article>
                     <article class="company-card slide-left animate-on-scroll delay-200">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="company-card__image">
+                            <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace"
+                                class="company-card__image">
                         </div>
                         <div class="company-card__logo">
                             <img src="../Images/Companies/samsung_logo.png" alt="Samsung logo">
@@ -138,7 +156,8 @@
                     </article>
                     <article class="company-card slide-right animate-on-scroll delay-300">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Google workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Google workplace"
+                                class="company-card__image">
                         </div>
                         <div class="company-card__logo">
                             <img src="../Images/google.jpg" alt="Google logo">
@@ -153,7 +172,8 @@
                     </article>
                     <article class="company-card slide-right animate-on-scroll delay-400">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Hyundai workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Hyundai workplace"
+                                class="company-card__image">
                         </div>
                         <div class="company-card__logo">
                             <img src="../Images/hyundai.jpg" alt="Hyundai logo">
@@ -168,7 +188,8 @@
                     </article>
                     <article class="company-card slide-right animate-on-scroll delay-500">
                         <div class="company-card__image-wrapper">
-                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Accenture workplace" class="company-card__image">
+                            <img src="../Images/Companies/cloudstaff_workplace.jpg" alt="Accenture workplace"
+                                class="company-card__image">
                         </div>
                         <div class="company-card__logo">
                             <img src="../Images/google.jpg" alt="Accenture logo">
@@ -195,15 +216,17 @@
 
             <div id="top-employers-header">
                 <h2 id="top-employers-title" class="slide-up animate-on-scroll">Top Employers</h2>
-                <p id="top-employers-subheading" class="slide-up animate-on-scroll delay-200">Discover leading companies offering exceptional career opportunities</p>
+                <p id="top-employers-subheading" class="slide-up animate-on-scroll delay-200">Discover leading companies
+                    offering exceptional career opportunities</p>
             </div>
 
             <div id="employer-cards-holder">
-                
+
                 <!-- Employer Card 1 -->
                 <article class="employer-card fade-slide-up animate-on-scroll delay-100">
                     <div class="employer-card__image-section">
-                        <img src="../Images/Companies/hyundai_workplace.avif" alt="Hyundai workplace" class="employer-card__workplace-image">
+                        <img src="../Images/Companies/hyundai_workplace.avif" alt="Hyundai workplace"
+                            class="employer-card__workplace-image">
                         <div class="employer-card__logo">
                             <img src="../Images/hyundai.jpg" alt="Hyundai logo">
                         </div>
@@ -225,7 +248,8 @@
                 <!-- Employer Card 2 -->
                 <article class="employer-card fade-slide-up animate-on-scroll delay-300">
                     <div class="employer-card__image-section">
-                        <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace" class="employer-card__workplace-image">
+                        <img src="../Images/Companies/samsung_workplace.webp" alt="Samsung workplace"
+                            class="employer-card__workplace-image">
                         <div class="employer-card__logo">
                             <img src="../Images/samsung.jpg" alt="Samsung logo">
                         </div>
@@ -247,7 +271,8 @@
                 <!-- Employer Card 3 -->
                 <article class="employer-card fade-slide-up animate-on-scroll delay-500">
                     <div class="employer-card__image-section">
-                        <img src="../Images/Companies/google_workplace.jpeg" alt="Google workplace" class="employer-card__workplace-image">
+                        <img src="../Images/Companies/google_workplace.jpeg" alt="Google workplace"
+                            class="employer-card__workplace-image">
                         <div class="employer-card__logo">
                             <img src="../Images/google.jpg" alt="Google logo">
                         </div>
@@ -271,15 +296,15 @@
         </section>
 
         <section id="main-section-4">
-            
+
             <div id="cta-content">
                 <h2 id="cta-title">Ready to Launch Your Career?</h2>
                 <p id="cta-description">
-                    Join thousands of DHVSU students who have already discovered their dream careers. 
-                    Whether you're looking for internships, part-time opportunities, or full-time positions, 
+                    Join thousands of DHVSU students who have already discovered their dream careers.
+                    Whether you're looking for internships, part-time opportunities, or full-time positions,
                     Hirenorian connects you with top employers ready to welcome fresh talent.
                 </p>
-                
+
                 <div id="cta-buttons">
                     <button class="cta-button cta-button-primary">Get Started Now</button>
                     <button class="cta-button cta-button-secondary">Learn More</button>
@@ -317,10 +342,14 @@
                     <p id="footer-Hirenorian" class="fade-up">Hirenorian</p>
 
                     <section id="footer-buttons" class="fade-up">
-                        <button class="icon2"><img src="../Images/fbicon.png" alt="Facebook" class="icon2" id="fb2"></button>
-                        <button class="icon2"><img src="../Images/linkedin.png" alt="Youtube" class="icon2" id="in2"></button>
-                        <button class="icon2"><img src="../Images/yticon.png" alt="Youtube" class="icon2" id="yt2"></button>
-                        <button class="icon2"><img src="../Images/igicon.png" alt="Instagram" class="icon2" id="ig2"></button>
+                        <button class="icon2"><img src="../Images/fbicon.png" alt="Facebook" class="icon2"
+                                id="fb2"></button>
+                        <button class="icon2"><img src="../Images/linkedin.png" alt="Youtube" class="icon2"
+                                id="in2"></button>
+                        <button class="icon2"><img src="../Images/yticon.png" alt="Youtube" class="icon2"
+                                id="yt2"></button>
+                        <button class="icon2"><img src="../Images/igicon.png" alt="Instagram" class="icon2"
+                                id="ig2"></button>
                     </section>
                 </section>
 

@@ -274,3 +274,20 @@ mysql> DESCRIBE company_banners;
 | banner_url  | varchar(255) | NO   |     | NULL              |                   |
 | uploaded_at | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 +-------------+--------------+------+-----+-------------------+-------------------+
+
+mysql> DESCRIBE company_activity_log;
++--------------------+----------------------------------+------+-----+-------------------+-------------------+
+| Field              | Type                             | Null | Key | Default           | Extra             |
++--------------------+----------------------------------+------+-----+-------------------+-------------------+
+| log_id             | int                              | NO   | PRI | NULL              | auto_increment    |
+| company_id         | int                              | NO   | MUL | NULL              |                   |
+| action_type        | enum('CREATE','UPDATE','DELETE') | NO   |     | NULL              |                   |
+| table_affected     | varchar(100)                     | NO   | MUL | NULL              |                   |
+| record_id          | int                              | YES  |     | NULL              |                   |
+| field_name         | varchar(100)                     | YES  |     | NULL              |                   |
+| old_value          | text                             | YES  |     | NULL              |                   |
+| new_value          | text                             | YES  |     | NULL              |                   |
+| action_description | text                             | YES  |     | NULL              |                   |
+| action_timestamp   | timestamp                        | YES  | MUL | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
+| ip_address         | varchar(45)                      | YES  |     | NULL              |                   |
++--------------------+----------------------------------+------+-----+-------------------+-------------------+

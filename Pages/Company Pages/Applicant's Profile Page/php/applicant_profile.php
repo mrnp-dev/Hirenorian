@@ -87,12 +87,7 @@ if (isset($_SESSION['email'])) {
                         <span class="link-text">Job Listing</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="../../Help Page/php/help.php" class="nav-link">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span class="link-text">Help</span>
-                    </a>
-                </li>
+
             </ul>
         </aside>
 
@@ -108,6 +103,9 @@ if (isset($_SESSION['email'])) {
                         </div>
                         <span class="user-name"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="#" class="dropdown-item" id="signOutBtn">Sign Out</a>
                     </div>
                 </div>
             </header>

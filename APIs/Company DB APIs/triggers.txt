@@ -1,0 +1,740 @@
+mysql> show triggers;
++------------------------------------------+--------+---------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------+----------------------+----------------------+--------------------+
+| Trigger                                  | Event  | Table                           | Statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Timing | Created                | sql_mode                                                                                                              | Definer  | character_set_client | collation_connection | Database Collation |
++------------------------------------------+--------+---------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------+----------------------+----------------------+--------------------+
+| trg_applicant_after_insert               | INSERT | Applicants                      | BEGIN
+    DECLARE comp_id INT;
+    SELECT company_id INTO comp_id FROM Job_Posts WHERE post_id = NEW.post_id;
+
+    IF comp_id IS NOT NULL THEN
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+        VALUES (comp_id, 'CREATE', 'Applicants', NEW.applicant_id, 'Received a new job application');
+    END IF;
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | AFTER  | 2025-12-11 20:33:06.79 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_applicant_after_update               | UPDATE | Applicants                      | BEGIN
+    DECLARE comp_id INT;
+    DECLARE description VARCHAR(500);
+    SELECT company_id INTO comp_id FROM Job_Posts WHERE post_id = NEW.post_id;
+
+    IF comp_id IS NOT NULL THEN
+
+        IF OLD.status != NEW.status THEN
+            IF NEW.status = 'Accepted' THEN
+                SET description = 'Accepted an applicant';
+            ELSEIF NEW.status = 'Rejected' THEN
+                SET description = 'Rejected an applicant';
+            ELSE
+                SET description = CONCAT('Changed applicant status to "', NEW.status, '"');
+            END IF;
+
+            INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+            VALUES (comp_id, 'UPDATE', 'Applicants', NEW.applicant_id, 'status', OLD.status, NEW.status, description);
+        END IF;
+    END IF;
+END                                                                                                                                        | AFTER  | 2025-12-11 20:33:22.06 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_after_update                 | UPDATE | Company                         | BEGIN
+    DECLARE description VARCHAR(500);
+
+
+    IF OLD.company_name != NEW.company_name THEN
+        SET description = CONCAT('Changed company name from "', OLD.company_name, '" to "', NEW.company_name, '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'company_name', OLD.company_name, NEW.company_name, description);
+    END IF;
+
+
+    IF OLD.email != NEW.email THEN
+        SET description = CONCAT('Changed company email from "', OLD.email, '" to "', NEW.email, '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'email', OLD.email, NEW.email, description);
+    END IF;
+
+
+    IF (OLD.phone_number IS NULL AND NEW.phone_number IS NOT NULL) OR
+       (OLD.phone_number IS NOT NULL AND NEW.phone_number IS NULL) OR
+       (OLD.phone_number != NEW.phone_number) THEN
+        SET description = CONCAT('Changed phone number from "', IFNULL(OLD.phone_number, 'N/A'), '" to "', IFNULL(NEW.phone_number, 'N/A'), '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'phone_number', OLD.phone_number, NEW.phone_number, description);
+    END IF;
+
+
+    IF (OLD.company_type IS NULL AND NEW.company_type IS NOT NULL) OR
+       (OLD.company_type IS NOT NULL AND NEW.company_type IS NULL) OR
+       (OLD.company_type != NEW.company_type) THEN
+        SET description = CONCAT('Changed company type from "', IFNULL(OLD.company_type, 'N/A'), '" to "', IFNULL(NEW.company_type, 'N/A'), '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'company_type', OLD.company_type, NEW.company_type, description);
+    END IF;
+
+
+    IF (OLD.industry IS NULL AND NEW.industry IS NOT NULL) OR
+       (OLD.industry IS NOT NULL AND NEW.industry IS NULL) OR
+       (OLD.industry != NEW.industry) THEN
+        SET description = CONCAT('Changed industry from "', IFNULL(OLD.industry, 'N/A'), '" to "', IFNULL(NEW.industry, 'N/A'), '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'industry', OLD.industry, NEW.industry, description);
+    END IF;
+
+
+    IF (OLD.address IS NULL AND NEW.address IS NOT NULL) OR
+       (OLD.address IS NOT NULL AND NEW.address IS NULL) OR
+       (OLD.address != NEW.address) THEN
+        SET description = 'Updated company address';
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'address', OLD.address, NEW.address, description);
+    END IF;
+
+
+    IF OLD.password_hash != NEW.password_hash THEN
+        SET description = 'Changed account password';
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'password_hash', '***', '***', description);
+    END IF;
+
+
+    IF OLD.verification != NEW.verification THEN
+        SET description = CONCAT('Verification status changed to "', NEW.verification, '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'verification', OLD.verification, NEW.verification, description);
+    END IF;
+
+
+    IF (OLD.activation IS NULL AND NEW.activation IS NOT NULL) OR
+       (OLD.activation IS NOT NULL AND NEW.activation IS NULL) OR
+       (OLD.activation != NEW.activation) THEN
+        SET description = CONCAT('Account activation status changed to "', NEW.activation, '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Company', NEW.company_id, 'activation', OLD.activation, NEW.activation, description);
+    END IF;
+END | AFTER  | 2025-12-11 20:30:19.71 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| company_after_update                     | UPDATE | Company                         | BEGIN
+
+    IF OLD.company_name != NEW.company_name THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Company', NEW.company_id,
+            'company_name', OLD.company_name, NEW.company_name,
+            CONCAT('Company name changed from "', OLD.company_name, '" to "', NEW.company_name, '"')
+        );
+    END IF;
+
+
+    IF OLD.phone_number != NEW.phone_number OR (OLD.phone_number IS NULL AND NEW.phone_number IS NOT NULL) OR (OLD.phone_number IS NOT NULL AND NEW.phone_number IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Company', NEW.company_id,
+            'phone_number', COALESCE(OLD.phone_number, 'NULL'), COALESCE(NEW.phone_number, 'NULL'),
+            'Phone number updated'
+        );
+    END IF;
+
+
+    IF OLD.company_type != NEW.company_type OR (OLD.company_type IS NULL AND NEW.company_type IS NOT NULL) OR (OLD.company_type IS NOT NULL AND NEW.company_type IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Company', NEW.company_id,
+            'company_type', COALESCE(OLD.company_type, 'NULL'), COALESCE(NEW.company_type, 'NULL'),
+            'Company type updated'
+        );
+    END IF;
+
+
+    IF OLD.industry != NEW.industry OR (OLD.industry IS NULL AND NEW.industry IS NOT NULL) OR (OLD.industry IS NOT NULL AND NEW.industry IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Company', NEW.company_id,
+            'industry', COALESCE(OLD.industry, 'NULL'), COALESCE(NEW.industry, 'NULL'),
+            'Industry updated'
+        );
+    END IF;
+
+
+    IF OLD.address != NEW.address OR (OLD.address IS NULL AND NEW.address IS NOT NULL) OR (OLD.address IS NOT NULL AND NEW.address IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Company', NEW.company_id,
+            'address', COALESCE(OLD.address, 'NULL'), COALESCE(NEW.address, 'NULL'),
+            'Address updated'
+        );
+    END IF;
+END | AFTER  | 2025-12-12 03:29:54.73 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_details_after_insert             | INSERT | Job_Details                     | BEGIN
+    DECLARE comp_id INT;
+    SELECT company_id INTO comp_id FROM Job_Posts WHERE post_id = NEW.post_id;
+
+    IF comp_id IS NOT NULL THEN
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+        VALUES (comp_id, 'CREATE', 'Job_Details', NEW.post_id, CONCAT('Added details for job: ', IFNULL(NEW.title, 'Untitled')));
+    END IF;
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | AFTER  | 2025-12-11 20:32:31.04 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_details_after_update             | UPDATE | Job_Details                     | BEGIN
+    DECLARE comp_id INT;
+    DECLARE description VARCHAR(500);
+    SELECT company_id INTO comp_id FROM Job_Posts WHERE post_id = NEW.post_id;
+
+    IF comp_id IS NOT NULL THEN
+
+        IF OLD.title != NEW.title THEN
+            SET description = CONCAT('Changed job title from "', OLD.title, '" to "', NEW.title, '"');
+            INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+            VALUES (comp_id, 'UPDATE', 'Job_Details', NEW.post_id, 'title', description);
+        END IF;
+
+
+        IF (OLD.province IS NULL AND NEW.province IS NOT NULL) OR
+           (OLD.province IS NOT NULL AND NEW.province IS NULL) OR
+           (OLD.province != NEW.province) OR
+           (OLD.city IS NULL AND NEW.city IS NOT NULL) OR
+           (OLD.city IS NOT NULL AND NEW.city IS NULL) OR
+           (OLD.city != NEW.city) THEN
+            SET description = CONCAT('Updated job location to ', IFNULL(NEW.city, ''), ', ', IFNULL(NEW.province, ''));
+            INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+            VALUES (comp_id, 'UPDATE', 'Job_Details', NEW.post_id, 'location', description);
+        END IF;
+
+
+        IF (OLD.work_type IS NULL AND NEW.work_type IS NOT NULL) OR
+           (OLD.work_type IS NOT NULL AND NEW.work_type IS NULL) OR
+           (OLD.work_type != NEW.work_type) THEN
+            SET description = CONCAT('Changed work type to "', NEW.work_type, '"');
+            INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+            VALUES (comp_id, 'UPDATE', 'Job_Details', NEW.post_id, 'work_type', description);
+        END IF;
+
+
+        IF (OLD.description IS NULL AND NEW.description IS NOT NULL) OR
+           (OLD.description IS NOT NULL AND NEW.description IS NULL) OR
+           (OLD.description != NEW.description) THEN
+            SET description = CONCAT('Updated job description for "', NEW.title, '"');
+            INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+            VALUES (comp_id, 'UPDATE', 'Job_Details', NEW.post_id, 'description', description);
+        END IF;
+
+
+        IF (OLD.category IS NULL AND NEW.category IS NOT NULL) OR
+           (OLD.category IS NOT NULL AND NEW.category IS NULL) OR
+           (OLD.category != NEW.category) THEN
+            SET description = CONCAT('Changed job category to "', IFNULL(NEW.category, 'N/A'), '"');
+            INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+            VALUES (comp_id, 'UPDATE', 'Job_Details', NEW.post_id, 'category', description);
+        END IF;
+    END IF;
+END | AFTER  | 2025-12-11 20:32:39.65 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| job_details_after_update                 | UPDATE | Job_Details                     | BEGIN
+    DECLARE v_company_id INT;
+
+
+    SELECT company_id INTO v_company_id FROM Job_Posts WHERE post_id = NEW.post_id LIMIT 1;
+
+
+    IF OLD.title != NEW.title THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            v_company_id, 'UPDATE', 'Job_Details', NEW.post_id,
+            'title', OLD.title, NEW.title,
+            CONCAT('Job title changed from "', OLD.title, '" to "', NEW.title, '"')
+        );
+    END IF;
+
+
+    IF OLD.work_type != NEW.work_type THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            v_company_id, 'UPDATE', 'Job_Details', NEW.post_id,
+            'work_type', OLD.work_type, NEW.work_type,
+            'Work type updated'
+        );
+    END IF;
+
+
+    IF OLD.category != NEW.category OR (OLD.category IS NULL AND NEW.category IS NOT NULL) OR (OLD.category IS NOT NULL AND NEW.category IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            v_company_id, 'UPDATE', 'Job_Details', NEW.post_id,
+            'category', COALESCE(OLD.category, 'NULL'), COALESCE(NEW.category, 'NULL'),
+            'Job category updated'
+        );
+    END IF;
+
+
+    IF OLD.province != NEW.province OR (OLD.province IS NULL AND NEW.province IS NOT NULL) OR (OLD.province IS NOT NULL AND NEW.province IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            v_company_id, 'UPDATE', 'Job_Details', NEW.post_id,
+            'province', COALESCE(OLD.province, 'NULL'), COALESCE(NEW.province, 'NULL'),
+            'Job location (province) updated'
+        );
+    END IF;
+
+    IF OLD.city != NEW.city OR (OLD.city IS NULL AND NEW.city IS NOT NULL) OR (OLD.city IS NOT NULL AND NEW.city IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            v_company_id, 'UPDATE', 'Job_Details', NEW.post_id,
+            'city', COALESCE(OLD.city, 'NULL'), COALESCE(NEW.city, 'NULL'),
+            'Job location (city) updated'
+        );
+    END IF;
+END | AFTER  | 2025-12-12 03:31:38.35 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_post_after_insert                | INSERT | Job_Posts                       | BEGIN
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'Job_Posts', NEW.post_id, 'Created a new job post');
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | AFTER  | 2025-12-11 20:32:10.22 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| job_posts_after_insert                   | INSERT | Job_Posts                       | BEGIN
+    INSERT INTO company_activity_log (
+        company_id, action_type, table_affected, record_id,
+        action_description
+    ) VALUES (
+        NEW.company_id, 'CREATE', 'Job_Posts', NEW.post_id,
+        CONCAT('New job post created (ID: ', NEW.post_id, ')')
+    );
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | AFTER  | 2025-12-12 03:30:02.30 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_post_after_update                | UPDATE | Job_Posts                       | BEGIN
+    DECLARE description VARCHAR(500);
+
+
+    IF (OLD.status IS NULL AND NEW.status IS NOT NULL) OR
+       (OLD.status IS NOT NULL AND NEW.status IS NULL) OR
+       (OLD.status != NEW.status) THEN
+        SET description = CONCAT('Changed job post status to "', NEW.status, '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, old_value, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Job_Posts', NEW.post_id, 'status', OLD.status, NEW.status, description);
+    END IF;
+
+
+    IF (OLD.applicant_limit IS NULL AND NEW.applicant_limit IS NOT NULL) OR
+       (OLD.applicant_limit IS NOT NULL AND NEW.applicant_limit IS NULL) OR
+       (OLD.applicant_limit != NEW.applicant_limit) THEN
+        SET description = CONCAT('Changed applicant limit from ', IFNULL(OLD.applicant_limit, 'N/A'), ' to ', IFNULL(NEW.applicant_limit, 'N/A'));
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'Job_Posts', NEW.post_id, 'applicant_limit', description);
+    END IF;
+END | AFTER  | 2025-12-11 20:32:20.14 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| job_posts_after_update                   | UPDATE | Job_Posts                       | BEGIN
+
+    IF OLD.status != NEW.status THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Job_Posts', NEW.post_id,
+            'status', OLD.status, NEW.status,
+            CONCAT('Job post status changed from "', OLD.status, '" to "', NEW.status, '"')
+        );
+    END IF;
+
+
+    IF OLD.applicant_limit != NEW.applicant_limit OR (OLD.applicant_limit IS NULL AND NEW.applicant_limit IS NOT NULL) OR (OLD.applicant_limit IS NOT NULL AND NEW.applicant_limit IS NULL) THEN
+        INSERT INTO company_activity_log (
+            company_id, action_type, table_affected, record_id,
+            field_name, old_value, new_value, action_description
+        ) VALUES (
+            NEW.company_id, 'UPDATE', 'Job_Posts', NEW.post_id,
+            'applicant_limit', COALESCE(OLD.applicant_limit, 'NULL'), COALESCE(NEW.applicant_limit, 'NULL'),
+            'Applicant limit updated'
+        );
+    END IF;
+END | AFTER  | 2025-12-12 03:30:10.94 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_post_after_delete                | DELETE | Job_Posts                       | BEGIN
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (OLD.company_id, 'DELETE', 'Job_Posts', OLD.post_id, 'Deleted a job post');
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | AFTER  | 2025-12-11 20:32:26.11 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| job_posts_after_delete                   | DELETE | Job_Posts                       | BEGIN
+    INSERT INTO company_activity_log (
+        company_id, action_type, table_affected, record_id,
+        action_description
+    ) VALUES (
+        OLD.company_id, 'DELETE', 'Job_Posts', OLD.post_id,
+        CONCAT('Job post deleted (ID: ', OLD.post_id, ')')
+    );
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | AFTER  | 2025-12-12 03:30:15.55 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_tag_after_insert                 | INSERT | Job_Tags                        | BEGIN
+    DECLARE comp_id INT;
+    SELECT company_id INTO comp_id FROM Job_Posts WHERE post_id = NEW.post_id;
+
+    IF comp_id IS NOT NULL THEN
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+        VALUES (comp_id, 'CREATE', 'Job_Tags', NEW.tag_id, CONCAT('Added tag "', NEW.tag, '" to job post'));
+    END IF;
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | AFTER  | 2025-12-11 20:32:48.89 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_job_tag_after_delete                 | DELETE | Job_Tags                        | BEGIN
+    DECLARE comp_id INT;
+    SELECT company_id INTO comp_id FROM Job_Posts WHERE post_id = OLD.post_id;
+
+    IF comp_id IS NOT NULL THEN
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+        VALUES (comp_id, 'DELETE', 'Job_Tags', OLD.tag_id, CONCAT('Removed tag "', OLD.tag, '" from job post'));
+    END IF;
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | AFTER  | 2025-12-11 20:32:58.23 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_edu_hist_after_insert            | INSERT | StudentEducationHistory         | BEGIN
+    INSERT INTO StudentProfileAuditLog
+        (student_id, action_type, table_affected, record_id, new_value, ip_address)
+    VALUES
+        (NEW.student_id, 'CREATE', 'StudentEducationHistory', NEW.edu_hist_id,
+         JSON_OBJECT(
+             'degree', NEW.degree,
+             'institution', NEW.institution,
+             'start_year', NEW.start_year,
+             'end_year', NEW.end_year
+         ), NULL);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | AFTER  | 2025-12-11 07:11:44.45 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_edu_hist_after_update            | UPDATE | StudentEducationHistory         | BEGIN
+
+    IF OLD.degree != NEW.degree THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentEducationHistory', NEW.edu_hist_id,
+             'degree', OLD.degree, NEW.degree, NULL);
+    END IF;
+
+
+    IF OLD.institution != NEW.institution THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentEducationHistory', NEW.edu_hist_id,
+             'institution', OLD.institution, NEW.institution, NULL);
+    END IF;
+
+
+    IF (OLD.start_year IS NULL AND NEW.start_year IS NOT NULL)
+       OR (OLD.start_year IS NOT NULL AND NEW.start_year IS NULL)
+       OR (OLD.start_year != NEW.start_year) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentEducationHistory', NEW.edu_hist_id,
+             'start_year', OLD.start_year, NEW.start_year, NULL);
+    END IF;
+
+
+    IF (OLD.end_year IS NULL AND NEW.end_year IS NOT NULL)
+       OR (OLD.end_year IS NOT NULL AND NEW.end_year IS NULL)
+       OR (OLD.end_year != NEW.end_year) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentEducationHistory', NEW.edu_hist_id,
+             'end_year', OLD.end_year, NEW.end_year, NULL);
+    END IF;
+END | AFTER  | 2025-12-11 07:11:44.46 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_edu_hist_after_delete            | DELETE | StudentEducationHistory         | BEGIN
+    INSERT INTO StudentProfileAuditLog
+        (student_id, action_type, table_affected, record_id, old_value, ip_address)
+    VALUES
+        (OLD.student_id, 'DELETE', 'StudentEducationHistory', OLD.edu_hist_id,
+         JSON_OBJECT(
+             'degree', OLD.degree,
+             'institution', OLD.institution,
+             'start_year', OLD.start_year,
+             'end_year', OLD.end_year
+         ), NULL);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | AFTER  | 2025-12-11 07:11:44.46 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_exp_after_insert                 | INSERT | StudentExperience               | BEGIN
+    INSERT INTO StudentProfileAuditLog
+        (student_id, action_type, table_affected, record_id, new_value, ip_address)
+    VALUES
+        (NEW.student_id, 'CREATE', 'StudentExperience', NEW.exp_id,
+         JSON_OBJECT(
+             'job_title', NEW.job_title,
+             'company_name', NEW.company_name,
+             'start_date', NEW.start_date,
+             'end_date', NEW.end_date,
+             'description', NEW.description
+         ), NULL);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | AFTER  | 2025-12-11 07:11:44.47 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_exp_after_update                 | UPDATE | StudentExperience               | BEGIN
+
+    IF OLD.job_title != NEW.job_title THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentExperience', NEW.exp_id,
+             'job_title', OLD.job_title, NEW.job_title, NULL);
+    END IF;
+
+
+    IF OLD.company_name != NEW.company_name THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentExperience', NEW.exp_id,
+             'company_name', OLD.company_name, NEW.company_name, NULL);
+    END IF;
+
+
+    IF (OLD.start_date IS NULL AND NEW.start_date IS NOT NULL)
+       OR (OLD.start_date IS NOT NULL AND NEW.start_date IS NULL)
+       OR (OLD.start_date != NEW.start_date) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentExperience', NEW.exp_id,
+             'start_date', OLD.start_date, NEW.start_date, NULL);
+    END IF;
+
+
+    IF (OLD.end_date IS NULL AND NEW.end_date IS NOT NULL)
+       OR (OLD.end_date IS NOT NULL AND NEW.end_date IS NULL)
+       OR (OLD.end_date != NEW.end_date) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentExperience', NEW.exp_id,
+             'end_date', OLD.end_date, NEW.end_date, NULL);
+    END IF;
+
+
+    IF (OLD.description IS NULL AND NEW.description IS NOT NULL)
+       OR (OLD.description IS NOT NULL AND NEW.description IS NULL)
+       OR (OLD.description != NEW.description) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, record_id, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentExperience', NEW.exp_id,
+             'description', OLD.description, NEW.description, NULL);
+    END IF;
+END | AFTER  | 2025-12-11 07:11:44.47 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_exp_after_delete                 | DELETE | StudentExperience               | BEGIN
+    INSERT INTO StudentProfileAuditLog
+        (student_id, action_type, table_affected, record_id, old_value, ip_address)
+    VALUES
+        (OLD.student_id, 'DELETE', 'StudentExperience', OLD.exp_id,
+         JSON_OBJECT(
+             'job_title', OLD.job_title,
+             'company_name', OLD.company_name,
+             'start_date', OLD.start_date,
+             'end_date', OLD.end_date,
+             'description', OLD.description
+         ), NULL);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | AFTER  | 2025-12-11 07:11:44.48 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_profile_after_update             | UPDATE | StudentProfile                  | BEGIN
+
+    IF (OLD.location IS NULL AND NEW.location IS NOT NULL)
+       OR (OLD.location IS NOT NULL AND NEW.location IS NULL)
+       OR (OLD.location != NEW.location) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentProfile', 'location', OLD.location, NEW.location, NULL);
+    END IF;
+
+
+    IF (OLD.about_me IS NULL AND NEW.about_me IS NOT NULL)
+       OR (OLD.about_me IS NOT NULL AND NEW.about_me IS NULL)
+       OR (OLD.about_me != NEW.about_me) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentProfile', 'about_me', OLD.about_me, NEW.about_me, NULL);
+    END IF;
+
+
+    IF (OLD.profile_picture IS NULL AND NEW.profile_picture IS NOT NULL)
+       OR (OLD.profile_picture IS NOT NULL AND NEW.profile_picture IS NULL)
+       OR (OLD.profile_picture != NEW.profile_picture) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'StudentProfile', 'profile_picture', OLD.profile_picture, NEW.profile_picture, NULL);
+    END IF;
+END | AFTER  | 2025-12-11 07:11:44.44 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_skills_after_insert              | INSERT | StudentSkills                   | BEGIN
+    INSERT INTO StudentProfileAuditLog
+        (student_id, action_type, table_affected, record_id, field_name, new_value, ip_address)
+    VALUES
+        (NEW.student_id, 'CREATE', 'StudentSkills', NEW.skill_id, 'skill_name',
+         CONCAT(NEW.skill_name, ' (', NEW.skill_category, ')'), NULL);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | AFTER  | 2025-12-11 07:11:44.44 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| student_skills_after_delete              | DELETE | StudentSkills                   | BEGIN
+    INSERT INTO StudentProfileAuditLog
+        (student_id, action_type, table_affected, record_id, field_name, old_value, ip_address)
+    VALUES
+        (OLD.student_id, 'DELETE', 'StudentSkills', OLD.skill_id, 'skill_name',
+         CONCAT(OLD.skill_name, ' (', OLD.skill_category, ')'), NULL);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | AFTER  | 2025-12-11 07:11:44.45 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| students_after_update                    | UPDATE | Students                        | BEGIN
+
+    IF OLD.first_name != NEW.first_name THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'first_name', OLD.first_name, NEW.first_name, NULL);
+    END IF;
+
+
+    IF OLD.last_name != NEW.last_name THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'last_name', OLD.last_name, NEW.last_name, NULL);
+    END IF;
+
+
+    IF (OLD.middle_initial IS NULL AND NEW.middle_initial IS NOT NULL)
+       OR (OLD.middle_initial IS NOT NULL AND NEW.middle_initial IS NULL)
+       OR (OLD.middle_initial != NEW.middle_initial) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'middle_initial', OLD.middle_initial, NEW.middle_initial, NULL);
+    END IF;
+
+
+    IF (OLD.suffix IS NULL AND NEW.suffix IS NOT NULL)
+       OR (OLD.suffix IS NOT NULL AND NEW.suffix IS NULL)
+       OR (OLD.suffix != NEW.suffix) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'suffix', OLD.suffix, NEW.suffix, NULL);
+    END IF;
+
+
+    IF OLD.personal_email != NEW.personal_email THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'personal_email', OLD.personal_email, NEW.personal_email, NULL);
+    END IF;
+
+
+    IF (OLD.phone_number IS NULL AND NEW.phone_number IS NOT NULL)
+       OR (OLD.phone_number IS NOT NULL AND NEW.phone_number IS NULL)
+       OR (OLD.phone_number != NEW.phone_number) THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'phone_number', OLD.phone_number, NEW.phone_number, NULL);
+    END IF;
+
+
+    IF OLD.password_hash != NEW.password_hash THEN
+        INSERT INTO StudentProfileAuditLog
+            (student_id, action_type, table_affected, field_name, old_value, new_value, ip_address)
+        VALUES
+            (NEW.student_id, 'UPDATE', 'Students', 'password_hash', '[REDACTED]', '[REDACTED]', NULL);
+    END IF;
+END | AFTER  | 2025-12-11 07:11:44.43 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_additional_info_after_insert | INSERT | company_additional_informations | BEGIN
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'company_additional_informations', NEW.company_add_id, 'Added company additional information');
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | AFTER  | 2025-12-11 20:30:43.57 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_additional_info_after_update | UPDATE | company_additional_informations | BEGIN
+    DECLARE description VARCHAR(500);
+
+
+    IF (OLD.about_us IS NULL AND NEW.about_us IS NOT NULL) OR
+       (OLD.about_us IS NOT NULL AND NEW.about_us IS NULL) OR
+       (OLD.about_us != NEW.about_us) THEN
+        SET description = 'Updated "About Us" section';
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'company_additional_informations', NEW.company_add_id, 'about_us', description);
+    END IF;
+
+
+    IF (OLD.why_join_us IS NULL AND NEW.why_join_us IS NOT NULL) OR
+       (OLD.why_join_us IS NOT NULL AND NEW.why_join_us IS NULL) OR
+       (OLD.why_join_us != NEW.why_join_us) THEN
+        SET description = 'Updated "Why Join Us" section';
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'company_additional_informations', NEW.company_add_id, 'why_join_us', description);
+    END IF;
+
+
+    IF (OLD.website_link IS NULL AND NEW.website_link IS NOT NULL) OR
+       (OLD.website_link IS NOT NULL AND NEW.website_link IS NULL) OR
+       (OLD.website_link != NEW.website_link) THEN
+        SET description = CONCAT('Updated website link to "', IFNULL(NEW.website_link, 'N/A'), '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'company_additional_informations', NEW.company_add_id, 'website_link', NEW.website_link, description);
+    END IF;
+
+
+    IF (OLD.tagline IS NULL AND NEW.tagline IS NOT NULL) OR
+       (OLD.tagline IS NOT NULL AND NEW.tagline IS NULL) OR
+       (OLD.tagline != NEW.tagline) THEN
+        SET description = CONCAT('Updated tagline to "', IFNULL(NEW.tagline, 'N/A'), '"');
+        INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, field_name, new_value, action_description)
+        VALUES (NEW.company_id, 'UPDATE', 'company_additional_informations', NEW.company_add_id, 'tagline', NEW.tagline, description);
+    END IF;
+END | AFTER  | 2025-12-11 20:30:56.29 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_banner_after_insert          | INSERT | company_banners                 | BEGIN
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'company_banners', NEW.banner_id, 'Uploaded new company banner');
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | AFTER  | 2025-12-11 20:32:02.89 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_contact_after_insert         | INSERT | company_contact_persons         | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Added contact person: ', IFNULL(NEW.contact_name, 'Unnamed'), ' (', IFNULL(NEW.position, 'No position'), ')');
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'company_contact_persons', NEW.contact_person_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | AFTER  | 2025-12-11 20:31:11.71 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_contact_after_update         | UPDATE | company_contact_persons         | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Updated contact person: ', IFNULL(NEW.contact_name, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'UPDATE', 'company_contact_persons', NEW.contact_person_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | AFTER  | 2025-12-11 20:31:19.96 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_contact_after_delete         | DELETE | company_contact_persons         | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Removed contact person: ', IFNULL(OLD.contact_name, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (OLD.company_id, 'DELETE', 'company_contact_persons', OLD.contact_person_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | AFTER  | 2025-12-11 20:31:27.65 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_icon_after_insert            | INSERT | company_icons                   | BEGIN
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'company_icons', NEW.icon_id, 'Uploaded new company icon');
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | AFTER  | 2025-12-11 20:32:01.73 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_location_after_insert        | INSERT | company_locations               | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Added company location: ', IFNULL(NEW.location, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'company_locations', NEW.loc_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | AFTER  | 2025-12-11 20:31:33.35 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_location_after_update        | UPDATE | company_locations               | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Updated company location: ', IFNULL(NEW.location, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'UPDATE', 'company_locations', NEW.loc_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | AFTER  | 2025-12-11 20:31:35.75 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_location_after_delete        | DELETE | company_locations               | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Removed company location: ', IFNULL(OLD.location, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (OLD.company_id, 'DELETE', 'company_locations', OLD.loc_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | AFTER  | 2025-12-11 20:31:42.75 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_perk_after_insert            | INSERT | company_perks_benefits          | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Added perk/benefit: ', IFNULL(NEW.perk, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (NEW.company_id, 'CREATE', 'company_perks_benefits', NEW.perk_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | AFTER  | 2025-12-11 20:31:48.10 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
+| trg_company_perk_after_delete            | DELETE | company_perks_benefits          | BEGIN
+    DECLARE description VARCHAR(500);
+    SET description = CONCAT('Removed perk/benefit: ', IFNULL(OLD.perk, 'Unnamed'));
+    INSERT INTO company_activity_log (company_id, action_type, table_affected, record_id, action_description)
+    VALUES (OLD.company_id, 'DELETE', 'company_perks_benefits', OLD.perk_id, description);
+END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | AFTER  | 2025-12-11 20:31:49.17 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION | dbuser@% | utf8mb4              | utf8mb4_0900_ai_ci   | utf8mb4_0900_ai_ci |
++------------------------------------------+--------+---------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------+------------------------+-----------------------------------------------------------------------------------------------------------------------+----------+----------------------+----------------------+--------------------+
+37 rows in set (0.00 sec)
