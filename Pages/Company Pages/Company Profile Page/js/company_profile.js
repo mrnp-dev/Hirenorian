@@ -76,6 +76,19 @@ function saveProfileChanges() {
     if (basicInfo.industry !== document.getElementById('viewCompanyIndustry').textContent) hasChanges = true;
     if (basicInfo.address !== document.getElementById('viewContactLocation').textContent) hasChanges = true;
 
+    // Validation: Phone (Optional but if present must be valid)
+    const originalPhone = document.getElementById('viewContactPhone').textContent;
+    const currentPhoneVal = basicInfo.phoneNumber || "No phone number";
+    if (basicInfo.phoneNumber && !PHONE_REGEX.test(basicInfo.phoneNumber)) {
+        // If invalid, revert or warn? For now let's revert to original if invalid format
+        // Ideally we show toast and stop, but fitting into existing pattern:
+        document.getElementById('editContactPhone').value = originalPhone === "No phone number" ? "" : originalPhone;
+        basicInfo.phoneNumber = originalPhone === "No phone number" ? "" : originalPhone;
+        // Optionally alert user?
+        ToastSystem.show('Invalid phone number format. Reverted to previous.', 'warning');
+    }
+    if (currentPhoneVal !== originalPhone) hasChanges = true;
+
     // Check details changes
     if (details.tagline !== document.getElementById('viewCompanyTagline').textContent) hasChanges = true;
 
@@ -165,6 +178,7 @@ function updateViewModeUI(basicInfo, details) {
     document.getElementById('viewCompanyIndustry').textContent = basicInfo.industry;
     document.getElementById('viewContactEmail').textContent = basicInfo.email;
     document.getElementById('viewContactLocation').textContent = basicInfo.address;
+    document.getElementById('viewContactPhone').textContent = basicInfo.phoneNumber || "No phone number";
 
     document.getElementById('viewCompanyTagline').textContent = details.tagline || "No tagline provided";
     document.getElementById('viewAboutUsText').textContent = details.aboutUs || "No about us provided";
@@ -234,7 +248,7 @@ function getCompanyBasicInfo() {
         industry: document.getElementById('editCompanyIndustry').value,
         email: document.getElementById('editContactEmail').value.trim(),
         address: document.getElementById('editContactLocation').value.trim(),
-        phoneNumber: "" // Placeholder
+        phoneNumber: document.getElementById('editContactPhone').value.trim()
     };
 }
 

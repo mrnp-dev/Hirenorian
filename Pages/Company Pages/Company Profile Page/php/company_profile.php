@@ -562,6 +562,12 @@ if (isset($_SESSION['email'])) {
                                         <input type="text" id="editContactLocation" value="<?php echo $address; ?>">
                                     </div>
                                     <div class="form-group">
+                                        <label><i class="fa-solid fa-phone"></i> Phone Number</label>
+                                        <input type="text" id="editContactPhone"
+                                            value="<?php echo $phone_number ? $phone_number : ""; ?>"
+                                            placeholder="09... or +63...">
+                                    </div>
+                                    <div class="form-group">
                                         <label><i class="fa-solid fa-link"></i> Website</label>
                                         <input type="url" id="editContactWebsite"
                                             value="<?php echo $website_link ? $website_link : ""; ?>">
