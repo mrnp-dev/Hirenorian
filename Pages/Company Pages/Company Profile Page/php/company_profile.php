@@ -293,6 +293,11 @@ if (isset($_SESSION['email'])) {
                                             <span id="viewContactLocation"><?php echo $address; ?></span>
                                         </div>
                                         <div class="info-item">
+                                            <i class="fa-solid fa-phone"></i>
+                                            <span
+                                                id="viewContactPhone"><?php echo $phone_number ? $phone_number : "No phone number"; ?></span>
+                                        </div>
+                                        <div class="info-item">
                                             <i class="fa-solid fa-link"></i>
                                             <a href="<?php echo $website_link ? $website_link : "#"; ?>" target="_blank"
                                                 id="viewContactWebsite"><?php echo $website_link ? $website_link : "Set Website Link"; ?></a>

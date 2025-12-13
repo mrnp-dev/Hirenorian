@@ -88,7 +88,7 @@ try {
             jp.created_at,
             jp.applicant_limit,
             jd.title,
-            (SELECT COUNT(*) FROM Applicants a WHERE a.post_id = jp.post_id) as applicant_count
+            (SELECT COUNT(*) FROM Applicants a WHERE a.post_id = jp.post_id AND a.status = 'Accepted') as applicant_count
         FROM Job_Posts jp
         JOIN Job_Details jd ON jp.post_id = jd.post_id
         WHERE jp.company_id = :cid
