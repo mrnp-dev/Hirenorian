@@ -124,7 +124,7 @@ async function check_LogIn_Fields() {
         const company_email = document.querySelector('#signin-email').value.trim();
         const company_password = document.querySelector('#signin-password').value.trim();
         try {
-            const response = await fetch("http://158.69.205.176:8080/Hirenorian/API/companyDB_APIs/company_login_process.php", {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_login_process.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -757,7 +757,7 @@ async function submitTheForm(button) {
 
 async function Register_Company() {
     console.log(userInformation);
-    fetch("http://158.69.205.176:8080/Hirenorian/API/companyDB_APIs/company_registration_process.php", {
+    fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_registration_process.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInformation)
@@ -802,7 +802,35 @@ async function initiateEmailVerification(emailType) {
 
         currentVerifyingEmail = email;
         currentVerifyingEmailType = emailType;
-        openOTPModal();
+
+        // Call Backend to Send OTP
+        const btn = document.querySelector('#verify-company-email-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Sending... <i class="fa fa-spinner fa-spin"></i>';
+        btn.disabled = true;
+
+        fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/send_registration_otp.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    openOTPModal();
+                    ToastSystem.show(`OTP sent to ${email}`, "success");
+                } else {
+                    ToastSystem.show(data.message || "Failed to send OTP", "error");
+                }
+            })
+            .catch(err => {
+                console.error("Error sending OTP:", err);
+                ToastSystem.show("Network error sending OTP", "error");
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
     }
 }
 
@@ -931,26 +959,48 @@ function verifyOTP() {
         return;
     }
 
-    // Demo verification - accepts any 6-digit number
-    if (/^\d{6}$/.test(otp)) {
-        // Success
-        ToastSystem.show('Email verified successfully!', 'success');
+    // Verify OTP via Backend
+    const email = document.querySelector('#verifying-email-display').textContent;
 
-        if (currentVerifyingEmailType === 'company') {
-            emailVerificationState.companyEmail = true;
-            document.querySelector('#verify-company-email-btn').style.display = 'none';
-            document.querySelector('#company-email-verified').style.display = 'flex';
-            userInformation['Company Email Verified'] = true;
+    otpInputs.forEach(input => input.disabled = true);
 
-            const emailInput = document.querySelector('#email-input');
-            removeError(emailInput);
-        }
+    fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/verify_otp.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, otp: otp })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Success
+                ToastSystem.show('Email verified successfully!', 'success');
 
-        closeOTPModal();
-    } else {
-        showOTPError('Invalid OTP format');
-        otpInputs.forEach(input => input.classList.add('error'));
-    }
+                if (currentVerifyingEmailType === 'company') {
+                    emailVerificationState.companyEmail = true;
+                    document.querySelector('#verify-company-email-btn').style.display = 'none';
+                    document.querySelector('#company-email-verified').style.display = 'flex';
+                    userInformation['Company Email Verified'] = true;
+
+                    const emailInput = document.querySelector('#email-input');
+                    removeError(emailInput);
+                }
+
+                closeOTPModal();
+            } else {
+                showOTPError(data.message || 'Invalid OTP');
+                otpInputs.forEach(input => {
+                    input.classList.add('error');
+                    input.disabled = false;
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error verifying OTP:", err);
+            showOTPError("Network error verifying OTP");
+            otpInputs.forEach(input => {
+                input.disabled = false;
+            });
+        });
 }
 
 function resendOTP() {
@@ -958,7 +1008,22 @@ function resendOTP() {
         return; // Already counting down
     }
 
-    ToastSystem.show('OTP resent! (Demo mode)', 'info');
+    const email = document.querySelector('#verifying-email-display').textContent;
+
+    fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/send_registration_otp.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                ToastSystem.show('OTP resent!', 'success');
+            } else {
+                ToastSystem.show('Failed to resend OTP', 'error');
+            }
+        })
+        .catch(err => ToastSystem.show('Network error', 'error'));
 
     // Start countdown
     const resendBtn = document.querySelector('#resendOtpBtn');
