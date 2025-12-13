@@ -65,17 +65,55 @@ function displayApplicationHistory(applications) {
     });
 }
 
+let allApplications = [];
+
 export async function initApplicationHistory(studentId) {
     if (!studentId) return;
 
     try {
         const data = await fetchApplicationHistoryAPI(studentId);
         if (data.status === 'success') {
-            displayApplicationHistory(data.data);
+            allApplications = data.data;
+            displayApplicationHistory(allApplications);
+            initFilterListeners();
         } else {
             console.error('[Dashboard] Error fetching app history:', data.message);
         }
     } catch (error) {
         console.error('[Dashboard] Error init app history:', error);
     }
+}
+
+function initFilterListeners() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Add active to clicked
+            btn.classList.add('active');
+
+            const filter = btn.dataset.filter; // all, accepted, pending, rejected
+            filterApplications(filter);
+        });
+    });
+}
+
+function filterApplications(filter) {
+    if (filter === 'all') {
+        displayApplicationHistory(allApplications);
+        return;
+    }
+
+    const filtered = allApplications.filter(app => {
+        const status = app.status.toLowerCase();
+        // Map UI filters to API status values roughly
+        if (filter === 'accepted') return status.includes('accept') || status.includes('offer') || status.includes('hired');
+        if (filter === 'pending') return status.includes('pending') || status.includes('review') || status.includes('interview');
+        if (filter === 'rejected') return status.includes('reject') || status.includes('decline');
+        return false;
+    });
+
+    displayApplicationHistory(filtered);
 }

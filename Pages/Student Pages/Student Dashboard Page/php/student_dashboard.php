@@ -213,10 +213,10 @@ else
                                 Application Pipeline
                             </h2>
                             <div class="status-filters">
-                                <button class="filter-btn active">All</button>
-                                <button class="filter-btn">Pending</button>
-                                <button class="filter-btn">Interview</button>
-                                <button class="filter-btn">Offer</button>
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="accepted">Accepted</button>
+                                <button class="filter-btn" data-filter="pending">Pending</button>
+                                <button class="filter-btn" data-filter="rejected">Rejected</button>
                             </div>
                         </div>
 
