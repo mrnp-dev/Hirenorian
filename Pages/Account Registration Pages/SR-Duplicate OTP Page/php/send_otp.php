@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -59,9 +60,12 @@ if (empty($recipientEmail)) {
     exit;
 }
 
+
+
 // Generate OTP
 $otp = rand(100000, 999999);
 log_debug("Generated OTP: $otp for $recipientEmail");
+
 
 $mail = new PHPMailer(true);
 

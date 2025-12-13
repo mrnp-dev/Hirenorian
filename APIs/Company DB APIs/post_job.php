@@ -42,21 +42,23 @@ if (!$companyRow) {
 $company_id = $companyRow['company_id'];
 
 // Extract Job Data
-$jobTitle = $data['jobTitle'] ?? '';
-$location = $data['location'] ?? '';
-$workType = $data['workType'] ?? '';
-$applicantLimit = $data['applicantLimit'] ?? 0;
+$title = $data['title'] ?? '';
+$province = $data['province'] ?? '';
+$city = $data['city'] ?? '';
+$workType = $data['work_type'] ?? '';
+$applicantLimit = $data['applicant_limit'] ?? 0;
 $category = $data['category'] ?? '';
-$requiredDocument = $data['requiredDocument'] ?? 'resume';
-$description = $data['jobDescription'] ?? '';
+$resume = !empty($data['resume']) ? 1 : 0;
+$coverLetter = !empty($data['cover_letter']) ? 1 : 0;
+$description = $data['description'] ?? '';
 $responsibilities = $data['responsibilities'] ?? '';
-$qualifications = $data['qualifications'] ?? ''; // Note: frontend might send 'qualification'
+$qualifications = $data['qualifications'] ?? '';
 $skills = $data['skills'] ?? '';
-$tags = $data['tags'] ?? []; // Array of strings
+$tags = $data['work_tags'] ?? []; // Array of strings
 
 // Basic validation
-if (empty($jobTitle) || empty($location) || empty($description)) {
-    echo json_encode(["status" => "error", "message" => "Missing required fields (Title, Location, Description)"]);
+if (empty($title) || empty($province) || empty($city) || empty($description)) {
+    echo json_encode(["status" => "error", "message" => "Missing required fields (Title, Province, City, Description)"]);
     exit();
 }
 
@@ -77,21 +79,23 @@ try {
     $post_id = $conn->lastInsertId();
 
     // 3. Insert into Job_Details
-    $detailsQuery = "INSERT INTO Job_Details (post_id, title, description, responsibilities, qualifications, skills, location, work_type, category, required_document)
-                     VALUES (:post_id, :title, :description, :responsibilities, :qualifications, :skills, :location, :work_type, :category, :required_document)";
+    $detailsQuery = "INSERT INTO Job_Details (post_id, title, description, responsibilities, qualifications, skills, province, city, work_type, category, resume, cover_letter)
+                     VALUES (:post_id, :title, :description, :responsibilities, :qualifications, :skills, :province, :city, :work_type, :category, :resume, :cover_letter)";
 
     $detailsStmt = $conn->prepare($detailsQuery);
     $detailsStmt->execute([
         ':post_id' => $post_id,
-        ':title' => $jobTitle,
+        ':title' => $title,
         ':description' => $description,
         ':responsibilities' => $responsibilities,
         ':qualifications' => $qualifications,
         ':skills' => $skills,
-        ':location' => $location,
+        ':province' => $province,
+        ':city' => $city,
         ':work_type' => $workType,
         ':category' => $category,
-        ':required_document' => $requiredDocument
+        ':resume' => $resume,
+        ':cover_letter' => $coverLetter
     ]);
 
     // 4. Insert Job_Tags

@@ -1,13 +1,10 @@
 <?php
 session_start();
-$student_id = null; // Initialize student_id
-
-if(isset($_SESSION['email']))
-{
-    echo "<script>console.log('email in session');</script>";
-    
-    // Fetch student information to get student_id
+if (isset($_SESSION['email'])) {
     $student_email = $_SESSION['email'];
+    $student_id = $_SESSION['student_id'] ?? null;
+    
+    // Fetch student information from API
     $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
     
     $ch = curl_init($apiUrl);
@@ -19,17 +16,47 @@ if(isset($_SESSION['email']))
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     
     $response = curl_exec($ch);
+    if ($response === false) {
+        echo "<script>console.error('DEBUG: Curl error: " . curl_error($ch) . "');</script>";
+    }
     curl_close($ch);
     
-    $data = json_decode($response, true);
+    // Initialize default values
+    $first_name = "Student";
+    $last_name = "";
+    $profile_picture = "";
     
-    if (isset($data['status']) && $data['status'] === "success") {
-        $student_id = $data['data']['basic_info']['student_id'] ?? null;
+    if ($response !== false) {
+        $data = json_decode($response, true);
+        echo "<script>console.log('DEBUG: Student API Response Status:', '" . ($data['status'] ?? 'unknown') . "');</script>";
+        
+        if (isset($data['status']) && $data['status'] === "success") {
+            $basic_info = $data['data']['basic_info'];
+            $profile = $data['data']['profile'];
+            
+            $first_name = $basic_info['first_name'];
+            $last_name = $basic_info['last_name'];
+            $profile_picture_db = $profile['profile_picture'];
+            
+            // Convert VPS absolute path to HTTP URL
+            if (!empty($profile_picture_db)) {
+                $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
+            }
+
+            // AUTO-RECOVER STUDENT ID
+            if (empty($student_id) && isset($basic_info['student_id'])) {
+                $student_id = $basic_info['student_id'];
+                $_SESSION['student_id'] = $student_id; // persist to session
+                echo "<script>console.log('DEBUG: recovered student_id from API: " . $student_id . "');</script>";
+            }
+        }
     }
 }
 else
 {
-    echo "<script>console.log('email not in session');</script>";
+    echo "<script>console.warn('DEBUG: Session email not set. Session ID: " . session_id() . "');</script>";
+    // Optional: Redirect if strict login is required
+    // header("Location: ../../../Landing Page/php/landing_page.php");
 }
 ?>
 <!DOCTYPE html>
@@ -68,14 +95,11 @@ else
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>
-                <a href="../../Internship Search Page/php/internship_search.php" class="nav-item">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Internship Search</span>
+                <a href="../../Student Internship Search Page New/php/internship_search.php" class="nav-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Internships</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </a>
+
             </nav>
         </aside>
 
@@ -85,8 +109,8 @@ else
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img"> <!-- Placeholder image -->
-                        <span class="user-name">Juan Dela Cruz</span>
+                        <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Student" class="user-img">
+                        <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -103,12 +127,11 @@ else
                 <div class="hero-section">
                     <div class="hero-content">
                         <div class="hero-main">
-                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight">Juan</span>!</h1>
+                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight"><?php echo htmlspecialchars($first_name); ?></span>!</h1>
                             <p class="hero-subtitle">Here's your internship journey at a glance</p>
                             <div class="hero-actions">
-                                <a href="../../Internship Search Page/php/internship_search.php" class="btn-hero primary">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                    Browse Internships
+                                <a href="../../Student Internship Search Page New/php/internship_search.php" class="btn-hero primary">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Find Internships
                                 </a>
                                 <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-hero secondary">
                                     <i class="fa-solid fa-user-pen"></i>
@@ -135,13 +158,9 @@ else
                             <div class="metric-icon">
                                 <i class="fa-solid fa-file-lines"></i>
                             </div>
-                            <div class="metric-trend up">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                +12%
-                            </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Total Applications</div>
                         </div>
                     </div>
@@ -151,13 +170,9 @@ else
                             <div class="metric-icon">
                                 <i class="fa-solid fa-check-circle"></i>
                             </div>
-                            <div class="metric-trend up">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                +1
-                            </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Accepted Applications</div>
                         </div>
                     </div>
@@ -169,7 +184,7 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Under Review</div>
                         </div>
                     </div>
@@ -181,12 +196,10 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Rejected Applications</div>
                         </div>
                     </div>
-
-
                 </div>
 
                 <!-- Main Content Grid -->
@@ -199,84 +212,17 @@ else
                                 Application Pipeline
                             </h2>
                             <div class="status-filters">
-                                <button class="filter-btn active">All</button>
-                                <button class="filter-btn">Pending</button>
-                                <button class="filter-btn">Interview</button>
-                                <button class="filter-btn">Offer</button>
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="accepted">Accepted</button>
+                                <button class="filter-btn" data-filter="pending">Pending</button>
+                                <button class="filter-btn" data-filter="rejected">Rejected</button>
                             </div>
                         </div>
 
                         <div class="applications-list">
-                            <!-- Application Card 1 -->
-                            <div class="application-card pending">
-                                <div class="app-header">
-                                    <div class="app-company">
-                                        <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Company" class="company-logo-small">
-                                        <div class="app-info">
-                                            <h4>Web Developer Intern</h4>
-                                            <p>Tech Solutions Inc.</p>
-                                        </div>
-                                    </div>
-                                    <span class="app-status-badge pending">Pending</span>
-                                </div>
-                                <div class="app-meta">
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        Applied Oct 24, 2023
-                                    </div>
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        Remote
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Application Card 2 -->
-                            <div class="application-card interview">
-                                <div class="app-header">
-                                    <div class="app-company">
-                                        <img src="../../../Landing Page/Images/google.jpg" alt="Company" class="company-logo-small">
-                                        <div class="app-info">
-                                            <h4>Graphic Designer</h4>
-                                            <p>Creative Studio</p>
-                                        </div>
-                                    </div>
-                                    <span class="app-status-badge interview">Interview</span>
-                                </div>
-                                <div class="app-meta">
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        Applied Oct 20, 2023
-                                    </div>
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        Pampanga
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Application Card 3 -->
-                            <div class="application-card offer">
-                                <div class="app-header">
-                                    <div class="app-company">
-                                        <img src="../../../Landing Page/Images/samsung.jpg" alt="Company" class="company-logo-small">
-                                        <div class="app-info">
-                                            <h4>IT Support</h4>
-                                            <p>Global Systems</p>
-                                        </div>
-                                    </div>
-                                    <span class="app-status-badge offer">Offer</span>
-                                </div>
-                                <div class="app-meta">
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        Applied Oct 15, 2023
-                                    </div>
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        Manila
-                                    </div>
-                                </div>
+                            <div class="loading-state">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                <p>Loading applications...</p>
                             </div>
                         </div>
                     </div>
@@ -332,55 +278,9 @@ else
                         </h2>
                     </div>
                     <div class="recommendations-grid">
-                        <!-- Recommendation Card 1 -->
-                        <div class="recommendation-card">
-                            <img src="../../../Landing Page/Images/dhvsu-bg-image.jpg" alt="Job" class="recommendation-image">
-                            <div class="recommendation-content">
-                                <h3>UI/UX Designer Intern</h3>
-                                <p>DHVSU Innovation Hub</p>
-                                <div class="recommendation-tags">
-                                    <span class="rec-tag">Design</span>
-                                    <span class="rec-tag">Part-time</span>
-                                    <span class="rec-tag">Remote</span>
-                                </div>
-                                <div class="recommendation-footer">
-                                    <button class="btn-quick-apply">Apply Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recommendation Card 2 -->
-                        <div class="recommendation-card">
-                            <img src="../../../Landing Page/Images/google.jpg" alt="Job" class="recommendation-image">
-                            <div class="recommendation-content">
-                                <h3>Software Engineering Intern</h3>
-                                <p>Tech Innovators Inc.</p>
-                                <div class="recommendation-tags">
-                                    <span class="rec-tag">Engineering</span>
-                                    <span class="rec-tag">Full-time</span>
-                                    <span class="rec-tag">Hybrid</span>
-                                </div>
-                                <div class="recommendation-footer">
-                                    <button class="btn-quick-apply">Apply Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recommendation Card 3 -->
-                        <div class="recommendation-card">
-                            <img src="../../../Landing Page/Images/samsung.jpg" alt="Job" class="recommendation-image">
-                            <div class="recommendation-content">
-                                <h3>Data Analyst Intern</h3>
-                                <p>Analytics Pro</p>
-                                <div class="recommendation-tags">
-                                    <span class="rec-tag">Data</span>
-                                    <span class="rec-tag">Full-time</span>
-                                    <span class="rec-tag">On-site</span>
-                                </div>
-                                <div class="recommendation-footer">
-                                    <button class="btn-quick-apply">Apply Now</button>
-                                </div>
-                            </div>
+                        <div class="loading-state" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <p>Finding best matches...</p>
                         </div>
                     </div>
                 </div>
@@ -392,8 +292,10 @@ else
 
     <script>
         // Pass student_id from PHP to JavaScript
-        const STUDENT_ID = <?php echo json_encode($student_id); ?>;
+        window.STUDENT_ID = <?php echo json_encode($student_id ?? null); ?>;
+        window.STUDENT_EMAIL = <?php echo json_encode($student_email ?? null); ?>;
+        console.log('DEBUG: window.STUDENT_ID value:', window.STUDENT_ID);
     </script>
-    <script src="../js/dashboard.js"></script>
+    <script type="module" src="../js/modules/main.js"></script>
 </body>
 </html>

@@ -78,9 +78,7 @@ if(isset($_SESSION['email']))
         $technical_skills = implode(", ", $tech_arr);
         $soft_skills = implode(", ", $soft_arr);
     }
-}
-else
-{
+} else {
     header("Location: ../../../Landing Page/php/landing_page.php");
     exit();
 }
@@ -125,10 +123,7 @@ else
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Internship Search</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </a>
+
             </nav>
         </aside>
 

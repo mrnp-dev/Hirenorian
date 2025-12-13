@@ -2,7 +2,6 @@
 session_start();
 if (isset($_SESSION['email'])) {
     $company_email = $_SESSION['email'];
-    echo "<script>console.log('Company Email: " . $company_email . "');</script>";
     $apiUrl = "http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_information.php";
 
     $ch = curl_init($apiUrl);
@@ -17,20 +16,10 @@ if (isset($_SESSION['email'])) {
 
     if ($response === false) {
         die("Curl error: " . curl_error($ch));
-    } else {
-        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
-
     }
     curl_close($ch);
 
     $data = json_decode($response, true);
-
-    if ($data['status'] === "success") {
-        echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
-
-    } else {
-        echo "<script>console.log('Err: " . $data['message'] . "');</script>";
-    }
 
     // Updated to match new API structure
     if (isset($data['company'])) {
@@ -63,6 +52,7 @@ if (isset($_SESSION['email'])) {
     <title>Hirenorian - Company Dashboard</title>
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/activity-log.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -100,12 +90,7 @@ if (isset($_SESSION['email'])) {
                         <span class="link-text">Job Listing</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="../../Help Page/php/help.php" class="nav-link">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span class="link-text">Help</span>
-                    </a>
-                </li>
+
             </ul>
         </aside>
 
@@ -116,13 +101,14 @@ if (isset($_SESSION['email'])) {
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
                         <div class="user-avatar">
-                            <img src="<?php echo $company_icon_url; ?>" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
                         <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item">Sign Out</a>
+                        <a href="#" class="dropdown-item" id="signOutBtn">Sign Out</a>
                     </div>
                 </div>
             </header>
@@ -236,6 +222,28 @@ if (isset($_SESSION['email'])) {
                             </div>
                         </div>
                     </div>
+
+                    <!-- Activity Log Section -->
+                    <section class="audit-log-section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                    Recent Activity
+                                    <span class="log-count" id="logCount">0</span>
+                                </h2>
+                            </div>
+                            <div class="audit-log-container">
+                                <div class="audit-log-timeline" id="activityLogTimeline">
+                                    <!-- Loading state -->
+                                    <div class="loading-state">
+                                        <i class="fa-solid fa-spinner fa-spin"></i>
+                                        <p>Loading activity...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </section>
             </div>
         </main>

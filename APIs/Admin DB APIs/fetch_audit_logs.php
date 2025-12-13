@@ -8,21 +8,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include "dbCon.php";
+include("dbCon.php");
 header("Content-type: application/json");
 
 $query = "SELECT 
-            s.student_id, 
-            s.first_name,
-            s.middle_initial,
-            s.last_name,
-            s.suffix,
-            s.student_email, 
-            e.course, 
-            e.department
-          FROM Students s
-          LEFT JOIN Education e 
-          ON s.student_id = e.student_id";
+            a.role, 
+            a.action,
+            a.description,
+            CONVERT_TZ(a.created_at, '+00:00', '+08:00') as created_at
+          FROM adminAuditLog a
+          ORDER BY a.created_at DESC";
 
 $stmt = $conn->prepare($query);
 $stmt->execute();
@@ -32,5 +27,5 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 echo json_encode([
     "status" => "success",
     "count" => count($data),
-    "data" => $data
+    "data" => $data,
 ]);

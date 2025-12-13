@@ -12,13 +12,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 include "db_con.php";
 header("Content-type: application/json");
 
-// Ensure session has email
-if (!isset($_SESSION['email'])) {
-    echo json_encode(["status" => "error", "message" => "No company email in session"]);
+// Check for email in session or JSON input
+$input_data = json_decode(file_get_contents("php://input"), true);
+$company_email = $_SESSION['email'] ?? $input_data['email'] ?? $input_data['company_email'] ?? null;
+
+if (!$company_email) {
+    echo json_encode(["status" => "error", "message" => "No company email in session or provided"]);
     exit();
 }
-
-$company_email = $_SESSION['email'];
 
 // Lookup company_id
 try {

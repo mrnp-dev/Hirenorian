@@ -22,12 +22,14 @@ if ($data === null || !isset($data['post_id'])) {
 
 $post_id = $data['post_id'];
 $title = $data['title'] ?? null;
-$location = $data['location'] ?? null;
+$province = $data['province'] ?? null;
+$city = $data['city'] ?? null;
 $work_type = $data['work_type'] ?? null;
 $applicant_limit = $data['applicant_limit'] ?? null;
 $category = $data['category'] ?? null;
 $work_tags = $data['work_tags'] ?? []; // Array of tags
-$required_document = $data['required_document'] ?? null;
+$resume = !empty($data['resume']) ? 1 : 0;
+$coverLetter = !empty($data['cover_letter']) ? 1 : 0;
 $description = $data['description'] ?? null;
 $responsibilities = $data['responsibilities'] ?? null;
 $qualifications = $data['qualifications'] ?? null;
@@ -35,8 +37,8 @@ $skills = $data['skills'] ?? null;
 
 // Validate required fields
 if (
-    !$title || !$location || !$work_type || !$applicant_limit || !$category ||
-    !$required_document || !$description || !$responsibilities || !$qualifications || !$skills
+    !$title || !$province || !$city || !$work_type || !$applicant_limit || !$category ||
+    !$description || !$responsibilities || !$qualifications || !$skills
 ) {
     echo json_encode(["status" => "error", "message" => "Missing required fields"]);
     exit();
@@ -93,10 +95,12 @@ try {
     // Update Job_Details table
     $updateDetailsQuery = "UPDATE Job_Details 
                            SET title = :title,
-                               location = :location,
+                               province = :province,
+                               city = :city,
                                work_type = :work_type,
                                category = :category,
-                               required_document = :required_document,
+                               resume = :resume,
+                               cover_letter = :cover_letter,
                                description = :description,
                                responsibilities = :responsibilities,
                                qualifications = :qualifications,
@@ -105,10 +109,12 @@ try {
     $updateDetailsStmt = $conn->prepare($updateDetailsQuery);
     $updateDetailsStmt->execute([
         ':title' => $title,
-        ':location' => $location,
+        ':province' => $province,
+        ':city' => $city,
         ':work_type' => $work_type,
         ':category' => $category,
-        ':required_document' => $required_document,
+        ':resume' => $resume,
+        ':cover_letter' => $coverLetter,
         ':description' => $description,
         ':responsibilities' => $responsibilities,
         ':qualifications' => $qualifications,

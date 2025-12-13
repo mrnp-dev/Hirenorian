@@ -60,6 +60,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="../../Company Dashboard/css/dashboard.css">
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="../css/job_listing.css">
+    <link rel="stylesheet" href="../css/job_listing_dropdown.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -96,12 +97,7 @@ if (isset($_SESSION['email'])) {
                         <span class="link-text">Job Listing</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="../../Help Page/php/help.php" class="nav-link">
-                        <i class="fa-solid fa-circle-info"></i>
-                        <span class="link-text">Help</span>
-                    </a>
-                </li>
+
             </ul>
         </aside>
 
@@ -119,7 +115,7 @@ if (isset($_SESSION['email'])) {
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item">Sign Out</a>
+                        <a href="#" class="dropdown-item" id="signOutBtn">Sign Out</a>
                     </div>
                 </div>
             </header>
@@ -395,8 +391,16 @@ if (isset($_SESSION['email'])) {
                 <!-- Job Details Row -->
                 <div class="job-details-row">
                     <div class="input-group">
-                        <label for="locationInput">Location</label>
-                        <input type="text" id="locationInput" name="location" placeholder="Location" required>
+                        <label for="locationDropdown">Location</label>
+                        <div class="cascading-dropdown" id="locationDropdown">
+                            <input type="text" class="dropdown-display" id="locationDisplay"
+                                placeholder="Select Province and City..." readonly>
+                            <div class="dropdown-menu" id="locationDropdownMenu">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+                        <input type="hidden" id="provinceInput" name="province">
+                        <input type="hidden" id="cityInput" name="city">
                         <p class="error-message" id="locationError"></p>
                     </div>
                     <div class="input-group">
@@ -438,19 +442,14 @@ if (isset($_SESSION['email'])) {
                     <label>Require Documents</label>
                     <div class="radio-group">
                         <label class="radio-label">
-                            <input type="radio" name="requiredDocument" value="resume" checked>
+                            <input type="checkbox" name="requireResume" id="requireResume">
                             <span class="radio-custom"></span>
                             <span class="radio-text">Resume/ CV</span>
                         </label>
                         <label class="radio-label">
-                            <input type="radio" name="requiredDocument" value="cover-letter">
+                            <input type="checkbox" name="requireCoverLetter" id="requireCoverLetter">
                             <span class="radio-custom"></span>
                             <span class="radio-text">Cover Letter</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="requiredDocument" value="none">
-                            <span class="radio-custom"></span>
-                            <span class="radio-text">None</span>
                         </label>
                     </div>
                 </div>
