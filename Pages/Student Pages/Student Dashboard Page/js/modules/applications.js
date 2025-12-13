@@ -46,10 +46,15 @@ function displayApplicationHistory(applications) {
 
     if (applications.length === 0) {
         applicationsList.innerHTML = `
-            <div class="no-applications">
-                <i class="fa-solid fa-inbox"></i>
-                <p>No applications submitted yet</p>
-                <p class="hint">Start by browsing internship opportunities!</p>
+            <div class="no-applications" style="text-align: center; padding: 40px 20px; color: #64748b; background: #f8fafc; border-radius: 12px; border: 2px dashed #e2e8f0;">
+                <div style="background: #fff; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <i class="fa-solid fa-paper-plane" style="font-size: 24px; color: #800000;"></i>
+                </div>
+                <h3 style="font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 8px;">No applications yet</h3>
+                <p style="margin-bottom: 24px; font-size: 14px; color: #64748b;">Your application pipeline is empty. Start exploring opportunities!</p>
+                <a href="../../Internship Search Page/php/internship_search.php" style="display: inline-flex; align-items: center; justify-content: center; background: #800000; color: white; padding: 10px 24px; border-radius: 50px; text-decoration: none; font-weight: 500; font-size: 14px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(128, 0, 0, 0.2);">
+                    <i class="fa-solid fa-magnifying-glass" style="margin-right: 8px;"></i>Browse Internships
+                </a>
             </div>
         `;
         return;
