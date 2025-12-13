@@ -39,6 +39,8 @@
     text-align: center;
     border-bottom: 5px solid var(--secondary-yellow);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 100px;
+    /* Fix: Increased to 100px to strictly clear the Top Bar */
 }
 
 .search-hero h1 {
@@ -65,6 +67,10 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     transform: translateY(30px);
     /* Overlap hero */
+    position: relative;
+    /* Ensure z-index works */
+    z-index: 1005;
+    /* Fix: Keep above job details and other content */
 }
 
 .search-input-group {
@@ -124,8 +130,10 @@
     grid-template-columns: 400px 1fr;
     /* Job List | Details Panel */
     gap: 30px;
-    height: calc(100vh - 140px);
-    /* Viewport height minus header */
+    height: calc(100vh - 200px);
+    /* Fix: Adjusted calculation for viewport height */
+    position: relative;
+    z-index: 1;
 }
 
 /* Job List Column */
@@ -137,6 +145,8 @@
     /* Space for scrollbar */
     scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
+    height: 100%;
+    /* Fix: Ensure it takes full height of grid */
 }
 
 .job-list-col::-webkit-scrollbar {
@@ -165,6 +175,7 @@
     margin-bottom: 15px;
     border: 1px solid #eee;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
@@ -248,6 +259,9 @@
 .job-details-col {
     position: relative;
     height: 100%;
+    /* Fix: Add flex column to parent so child with flex:1 or height:100% behaves correctly */
+    display: flex;
+    flex-direction: column;
 }
 
 .job-details-panel {
@@ -378,10 +392,17 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+    /* Ensure full height */
+    width: 100%;
+    /* Fix: Ensure full width to prevent corner clipping */
     color: #999;
     background: white;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    /* Add padding for better spacing */
+    box-sizing: border-box;
+    /* Include padding in dimensions */
 }
 
 .empty-state-panel i {
@@ -506,7 +527,8 @@
     background: white;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    z-index: 1001;
+    z-index: 2000;
+    /* Fix: Increased z-index to stay above other elements */
     max-height: 300px;
     overflow-y: auto;
     border: 1px solid #eee;
@@ -845,6 +867,45 @@
     color: #666;
     font-size: 0.95rem;
     font-weight: 500;
+    margin: 0;
+}
+
+.loading-state,
+.error-state,
+.no-results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    min-height: 200px;
+}
+
+.error-state i,
+.no-results i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: #e0e0e0;
+}
+
+.error-state i {
+    color: #e74c3c;
+}
+
+.error-state h3,
+.no-results h3 {
+    margin: 0 0 10px;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.error-state p,
+.no-results p {
+    color: #666;
     margin: 0;
 }
 

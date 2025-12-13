@@ -138,7 +138,14 @@ export function initLocationFilter() {
     function openLocationDropdown() {
         locationDropdown.classList.add('active');
         locationTrigger.classList.add('active');
+        // Dispatch event to notify other dropdowns
+        document.dispatchEvent(new CustomEvent('locationDropdownOpened'));
     }
+
+    // Listen for other dropdowns opening
+    document.addEventListener('typeDropdownOpened', () => {
+        closeLocationDropdown();
+    });
 
     function closeLocationDropdown() {
         locationDropdown.classList.remove('active');

@@ -24,7 +24,14 @@ export function initTypeFilter() {
     function openTypeDropdown() {
         typeDropdown.classList.add('active');
         typeTrigger.classList.add('active');
+        // Dispatch event to notify other dropdowns
+        document.dispatchEvent(new CustomEvent('typeDropdownOpened'));
     }
+
+    // Listen for other dropdowns opening
+    document.addEventListener('locationDropdownOpened', () => {
+        closeTypeDropdown();
+    });
 
     function closeTypeDropdown() {
         typeDropdown.classList.remove('active');

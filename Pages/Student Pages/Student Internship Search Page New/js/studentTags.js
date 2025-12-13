@@ -31,75 +31,74 @@ export async function loadStudentTags() {
     let checkedCount = 0; // Track number of auto-checked tags
 
     try {
-        // Get student email from session storage
-        const studentEmail = sessionStorage.getItem('email');
-        console.log('[StudentTags] Session email:', studentEmail);
+        // Get tags from session storage (injected by PHP)
+        const storedTags = sessionStorage.getItem('studentTags');
+        console.log('[StudentTags] Session tags:', storedTags);
 
-        if (!studentEmail) {
-            console.warn('[StudentTags] No student email found in session storage');
-            console.log('[StudentTags] Available session storage keys:', Object.keys(sessionStorage));
-            hideLoadingOverlay();
-            isLoading = false;
-            return;
-        }
-
-        console.log('[StudentTags] Fetching student data from API...');
-        const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ student_email: studentEmail })
-        });
-
-        console.log('[StudentTags] API response status:', response.status);
-        const result = await response.json();
-        console.log('[StudentTags] API result:', result);
-
-        if (result.status === 'success' && result.data.basic_info) {
-            const basic = result.data.basic_info;
-            console.log('[StudentTags] Basic info:', basic);
-            console.log('[StudentTags] Raw tags - tag1:', basic.tag1, 'tag2:', basic.tag2, 'tag3:', basic.tag3);
-
-            // Get the three tags from Students table
-            studentTags = [
-                basic.tag1,
-                basic.tag2,
-                basic.tag3
-            ].filter(tag => tag && tag.trim() !== ''); // Remove null/empty tags
-
-            console.log('[StudentTags] Filtered student tags:', studentTags);
-            console.log('[StudentTags] Number of tags:', studentTags.length);
-
-            if (studentTags.length > 0) {
-                console.log('[StudentTags] Calling autoCheckStudentTags...');
-                checkedCount = autoCheckStudentTags();
-            } else {
-                console.warn('[StudentTags] No valid tags found to auto-check');
+        if (storedTags) {
+            try {
+                studentTags = JSON.parse(storedTags);
+                console.log('[StudentTags] Parsed tags from session:', studentTags);
+            } catch (e) {
+                console.error('[StudentTags] Error parsing session tags:', e);
+                studentTags = [];
             }
         } else {
-            console.error('[StudentTags] API returned error or missing basic_info:', result);
+            console.warn('[StudentTags] No tags found in session storage');
+            studentTags = [];
         }
+
+        if (studentTags.length > 0) {
+            console.log('[StudentTags] Calling autoCheckStudentTags...');
+            checkedCount = await waitForCheckboxesAndCheck();
+        } else {
+            console.log('[StudentTags] No student tags to check');
+        }
+
     } catch (error) {
         console.error('[StudentTags] Failed to load student tags:', error);
-        console.error('[StudentTags] Error details:', error.message, error.stack);
     } finally {
         console.log('[StudentTags] Auto-checked ' + checkedCount + ' matching tags');
         console.log('[StudentTags] Loading complete');
 
         // Dispatch event to trigger initial search with auto-selected tags
-        if (checkedCount > 0) {
-            console.log('[StudentTags] Dispatching initial search event');
-            setTimeout(() => {
-                const initialSearchEvent = new CustomEvent('initialSearchReady');
-                document.dispatchEvent(initialSearchEvent);
-            }, 500); // Small delay to ensure everything is initialized
-        }
+        // Dispatch even if count is 0, to just load all jobs or empty state?
+        // Actually, if 0 tags, we might want to just show "all jobs" or "no jobs".
+        // Current logic: if > 0 dispatch. If 0, maybe dispatch anyway to show *something*?
+        // User said: "auto search all the jobs based on the 3 tags".
+        // If no tags, maybe just default search?
+        // Let's dispatch anyway so the page isn't empty.
+
+        console.log('[StudentTags] Dispatching initial search event');
+        setTimeout(() => {
+            const initialSearchEvent = new CustomEvent('initialSearchReady');
+            document.dispatchEvent(initialSearchEvent);
+        }, 500);
 
         // Hide loading indicator
         isLoading = false;
         hideLoadingOverlay();
     }
+}
+
+// Helper to wait for checkboxes if they aren't rendered yet (though they should be)
+async function waitForCheckboxesAndCheck() {
+    return new Promise(resolve => {
+        let attempts = 0;
+        const check = () => {
+            const careerTagCheckboxes = document.querySelectorAll('#careerTagsContainer input[type="checkbox"]');
+            if (careerTagCheckboxes.length > 0) {
+                resolve(autoCheckStudentTags());
+            } else if (attempts < 10) {
+                attempts++;
+                setTimeout(check, 100);
+            } else {
+                console.warn('[StudentTags] Checkboxes never appeared');
+                resolve(0);
+            }
+        };
+        check();
+    });
 }
 
 export function autoCheckStudentTags() {

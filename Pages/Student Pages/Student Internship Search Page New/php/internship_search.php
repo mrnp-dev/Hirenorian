@@ -33,6 +33,12 @@ if (isset($_SESSION['email'])) {
             $last_name = $basic_info['last_name'];
             $profile_picture_db = $profile['profile_picture'];
             
+            // Extract Tags for Auto-Search
+            $student_tags = [];
+            if (!empty($basic_info['tag1'])) $student_tags[] = $basic_info['tag1'];
+            if (!empty($basic_info['tag2'])) $student_tags[] = $basic_info['tag2'];
+            if (!empty($basic_info['tag3'])) $student_tags[] = $basic_info['tag3'];
+
             // Convert VPS absolute path to HTTP URL
             if (!empty($profile_picture_db)) {
                 $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
@@ -347,6 +353,9 @@ if (isset($_SESSION['email'])) {
     <script>
         <?php if(isset($_SESSION['email'])): ?>
         sessionStorage.setItem('email', '<?php echo addslashes($_SESSION['email']); ?>');
+        <?php if (!empty($student_tags)): ?>
+        sessionStorage.setItem('studentTags', JSON.stringify(<?php echo json_encode($student_tags); ?>));
+        <?php endif; ?>
         <?php endif; ?>
     </script>
     
