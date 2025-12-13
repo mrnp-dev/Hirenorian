@@ -5,14 +5,14 @@
 
 /**
  * Fetch generic student information
- * @param {Number} studentId 
+ * @param {String} email 
  * @returns {Promise<Object>}
  */
-export async function fetchStudentInfoAPI(studentId) {
+export async function fetchStudentInfoAPI(email) {
     const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ student_id: studentId })
+        body: JSON.stringify({ student_email: email })
     });
     return await response.json();
 }

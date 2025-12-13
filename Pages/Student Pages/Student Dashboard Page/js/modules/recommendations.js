@@ -64,34 +64,41 @@ function displayRecommendations(jobs) {
     });
 }
 
-export async function initRecommendations(studentId) {
-    if (!studentId) return;
+export async function initRecommendations(studentEmail) {
+    if (!studentEmail) return;
 
     try {
         // Step 1: Get Tags
-        const studentData = await fetchStudentInfoAPI(studentId);
+        const studentData = await fetchStudentInfoAPI(studentEmail);
+        console.log('[Dashboard] Recommendations student info response:', JSON.stringify(studentData));
 
-        if (studentData.status !== 'success' || !studentData.data || !studentData.data.basic_info) {
-            console.warn('[Dashboard] Could not fetch student info for tags');
+        if (studentData.status !== 'success') {
+            console.error('[Dashboard] API returned status:', studentData.status, 'Message:', studentData.message);
             return;
         }
+
+        if (!studentData.data || !studentData.data.basic_info) {
+            console.error('[Dashboard] API response missing data structure', studentData);
+            return;
+        }
+
 
         const basic = studentData.data.basic_info;
-        const studentTags = [basic.tag1, basic.tag2, basic.tag3].filter(tag => tag && tag.trim() !== '');
+    const studentTags = [basic.tag1, basic.tag2, basic.tag3].filter(tag => tag && tag.trim() !== '');
 
-        if (studentTags.length === 0) {
-            // Could fallback to popular jobs
-            console.warn('[Dashboard] No tags found for recommendations');
-            return;
-        }
-
-        // Step 2: Search Jobs
-        const jobsData = await fetchRecommendedJobsAPI(studentTags);
-        if (jobsData.status === 'success' && jobsData.data) {
-            displayRecommendations(jobsData.data.slice(0, 3));
-        }
-
-    } catch (error) {
-        console.error('[Dashboard] Error initializing recommendations:', error);
+    if (studentTags.length === 0) {
+        // Could fallback to popular jobs
+        console.warn('[Dashboard] No tags found for recommendations');
+        return;
     }
+
+    // Step 2: Search Jobs
+    const jobsData = await fetchRecommendedJobsAPI(studentTags);
+    if (jobsData.status === 'success' && jobsData.data) {
+        displayRecommendations(jobsData.data.slice(0, 3));
+    }
+
+} catch (error) {
+    console.error('[Dashboard] Error initializing recommendations:', error);
+}
 }

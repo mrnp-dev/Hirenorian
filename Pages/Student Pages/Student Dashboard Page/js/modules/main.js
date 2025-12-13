@@ -15,14 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize UI
     initProfileDropdown();
 
-    // Get Student ID from global scope (injected by PHP)
+    // Get Student ID and Email from global scope
     const studentId = window.STUDENT_ID || null;
+    const studentEmail = window.STUDENT_EMAIL || null;
 
     if (studentId) {
         // Initialize Data Components
         initActivityLogs(studentId);
         initApplicationCounts(studentId);
-        initRecommendations(studentId);
+        if (studentEmail) {
+            console.log('[Dashboard] Initializing recommendations with email:', studentEmail);
+            initRecommendations(studentEmail);
+        } else {
+            console.warn('[Dashboard] No student email found, skipping recommendations.');
+        }
         initApplicationHistory(studentId);
     } else {
         console.warn('Student ID not found. Data components will not load.');

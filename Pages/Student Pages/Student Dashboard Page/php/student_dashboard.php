@@ -417,6 +417,7 @@ else
     <script>
         // Pass student_id from PHP to JavaScript
         window.STUDENT_ID = <?php echo json_encode($student_id ?? null); ?>;
+        window.STUDENT_EMAIL = <?php echo json_encode($student_email ?? null); ?>;
         console.log('DEBUG: window.STUDENT_ID value:', window.STUDENT_ID);
     </script>
     <script type="module" src="../js/modules/main.js"></script>
