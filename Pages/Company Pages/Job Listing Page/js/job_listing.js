@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     title: job.title,
                     location: job.location,
                     datePosted: job.datePosted,
-                    datePosted: job.datePosted,
                     status: job.status, // Ensure status is mapped correctly
                     applicantLimit: job.applicantLimit,
                     currentApplicants: job.currentApplicants,
@@ -337,36 +336,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Load initial data
         await fetchJobPosts();
 
-        // ✅ FIX: Pre-load all applicants data so counts show correctly from the start
+        // Pre-load all applicants data so counts show correctly from the start
         await fetchAllApplicants();
 
-        // Restore saved state or show card view
-        loadState();
-
-        // CHECK URL PARAMS for direct link (Overrides saved state)
+        // 1. CHECK URL PARAMS (Direct Link Priority)
         const urlParams = new URLSearchParams(window.location.search);
-        const urlJobId = urlParams.get('job_id');
+        // User requested 'post_id' to match database column name
+        const urlJobId = urlParams.get('post_id');
+        let directLinkHandled = false;
 
         if (urlJobId) {
-            // Find job in loaded data
-            const jobExists = jobPostsData.find(j => j.id == urlJobId);
+            console.log('Processing Direct Link for Post ID:', urlJobId);
+            console.log('Available Job IDs:', jobPostsData.map(j => j.id));
+
+            // Find job in loaded data (robust string comparison)
+            const jobExists = jobPostsData.find(j => String(j.id) === String(urlJobId));
+
             if (jobExists) {
+                console.log('Job Found for Direct Link:', jobExists);
+                // Force view mode update
+                viewMode = 'detail';
                 showDetailView(jobExists.id);
+                directLinkHandled = true;
             } else {
-                showCardView(); // Fallback
-            }
-        } else {
-            // If no saved state or URL param, show card view by default
-            if (viewMode === 'cards') {
-                showCardView();
-            } else if (viewMode === 'detail' && selectedJobForDetail) {
-                // Try to restore detail view from session
-                showDetailView(selectedJobForDetail);
+                console.warn('Job NOT found for Direct Link ID:', urlJobId);
             }
         }
+
+        // 2. FALLBACK TO SAVED STATE (If no direct link)
+        if (!directLinkHandled) {
+            loadState();
+
+            // If loadState didn't find a saved state (defaults remain), show card view
+            // Note: loadState() internally calls showCardView/showDetailView if state exists.
+            // If it returns relying on defaults, we enforce Card View here.
+            // But since we can't easily check if loadState rendered, checking viewMode works 
+            // IF loadState sets it. 
+            // Actually, based on code reading, loadState renders if savedState exists.
+
+            // To be safe: if viewMode is still 'cards' (default) and we haven't rendered (hard to check),
+            // we can just call showCardView(). worst case double render of cards.
+            // A better check:
+            const savedState = sessionStorage.getItem('jobListingState');
+            if (!savedState) {
+                showCardView();
+            }
+        }
+
     } catch (error) {
         console.error('Failed to initialize job listing:', error);
-        // Show error state to user
     }
 
 
@@ -2333,16 +2351,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 
-    // ========================================
-    // INITIALIZATION
-    // ========================================    
-    // Load saved state and restore appropriate view
-    loadState();
-
-    // If no saved state, show card view by default
-    if (viewMode === 'cards') {
-        showCardView();
-    }
+    // Duplicate initialization logic removed. 
+    // Initialization is already handled in the try/catch block at the beginning of the file.
 
     console.log('Job Listing Page Loaded Successfully!');
     console.log('Job Posts:', jobPostsData);
