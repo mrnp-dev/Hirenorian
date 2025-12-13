@@ -2262,6 +2262,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnBack = document.getElementById('btnBack');
     if (btnBack) {
         btnBack.addEventListener('click', () => {
+            // Clear URL parameters to prevent re-redirection on refresh
+            const cleanUrl = window.location.pathname;
+            window.history.pushState({}, document.title, cleanUrl);
+
             showCardView();
         });
     }
