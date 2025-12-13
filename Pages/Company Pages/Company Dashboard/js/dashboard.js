@@ -169,20 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add click redirect
             row.style.cursor = 'pointer';
             row.addEventListener('click', () => {
-                // Determine ID robustly
-                const redirectId = post.id || post.post_id;
-
-                if (redirectId) {
-                    // Use encoded path to handle spaces safely
-                    // Explicitly set view mode to detail as requested
-                    window.location.href = `../../Job%20Listing%20Page/php/job_listing.php?post_id=${redirectId}&view=detail`;
-                } else {
-                    console.error("Missing Job ID for post:", post);
-                    // Use Toast if available, otherwise fallback
-                    if (typeof ToastSystem !== 'undefined') {
-                        ToastSystem.show('Error: Cannot open job details. Missing ID.', 'error');
-                    }
-                }
+                window.location.href = `../../Job Listing Page/php/job_listing.php?post_id=${post.id}&view=detail`;
             });
 
             container.appendChild(row);
@@ -344,11 +331,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 2. Update Job Listings Table
                 const tableData = data.recent_jobs.map(job => ({
-                    id: job.id, // Critical for redirection
+                    id: job.id,
                     title: job.title,
                     applicants: `${job.applicant_count}/${job.applicant_limit}`,
                     datePosted: job.date_posted,
-                    status: job.status
+                    status: job.status,
+                    pending_count: job.pending_count
                 }));
 
                 window.updateJobListings(tableData);
