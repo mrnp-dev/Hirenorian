@@ -32,9 +32,34 @@ if (!$company) {
 $company_id = $company['company_id'];
 $company_name = $company['company_name'];
 
-$stmt = $conn->prepare("SELECT * FROM company_statistics WHERE company_id = :company_id");
+// --- REPLACED STATIC STATISTICS WITH DYNAMIC CALCULATIONS ---
+// Total Applicants
+$stmt = $conn->prepare("SELECT COUNT(a.applicant_id) as total FROM Applicants a JOIN Job_Posts jp ON a.post_id = jp.post_id WHERE jp.company_id = :company_id");
 $stmt->execute([':company_id' => $company_id]);
-$statistics = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$total_applicants = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Accepted Applicants
+$stmt = $conn->prepare("SELECT COUNT(a.applicant_id) as total FROM Applicants a JOIN Job_Posts jp ON a.post_id = jp.post_id WHERE jp.company_id = :company_id AND a.status = 'Accepted'");
+$stmt->execute([':company_id' => $company_id]);
+$accepted_applicants = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Rejected Applicants
+$stmt = $conn->prepare("SELECT COUNT(a.applicant_id) as total FROM Applicants a JOIN Job_Posts jp ON a.post_id = jp.post_id WHERE jp.company_id = :company_id AND a.status = 'Rejected'");
+$stmt->execute([':company_id' => $company_id]);
+$rejected_applicants = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+// Store in an array to match previous structure somewhat, or just pass as distinct fields
+$statistics = [
+    [
+        'employees' => $total_applicants,      // Mapping to old key 'employees' for frontend compatibility or new keys? 
+        // Frontend uses 'employees', 'accepted', 'ex_employees'(rejected?)
+        // Let's use simpler keys but keep structure if needed.
+        // Actually, let's just return them as top level or in a better stats object.
+        'total_applicants' => $total_applicants,
+        'accepted' => $accepted_applicants,
+        'rejected' => $rejected_applicants
+    ]
+];
 
 // Fetch Additional Info
 $stmt = $conn->prepare("SELECT * FROM company_additional_informations WHERE company_id = :company_id");

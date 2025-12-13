@@ -222,33 +222,52 @@
 .stat-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px;
+    justify-content: space-between;
+    padding: 16px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border-radius: 8px;
     border-left: 4px solid var(--primary-maroon);
+    transition: all 0.3s ease;
 }
 
-.stat-item i {
-    font-size: 20px;
-    color: var(--primary-maroon);
-    width: 24px;
-    text-align: center;
+.stat-item:hover {
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.stat-content {
+.stat-left {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.stat-icon-wrapper {
+    width: 32px;
+    height: 32px;
+    background: rgba(123, 17, 19, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-left i {
+    font-size: 16px;
+    color: var(--primary-maroon);
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 14px;
     color: #666;
     font-weight: 500;
 }
 
+.stat-right {
+    text-align: right;
+}
+
 .stat-value {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text-dark);
 }
@@ -976,6 +995,7 @@
     color: #adb5bd;
     /* Gray Shield? or Hidden */
 }
+
 /* Verification Badge Styles */
 .verification-badge-wrapper {
     display: inline-flex;
@@ -983,7 +1003,8 @@
     gap: 8px;
     margin-left: 10px;
     vertical-align: middle;
-    font-size: 0.9rem; /* Adjust as needed relative to h1 */
+    font-size: 0.9rem;
+    /* Adjust as needed relative to h1 */
 }
 
 .verification-text {
@@ -996,13 +1017,15 @@
 }
 
 .verification-text.verified {
-    color: #10b981; /* Green */
+    color: #10b981;
+    /* Green */
     background-color: #ecfdf5;
     border: 1px solid #10b981;
 }
 
 .verification-text.unverified {
-    color: #ef4444; /* Red */
+    color: #ef4444;
+    /* Red */
     background-color: #fef2f2;
     border: 1px solid #ef4444;
 }
@@ -1010,5 +1033,6 @@
 .verification-icon {
     width: 20px;
     height: 20px;
-    cursor:help; /* Indicates tooltip/info */
+    cursor: help;
+    /* Indicates tooltip/info */
 }

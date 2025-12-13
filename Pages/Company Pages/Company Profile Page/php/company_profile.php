@@ -41,13 +41,12 @@ if (isset($_SESSION['email'])) {
         $verification_val = isset($company['verification']) ? $company['verification'] : false;
         $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
 
-        // --- Statistics (single record expected) ---
+        // --- Statistics (dynamic record) ---
         if (!empty($data['statistics'])) {
             $stat = $data['statistics'][0];
-            $stat_id = $stat['stat_id'];
-            $employees = $stat['employees'];
+            $total_applicants = $stat['total_applicants'];
             $accepted = $stat['accepted'];
-            $ex_employees = $stat['ex_employees'];
+            $rejected = $stat['rejected'];
         }
 
         // --- Additional Info (single record expected) ---
@@ -305,26 +304,43 @@ if (isset($_SESSION['email'])) {
                                 <div class="card stats-card">
                                     <h3>Company Statistics</h3>
                                     <div class="stat-items">
+                                        <!-- Total Applicants -->
                                         <div class="stat-item">
-                                            <i class="fa-solid fa-users"></i>
-                                            <div class="stat-content">
+                                            <div class="stat-left">
+                                                <div class="stat-icon-wrapper">
+                                                    <i class="fa-solid fa-users"></i>
+                                                </div>
                                                 <span class="stat-label">Total Applicants</span>
+                                            </div>
+                                            <div class="stat-right">
                                                 <span id="viewTotalApplicants"
-                                                    class="stat-value"><?php echo $employees ? $employees : 0 ?></span>
+                                                    class="stat-value"><?php echo $total_applicants ? $total_applicants : 0 ?></span>
                                             </div>
                                         </div>
+
+                                        <!-- Accepted -->
                                         <div class="stat-item">
-                                            <i class="fa fa-check"></i>
-                                            <div class="stat-content">
+                                            <div class="stat-left">
+                                                <div class="stat-icon-wrapper">
+                                                    <i class="fa-solid fa-check"></i>
+                                                </div>
                                                 <span class="stat-label">Accepted</span>
+                                            </div>
+                                            <div class="stat-right">
                                                 <span id="viewAccepted"
                                                     class="stat-value"><?php echo $accepted ? $accepted : 0 ?></span>
                                             </div>
                                         </div>
+
+                                        <!-- Rejected -->
                                         <div class="stat-item">
-                                            <i class="fa fa-times"></i>
-                                            <div class="stat-content">
+                                            <div class="stat-left">
+                                                <div class="stat-icon-wrapper">
+                                                    <i class="fa-solid fa-times"></i>
+                                                </div>
                                                 <span class="stat-label">Rejected</span>
+                                            </div>
+                                            <div class="stat-right">
                                                 <span id="viewRejected"
                                                     class="stat-value"><?php echo $rejected ? $rejected : 0 ?></span>
                                             </div>
