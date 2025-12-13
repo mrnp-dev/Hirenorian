@@ -60,6 +60,12 @@ try {
     $stmt->execute([':cid' => $company_id]);
     $rejectedApps = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
+    // Pending
+    $pendingAppsQuery = "SELECT COUNT(a.applicant_id) as total FROM Applicants a JOIN Job_Posts jp ON a.post_id = jp.post_id WHERE jp.company_id = :cid AND a.status = 'pending'";
+    $stmt = $conn->prepare($pendingAppsQuery);
+    $stmt->execute([':cid' => $company_id]);
+    $pendingApps = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
     // --- 3. Post Availability Stats (Active vs Closed) ---
     // Active
     $activePostsQuery = "SELECT COUNT(post_id) as total FROM Job_Posts WHERE company_id = :cid AND status = 'active'";
@@ -112,7 +118,8 @@ try {
             "stats" => [
                 "total_applicants" => $totalApps,
                 "accepted" => $acceptedApps,
-                "rejected" => $rejectedApps
+                "rejected" => $rejectedApps,
+                "pending" => $pendingApps
             ],
             "post_stats" => [
                 "active_count" => $activePosts,

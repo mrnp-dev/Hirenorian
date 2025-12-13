@@ -307,24 +307,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === "success") {
                 const data = result.data;
 
-                // 1. Update Recruitment Analytics
-                window.updateRecruitmentAnalytics({
-                    total: data.stats.total_applicants,
-                    accepted: data.stats.accepted,
-                    rejected: data.stats.rejected
-                });
-
-                // 2. Update Post Status Chart
+                // 1. Update Post Status Chart and Counts
                 window.updatePostsChart(data.post_stats.active_count, data.post_stats.closed_count);
 
-                // Update Total Center Count
+                // Update Total Center Count (if element exists)
                 const totalPostsEl = document.getElementById('totalPostsCount');
                 if (totalPostsEl) {
                     totalPostsEl.textContent = data.post_stats.total_posts;
                 }
 
-                // 3. Update Job Listings
-                // Map backend fields to frontend expected format
+                // 2. Update Job Listings Table
                 const tableData = data.recent_jobs.map(job => ({
                     title: job.title,
                     applicants: `${job.applicant_count}/${job.applicant_limit}`,
@@ -333,6 +325,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 }));
 
                 window.updateJobListings(tableData);
+
+                // ========================================
+                // 3. UPDATE HERO SECTION QUICK STATS
+                // ========================================
+                const heroOpenJobs = document.getElementById('heroOpenJobs');
+                const heroPending = document.getElementById('heroPending');
+
+                if (heroOpenJobs) {
+                    animateNumber(heroOpenJobs, data.post_stats.active_count);
+                }
+                if (heroPending) {
+                    animateNumber(heroPending, data.stats.pending || 0);
+                }
+
+                // ========================================
+                // 4. UPDATE NEW METRICS GRID (Recruitment Stats)
+                // ========================================
+                const metricTotalApplicants = document.getElementById('metricTotalApplicants');
+                const metricAccepted = document.getElementById('metricAccepted');
+                const metricRejected = document.getElementById('metricRejected');
+
+                if (metricTotalApplicants) {
+                    animateNumber(metricTotalApplicants, data.stats.total_applicants);
+                }
+                if (metricAccepted) {
+                    animateNumber(metricAccepted, data.stats.accepted);
+                }
+                if (metricRejected) {
+                    animateNumber(metricRejected, data.stats.rejected);
+                }
 
             } else {
                 console.error('API Error:', result.message);

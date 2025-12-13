@@ -735,6 +735,643 @@ body {
         height: auto;
     }
 }
+
+/* ========================================
+   HERO SECTION - Student Dashboard Inspired
+======================================== */
+.hero-section {
+    background: linear-gradient(135deg, #7b1113 0%, #5a0c0e 50%, #3d0809 100%);
+    border-radius: 20px;
+    padding: 40px 36px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 16px 48px rgba(123, 17, 19, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+/* Animated Gradient Overlay */
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(241, 196, 15, 0.12) 0%, rgba(255, 255, 255, 0.05) 40%, transparent 70%);
+    border-radius: 50%;
+    animation: float 20s ease-in-out infinite;
+}
+
+/* Floating Geometric Shape */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: float 15s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    33% {
+        transform: translate(25px, -25px) rotate(120deg);
+    }
+
+    66% {
+        transform: translate(-15px, 15px) rotate(240deg);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+.hero-main {
+    flex: 1;
+    min-width: 280px;
+}
+
+.greeting {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+}
+
+.greeting-highlight {
+    color: #f1c40f;
+    text-shadow:
+        0 0 20px rgba(241, 196, 15, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 24px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-hero {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.btn-hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-hero:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-hero.primary {
+    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+    color: #5a0c0e;
+    box-shadow:
+        0 8px 24px rgba(241, 196, 15, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.btn-hero.primary:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 12px 32px rgba(241, 196, 15, 0.5),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+}
+
+.btn-hero.secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-hero.secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-hero i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.btn-hero:hover i {
+    transform: scale(1.1);
+}
+
+/* Glassmorphism Quick Stats Widget */
+.quick-stats-widget {
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.08) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    padding: 24px;
+    border-radius: 16px;
+    min-width: 200px;
+    max-width: 250px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    transition: all 0.3s ease;
+}
+
+.quick-stats-widget:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+}
+
+.widget-title {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.widget-title i {
+    color: #f1c40f;
+}
+
+.stats-row {
+    display: flex;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    flex: 1;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f1c40f;
+    display: block;
+    text-shadow: 0 2px 8px rgba(241, 196, 15, 0.4);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 2px;
+    display: block;
+}
+
+/* ========================================
+   METRICS CARDS - Enhanced
+======================================== */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.metric-card-new {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(123, 17, 19, 0.03), transparent);
+    border-radius: 0 0 0 100%;
+}
+
+.metric-card-new:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Updated metric card colors for recruitment stats */
+.metric-card-new.total-apps {
+    border-left-color: #3b82f6;
+}
+
+.metric-card-new.accepted {
+    border-left-color: #10b981;
+}
+
+.metric-card-new.rejected {
+    border-left-color: #ef4444;
+}
+
+.metric-card-new.post-status {
+    border-left-color: #8b5cf6;
+}
+
+.metric-card-new .metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.metric-card-new .metric-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+}
+
+.metric-card-new.total-apps .metric-icon {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.metric-card-new.accepted .metric-icon {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.metric-card-new.rejected .metric-icon {
+    background: linear-gradient(135deg, #ef4444, #f87171);
+}
+
+.metric-card-new.post-status .metric-icon {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.metric-card-new .metric-body {
+    position: relative;
+    z-index: 1;
+}
+
+.metric-card-new .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.metric-card-new .metric-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* ========================================
+   POST STATUS CARD - Mini Chart (Refined)
+======================================== */
+.metric-card-new.post-status {
+    background: linear-gradient(135deg, #fdf4ff 0%, #ffffff 100%);
+    border: 1px solid #e9d5ff;
+    border-left: 4px solid #8b5cf6;
+    /* Keep the left accent */
+}
+
+.metric-card-new.post-status .metric-body.post-status-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.post-status-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.post-status-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.mini-chart-container {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Center text for the mini chart if needed, or just visual chart */
+.mini-chart-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    background: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    /* Behind chart segments but creates ring effect if chart is donut */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) inset;
+}
+
+.post-status-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Space out label and value */
+    gap: 8px;
+    font-size: 0.9rem;
+    color: #4b5563;
+    font-weight: 500;
+    padding: 2px 0;
+}
+
+.status-row .label-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-row .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    /* Halo effect */
+}
+
+.status-row .dot.active {
+    background-color: #10b981;
+}
+
+.status-row .dot.closed {
+    background-color: #ef4444;
+}
+
+.status-row .count {
+    font-weight: 700;
+    color: #1f2937;
+    background: white;
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    border: 1px solid #e5e7eb;
+}
+
+/* ========================================
+   ACTIVITY WIDGET PANEL (Full Height)
+======================================== */
+.activity-widget-panel {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 24px;
+    /* Increased padding */
+    box-shadow: var(--card-shadow);
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Fill parent grid cell */
+    min-height: 400px;
+    /* Minimum guaranteed height */
+    overflow: hidden;
+}
+
+.activity-widget-panel .widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.activity-widget-panel .widget-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+}
+
+.activity-widget-panel .widget-header h3 i {
+    color: #7b1113;
+}
+
+.activity-widget-panel .log-count {
+    background: #7b1113;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.activity-widget-panel .audit-log-container {
+    flex: 1;
+    overflow-y: auto;
+    height: 100%;
+    /* Ensure child takes full height */
+    max-height: none !important;
+    /* Override shared css limit */
+}
+
+.audit-log-timeline {
+    height: 100%;
+}
+
+/* ========================================
+   ENHANCED JOB LISTING PANEL
+======================================== */
+.job-listings-panel {
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+}
+
+.job-listings-panel .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.job-listings-panel .section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.job-listings-panel .section-header h2::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(180deg, #7b1113, #5a0c0e);
+    border-radius: 2px;
+}
+
+.job-listing-table th {
+    text-align: left;
+    padding: 16px 18px;
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e5e7eb;
+    background-color: #f9fafb;
+}
+
+.job-listing-table td {
+    padding: 18px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.job-listing-table tbody tr {
+    transition: all 0.2s ease;
+}
+
+.job-listing-table tbody tr:hover {
+    background-color: #fef7f7;
+    transform: translateX(4px);
+}
+
+.status-pill {
+    padding: 8px 16px;
+    border-radius: 24px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pill.active {
+    background-color: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+}
+
+.status-pill.closed {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+/* ========================================
+   RESPONSIVE - Hero Section
+======================================== */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 28px 20px;
+    }
+
+    .greeting {
+        font-size: 1.6rem;
+    }
+
+    .hero-content {
+        flex-direction: column;
+    }
+
+    .quick-stats-widget {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-main-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Default Icon Style - Global */
 .default-icon {
     border: 3px solid var(--secondary-yellow) !important;
@@ -751,7 +1388,7 @@ body {
     background: white;
     border-radius: 50%;
     padding: 1px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: help;
 }
 
