@@ -12,8 +12,8 @@ export function initJobCards() {
     // Listen for jobs loaded event from API
     document.addEventListener('jobsLoaded', (event) => {
         console.log('[JobCards] Jobs loaded event received:', event.detail);
-        const { jobs, count } = event.detail;
-        displayJobs(jobs);
+        const { jobs, count, pagination } = event.detail;
+        displayJobs(jobs, pagination);
     });
 
     // Listen for search errors
