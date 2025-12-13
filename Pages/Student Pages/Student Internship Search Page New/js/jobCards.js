@@ -205,7 +205,12 @@ export function initJobCards() {
     }
 
     function updateJobDetails(data) {
-        console.log('[JobCards] Updating job details:', data.title);
+        console.log('[JobCards] Updating job details for:', data.title);
+        console.log('[JobCards] Full Job Data Object:', data);
+        console.log('[JobCards] Responsibilities count:', data.responsibilities?.length);
+        console.log('[JobCards] Qualifications count:', data.qualifications?.length);
+        console.log('[JobCards] Skills count:', data.skills?.length);
+        console.log('[JobCards] Resume Required:', data.resume_required);
 
         const placeholder = document.getElementById('jobDetailsPlaceholder');
         const detailsCard = document.getElementById('jobDetailsCard');

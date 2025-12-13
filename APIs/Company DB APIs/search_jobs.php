@@ -192,6 +192,9 @@ try {
 
     error_log("[SearchJobs] Successfully processed page $page");
 
+    // DEBUG: Write to file to inspect data
+    file_put_contents('debug_jobs_dump.txt', print_r($jobs, true));
+
     // Return response
     echo json_encode([
         "status" => "success",
@@ -220,4 +223,3 @@ try {
         "message" => "Database error: " . $e->getMessage()
     ]);
 }
-?>
