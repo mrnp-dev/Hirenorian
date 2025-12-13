@@ -740,3 +740,34 @@ body {
     border: 3px solid var(--secondary-yellow) !important;
     background-color: transparent !important;
 }
+
+/* Header Verification Badge */
+.header-verification-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    padding: 1px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: help;
+}
+
+
+/* Fix Avatar Sizing for User Profile */
+.user-avatar-wrapper {
+    width: 40px;
+    height: 40px;
+    display: block;
+    position: relative;
+}
+
+.user-avatar-wrapper .user-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}

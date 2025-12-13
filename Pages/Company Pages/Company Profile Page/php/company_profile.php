@@ -37,7 +37,9 @@ if (isset($_SESSION['email'])) {
         $company_type = $company['company_type'];
         $address = $company['address'];
         $industry = $company['industry'];
-        $verification = $company['verification'];
+        // Check for boolean true, string "true", or integer 1
+        $verification_val = isset($company['verification']) ? $company['verification'] : false;
+        $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
 
         // --- Statistics (single record expected) ---
         if (!empty($data['statistics'])) {
@@ -182,9 +184,18 @@ if (isset($_SESSION['email'])) {
             <header class="top-bar">
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
-                        <div class="user-avatar">
+                        <div class="user-avatar-wrapper" style="position: relative; display: inline-block;">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                class="user-avatar <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <?php if ($is_verified): ?>
+                                <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981" alt="Verified"
+                                    class="header-verification-badge verified" title="Verified Account">
+                            <?php else: ?>
+                                <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                    alt="Unverified" class="header-verification-badge unverified"
+                                    title="Unverified Account">
+                            <?php endif; ?>
                         </div>
                         <span class="user-name"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
@@ -221,16 +232,42 @@ if (isset($_SESSION['email'])) {
 
                         <!-- Company Header -->
                         <div class="company-header">
-                            <div class="company-icon-wrapper">
-                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon"
+                            <div class="company-icon-container" style="position: relative; display: inline-block;">
+                                <img src="<?php echo $company_icon_url; ?>" alt="Company Logo"
                                     class="company-icon <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                     id="viewCompanyIcon">
+                                <?php if ($is_verified): ?>
+                                    <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981"
+                                        alt="Verified" class="header-verification-badge verified" title="Verified Account"
+                                        style="width: 30px; height: 30px; bottom: 5px; right: 5px;">
+                                <?php else: ?>
+                                    <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                        alt="Unverified" class="header-verification-badge unverified"
+                                        title="Unverified Account"
+                                        style="width: 30px; height: 30px; bottom: 5px; right: 5px;">
+                                <?php endif; ?>
                             </div>
-                            <div class="company-main-info">
-                                <h2 class="company-name" id="viewCompanyName">
-                                    <?php echo $company_name; ?>
-                                    <span id="verificationBadge" title="Verification Status"></span>
-                                </h2>
+                            <div class="company-main-info" style="width: 100%;">
+                                <div
+                                    style="display: flex; justify-content: flex-start; align-items: center; width: 100%; gap: 30px;">
+                                    <h1 class="company-name" id="viewCompanyName" style="margin: 0;">
+                                        <?php echo htmlspecialchars($company_name); ?>
+                                    </h1>
+
+                                    <!-- Verification Badge (Closer with gap) -->
+                                    <div class="verification-badge-wrapper" title="Verification Status">
+                                        <?php if ($is_verified): ?>
+                                            <span class="verification-text verified">Verified</span>
+                                            <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981"
+                                                alt="Verified" class="verification-icon">
+                                        <?php else: ?>
+                                            <span class="verification-text unverified">Unverified</span>
+                                            <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                                alt="Unverified" class="verification-icon"
+                                                title="Please head over to the Account Manager to verify your account.">
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                                 <p class="company-tagline" id="viewCompanyTagline">
                                     <?php echo $tagline ? $tagline : "No tagline provided"; ?>
                                 </p>

@@ -1006,6 +1006,74 @@ function submitVerifyDocuments() {
         });
 }
 
+function handleImageUpload(fileInput, targetImageId, uploadUrl, type, labelId) {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file); // Assuming the backend expects 'image' as the file field name
+    formData.append('company_id', document.getElementById('company_id').value);
+    formData.append('email', document.getElementById('company_email').value); // Fallback
+
+    const targetImage = document.getElementById(targetImageId);
+    const label = document.getElementById(labelId);
+
+    // Show Loading State
+    const originalLabel = label.innerHTML;
+    label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+    label.style.pointerEvents = 'none';
+
+    fetch(uploadUrl, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update the image source with a timestamp to force refresh
+                const newSrc = data.url + '?t=' + new Date().getTime();
+                targetImage.src = newSrc;
+
+                // Sync Header Icon if we just updated the Company Icon
+                if (type === 'icon') {
+                    // Try to find header avatar in Dashboard/Profile layouts
+                    const headerAvatar = document.querySelector('.user-avatar img');
+                    if (headerAvatar) {
+                        headerAvatar.src = newSrc;
+                        // Ensure the default-icon class is removed if it was there
+                        headerAvatar.classList.remove('default-icon');
+                    }
+                    // Also update the hidden input or state if necessary
+                }
+
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Image updated successfully!', 'success');
+                } else {
+                    alert('Image updated successfully!');
+                }
+            } else {
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Upload failed: ' + data.message, 'error');
+                } else {
+                    alert('Upload failed: ' + data.message);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof ToastSystem !== 'undefined') {
+                ToastSystem.show('An error occurred during upload.', 'error');
+            } else {
+                alert('An error occurred during upload.');
+            }
+        })
+        .finally(() => {
+            // Restore Label
+            label.innerHTML = originalLabel;
+            label.style.pointerEvents = 'auto';
+        });
+}
+
 /**
  * Placeholder for fetching/checking verification status
  */

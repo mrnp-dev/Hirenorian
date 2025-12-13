@@ -26,15 +26,12 @@ if (isset($_SESSION['email'])) {
         $company = $data['company'];
         $company_id = $company['company_id'];
         $company_name = $company['company_name'];
-
-        // Fetch Company Icon
-        // This part assumes $conn is available, which it isn't in this snippet.
-        // For the purpose of this edit, I'm inserting the code as provided,
-        // but note that $conn would need to be defined for this to work.
-        // The original code was fetching from $data['icons'], this new code
-        // seems to imply a direct database query.
-        // I will adapt the provided code to use the $data['icons'] structure
-        // as it's consistent with the existing API call.
+        // Assume API returns 'verification' or similar due to our previous finding
+        // Checking API: fetch_company_information.php
+        // It returns all company columns including 'verification'
+        // Check for boolean true, string "true", or integer 1
+        $verification_val = isset($company['verification']) ? $company['verification'] : false;
+        $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
 
         $company_icon_url = "https://via.placeholder.com/40"; // Default
         if (!empty($data['icons'])) {
@@ -53,6 +50,7 @@ if (isset($_SESSION['email'])) {
         $company_name = "Unknown";
         $company_id = 0;
         $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000"; // Default icon for unknown company
+        $is_verified = false;
     }
 
 } else {
@@ -116,12 +114,21 @@ if (isset($_SESSION['email'])) {
             <header class="top-bar">
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
-                        <div class="user-avatar">
+                        <div class="user-avatar-wrapper" style="position: relative; display: inline-block;">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
-                                class="<?php echo $is_default_icon ? 'default-icon' : ''; ?>"
+                                class="user-avatar <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <?php if ($is_verified): ?>
+                                <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981" alt="Verified"
+                                    class="header-verification-badge verified" title="Verified Account">
+                            <?php else: ?>
+                                <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                    alt="Unverified" class="header-verification-badge unverified"
+                                    title="Unverified Account">
+                            <?php endif; ?>
                         </div>
-                        <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
+                        <span class="user-name"
+                            id="headerCompanyName"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">

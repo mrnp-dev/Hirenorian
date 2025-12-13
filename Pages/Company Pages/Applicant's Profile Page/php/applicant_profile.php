@@ -29,6 +29,10 @@ if (isset($_SESSION['email'])) {
             $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
         }
 
+        // Check for boolean true, string "true", or integer 1
+        $verification_val = isset($data['company']['verification']) ? $data['company']['verification'] : false;
+        $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
+
         // Default Icon Logic
         $is_default_icon = false;
         if (empty($company_icon_url)) {
@@ -104,10 +108,18 @@ if (isset($_SESSION['email'])) {
             <header class="top-bar">
                 <div class="user-profile" id="userProfileBtn">
                     <div class="user-info">
-                        <div class="user-avatar">
+                        <div class="user-avatar-wrapper" style="position: relative; display: inline-block;">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
-                                class="<?php echo $is_default_icon ? 'default-icon' : ''; ?>"
+                                class="user-avatar <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <?php if ($is_verified): ?>
+                                <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981" alt="Verified"
+                                    class="header-verification-badge verified" title="Verified Account">
+                            <?php else: ?>
+                                <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                    alt="Unverified" class="header-verification-badge unverified"
+                                    title="Unverified Account">
+                            <?php endif; ?>
                         </div>
                         <span class="user-name"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
