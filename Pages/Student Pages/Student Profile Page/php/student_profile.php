@@ -117,9 +117,9 @@ else
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>
-                <a href="../../Internship Search Page/php/internship_search.php" class="nav-item">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Internship Search</span>
+                <a href="../../Student Internship Search Page New/php/internship_search.php" class="nav-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Internships</span>
                 </a>
 
             </nav>

@@ -125,9 +125,9 @@ else
                     <i class="fa-solid fa-user w-5"></i>
                     <span>Profile</span>
                 </a>
-                <a href="../../Internship Search Page/php/internship_search.php" class="flex items-center gap-4 px-4 py-3 rounded-xl text-white/80 hover:bg-white/5 hover:text-white transition-all">
-                    <i class="fa-solid fa-magnifying-glass w-5"></i>
-                    <span>Internships</span>
+                <a href="../../Student Internship Search Page New/php/internship_search.php" class="flex items-center gap-4 px-4 py-3 rounded-xl text-white/80 hover:bg-white/5 hover:text-white transition-all">
+                    <i class="fa-solid fa-briefcase w-6 text-center"></i>
+                    <span class="font-medium">Internships</span>
                 </a>
             </nav>
 
@@ -191,8 +191,9 @@ else
                         <p class="text-gray-500 text-lg mb-8">Here's your internship journey at a glance.</p>
                         
                         <div class="flex flex-wrap gap-4">
-                            <a href="../../Internship Search Page/php/internship_search.php" class="bg-maroon text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-maroon/20 hover:shadow-maroon/40 hover:-translate-y-1 transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-magnifying-glass"></i> Find Internships
+                            <a href="../../Student Internship Search Page New/php/internship_search.php" class="bg-maroon text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-maroon/20 hover:shadow-maroon/40 hover:-translate-y-1 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                Find Internships
                             </a>
                             <a href="../../Student Edit Profile Page/php/edit_profile.php" class="bg-white text-gray-700 border border-gray-200 px-6 py-3 rounded-xl font-semibold hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center gap-2">
                                 <i class="fa-solid fa-user-pen"></i> Edit Profile

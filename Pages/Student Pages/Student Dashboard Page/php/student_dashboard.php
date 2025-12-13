@@ -95,9 +95,9 @@ else
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>
-                <a href="../../Internship Search Page/php/internship_search.php" class="nav-item">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Internship Search</span>
+                <a href="../../Student Internship Search Page New/php/internship_search.php" class="nav-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Internships</span>
                 </a>
 
             </nav>
@@ -130,9 +130,8 @@ else
                             <h1 class="greeting">Good afternoon, <span class="greeting-highlight"><?php echo htmlspecialchars($first_name); ?></span>!</h1>
                             <p class="hero-subtitle">Here's your internship journey at a glance</p>
                             <div class="hero-actions">
-                                <a href="../../Internship Search Page/php/internship_search.php" class="btn-hero primary">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                    Browse Internships
+                                <a href="../../Student Internship Search Page New/php/internship_search.php" class="btn-hero primary">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Find Internships
                                 </a>
                                 <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-hero secondary">
                                     <i class="fa-solid fa-user-pen"></i>
