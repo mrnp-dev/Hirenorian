@@ -159,13 +159,9 @@ else
                             <div class="metric-icon">
                                 <i class="fa-solid fa-file-lines"></i>
                             </div>
-                            <div class="metric-trend up">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                +12%
-                            </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Total Applications</div>
                         </div>
                     </div>
@@ -175,13 +171,9 @@ else
                             <div class="metric-icon">
                                 <i class="fa-solid fa-check-circle"></i>
                             </div>
-                            <div class="metric-trend up">
-                                <i class="fa-solid fa-arrow-up"></i>
-                                +1
-                            </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Accepted Applications</div>
                         </div>
                     </div>
@@ -193,7 +185,7 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Under Review</div>
                         </div>
                     </div>
@@ -205,12 +197,10 @@ else
                             </div>
                         </div>
                         <div class="metric-body">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value"><i class="fa-solid fa-spinner fa-spin" style="font-size: 24px;"></i></div>
                             <div class="metric-label">Rejected Applications</div>
                         </div>
                     </div>
-
-
                 </div>
 
                 <!-- Main Content Grid -->
@@ -231,76 +221,9 @@ else
                         </div>
 
                         <div class="applications-list">
-                            <!-- Application Card 1 -->
-                            <div class="application-card pending">
-                                <div class="app-header">
-                                    <div class="app-company">
-                                        <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Company" class="company-logo-small">
-                                        <div class="app-info">
-                                            <h4>Web Developer Intern</h4>
-                                            <p>Tech Solutions Inc.</p>
-                                        </div>
-                                    </div>
-                                    <span class="app-status-badge pending">Pending</span>
-                                </div>
-                                <div class="app-meta">
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        Applied Oct 24, 2023
-                                    </div>
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        Remote
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Application Card 2 -->
-                            <div class="application-card interview">
-                                <div class="app-header">
-                                    <div class="app-company">
-                                        <img src="../../../Landing Page/Images/google.jpg" alt="Company" class="company-logo-small">
-                                        <div class="app-info">
-                                            <h4>Graphic Designer</h4>
-                                            <p>Creative Studio</p>
-                                        </div>
-                                    </div>
-                                    <span class="app-status-badge interview">Interview</span>
-                                </div>
-                                <div class="app-meta">
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        Applied Oct 20, 2023
-                                    </div>
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        Pampanga
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Application Card 3 -->
-                            <div class="application-card offer">
-                                <div class="app-header">
-                                    <div class="app-company">
-                                        <img src="../../../Landing Page/Images/samsung.jpg" alt="Company" class="company-logo-small">
-                                        <div class="app-info">
-                                            <h4>IT Support</h4>
-                                            <p>Global Systems</p>
-                                        </div>
-                                    </div>
-                                    <span class="app-status-badge offer">Offer</span>
-                                </div>
-                                <div class="app-meta">
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-calendar"></i>
-                                        Applied Oct 15, 2023
-                                    </div>
-                                    <div class="app-meta-item">
-                                        <i class="fa-solid fa-location-dot"></i>
-                                        Manila
-                                    </div>
-                                </div>
+                            <div class="loading-state">
+                                <i class="fa-solid fa-spinner fa-spin"></i>
+                                <p>Loading applications...</p>
                             </div>
                         </div>
                     </div>
@@ -356,55 +279,9 @@ else
                         </h2>
                     </div>
                     <div class="recommendations-grid">
-                        <!-- Recommendation Card 1 -->
-                        <div class="recommendation-card">
-                            <img src="../../../Landing Page/Images/dhvsu-bg-image.jpg" alt="Job" class="recommendation-image">
-                            <div class="recommendation-content">
-                                <h3>UI/UX Designer Intern</h3>
-                                <p>DHVSU Innovation Hub</p>
-                                <div class="recommendation-tags">
-                                    <span class="rec-tag">Design</span>
-                                    <span class="rec-tag">Part-time</span>
-                                    <span class="rec-tag">Remote</span>
-                                </div>
-                                <div class="recommendation-footer">
-                                    <button class="btn-quick-apply">Apply Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recommendation Card 2 -->
-                        <div class="recommendation-card">
-                            <img src="../../../Landing Page/Images/google.jpg" alt="Job" class="recommendation-image">
-                            <div class="recommendation-content">
-                                <h3>Software Engineering Intern</h3>
-                                <p>Tech Innovators Inc.</p>
-                                <div class="recommendation-tags">
-                                    <span class="rec-tag">Engineering</span>
-                                    <span class="rec-tag">Full-time</span>
-                                    <span class="rec-tag">Hybrid</span>
-                                </div>
-                                <div class="recommendation-footer">
-                                    <button class="btn-quick-apply">Apply Now</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recommendation Card 3 -->
-                        <div class="recommendation-card">
-                            <img src="../../../Landing Page/Images/samsung.jpg" alt="Job" class="recommendation-image">
-                            <div class="recommendation-content">
-                                <h3>Data Analyst Intern</h3>
-                                <p>Analytics Pro</p>
-                                <div class="recommendation-tags">
-                                    <span class="rec-tag">Data</span>
-                                    <span class="rec-tag">Full-time</span>
-                                    <span class="rec-tag">On-site</span>
-                                </div>
-                                <div class="recommendation-footer">
-                                    <button class="btn-quick-apply">Apply Now</button>
-                                </div>
-                            </div>
+                        <div class="loading-state" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <p>Finding best matches...</p>
                         </div>
                     </div>
                 </div>
