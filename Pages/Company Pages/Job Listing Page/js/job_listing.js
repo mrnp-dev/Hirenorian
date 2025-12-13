@@ -1488,9 +1488,71 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    // ========================================
+    // WORK TYPE DROPDOWN LOGIC (Custom implementation to match Location style)
+    // ========================================
+    const workTypeDropdown = document.getElementById('workTypeDropdown');
+    const workTypeDisplay = document.getElementById('workTypeDisplay');
+    const workTypeInput = document.getElementById('workTypeInput');
+    const workTypeMenu = document.getElementById('workTypeDropdownMenu');
+
+    if (workTypeDisplay && workTypeDropdown && workTypeInput && workTypeMenu) {
+        // Toggle Dropdown
+        workTypeDisplay.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Close other dropdowns first
+            closeLocationDropdown();
+            workTypeDropdown.classList.toggle('open');
+        });
+
+        // Select Options
+        workTypeMenu.querySelectorAll('.simple-dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const value = item.getAttribute('data-value');
+                const text = item.textContent;
+
+                workTypeInput.value = value;
+                workTypeDisplay.value = text;
+
+                workTypeDropdown.classList.remove('open');
+
+                // Validate Work Type
+                const workTypeError = document.getElementById('workTypeError');
+                if (!workTypeInput.value) {
+                    workTypeError.textContent = 'Please select a work type';
+                    workTypeError.classList.add('show');
+                    if (workTypeDisplay) {
+                        workTypeDisplay.style.borderColor = '#ef4444';
+                        // Reset border on interaction
+                        const resetBorder = () => {
+                            workTypeDisplay.style.borderColor = '#e5e7eb';
+                            workTypeDisplay.removeEventListener('click', resetBorder);
+                        };
+                        workTypeDisplay.addEventListener('click', resetBorder);
+                    }
+                } else {
+                    workTypeError.textContent = '';
+                    workTypeError.classList.remove('show');
+                    if (workTypeDisplay) workTypeDisplay.style.borderColor = '#e5e7eb';
+                }
+            });
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!workTypeDropdown.contains(e.target)) {
+                workTypeDropdown.classList.remove('open');
+            }
+        });
+    }
+
+
     // Populate Category Dropdown
     function populateCategoryDropdown() {
         if (!categorySelect) return;
+
+        // (This snippet is just to locate the area, the actual replacement target is below)
 
         categorySelect.innerHTML = '<option value="">Select a category...</option>';
 
@@ -1628,14 +1690,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (provinceInput) provinceInput.value = jobData.province;
             if (cityInput) cityInput.value = jobData.city;
             console.log(`✅ Location set to: ${jobData.province}, ${jobData.city}`);
-        }
-
-        // Populate work type - wait for dropdown to have options
-        const workTypeSelect = document.getElementById('workTypeSelect');
-        if (workTypeSelect && jobData.workType) {
-            await waitForDropdownOptions(workTypeSelect);
-            workTypeSelect.value = jobData.workType;
-            console.log('✅ Work type set to:', jobData.workType);
         }
 
         // Populate applicant limit
@@ -1970,7 +2024,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 title: document.getElementById('jobTitleInput').value.trim(),
                 province: document.getElementById('provinceInput').value,
                 city: document.getElementById('cityInput').value,
-                work_type: document.getElementById('workTypeSelect').value,
+                work_type: document.getElementById('workTypeInput').value,
                 applicant_limit: parseInt(document.getElementById('applicantLimitInput').value),
                 category: document.getElementById('categorySelect').value,
                 work_tags: [...selectedTags],

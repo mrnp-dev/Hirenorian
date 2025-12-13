@@ -435,10 +435,16 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="input-group">
                         <label for="workTypeSelect">Type of work</label>
-                        <select id="workTypeSelect" name="workType" required>
-                            <option value="">Select work type...</option>
-                            <!-- Populated by JavaScript -->
-                        </select>
+                        <div class="cascading-dropdown" id="workTypeDropdown">
+                            <input type="text" class="dropdown-display" id="workTypeDisplay"
+                                placeholder="Select work type..." readonly>
+                            <div class="dropdown-menu" id="workTypeDropdownMenu">
+                                <div class="simple-dropdown-item" data-value="Full-time">Full-time</div>
+                                <div class="simple-dropdown-item" data-value="Part-time">Part-time</div>
+                                <div class="simple-dropdown-item" data-value="Internship">Internship</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="workTypeInput" name="workType" required>
                         <p class="error-message" id="workTypeError"></p>
                     </div>
                     <div class="input-group">
