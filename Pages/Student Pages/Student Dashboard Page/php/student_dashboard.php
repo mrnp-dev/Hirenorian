@@ -2,7 +2,7 @@
 session_start();
 if (isset($_SESSION['email'])) {
     $student_email = $_SESSION['email'];
-    $student_id = $_SESSION['student_id'];
+    $student_id = $_SESSION['student_id'] ?? null;
     
     // Fetch student information from API
     $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
@@ -16,6 +16,9 @@ if (isset($_SESSION['email'])) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     
     $response = curl_exec($ch);
+    if ($response === false) {
+        echo "<script>console.error('DEBUG: Curl error: " . curl_error($ch) . "');</script>";
+    }
     curl_close($ch);
     
     // Initialize default values
@@ -25,6 +28,7 @@ if (isset($_SESSION['email'])) {
     
     if ($response !== false) {
         $data = json_decode($response, true);
+        echo "<script>console.log('DEBUG: Student API Response Status:', '" . ($data['status'] ?? 'unknown') . "');</script>";
         
         if (isset($data['status']) && $data['status'] === "success") {
             $basic_info = $data['data']['basic_info'];
@@ -38,12 +42,21 @@ if (isset($_SESSION['email'])) {
             if (!empty($profile_picture_db)) {
                 $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
             }
+
+            // AUTO-RECOVER STUDENT ID
+            if (empty($student_id) && isset($basic_info['student_id'])) {
+                $student_id = $basic_info['student_id'];
+                $_SESSION['student_id'] = $student_id; // persist to session
+                echo "<script>console.log('DEBUG: recovered student_id from API: " . $student_id . "');</script>";
+            }
         }
     }
 }
 else
 {
-    echo "<script>console.log('email not in session');</script>";
+    echo "<script>console.warn('DEBUG: Session email not set. Session ID: " . session_id() . "');</script>";
+    // Optional: Redirect if strict login is required
+    // header("Location: ../../../Landing Page/php/landing_page.php");
 }
 ?>
 <!DOCTYPE html>
@@ -403,7 +416,8 @@ else
 
     <script>
         // Pass student_id from PHP to JavaScript
-        const STUDENT_ID = <?php echo json_encode($student_id); ?>;
+        window.STUDENT_ID = <?php echo json_encode($student_id ?? null); ?>;
+        console.log('DEBUG: window.STUDENT_ID value:', window.STUDENT_ID);
     </script>
     <script type="module" src="../js/modules/main.js"></script>
 </body>

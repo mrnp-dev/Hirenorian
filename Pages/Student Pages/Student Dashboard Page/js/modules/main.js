@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initProfileDropdown();
 
     // Get Student ID from global scope (injected by PHP)
-    const studentId = typeof STUDENT_ID !== 'undefined' ? STUDENT_ID : null;
+    const studentId = window.STUDENT_ID || null;
 
     if (studentId) {
         // Initialize Data Components
