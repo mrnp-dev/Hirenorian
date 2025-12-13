@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Student Application Counts API</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .result {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .result.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card.total {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .stat-card.accepted {
+            background: #f6ffed;
+            border: 2px solid #52c41a;
+            color: #389e0d;
+        }
+
+        .stat-card.pending {
+            background: #fff7e6;
+            border: 2px solid #faad14;
+            color: #d46b08;
+        }
+
+        .stat-card.rejected {
+            background: #fff2f0;
+            border: 2px solid #ff4d4f;
+            color: #cf1322;
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .response-json {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        pre {
+            margin: 0;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .error {
+            background: #fff2f0;
+            border: 2px solid #ff4d4f;
+            color: #cf1322;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Student Application Counts</h1>
+        <p class="subtitle">Test API: fetch_student_application_counts.php</p>
+
+        <form id="testForm">
+            <div class="form-group">
+                <label for="student_id">Student ID</label>
+                <input type="number" id="student_id" name="student_id" required placeholder="Enter student ID">
+            </div>
+
+            <button type="submit" id="submitBtn">Fetch Application Counts</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('testForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const studentId = document.getElementById('student_id').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const resultDiv = document.getElementById('result');
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Loading...';
+            resultDiv.classList.remove('active');
+
+            try {
+                const response = await fetch('http://localhost/Web%20Projects/Hirenorian-1/APIs/Student%20DB%20APIs/fetch_student_application_counts.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        student_id: studentId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    resultDiv.innerHTML = `
+                        <div class="stats-grid">
+                            <div class="stat-card total">
+                                <div class="stat-number">${data.data.total}</div>
+                                <div class="stat-label">Total Applications</div>
+                            </div>
+                            <div class="stat-card accepted">
+                                <div class="stat-number">${data.data.accepted}</div>
+                                <div class="stat-label">Accepted</div>
+                            </div>
+                            <div class="stat-card pending">
+                                <div class="stat-number">${data.data.under_review}</div>
+                                <div class="stat-label">Under Review</div>
+                            </div>
+                            <div class="stat-card rejected">
+                                <div class="stat-number">${data.data.rejected}</div>
+                                <div class="stat-label">Rejected</div>
+                            </div>
+                        </div>
+                        <div class="response-json">
+                            <strong>API Response:</strong>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    resultDiv.innerHTML = `
+                        <div class="error">
+                            <strong>Error:</strong> ${data.message}
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                }
+
+                resultDiv.classList.add('active');
+
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="error">
+                        <strong>Request Failed:</strong> ${error.message}
+                    </div>
+                `;
+                resultDiv.classList.add('active');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Fetch Application Counts';
+            }
+        });
+    </script>
+</body>
+
+</html>

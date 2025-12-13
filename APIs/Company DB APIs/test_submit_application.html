@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submission API - Test Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: -9999px;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border: 2px dashed #e1e8ed;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-input-label:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .file-input-label.has-file {
+            border-style: solid;
+            border-color: #52c41a;
+            background: #f6ffed;
+        }
+
+        .file-name {
+            color: #666;
+            font-size: 14px;
+            flex-grow: 1;
+        }
+
+        .file-name.placeholder {
+            color: #999;
+        }
+
+        .file-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .file-size {
+            font-size: 12px;
+            color: #999;
+            margin-left: 10px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        button[type="submit"]:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .response {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .response.active {
+            display: block;
+        }
+
+        .response.success {
+            background: #f6ffed;
+            border: 2px solid #52c41a;
+            color: #389e0d;
+        }
+
+        .response.error {
+            background: #fff2f0;
+            border: 2px solid #ff4d4f;
+            color: #cf1322;
+        }
+
+        .response h3 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .response pre {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        .info-box {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: #0050b3;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Submit Job Application</h1>
+        <p class="subtitle">Test form for submit_application.php API</p>
+
+        <div class="info-box">
+            <strong>📝 Testing Instructions:</strong>
+            Enter the job post ID, student ID, and upload required documents. The API will validate and store your
+            application.
+        </div>
+
+        <form id="applicationForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="post_id">Job Post ID <span class="required">*</span></label>
+                <input type="number" id="post_id" name="post_id" required placeholder="Enter job post ID">
+            </div>
+
+            <div class="form-group">
+                <label for="student_id">Student ID <span class="required">*</span></label>
+                <input type="number" id="student_id" name="student_id" required placeholder="Enter student ID">
+            </div>
+
+            <div class="form-group">
+                <label for="document_type">Document Type <span class="required">*</span></label>
+                <select id="document_type" name="document_type" required>
+                    <option value="">Select document type</option>
+                    <option value="Standard Application">Standard Application</option>
+                    <option value="Cover Letter Required">Cover Letter Required</option>
+                    <option value="Resume Only">Resume Only</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Resume <span class="required">*</span></label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                    <label for="resume" class="file-input-label" id="resumeLabel">
+                        <span class="file-icon">📄</span>
+                        <span class="file-name placeholder">Click to choose resume (PDF, DOC, DOCX)</span>
+                        <span class="file-size" id="resumeSize"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cover_letter">Cover Letter (Optional)</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="cover_letter" name="cover_letter" accept=".pdf,.doc,.docx">
+                    <label for="cover_letter" class="file-input-label" id="coverLetterLabel">
+                        <span class="file-icon">📋</span>
+                        <span class="file-name placeholder">Click to choose cover letter (PDF, DOC, DOCX)</span>
+                        <span class="file-size" id="coverLetterSize"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn">Submit Application</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Submitting your application...</p>
+        </div>
+
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        // File input handling
+        function setupFileInput(inputId, labelId, sizeId) {
+            const input = document.getElementById(inputId);
+            const label = document.getElementById(labelId);
+            const fileName = label.querySelector('.file-name');
+            const fileSize = document.getElementById(sizeId);
+
+            input.addEventListener('change', function () {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const size = (file.size / 1024 / 1024).toFixed(2);
+
+                    fileName.textContent = file.name;
+                    fileName.classList.remove('placeholder');
+                    fileSize.textContent = `${size} MB`;
+                    label.classList.add('has-file');
+
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert('File size exceeds 10MB limit!');
+                        this.value = '';
+                        resetFileInput(labelId, sizeId);
+                    }
+                } else {
+                    resetFileInput(labelId, sizeId);
+                }
+            });
+        }
+
+        function resetFileInput(labelId, sizeId) {
+            const label = document.getElementById(labelId);
+            const fileName = label.querySelector('.file-name');
+            const fileSize = document.getElementById(sizeId);
+
+            fileName.textContent = labelId === 'resumeLabel' ?
+                'Click to choose resume (PDF, DOC, DOCX)' :
+                'Click to choose cover letter (PDF, DOC, DOCX)';
+            fileName.classList.add('placeholder');
+            fileSize.textContent = '';
+            label.classList.remove('has-file');
+        }
+
+        setupFileInput('resume', 'resumeLabel', 'resumeSize');
+        setupFileInput('cover_letter', 'coverLetterLabel', 'coverLetterSize');
+
+        // Form submission
+        document.getElementById('applicationForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const response = document.getElementById('response');
+
+            submitBtn.disabled = true;
+            loading.classList.add('active');
+            response.classList.remove('active');
+
+            try {
+                const res = await fetch('http://localhost/Web%20Projects/Hirenorian-1/APIs/Company%20DB%20APIs/submit_application.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                loading.classList.remove('active');
+                submitBtn.disabled = false;
+
+                response.classList.add('active');
+
+                if (data.status === 'success') {
+                    response.classList.remove('error');
+                    response.classList.add('success');
+                    response.innerHTML = `
+                        <h3>✅ Application Submitted Successfully!</h3>
+                        <p><strong>Applicant ID:</strong> ${data.data.applicant_id}</p>
+                        <p><strong>Status:</strong> ${data.data.status}</p>
+                        <p><strong>Resume Path:</strong> ${data.data.resume_path}</p>
+                        ${data.data.coverletter_path ? `<p><strong>Cover Letter Path:</strong> ${data.data.coverletter_path}</p>` : ''}
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                    form.reset();
+                    resetFileInput('resumeLabel', 'resumeSize');
+                    resetFileInput('coverLetterLabel', 'coverLetterSize');
+                } else {
+                    response.classList.remove('success');
+                    response.classList.add('error');
+                    response.innerHTML = `
+                        <h3>❌ Error</h3>
+                        <p>${data.message}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    `;
+                }
+            } catch (error) {
+                loading.classList.remove('active');
+                submitBtn.disabled = false;
+                response.classList.add('active', 'error');
+                response.classList.remove('success');
+                response.innerHTML = `
+                    <h3>❌ Request Failed</h3>
+                    <p>${error.message}</p>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>

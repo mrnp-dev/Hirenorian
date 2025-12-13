@@ -171,7 +171,6 @@
                 </div>
                 <h2>Verify Your Email</h2>
                 <p class="otp-instruction">We've sent a 6-digit code to <span id="verifying-email-display"></span></p>
-                <p class="otp-note">(For demo: Enter any 6-digit number)</p>
             </div>
 
             <div class="otp-input-container">

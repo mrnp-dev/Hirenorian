@@ -57,6 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
             child.classList.toggle('shift_active');
             child.classList.toggle('shift_inactive');
         });
+
+        // Cancel Verification Process
+        closeOTPModal();
+        currentVerifyingEmail = null;
+        currentVerifyingEmailType = null;
+        const verifyBtn = document.querySelector('#verify-company-email-btn');
+        if (verifyBtn && verifyBtn.disabled) {
+            verifyBtn.innerHTML = '<i class="fa fa-shield-alt"></i> Verify';
+            verifyBtn.disabled = false;
+        }
     }
 
     setupEmailEditListeners();
@@ -96,6 +106,21 @@ signInInputs.forEach(input => {
     });
 });
 
+// Enable Login Button on Input Change
+const loginBtn = document.querySelector('#signIn_Btn');
+const loginEmailInput = document.querySelector('#signin-email');
+const loginPassInput = document.querySelector('#signin-password');
+
+function enableLoginButton() {
+    if (loginBtn.disabled) {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
+    }
+}
+
+loginEmailInput.addEventListener('input', enableLoginButton);
+loginPassInput.addEventListener('input', enableLoginButton);
+
 async function check_LogIn_Fields() {
     let isValid = true;
     const emailInput = document.querySelector('#signin-email');
@@ -123,6 +148,11 @@ async function check_LogIn_Fields() {
     if (isValid) {
         const company_email = document.querySelector('#signin-email').value.trim();
         const company_password = document.querySelector('#signin-password').value.trim();
+
+        const loginBtn = document.querySelector('#signIn_Btn');
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Logging in...";
+
         try {
             const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_login_process.php", {
                 method: "POST",
@@ -134,7 +164,6 @@ async function check_LogIn_Fields() {
                     company_password
                 })
             });
-            const data = await response.json();
             if (response.ok && data.status === "success") {
                 ToastSystem.show('Login Successfully', "success");
                 const response = await fetch("company_session.php",
@@ -160,13 +189,22 @@ async function check_LogIn_Fields() {
                     }, 1500);
                 } else {
                     ToastSystem.show('Session storage failed', "error");
+                    const loginBtn = document.querySelector('#signIn_Btn');
+                    loginBtn.disabled = true;
+                    loginBtn.textContent = "Session Failed";
                 }
             } else {
                 ToastSystem.show('Login Failed', "error");
+                const loginBtn = document.querySelector('#signIn_Btn');
+                loginBtn.disabled = true;
+                loginBtn.textContent = "Login Failed";
             }
         } catch (err) {
             console.error("Network error:", err);
             alert("Unable to connect to server");
+            const loginBtn = document.querySelector('#signIn_Btn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Connection Error";
         }
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");

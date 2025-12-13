@@ -1,0 +1,209 @@
+{
+    "studentCourses": [
+        {
+            "college": "College of Education",
+            "courses": [
+                "Bachelor of Elementary Education",
+                "Bachelor of Secondary Education – English",
+                "Bachelor of Secondary Education – Mathematics",
+                "Bachelor of Secondary Education – Science",
+                "Bachelor of Physical Education"
+            ]
+        },
+        {
+            "college": "College of Engineering and Architecture",
+            "courses": [
+                "Bachelor of Science in Civil Engineering",
+                "Bachelor of Science in Electrical Engineering",
+                "Bachelor of Science in Mechanical Engineering",
+                "Bachelor of Science in Electronics Engineering",
+                "Bachelor of Science in Architecture"
+            ]
+        },
+        {
+            "college": "College of Arts and Sciences",
+            "courses": [
+                "Bachelor of Arts in English Language Studies",
+                "Bachelor of Science in Biology",
+                "Bachelor of Science in Mathematics"
+            ]
+        },
+        {
+            "college": "College of Business and Accountancy",
+            "courses": [
+                "Bachelor of Science in Accountancy",
+                "BSBA – Financial Management",
+                "BSBA – Marketing Management",
+                "Bachelor of Science in Entrepreneurship"
+            ]
+        },
+        {
+            "college": "College of Computing Studies",
+            "courses": [
+                "Bachelor of Science in Information Technology",
+                "Bachelor of Science in Computer Science"
+            ]
+        },
+        {
+            "college": "College of Hospitality Management",
+            "courses": [
+                "Bachelor of Science in Hospitality Management",
+                "Bachelor of Science in Tourism Management"
+            ]
+        },
+        {
+            "college": "College of Criminal Justice Education",
+            "courses": [
+                "Bachelor of Science in Criminology"
+            ]
+        },
+        {
+            "college": "College of Agriculture",
+            "courses": [
+                "Bachelor of Science in Agriculture"
+            ]
+        },
+        {
+            "college": "College of Industrial Technology",
+            "courses": [
+                "Industrial Tech – Automotive Technology",
+                "Industrial Tech – Electrical Technology",
+                "Industrial Tech – Electronics Technology",
+                "Industrial Tech – Food Technology"
+            ]
+        },
+        {
+            "college": "College of Public Administration",
+            "courses": [
+                "Bachelor of Public Administration"
+            ]
+        },
+        {
+            "college": "College of Social Sciences and Philosophy",
+            "courses": [
+                "Bachelor in Human Services",
+                "Bachelor of Science in Psychology",
+                "Bachelor of Science in Social Work",
+                "Bachelor of Arts in Sociology"
+            ]
+        }
+    ],
+    "careerTags": [
+        {
+            "category": "Technology & Digital",
+            "tags": [
+                "Technology",
+                "Software Development",
+                "Cybersecurity",
+                "Data & Analytics",
+                "Artificial Intelligence / Machine Learning",
+                "Cloud Computing",
+                "IT Support & Networking",
+                "Web Development"
+            ]
+        },
+        {
+            "category": "Media & Creative",
+            "tags": [
+                "Media & Communications",
+                "Graphic Design",
+                "Marketing & Advertising",
+                "Content Creation",
+                "Film & Video Production",
+                "Animation & Multimedia Arts",
+                "Public Relations"
+            ]
+        },
+        {
+            "category": "Business & Corporate",
+            "tags": [
+                "Business Management",
+                "Finance",
+                "Human Resources",
+                "Administration & Office Support",
+                "Project Management",
+                "Consulting",
+                "Customer Service"
+            ]
+        },
+        {
+            "category": "Education & Training",
+            "tags": [
+                "Basic Education",
+                "Higher Education",
+                "Curriculum & Instruction",
+                "E-Learning",
+                "Academic Support"
+            ]
+        },
+        {
+            "category": "Healthcare & Medical",
+            "tags": [
+                "Nursing",
+                "Medical & Diagnostics",
+                "Pharmacy",
+                "Allied Health",
+                "Healthcare Support Services",
+                "Mental Health Services"
+            ]
+        },
+        {
+            "category": "Engineering & Technical",
+            "tags": [
+                "Civil Engineering",
+                "Electrical Engineering",
+                "Mechanical Engineering",
+                "Industrial Engineering",
+                "Architecture",
+                "Construction & Drafting"
+            ]
+        },
+        {
+            "category": "Service & Hospitality",
+            "tags": [
+                "Hospitality & Tourism",
+                "Food & Beverage",
+                "Retail & Sales",
+                "Personal Services",
+                "Customer Support Services"
+            ]
+        },
+        {
+            "category": "Manufacturing & Production",
+            "tags": [
+                "Manufacturing Operations",
+                "Quality Assurance",
+                "Supply Chain & Logistics",
+                "Warehouse & Distribution",
+                "Maintenance"
+            ]
+        },
+        {
+            "category": "Public Sector & Community",
+            "tags": [
+                "Government Services",
+                "Public Safety",
+                "Social Services",
+                "Non-Profit & Community Development"
+            ]
+        },
+        {
+            "category": "Agriculture & Environment",
+            "tags": [
+                "Agriculture & Farming",
+                "Environmental Science",
+                "Sustainability",
+                "Forestry & Fisheries"
+            ]
+        },
+        {
+            "category": "Transportation",
+            "tags": [
+                "Driving & Delivery",
+                "Aviation",
+                "Maritime",
+                "Vehicle Maintenance"
+            ]
+        }
+    ]
+}
