@@ -156,10 +156,20 @@ if (isset($_SESSION['email'])) {
                                 <input type="text" id="jobSearchInput" class="job-search-input"
                                     placeholder="Search job titles...">
                             </div>
-                            <button class="btn-add-job" id="btnAddJob">
-                                <i class="fa-solid fa-plus"></i>
-                                Add Job Posting
-                            </button>
+                            <?php if ($is_verified): ?>
+                                <button class="btn-add-job" id="btnAddJob">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add Job Posting
+                                </button>
+                            <?php else: ?>
+                                <button class="btn-add-job disabled-unverified" id="btnAddJobUnverified"
+                                    onclick="ToastSystem.show('You must verify your account before posting a job.', 'warning');"
+                                    style="opacity: 0.6; cursor: not-allowed; background-color: #95a5a6;"
+                                    title="Account verification required">
+                                    <i class="fa-solid fa-lock"></i>
+                                    Post a Job (Locked)
+                                </button>
+                            <?php endif; ?>
                         </div>
 
                         <!-- Job Cards Grid -->
