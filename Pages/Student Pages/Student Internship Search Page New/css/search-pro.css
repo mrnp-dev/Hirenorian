@@ -25,8 +25,7 @@
 
 /* Page Layout */
 .search-page-body {
-    padding-top: 80px;
-    /* Fix: Add padding to body instead of margin to hero to avoid white gap */
+    padding-top: 70px;
     margin: 0;
     background-color: #f8f9fa;
     min-height: 100vh;
@@ -534,6 +533,11 @@
     overflow-y: auto;
     border: 1px solid #eee;
     padding: 5px 0;
+}
+
+.cities-submenu.active {
+    display: block;
+    animation: fadeIn 0.2s ease-out;
 }
 
 
