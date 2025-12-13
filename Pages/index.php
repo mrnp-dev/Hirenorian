@@ -186,9 +186,14 @@
             <h2 class="section-title">Student Portal</h2>
             <div class="link-grid">
                 <a href="Student Pages/Student Dashboard Page/php/student_dashboard.php" class="page-link">
-                    <span class="page-name">Student Dashboard</span>
+                    <span class="page-name">Student Dashboard (Vanilla)</span>
                     <span class="page-path">Student Pages/.../student_dashboard.php</span>
                     <span class="badge badge-student">Dashboard</span>
+                </a>
+                <a href="Student Pages/Student Dashboard Tailwind/php/student_dashboard.php" class="page-link">
+                    <span class="page-name">Student Dashboard (Tailwind)</span>
+                    <span class="page-path">Student Pages/.../student_dashboard.php</span>
+                    <span class="badge badge-student">New</span>
                 </a>
                 <a href="Student Pages/Student Profile Page/php/student_profile.php" class="page-link">
                     <span class="page-name">Student Profile</span>
