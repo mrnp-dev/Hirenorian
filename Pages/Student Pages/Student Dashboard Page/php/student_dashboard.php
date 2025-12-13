@@ -405,6 +405,6 @@ else
         // Pass student_id from PHP to JavaScript
         const STUDENT_ID = <?php echo json_encode($student_id); ?>;
     </script>
-    <script src="../js/dashboard.js"></script>
+    <script type="module" src="../js/modules/main.js"></script>
 </body>
 </html>
