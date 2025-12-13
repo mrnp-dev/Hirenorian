@@ -170,10 +170,14 @@ try {
         $job['tags'] = $tags_stmt->fetchAll(PDO::FETCH_COLUMN);
 
         // Process text fields into arrays
-        $job['responsibilities'] = !empty($job['responsibilities']) ? array_filter(array_map('trim', explode("\n", $job['responsibilities']))) : [];
-        $job['qualifications'] = !empty($job['qualifications']) ? array_filter(array_map('trim', explode("\n", $job['qualifications']))) : [];
-        $job['skills'] = !empty($job['skills']) ? array_filter(array_map('trim', explode("\n", $job['skills']))) : [];
+        error_log("[SearchJobs] Raw details for job {$post_id}: Resp len=" . strlen($job['responsibilities'] ?? '') . ", Qual len=" . strlen($job['qualifications'] ?? ''));
+        
+        $job['responsibilities'] = !empty($job['responsibilities']) ? array_values(array_filter(array_map('trim', explode("\n", $job['responsibilities'])))) : [];
+        $job['qualifications'] = !empty($job['qualifications']) ? array_values(array_filter(array_map('trim', explode("\n", $job['qualifications'])))) : [];
+        $job['skills'] = !empty($job['skills']) ? array_values(array_filter(array_map('trim', explode("\n", $job['skills'])))) : [];
 
+        error_log("[SearchJobs] Processed details for job {$post_id}: Resp count=" . count($job['responsibilities']));
+        
         // Map document flags
         $job['resume_required'] = (bool)$job['resume'];
         $job['cover_letter_required'] = (bool)$job['cover_letter'];
