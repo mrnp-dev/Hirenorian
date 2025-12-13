@@ -153,10 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // Determine status class for styling
             const statusClass = post.status.toLowerCase(); // 'active' or 'closed'
 
+            // Handle potential key variations (snake_case vs camelCase)
+            const appCount = post.applicant_count !== undefined ? post.applicant_count : (post.applicants || 0);
+            const appLimit = post.applicant_limit !== undefined ? post.applicant_limit : (post.limit || 0); // Handle limit if legacy
+            const datePosted = post.date_posted || post.datePosted || 'N/A';
+            const displayApplicants = appLimit ? `${appCount}/${appLimit}` : appCount;
+
             row.innerHTML = `
                 <td>${post.title}</td>
-                <td>${post.applicant_count}/${post.applicant_limit}</td>
-                <td>${post.date_posted}</td>
+                <td>${displayApplicants}</td>
+                <td>${datePosted}</td>
                 <td><span class="status-pill ${statusClass}">${post.status}</span></td>
             `;
 
