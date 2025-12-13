@@ -765,25 +765,22 @@ document.addEventListener('DOMContentLoaded', function () {
     loadVerificationStatus();
 });
 
-// --- Change Password Modal ---
+// --- Change Password (Used Reuse Reset Password UI) ---
 function openChangePasswordModal() {
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmPassword').value = '';
-    // Reset errors/hints
-    document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
-    const strengthHint = document.getElementById('passwordStrengthHint');
-    strengthHint.textContent = "Min 12 chars, Medium strength required.";
-    strengthHint.style.color = "#666";
-    strengthHint.style.display = "block"; // Ensure it is visible initially
-    // Reset visibility
-    document.querySelectorAll('.toggle-password').forEach(icon => {
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-    });
-    document.querySelectorAll('.password-wrapper input').forEach(inp => inp.type = 'password');
+    // 1. Get the current user email (from the profile view)
+    const email = document.getElementById('viewContactEmail').textContent.trim();
 
-    showModal('changePasswordModal');
+    // 2. Open the Reset Password UI
+    openResetPasswordUI();
+
+    // 3. Pre-fill the email and lock it
+    const emailInput = document.getElementById('reset-email-input');
+    if (emailInput) {
+        emailInput.value = email;
+        emailInput.readOnly = true; // Prevent editing for security in this context
+        emailInput.style.backgroundColor = "#e9ecef";
+        emailInput.style.cursor = "not-allowed";
+    }
 }
 
 function closeChangePasswordModal() {

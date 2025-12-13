@@ -135,6 +135,11 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="../../Company Dashboard/css/dashboard.css">
     <!-- Page Specific CSS -->
     <link rel="stylesheet" href="../css/company_profile.css">
+    <!-- Reset Password CSS -->
+    <link rel="stylesheet"
+        href="../../../Account Registration Pages/Company Registration Page/Reset Password UI/css/reset_password.css">
+    <!-- Toast CSS -->
+    <link rel="stylesheet" href="../../../Account Registration Pages/Company Registration Page/css/toast.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -853,48 +858,7 @@ if (isset($_SESSION['email'])) {
     <script src="../../Company Dashboard/js/dashboard.js"></script>
     <script src="../js/company_profile.js"></script>
 
-    <!-- Change Password Modal -->
-    <div id="changePasswordModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Change Password</h3>
-                <button class="close-modal" onclick="closeChangePasswordModal()">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="currentPassword" placeholder="Enter current password">
-                        <i class="fa-solid fa-eye toggle-password" data-target="currentPassword"></i>
-                    </div>
-                    <small class="error-text" id="currentPasswordError"></small>
-                </div>
-                <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="newPassword" placeholder="Enter new password">
-                        <i class="fa-solid fa-eye toggle-password" data-target="newPassword"></i>
-                    </div>
-                    <small class="password-hint" id="passwordStrengthHint"></small>
-                    <small class="error-text" id="newPasswordError"></small>
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <div class="password-wrapper">
-                        <input type="password" id="confirmPassword" placeholder="Confirm new password">
-                        <i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
-                    </div>
-                    <small class="error-text" id="confirmPasswordError"></small>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeChangePasswordModal()">Cancel</button>
-                <button class="btn-save" onclick="savePassword()">Save Password</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Verify Account Modal -->
     <div id="verifyAccountModal" class="modal">
@@ -931,6 +895,14 @@ if (isset($_SESSION['email'])) {
             </div>
         </div>
     </div>
+    <!-- Reset Password UI -->
+    <?php include '../../../Account Registration Pages/Company Registration Page/Reset Password UI/php/reset_password.php'; ?>
+
+    <!-- Scripts -->
+    <script src="../../../Account Registration Pages/Company Registration Page/js/toast.js"></script>
+    <script
+        src="../../../Account Registration Pages/Company Registration Page/Reset Password UI/js/reset_password.js"></script>
+    <script src="../js/company_profile.js"></script>
 </body>
 
 </html>
