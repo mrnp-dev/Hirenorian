@@ -123,15 +123,14 @@
 /* Main Content Grid */
 .search-content-grid {
     max-width: 1200px;
-    margin: 60px auto 40px;
-    /* Top margin accounts for search bar overlap */
+    margin: 80px auto 40px;
     padding: 0 20px;
     display: grid;
     grid-template-columns: 400px 1fr;
     /* Job List | Details Panel */
     gap: 30px;
-    height: calc(100vh - 200px);
-    /* Fix: Adjusted calculation for viewport height */
+    min-height: calc(100vh - 120px);
+    height: auto;
     position: relative;
     z-index: 1;
 }
@@ -145,8 +144,9 @@
     /* Space for scrollbar */
     scrollbar-width: thin;
     scrollbar-color: #ccc transparent;
-    height: 100%;
-    /* Fix: Ensure it takes full height of grid */
+    height: calc(100vh - 120px);
+    position: sticky;
+    top: 90px;
 }
 
 .job-list-col::-webkit-scrollbar {
@@ -268,8 +268,9 @@
     background: white;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    height: 100%;
-    overflow-y: auto;
+    height: auto;
+    min-height: 100%;
+    margin-bottom: 40px;
     display: flex;
     flex-direction: column;
     animation: fadeIn 0.3s ease-out;
@@ -356,7 +357,6 @@
 .details-scroll-content {
     padding: 30px;
     flex: 1;
-    overflow-y: auto;
 }
 
 .detail-section {
