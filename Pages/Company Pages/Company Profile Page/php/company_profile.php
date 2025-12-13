@@ -850,8 +850,7 @@ if (isset($_SESSION['email'])) {
                         <input type="password" id="newPassword" placeholder="Enter new password">
                         <i class="fa-solid fa-eye toggle-password" data-target="newPassword"></i>
                     </div>
-                    <small class="password-hint" id="passwordStrengthHint">Min 12 chars, Medium strength
-                        required.</small>
+                    <small class="password-hint" id="passwordStrengthHint"></small>
                     <small class="error-text" id="newPasswordError"></small>
                 </div>
                 <div class="form-group">

@@ -914,6 +914,15 @@ function openVerifyAccountModal() {
         .then(data => {
             if (data.status === 'success' && data.data) {
                 const docs = data.data;
+                // Track existing documents for validation logic
+                let existingCount = 0;
+                if (docs.philjobnet_path) existingCount++;
+                if (docs.dole_path) existingCount++;
+                if (docs.bir_path) existingCount++;
+                if (docs.mayor_permit_path) existingCount++;
+
+                window.existingDocCount = existingCount; // Store globally/on window for submit check
+
                 // Helper to append file name
                 const showFileName = (inputId, fileName) => {
                     if (!fileName) return; // fileName can be null
@@ -936,9 +945,14 @@ function openVerifyAccountModal() {
                 showFileName('docDole', docs.dole_path); // DB column maps to 'dole_path'
                 showFileName('docBir', docs.bir_path);
                 showFileName('docMayor', docs.mayor_permit_path);
+            } else {
+                window.existingDocCount = 0; // No data means 0 docs
             }
         })
-        .catch(err => console.error("Error fetching docs:", err));
+        .catch(err => {
+            console.error("Error fetching docs:", err);
+            window.existingDocCount = 0;
+        });
 }
 
 function closeVerifyAccountModal() {
@@ -962,8 +976,24 @@ function submitVerifyDocuments() {
 
 
 
-    if (!doc1 && !doc2 && !doc3 && !doc4) {
-        return ToastSystem.show('Please select at least one document to upload', 'warning');
+    // Validation Logic:
+    // 1. If company DOES NOT have all 4 documents existing, they MUST upload ALL 4.
+    // 2. If company ALREADY has 4 documents, they can upload AT LEAST 1 to update.
+
+    // Default to 0 if undefined (e.g. fetch failed)
+    const existingCount = window.existingDocCount || 0;
+
+    if (existingCount < 4) {
+        // Must upload ALL missing or just simply ALL 4 if it's considered "first time / incomplete"
+        // Prompt implies: if they don't have "existing documents that been submitted for 4 documents" -> require 4.
+        if (!doc1 || !doc2 || !doc3 || !doc4) {
+            return ToastSystem.show('You must upload ALL 4 documents to proceed with verification.', 'warning');
+        }
+    } else {
+        // Already has 4 docs, just updating. At least 1 is required.
+        if (!doc1 && !doc2 && !doc3 && !doc4) {
+            return ToastSystem.show('Please select at least one document to update.', 'warning');
+        }
     }
 
     const formData = new FormData();
