@@ -55,32 +55,41 @@ async function initiateResetPasswordOTP() {
         return;
     }
 
-    // Mock Backend Call
+    // Backend Call
     hideResetError(errorMsg);
 
-    // Simulate API call delay
     const btn = document.querySelector('#resetStep1 .btn-reset-primary');
     const originalContent = btn.innerHTML;
     btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
 
-    setTimeout(() => {
+    try {
+        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/send_reset_otp.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email: email })
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            document.getElementById('reset-email-display').textContent = email;
+            startResetOtpTimer();
+            showResetStep(2);
+            setTimeout(() => document.querySelector('.reset-otp').focus(), 100);
+            ToastSystem.show(`OTP sent to ${email}`, "success");
+        } else {
+            showResetError(errorMsg, data.message || "Failed to send OTP");
+        }
+    } catch (error) {
+        console.error("Error sending OTP:", error);
+        showResetError(errorMsg, "Network error occurred.");
+    } finally {
         btn.innerHTML = originalContent;
         btn.disabled = false;
-
-        // Mock Success
-        document.getElementById('reset-email-display').textContent = email;
-        startResetOtpTimer();
-        showResetStep(2);
-
-        // Focus first OTP input
-        setTimeout(() => document.querySelector('.reset-otp').focus(), 100);
-
-        // For demo purposes, log OTP
-        generatedResetOTP = "123456";
-        console.log("Reset OTP:", generatedResetOTP);
-        ToastSystem.show(`OTP sent to ${email}`, "success");
-    }, 1500);
+    }
 }
 
 function showResetError(element, message) {
@@ -130,17 +139,29 @@ function updateTimerDisplay() {
     }
 }
 
-function resendResetOTP() {
+async function resendResetOTP() {
+    const email = document.getElementById('reset-email-display').textContent;
     startResetOtpTimer();
-    ToastSystem.show("OTP Resent!", "success");
+
+    try {
+        await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/send_reset_otp.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email })
+        });
+        ToastSystem.show("OTP Resent!", "success");
+    } catch (error) {
+        ToastSystem.show("Failed to resend OTP", "error");
+    }
 }
 
-function verifyResetOTP() {
+async function verifyResetOTP() {
     const otpInputs = document.querySelectorAll('.reset-otp');
     let otp = "";
     otpInputs.forEach(input => otp += input.value);
 
     const errorMsg = document.getElementById('resetOtpError');
+    const email = document.getElementById('reset-email-display').textContent;
 
     if (otp.length !== 6) {
         errorMsg.textContent = "Please enter all 6 digits";
@@ -149,30 +170,39 @@ function verifyResetOTP() {
         return;
     }
 
-    // MODIFIED: Allow ANY 6-digit number for testing
-    if (/^\d{6}$/.test(otp)) {
-        errorMsg.style.visibility = 'hidden';
-        otpInputs.forEach(input => {
-            input.classList.remove('error');
-            input.classList.add('filled');
+    const btn = document.querySelector('#resetStep2 .btn-reset-primary');
+    const originalContent = btn.innerHTML;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Verifying...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/verify_otp.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email, otp: otp })
         });
 
-        // Simulate loading
-        const btn = document.querySelector('#resetStep2 .btn-reset-primary');
-        const originalContent = btn.innerHTML;
-        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Verifying...';
-        btn.disabled = true;
+        const data = await response.json();
 
-        setTimeout(() => {
-            btn.innerHTML = originalContent;
-            btn.disabled = false;
+        if (data.status === 'success') {
+            errorMsg.style.visibility = 'hidden';
+            otpInputs.forEach(input => {
+                input.classList.remove('error');
+                input.classList.add('filled');
+            });
             showResetStep(3);
-        }, 1000);
-
-    } else {
-        errorMsg.textContent = "Invalid OTP Format";
+        } else {
+            errorMsg.textContent = data.message || "Invalid OTP";
+            errorMsg.style.visibility = 'visible';
+            otpInputs.forEach(input => input.classList.add('error'));
+        }
+    } catch (error) {
+        console.error("Error verifying OTP:", error);
+        errorMsg.textContent = "Network error";
         errorMsg.style.visibility = 'visible';
-        otpInputs.forEach(input => input.classList.add('error'));
+    } finally {
+        btn.innerHTML = originalContent;
+        btn.disabled = false;
     }
 }
 
@@ -357,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function submitNewPassword() {
+async function submitNewPassword() {
     const passInput = document.getElementById('reset-new-password');
     const confirmInput = document.getElementById('reset-confirm-password');
 
@@ -366,6 +396,7 @@ function submitNewPassword() {
 
     const password = passInput.value;
     const confirm = confirmInput.value;
+    const email = document.getElementById('reset-email-display').textContent;
 
     let isValid = true;
 
@@ -392,9 +423,6 @@ function submitNewPassword() {
         passError.style.position = 'absolute';
         passError.style.marginTop = '0';
         isValid = false;
-    } else {
-        // Password is valid, keep showing strength
-        // Do nothing, keep the strength indicator visible
     }
 
     // Confirm Password Validation
@@ -405,23 +433,34 @@ function submitNewPassword() {
         confirmError.style.position = 'absolute';
         confirmError.style.marginTop = '0';
         isValid = false;
-    } else if (isValid) {
-        confirmError.textContent = "Passwords matched";
-        confirmError.style.color = "#10b981";
-        confirmError.style.visibility = 'visible';
-        confirmError.style.position = 'absolute';
-        confirmError.style.marginTop = '0';
     }
 
     if (isValid) {
-        // Mock Backend Call
-        ToastSystem.show("Password Reset Successfully!", "success");
-        closeResetPasswordUI();
+        // Backend Call
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/reset_password.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    new_password: password
+                })
+            });
 
-        // Redirect or show login
-        const signInContainer = document.querySelector('.sign-in-container');
-        if (signInContainer) {
-            // Ensure we are in sign in mode if applicable
+            const data = await response.json();
+
+            if (data.status === "success") {
+                ToastSystem.show("Password Reset Successfully!", "success");
+                closeResetPasswordUI();
+                // Optionally redirect to login or ensure login mode
+            } else {
+                ToastSystem.show(data.message || "Failed to reset password", "error");
+            }
+        } catch (error) {
+            console.error("Error resetting password:", error);
+            ToastSystem.show("Network error occurred", "error");
         }
     }
 }

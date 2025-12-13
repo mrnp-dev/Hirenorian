@@ -31,7 +31,6 @@
             </div>
             <h2>Verify Your Email</h2>
             <p class="reset-instruction">We've sent a 6-digit code to <span id="reset-email-display"></span></p>
-            <p class="reset-note">(For demo: Enter any 6-digit number)</p>
 
             <div class="otp-input-container">
                 <input type="text" class="otp-input reset-otp" maxlength="1" pattern="[0-9]" inputmode="numeric">
