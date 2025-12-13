@@ -1564,20 +1564,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // Populate Work Types Dropdown
-    function populateWorkTypesDropdown() {
-        const workTypeSelect = document.getElementById('workTypeSelect');
-        if (!workTypeSelect) return;
 
-        workTypeSelect.innerHTML = '<option value="">Select work type...</option>';
-
-        workTypesData.forEach(type => {
-            const option = document.createElement('option');
-            option.value = type;
-            option.textContent = type;
-            workTypeSelect.appendChild(option);
-        });
-    }
 
     // Helper: Wait for dropdown to have options populated
     function waitForDropdownOptions(selectElement, minOptionCount = 2) {
@@ -1617,13 +1604,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (Object.keys(categoriesTagsData).length === 0) {
                 await fetchCategoriesAndTags();
             }
-            if (workTypesData.length === 0) {
-                await fetchWorkTypes();
-            }
-
             // Populate dropdowns AFTER data is fetched
             populateCategoryDropdown();
-            populateWorkTypesDropdown();
+            // populateWorkTypesDropdown call removed - Hardcoded HTML is used instead
 
             // Load Philippines locations if not already loaded
             if (Object.keys(philippinesLocations).length === 0) {
@@ -1695,6 +1678,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Populate applicant limit
         const applicantLimitInput = document.getElementById('applicantLimitInput');
         if (applicantLimitInput) applicantLimitInput.value = jobData.applicantLimit || '';
+
+        // Populate Work Type (Custom Dropdown)
+        const workTypeInput = document.getElementById('workTypeInput');
+        const workTypeDisplay = document.getElementById('workTypeDisplay');
+
+        if (workTypeInput && workTypeDisplay) {
+            console.log('SETTING WORK TYPE TO:', jobData.workType);
+            workTypeInput.value = jobData.workType || '';
+            workTypeDisplay.value = jobData.workType || '';
+        }
 
         // Populate category and tags
         if (jobData.category && jobData.workTags) {
@@ -1900,7 +1893,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Work Type
-        const workType = document.getElementById('workTypeSelect').value;
+        const workType = document.getElementById('workTypeInput').value;
         if (!workType) {
             showError('workType', 'Work type is required');
             isValid = false;
@@ -2041,6 +2034,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Add job ID for update
                 formData.post_id = currentEditingJobId;
 
+                // Button State
+                const submitBtn = document.getElementById('btnPostJob');
+                let originalBtnText = '';
+                if (submitBtn) {
+                    originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
+                }
+
                 try {
                     const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_job_post.php", {
                         method: 'POST',
@@ -2098,11 +2100,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                     } else {
                         alert('Network error. Please try again.');
                     }
+                } finally {
+                    // Re-enable button
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
+                    }
                 }
             } else {
                 // ========================================
                 // CREATE MODE
                 // ========================================
+                // Button State
+                const submitBtn = document.getElementById('btnPostJob');
+                let originalBtnText = '';
+                if (submitBtn) {
+                    originalBtnText = submitBtn.innerHTML;
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Posting...';
+                }
+
                 try {
                     const companyEmail = document.getElementById('company_email')?.value || '';
                     if (!companyEmail) {
@@ -2110,6 +2127,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             ToastSystem.show('Error: Company email not found. Please reload.', 'error');
                         } else {
                             alert('Error: Company email not found. Please reload.');
+                        }
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalBtnText;
                         }
                         return;
                     }
@@ -2185,6 +2206,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ToastSystem.show('Network error.', 'error');
                     } else {
                         alert('Network error.');
+                    }
+                } finally {
+                    // Re-enable button
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnText;
                     }
                 }
             }
@@ -2274,6 +2301,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'Are you sure you want to CLOSE this job post?\n\nThis will REJECT all pending applicants and cannot be undone.',
                 'warning',
                 async () => {
+                    const btn = document.getElementById('btnCloseDetail');
+                    let originalText = '';
+                    if (btn) {
+                        originalText = btn.innerHTML;
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Closing...';
+                    }
+
                     try {
                         const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/close_job_post.php", {
                             method: 'POST',
@@ -2311,6 +2346,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         } else {
                             alert('Network error.');
                         }
+                    } finally {
+                        if (btn && originalText) {
+                            btn.disabled = false;
+                            btn.innerHTML = originalText;
+                        }
                     }
                 }
             );
@@ -2327,6 +2367,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 '⚠️ PERMANENTLY DELETE JOB POST? ⚠️\n\nThis will remove ALL records including applicants, interviews, and statistics.\nThis action CANNOT be undone.',
                 'danger',
                 async () => {
+                    const btn = document.getElementById('btnDeleteDetail');
+                    let originalText = '';
+                    if (btn) {
+                        originalText = btn.innerHTML;
+                        btn.disabled = true;
+                        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+                    }
+
                     try {
                         const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/delete_job_post.php", {
                             method: 'POST',
@@ -2379,19 +2427,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         } else {
                             alert('Network error.');
                         }
+                    } finally {
+                        if (btn && originalText) {
+                            btn.disabled = false;
+                            btn.innerHTML = originalText;
+                        }
                     }
                 }
             );
         });
     }
-
-
-
-    // Duplicate initialization logic removed. 
-    // Initialization is already handled in the try/catch block at the beginning of the file.
-
-    console.log('Job Listing Page Loaded Successfully!');
-    console.log('Job Posts:', jobPostsData);
-    console.log('Applicants:', applicantsData);
-    console.log('View Mode:', viewMode);
 });
