@@ -778,7 +778,7 @@ function openChangePasswordModal() {
     if (emailInput) {
         emailInput.value = email;
         emailInput.readOnly = true; // Prevent editing for security in this context
-        emailInput.style.backgroundColor = "#e9ecef";
+        emailInput.style.backgroundColor = "gray";
         emailInput.style.cursor = "not-allowed";
     }
 }

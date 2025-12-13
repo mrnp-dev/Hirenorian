@@ -343,9 +343,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Restore saved state or show card view
         loadState();
 
-        // If no saved state, show card view by default
-        if (viewMode === 'cards') {
-            showCardView();
+        // CHECK URL PARAMS for direct link (Overrides saved state)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlJobId = urlParams.get('job_id');
+
+        if (urlJobId) {
+            // Find job in loaded data
+            const jobExists = jobPostsData.find(j => j.id == urlJobId);
+            if (jobExists) {
+                showDetailView(jobExists.id);
+            } else {
+                showCardView(); // Fallback
+            }
+        } else {
+            // If no saved state or URL param, show card view by default
+            if (viewMode === 'cards') {
+                showCardView();
+            } else if (viewMode === 'detail' && selectedJobForDetail) {
+                // Try to restore detail view from session
+                showDetailView(selectedJobForDetail);
+            }
         }
     } catch (error) {
         console.error('Failed to initialize job listing:', error);

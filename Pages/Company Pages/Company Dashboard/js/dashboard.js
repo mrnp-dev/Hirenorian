@@ -155,10 +155,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             row.innerHTML = `
                 <td>${post.title}</td>
-                <td>${post.applicants}</td>
-                <td>${post.datePosted}</td>
+                <td>${post.applicant_count}/${post.applicant_limit}</td>
+                <td>${post.date_posted}</td>
                 <td><span class="status-pill ${statusClass}">${post.status}</span></td>
             `;
+
+            // Add click redirect
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', () => {
+                window.location.href = `../../Job Listing Page/php/job_listing.php?job_id=${post.id}`;
+            });
+
             container.appendChild(row);
         });
     }
@@ -333,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const heroPending = document.getElementById('heroPending');
 
                 if (heroOpenJobs) {
-                    animateNumber(heroOpenJobs, data.post_stats.active_count);
+                    animateNumber(heroOpenJobs, data.stats.open_slots || 0);
                 }
                 if (heroPending) {
                     animateNumber(heroPending, data.stats.pending || 0);

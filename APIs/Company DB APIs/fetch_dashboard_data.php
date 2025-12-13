@@ -66,6 +66,21 @@ try {
     $stmt->execute([':cid' => $company_id]);
     $pendingApps = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
+    // --- Open Slots (Active Jobs Limit - Accepted for Active Jobs) ---
+    // 1. Total Limit for Active Jobs
+    $limitQuery = "SELECT SUM(applicant_limit) as total_limit FROM Job_Posts WHERE company_id = :cid AND status = 'Active'";
+    $stmt = $conn->prepare($limitQuery);
+    $stmt->execute([':cid' => $company_id]);
+    $totalLimit = $stmt->fetch(PDO::FETCH_ASSOC)['total_limit'] ?? 0;
+
+    // 2. Total Accepted for Active Jobs
+    $acceptedActiveQuery = "SELECT COUNT(a.applicant_id) as total_accepted FROM Applicants a JOIN Job_Posts jp ON a.post_id = jp.post_id WHERE jp.company_id = :cid AND jp.status = 'Active' AND a.status = 'accepted'";
+    $stmt = $conn->prepare($acceptedActiveQuery);
+    $stmt->execute([':cid' => $company_id]);
+    $totalAcceptedActive = $stmt->fetch(PDO::FETCH_ASSOC)['total_accepted'] ?? 0;
+
+    $openSlots = max(0, $totalLimit - $totalAcceptedActive);
+
     // --- 3. Post Availability Stats (Active vs Closed) ---
     // Active
     $activePostsQuery = "SELECT COUNT(post_id) as total FROM Job_Posts WHERE company_id = :cid AND status = 'active'";
@@ -119,7 +134,8 @@ try {
                 "total_applicants" => $totalApps,
                 "accepted" => $acceptedApps,
                 "rejected" => $rejectedApps,
-                "pending" => $pendingApps
+                "pending" => $pendingApps,
+                "open_slots" => $openSlots
             ],
             "post_stats" => [
                 "active_count" => $activePosts,
