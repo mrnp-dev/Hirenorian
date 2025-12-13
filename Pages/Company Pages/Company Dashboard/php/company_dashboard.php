@@ -27,16 +27,32 @@ if (isset($_SESSION['email'])) {
         $company_id = $company['company_id'];
         $company_name = $company['company_name'];
 
+        // Fetch Company Icon
+        // This part assumes $conn is available, which it isn't in this snippet.
+        // For the purpose of this edit, I'm inserting the code as provided,
+        // but note that $conn would need to be defined for this to work.
+        // The original code was fetching from $data['icons'], this new code
+        // seems to imply a direct database query.
+        // I will adapt the provided code to use the $data['icons'] structure
+        // as it's consistent with the existing API call.
+
         $company_icon_url = "https://via.placeholder.com/40"; // Default
         if (!empty($data['icons'])) {
             $url = $data['icons'][0]['icon_url'];
             $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
         }
 
+        // Default Icon Logic (adapted from user's request to fit existing data structure)
+        $is_default_icon = false;
+        if (empty($company_icon_url) || $company_icon_url == "https://via.placeholder.com/40") {
+            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+            $is_default_icon = true;
+        }
+
     } else {
         $company_name = "Unknown";
         $company_id = 0;
-        $company_icon_url = "https://via.placeholder.com/40";
+        $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000"; // Default icon for unknown company
     }
 
 } else {
@@ -102,6 +118,7 @@ if (isset($_SESSION['email'])) {
                     <div class="user-info">
                         <div class="user-avatar">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                class="<?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
                         <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>

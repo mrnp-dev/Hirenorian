@@ -449,10 +449,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         jobCardsGrid.innerHTML = filteredJobs.map(job => {
             // ✅ FIX: Use cached accepted count instead of calculating from applicantsData
             const acceptedCount = acceptedCountsCache[job.id] || 0;
+
+            // Default Icon Logic
+            let iconUrl = job.companyIcon;
+            let isDefault = false;
+
+            if (!iconUrl || iconUrl === 'https://via.placeholder.com/40') {
+                iconUrl = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+                isDefault = true;
+            }
+
             return `
                 <div class="job-card" data-job-id="${job.id}">
                     <div class="job-card-header">
-                        <img src="${job.companyIcon || 'https://via.placeholder.com/40'}" alt="Company Logo" class="card-company-icon">
+                        <img src="${iconUrl}" alt="Company Logo" class="card-company-icon ${isDefault ? 'default-icon' : ''}">
                         <span class="card-company-name">${companyName}</span>
                     </div>
                     <h3 class="job-card-title">${job.title}</h3>
@@ -535,7 +545,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Update company badge
-        document.getElementById('detailCompanyIcon').src = jobDetails.companyIcon;
+        const detailIcon = document.getElementById('detailCompanyIcon');
+        let detailIconUrl = jobDetails.companyIcon;
+
+        if (!detailIconUrl || detailIconUrl === 'https://via.placeholder.com/40') {
+            detailIconUrl = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+            detailIcon.classList.add('default-icon');
+        } else {
+            detailIcon.classList.remove('default-icon');
+        }
+
+        detailIcon.src = detailIconUrl;
         document.getElementById('detailCompanyName').textContent = jobDetails.companyName;
 
         // Update job title

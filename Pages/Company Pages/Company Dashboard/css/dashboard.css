@@ -735,3 +735,8 @@ body {
         height: auto;
     }
 }
+/* Default Icon Style - Global */
+.default-icon {
+    border: 3px solid var(--secondary-yellow) !important;
+    background-color: transparent !important;
+}

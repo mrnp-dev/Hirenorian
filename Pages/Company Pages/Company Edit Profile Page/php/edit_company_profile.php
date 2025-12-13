@@ -49,7 +49,34 @@
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="https://logo.clearbit.com/riotgames.com" alt="Company" class="user-img">
+                        <?php
+                        // Fetch Company Icon for Header (Reuse logic if possible or query again)
+                        // For Edit Page, we might not have the full DB connection setup in the HTML file directly unless it's a php file with includes.
+                        // edit_company_profile.php IS a PHP file.
+                        // We need to ensure DB connection is present.
+                        // Assuming db_con.php path relative to this file: ../../../APIs/Company DB APIs/db_con.php
+                        include_once "../../../APIs/Company DB APIs/db_con.php";
+
+                        $company_icon_url = "";
+                        if (isset($_SESSION['company_id'])) {
+                            $cid = $_SESSION['company_id'];
+                            $stmt = $conn->prepare("SELECT icon_url FROM company_icons WHERE company_id = ? ORDER BY uploaded_at DESC LIMIT 1");
+                            $stmt->bind_param("i", $cid);
+                            $stmt->execute();
+                            $res = $stmt->get_result();
+                            if ($row = $res->fetch_assoc()) {
+                                $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $row['icon_url']);
+                            }
+                        }
+
+                        $is_default_icon = false;
+                        if (empty($company_icon_url)) {
+                            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+                            $is_default_icon = true;
+                        }
+                        ?>
+                        <img src="<?php echo $company_icon_url; ?>" alt="Company"
+                            class="user-img <?php echo $is_default_icon ? 'default-icon' : ''; ?>">
                         <span class="user-name">Company Name</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>

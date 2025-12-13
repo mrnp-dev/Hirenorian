@@ -101,6 +101,14 @@ if (isset($_SESSION['email'])) {
             $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $company_icon_url);
         }
 
+        // Default Icon Logic
+        $is_default_icon = false;
+        if (empty($company_icon_url)) {
+            // URL: Icons8 User Icon, Red (FF0000)
+            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+            $is_default_icon = true;
+        }
+
         $company_banner_url = "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"; // Default
         if (!empty($data['banners'])) {
             $url = $data['banners'][0]['banner_url'];
@@ -214,7 +222,8 @@ if (isset($_SESSION['email'])) {
                         <!-- Company Header -->
                         <div class="company-header">
                             <div class="company-icon-wrapper">
-                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon" class="company-icon"
+                                <img src="<?php echo $company_icon_url; ?>" alt="Company Icon"
+                                    class="company-icon <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                     id="viewCompanyIcon">
                             </div>
                             <div class="company-main-info">

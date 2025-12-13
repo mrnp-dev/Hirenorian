@@ -28,6 +28,13 @@ if (isset($_SESSION['email'])) {
             $url = $data['icons'][0]['icon_url'];
             $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
         }
+
+        // Default Icon Logic
+        $is_default_icon = false;
+        if (empty($company_icon_url)) {
+            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+            $is_default_icon = true;
+        }
     } else {
         $company_name = "Company User";
         $company_icon_url = "https://via.placeholder.com/40";
@@ -99,6 +106,7 @@ if (isset($_SESSION['email'])) {
                     <div class="user-info">
                         <div class="user-avatar">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                class="<?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
                         </div>
                         <span class="user-name"><?php echo htmlspecialchars($company_name); ?></span>
