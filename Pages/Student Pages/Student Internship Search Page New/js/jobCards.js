@@ -53,10 +53,12 @@ export function initJobCards() {
     }
 
     // Function to display jobs in the DOM
-    function displayJobs(jobs) {
+    function displayJobs(jobs, pagination) {
         console.log(`[JobCards] Displaying ${jobs.length} jobs`);
 
         const jobListingsContainer = document.querySelector('.job-list');
+        const paginationContainer = document.getElementById('paginationContainer');
+
         if (!jobListingsContainer) {
             console.error('[JobCards] Job list container not found');
             return;
@@ -64,6 +66,7 @@ export function initJobCards() {
 
         // Clear existing job cards
         jobListingsContainer.innerHTML = '';
+        if (paginationContainer) paginationContainer.innerHTML = '';
 
         if (jobs.length === 0) {
             jobListingsContainer.innerHTML = `
@@ -81,6 +84,11 @@ export function initJobCards() {
             const jobCard = createJobCard(job, index + 1);
             jobListingsContainer.appendChild(jobCard);
         });
+
+        // Render pagination if available
+        if (pagination && pagination.total_pages > 1) {
+            renderPagination(pagination);
+        }
 
         // Attach click handlers
         const jobCards = document.querySelectorAll('.job-card');
@@ -108,9 +116,58 @@ export function initJobCards() {
         jobCards.forEach(card => card.classList.remove('active'));
 
         // Ensure placeholder is visible and details card is hidden
+        const placeholder = document.getElementById('jobDetailsPlaceholder');
         const detailsCard = document.getElementById('jobDetailsCard');
         if (placeholder) placeholder.style.display = 'flex';
         if (detailsCard) detailsCard.style.display = 'none';
+    }
+
+    function renderPagination(pagination) {
+        const container = document.getElementById('paginationContainer');
+        if (!container) return;
+
+        const { current_page, total_pages } = pagination;
+        let html = '<div class="pagination">';
+
+        // Prev Button
+        html += `<button class="page-btn prev-btn" ${current_page === 1 ? 'disabled' : ''} data-page="${current_page - 1}">
+                    <i class="fa-solid fa-chevron-left"></i>
+                 </button>`;
+
+        // Page Numbers
+        // Simple logic: Show 1, ... Current-1, Current, Current+1, ... Last
+        const range = 2; // Neighbors
+        for (let i = 1; i <= total_pages; i++) {
+            if (i === 1 || i === total_pages || (i >= current_page - range && i <= current_page + range)) {
+                html += `<button class="page-btn number-btn ${i === current_page ? 'active' : ''}" data-page="${i}">${i}</button>`;
+            } else if (i === current_page - range - 1 || i === current_page + range + 1) {
+                html += `<span class="page-dots">...</span>`;
+            }
+        }
+
+        // Next Button
+        html += `<button class="page-btn next-btn" ${current_page === total_pages ? 'disabled' : ''} data-page="${current_page + 1}">
+                    <i class="fa-solid fa-chevron-right"></i>
+                 </button>`;
+
+        html += '</div>';
+
+        // Info Text
+        html += `<div class="pagination-info">Showing page ${current_page} of ${total_pages}</div>`;
+
+        container.innerHTML = html;
+
+        // Add Event Listeners
+        container.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!btn.disabled && !btn.classList.contains('active')) {
+                    const page = parseInt(btn.dataset.page);
+                    document.dispatchEvent(new CustomEvent('changePage', {
+                        detail: { page: page }
+                    }));
+                }
+            });
+        });
     }
 
     function createJobCard(job, index) {

@@ -323,12 +323,14 @@ export function initAdvancedFilters() {
     }
 
     // Apply filters
-    async function applyFilters() {
-        console.log('[AdvancedFilters] Apply filters clicked');
+    async function applyFilters(page = 1) {
+        console.log(`[AdvancedFilters] Apply filters clicked (Page ${page})`);
         console.log('[AdvancedFilters] Selected filters:', selectedFilters);
 
         // Close modal immediately (no confirmation needed when explicitly applying)
-        closeFiltersModal(true);
+        if (filtersModalOverlay.classList.contains('active')) {
+            closeFiltersModal(true);
+        }
 
         // Dispatch search started event to show loading state
         document.dispatchEvent(new CustomEvent('searchStarted'));
@@ -348,7 +350,9 @@ export function initAdvancedFilters() {
             courses: selectedFilters.courses,
             location: locationValue !== '' ? locationValue : null,
             work_type: typeValue !== '' ? typeValue : null,
-            keyword: searchKeyword !== '' ? searchKeyword : null
+            keyword: searchKeyword !== '' ? searchKeyword : null,
+            page: page,
+            limit: 10
         };
 
 
@@ -376,7 +380,8 @@ export function initAdvancedFilters() {
                     detail: {
                         jobs: result.data,
                         count: result.count,
-                        filters: result.filters_applied
+                        filters: result.filters_applied,
+                        pagination: result.pagination
                     }
                 });
                 document.dispatchEvent(jobsEvent);
@@ -433,7 +438,7 @@ export function initAdvancedFilters() {
     }
 
     if (applyFiltersBtn) {
-        applyFiltersBtn.addEventListener('click', applyFilters);
+        applyFiltersBtn.addEventListener('click', () => applyFilters(1));
     }
 
     if (clearAllFiltersBtn) {
@@ -491,7 +496,7 @@ export function initAdvancedFilters() {
     // Listen for reapply filters event
     document.addEventListener('reapplyFilters', () => {
         console.log('[AdvancedFilters] Reapplying filters after removal');
-        applyFilters();
+        applyFilters(1);
     });
 
     // Listen for clear all active filters event
@@ -499,19 +504,26 @@ export function initAdvancedFilters() {
         console.log('[AdvancedFilters] Clearing all active filters');
         clearAllFilters();
         // Trigger a search with no filters
-        applyFilters();
+        applyFilters(1);
     });
 
     // Listen for search triggered from search input
     document.addEventListener('searchTriggered', (event) => {
         console.log('[AdvancedFilters] Search triggered with keyword:', event.detail.keyword);
         // Apply filters with the new keyword
-        applyFilters();
+        applyFilters(1);
     });
 
     // Listen for initial search ready (after student tags auto-selected)
     document.addEventListener('initialSearchReady', () => {
         console.log('[AdvancedFilters] Initial search triggered with auto-selected tags');
-        applyFilters();
+        applyFilters(1);
+    });
+
+    // Listen for page change event
+    document.addEventListener('changePage', (event) => {
+        const page = event.detail.page;
+        console.log('[AdvancedFilters] Changing to page:', page);
+        applyFilters(page);
     });
 }

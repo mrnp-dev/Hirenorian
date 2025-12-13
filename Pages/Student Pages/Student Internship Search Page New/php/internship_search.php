@@ -180,6 +180,9 @@ if (isset($_SESSION['email'])) {
                         <div class="job-list">
                             <!-- Jobs injected via JS -->
                         </div>
+
+                        <!-- Pagination Container -->
+                        <div class="pagination-container" id="paginationContainer"></div>
                     </div>
 
                     <!-- Right: Job Details -->

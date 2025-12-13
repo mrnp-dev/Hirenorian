@@ -40,7 +40,84 @@ error_log("[SearchJobs]   - Work type: " . ($work_type ?? 'null'));
 error_log("[SearchJobs]   - Keyword: " . ($keyword ?? 'null'));
 
 try {
-    // Build the base query
+    // Extract pagination parameters
+    $page = isset($data['page']) && is_numeric($data['page']) ? (int)$data['page'] : 1;
+    $limit = isset($data['limit']) && is_numeric($data['limit']) ? (int)$data['limit'] : 10;
+    $offset = ($page - 1) * $limit;
+
+    error_log("[SearchJobs] Pagination: page=$page, limit=$limit, offset=$offset");
+
+    // Build the base query conditions
+    $base_conditions = "WHERE jp.status = 'active'";
+    $params = [];
+
+    // Add career tags filter (OR logic - match ANY tag)
+    if (!empty($career_tags)) {
+        $placeholders = [];
+        foreach ($career_tags as $index => $tag) {
+            $key = ":tag_$index";
+            $placeholders[] = $key;
+            $params[$key] = $tag;
+        }
+        $base_conditions .= " AND jt.tag IN (" . implode(', ', $placeholders) . ")";
+        error_log("[SearchJobs] Added career tags filter with " . count($career_tags) . " tags");
+    }
+
+    // Add location filter (match city OR province)
+    if ($location !== null) {
+        // Parse location (e.g., "Angeles City, Pampanga")
+        $location_parts = array_map('trim', explode(',', $location));
+        if (count($location_parts) == 2) {
+            // Has both city and province
+            $base_conditions .= " AND (jd.city = :city AND jd.province = :province)";
+            $params[':city'] = $location_parts[0];
+            $params[':province'] = $location_parts[1];
+            error_log("[SearchJobs] Added location filter: city={$location_parts[0]}, province={$location_parts[1]}");
+        } else {
+            // Only province or city
+            $base_conditions .= " AND (jd.city = :location OR jd.province = :location)";
+            $params[':location'] = $location;
+            error_log("[SearchJobs] Added location filter: {$location}");
+        }
+    }
+
+    // Add work type filter
+    if ($work_type !== null) {
+        $base_conditions .= " AND jd.work_type = :work_type";
+        $params[':work_type'] = $work_type;
+        error_log("[SearchJobs] Added work type filter: {$work_type}");
+    }
+
+    // Add keyword search filter
+    if ($keyword !== null) {
+        $base_conditions .= " AND (
+            jd.title LIKE :keyword 
+            OR c.company_name LIKE :keyword
+            OR jd.description LIKE :keyword
+            OR jd.category LIKE :keyword
+        )";
+        $params[':keyword'] = "%$keyword%";
+        error_log("[SearchJobs] Added keyword filter: {$keyword}");
+    }
+
+    // 1. Get Total Count first
+    $count_query = "
+        SELECT COUNT(DISTINCT jp.post_id)
+        FROM Job_Posts jp
+        JOIN Job_Details jd ON jp.post_id = jd.post_id
+        JOIN Company c ON jp.company_id = c.company_id
+        LEFT JOIN Job_Tags jt ON jp.post_id = jt.post_id
+        $base_conditions
+    ";
+    
+    $count_stmt = $conn->prepare($count_query);
+    $count_stmt->execute($params);
+    $total_jobs = $count_stmt->fetchColumn();
+    $total_pages = ceil($total_jobs / $limit);
+
+    error_log("[SearchJobs] Total matching jobs: $total_jobs, Total pages: $total_pages");
+
+    // 2. Get Paginated Results
     $query = "
         SELECT DISTINCT
             jp.post_id,
@@ -57,83 +134,35 @@ try {
         JOIN Job_Details jd ON jp.post_id = jd.post_id
         JOIN Company c ON jp.company_id = c.company_id
         LEFT JOIN Job_Tags jt ON jp.post_id = jt.post_id
-        WHERE jp.status = 'active'
+        $base_conditions
+        GROUP BY jp.post_id 
+        ORDER BY jp.created_at DESC
+        LIMIT :limit OFFSET :offset
     ";
 
-    $params = [];
-
-    // Add career tags filter (OR logic - match ANY tag)
-    if (!empty($career_tags)) {
-        $placeholders = [];
-        foreach ($career_tags as $index => $tag) {
-            $key = ":tag_$index";
-            $placeholders[] = $key;
-            $params[$key] = $tag;
-        }
-        $query .= " AND jt.tag IN (" . implode(', ', $placeholders) . ")";
-        error_log("[SearchJobs] Added career tags filter with " . count($career_tags) . " tags");
-    }
-
-    // Add location filter (match city OR province)
-    if ($location !== null) {
-        // Parse location (e.g., "Angeles City, Pampanga")
-        $location_parts = array_map('trim', explode(',', $location));
-        if (count($location_parts) == 2) {
-            // Has both city and province
-            $query .= " AND (jd.city = :city AND jd.province = :province)";
-            $params[':city'] = $location_parts[0];
-            $params[':province'] = $location_parts[1];
-            error_log("[SearchJobs] Added location filter: city={$location_parts[0]}, province={$location_parts[1]}");
-        } else {
-            // Only province or city
-            $query .= " AND (jd.city = :location OR jd.province = :location)";
-            $params[':location'] = $location;
-            error_log("[SearchJobs] Added location filter: {$location}");
-        }
-    }
-
-    // Add work type filter
-    if ($work_type !== null) {
-        $query .= " AND jd.work_type = :work_type";
-        $params[':work_type'] = $work_type;
-        error_log("[SearchJobs] Added work type filter: {$work_type}");
-    }
-
-    // Add keyword search filter
-    if ($keyword !== null) {
-        $query .= " AND (
-            jd.title LIKE :keyword 
-            OR c.company_name LIKE :keyword
-            OR jd.description LIKE :keyword
-            OR jd.category LIKE :keyword
-        )";
-        $params[':keyword'] = "%$keyword%";
-        error_log("[SearchJobs] Added keyword filter: {$keyword}");
-    }
-
-    $query .= " GROUP BY jp.post_id ORDER BY jp.created_at DESC";
-
-    error_log("[SearchJobs] Final SQL query: " . preg_replace('/\s+/', ' ', $query));
-    error_log("[SearchJobs] Query parameters: " . json_encode($params));
-
-    // Execute query
+    // Bind all params including limit/offset
     $stmt = $conn->prepare($query);
-    $stmt->execute($params);
+    foreach ($params as $key => $value) {
+        $stmt->bindValue($key, $value);
+    }
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    
+    $stmt->execute();
     $jobs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    error_log("[SearchJobs] Found " . count($jobs) . " jobs");
+    error_log("[SearchJobs] Found " . count($jobs) . " jobs (Page $page)");
 
     // Fetch additional details for each job
     foreach ($jobs as &$job) {
         $post_id = $job['post_id'];
-        error_log("[SearchJobs] Processing job ID: {$post_id} - {$job['title']}");
+        // error_log("[SearchJobs] Processing job ID: {$post_id}");
 
         // Fetch tags
         $tags_query = "SELECT tag FROM Job_Tags WHERE post_id = :post_id";
         $tags_stmt = $conn->prepare($tags_query);
         $tags_stmt->execute([':post_id' => $post_id]);
         $job['tags'] = $tags_stmt->fetchAll(PDO::FETCH_COLUMN);
-        error_log("[SearchJobs]   - Tags: " . json_encode($job['tags']));
 
         // Fetch requirements by type
         $req_query = "SELECT requirement_type, requirement_text FROM Job_Requirements WHERE post_id = :post_id";
@@ -164,23 +193,24 @@ try {
             }
         }
 
-        error_log("[SearchJobs]   - Requirements: resp=" . count($job['responsibilities']) . 
-                  ", qual=" . count($job['qualifications']) . 
-                  ", skills=" . count($job['skills']) . 
-                  ", docs=" . count($job['documents']));
-
         // Fix company icon URL
         if (!empty($job['company_icon'])) {
             $job['company_icon'] = str_replace('/var/www/html', 'http://mrnp.site:8080', $job['company_icon']);
         }
     }
 
-    error_log("[SearchJobs] Successfully processed all jobs. Returning " . count($jobs) . " results");
+    error_log("[SearchJobs] Successfully processed page $page");
 
     // Return response
     echo json_encode([
         "status" => "success",
         "count" => count($jobs),
+        "pagination" => [
+            "current_page" => $page,
+            "total_pages" => $total_pages,
+            "total_jobs" => $total_jobs,
+            "limit" => $limit
+        ],
         "filters_applied" => [
             "career_tags" => $career_tags,
             "courses" => $courses,
