@@ -25,7 +25,8 @@
 
 /* Page Layout */
 .search-page-body {
-    padding: 0;
+    padding-top: 80px;
+    /* Fix: Add padding to body instead of margin to hero to avoid white gap */
     margin: 0;
     background-color: #f8f9fa;
     min-height: 100vh;
@@ -39,8 +40,8 @@
     text-align: center;
     border-bottom: 5px solid var(--secondary-yellow);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    margin-top: 100px;
-    /* Fix: Increased to 100px to strictly clear the Top Bar */
+    margin-top: 0;
+    /* Fix: Remove top margin to eliminate gap */
 }
 
 .search-hero h1 {

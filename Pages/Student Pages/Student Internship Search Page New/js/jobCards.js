@@ -108,9 +108,8 @@ export function initJobCards() {
         jobCards.forEach(card => card.classList.remove('active'));
 
         // Ensure placeholder is visible and details card is hidden
-        const placeholder = document.getElementById('jobDetailsPlaceholder');
         const detailsCard = document.getElementById('jobDetailsCard');
-        if (placeholder) placeholder.style.display = 'block';
+        if (placeholder) placeholder.style.display = 'flex';
         if (detailsCard) detailsCard.style.display = 'none';
     }
 
