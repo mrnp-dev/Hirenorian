@@ -129,6 +129,11 @@ try {
             jd.work_type,
             jd.category,
             jd.description,
+            jd.resume,
+            jd.cover_letter,
+            jd.responsibilities,
+            jd.qualifications,
+            jd.skills,
             DATE_FORMAT(jp.created_at, '%M %d, %Y') AS created_at
         FROM Job_Posts jp
         JOIN Job_Details jd ON jp.post_id = jd.post_id
@@ -164,34 +169,20 @@ try {
         $tags_stmt->execute([':post_id' => $post_id]);
         $job['tags'] = $tags_stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // Fetch requirements by type
-        $req_query = "SELECT requirement_type, requirement_text FROM Job_Requirements WHERE post_id = :post_id";
-        $req_stmt = $conn->prepare($req_query);
-        $req_stmt->execute([':post_id' => $post_id]);
-        $requirements = $req_stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Process text fields into arrays
+        $job['responsibilities'] = !empty($job['responsibilities']) ? array_filter(array_map('trim', explode("\n", $job['responsibilities']))) : [];
+        $job['qualifications'] = !empty($job['qualifications']) ? array_filter(array_map('trim', explode("\n", $job['qualifications']))) : [];
+        $job['skills'] = !empty($job['skills']) ? array_filter(array_map('trim', explode("\n", $job['skills']))) : [];
 
-        // Group requirements by type
-        $job['responsibilities'] = [];
-        $job['qualifications'] = [];
-        $job['skills'] = [];
+        // Map document flags
+        $job['resume_required'] = (bool)$job['resume'];
+        $job['cover_letter_required'] = (bool)$job['cover_letter'];
+
+        // Construct human-readable documents list for legacy support or direct display
         $job['documents'] = [];
-
-        foreach ($requirements as $req) {
-            switch ($req['requirement_type']) {
-                case 'responsibility':
-                    $job['responsibilities'][] = $req['requirement_text'];
-                    break;
-                case 'qualification':
-                    $job['qualifications'][] = $req['requirement_text'];
-                    break;
-                case 'skill':
-                    $job['skills'][] = $req['requirement_text'];
-                    break;
-                case 'document':
-                    $job['documents'][] = $req['requirement_text'];
-                    break;
-            }
-        }
+        if ($job['resume_required']) $job['documents'][] = 'Resume';
+        if ($job['cover_letter_required']) $job['documents'][] = 'Cover Letter';
+        if (empty($job['documents'])) $job['documents'][] = 'No specific documents required';
 
         // Fix company icon URL
         if (!empty($job['company_icon'])) {

@@ -241,28 +241,28 @@ export function initJobCards() {
         // Update tags
         const tagsContainer = document.getElementById('detail-tags');
         if (tagsContainer) {
-            tagsContainer.innerHTML = data.tags.map(tag =>
+            tagsContainer.innerHTML = (data.tags || []).map(tag =>
                 `<span class="tag-mini">${tag}</span>`
             ).join('');
         }
 
-        // Build document requirements array from boolean flags
+        // Build document requirements array from new boolean flags
         const documents = [];
-        if (data.resumeRequired || data.resume_required) {
-            documents.push('Resume (Required)');
+        if (data.resume_required) {
+            documents.push('Resume');
         }
-        if (data.coverLetterRequired || data.cover_letter_required) {
-            documents.push('Cover Letter (Required)');
+        if (data.cover_letter_required) {
+            documents.push('Cover Letter');
         }
         // If neither is required explicitly, show optional message
         if (documents.length === 0) {
             documents.push('No specific documents required');
         }
 
-        // Update lists
-        updateList('detail-responsibilities', data.responsibilities);
-        updateList('detail-qualifications', data.qualifications);
-        updateList('detail-skills', data.skills);
+        // Update lists with defensive checks
+        updateList('detail-responsibilities', data.responsibilities || []);
+        updateList('detail-qualifications', data.qualifications || []);
+        updateList('detail-skills', data.skills || []);
         updateList('detail-documents', documents);
 
         // Add animation
@@ -282,8 +282,8 @@ export function initJobCards() {
                 province: data.province,
                 work_type: data.work_type,
                 category: data.category,
-                resume: data.resumeRequired || data.resume_required || false,
-                cover_letter: data.coverLetterRequired || data.cover_letter_required || false
+                resume: data.resume_required || false,
+                cover_letter: data.cover_letter_required || false
             }));
         }
 
