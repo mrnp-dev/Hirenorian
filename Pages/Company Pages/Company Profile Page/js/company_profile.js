@@ -843,7 +843,102 @@ function openVerifyAccountModal() {
     document.getElementById('docDole').value = '';
     document.getElementById('docBir').value = '';
     document.getElementById('docMayor').value = '';
+
+    // Clear previous file name displays
+    const labels = ['docPhilJobNet', 'docDole', 'docBir', 'docMayor'];
+    labels.forEach(id => {
+        const label = document.querySelector(`label[for="${id}"]`);
+        const existingSpan = label.querySelector('.current-file');
+        if (existingSpan) existingSpan.remove();
+
+        // Clear input value to ensure change event fires if selecting same file again after error
+        document.getElementById(id).value = '';
+    });
+
+    // Attach validation listeners if not already attached
+    if (!window.hasAttachedDocValidators) {
+        const fileInputs = ['docPhilJobNet', 'docDole', 'docBir', 'docMayor'];
+        fileInputs.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('change', function () {
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        // Validate Size (Max 5MB)
+                        const maxSize = 5 * 1024 * 1024;
+                        if (file.size > maxSize) {
+                            ToastSystem.show(`File "${file.name}" exceeds the 5MB limit.`, 'error');
+                            this.value = ''; // Clear input
+                            return;
+                        }
+
+                        // Validate Type
+                        const allowedTypes = [
+                            'application/pdf',
+                            'application/msword',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                            'image/jpeg',
+                            'image/png',
+                            'text/plain'
+                        ];
+                        // Also check extension as fallback
+                        const ext = file.name.split('.').pop().toLowerCase();
+                        const allowedExts = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'txt'];
+
+                        if (!allowedTypes.includes(file.type) && !allowedExts.includes(ext)) {
+                            ToastSystem.show(`Invalid file type: "${file.name}". Allowed: PDF, DOC, DOCX, JPG, PNG, TXT.`, 'error');
+                            this.value = '';
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+        window.hasAttachedDocValidators = true;
+    }
+
     showModal('verifyAccountModal');
+
+    // Fetch existing documents
+    const companyId = document.getElementById('company_id').value;
+    const companyEmail = document.getElementById('company_email').value;
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_documents.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ company_id: companyId, email: companyEmail })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success' && data.data) {
+                const docs = data.data;
+                // Helper to append file name
+                const showFileName = (inputId, fileName) => {
+                    if (!fileName) return; // fileName can be null
+                    const label = document.querySelector(`label[for="${inputId}"]`);
+                    if (label) {
+                        let span = label.querySelector('.current-file');
+                        if (!span) {
+                            span = document.createElement('span');
+                            span.className = 'current-file';
+                            span.style.color = '#2ecc71';
+                            span.style.fontSize = '0.85em';
+                            span.style.marginLeft = '10px';
+                            label.appendChild(span);
+                        }
+                        span.innerHTML = `<i class="fa-solid fa-file-check"></i> Current: ${fileName}`;
+                    }
+                };
+
+                showFileName('docPhilJobNet', docs.philjobnet_path);
+                showFileName('docDole', docs.dole_path); // DB column maps to 'dole_path'
+                showFileName('docBir', docs.bir_path);
+                showFileName('docMayor', docs.mayor_permit_path);
+            }
+        })
+        .catch(err => console.error("Error fetching docs:", err));
 }
 
 function closeVerifyAccountModal() {
@@ -855,17 +950,60 @@ function submitVerifyDocuments() {
     const doc2 = document.getElementById('docDole').files[0];
     const doc3 = document.getElementById('docBir').files[0];
     const doc4 = document.getElementById('docMayor').files[0];
+    const companyId = document.getElementById('company_id').value;
+    const companyEmail = document.getElementById('company_email').value;
 
-    if (!doc1 || !doc2 || !doc3 || !doc4) {
-        return ToastSystem.show('Please attach all 4 required documents', 'warning');
+    // Optional: Check if at least one file is selected OR if files already exist? 
+    // User requirement: "submit 4 documents". Strictly speaking, for initial submit, all 4 might be needed.
+    // But for updates, maybe not all? 
+    // Let's assume for now we validate that at least one file is being uploaded OR enforce all if it's strictly "first time".
+    // The prompt says "submit/change", so likely partial updates allowed or re-uploading all.
+    // Let's validate that at least one file is selected to trigger an upload.
+
+
+
+    if (!doc1 && !doc2 && !doc3 && !doc4) {
+        return ToastSystem.show('Please select at least one document to upload', 'warning');
     }
 
-    // Backend Logic Placeholder
-    console.log("Verify Account Documents:", { doc1, doc2, doc3, doc4 });
-    // TODO: Implement backend call here (FormData upload)
+    const formData = new FormData();
+    formData.append('company_id', companyId);
+    formData.append('email', companyEmail); // Fallback
+    if (doc1) formData.append('docPhilJobNet', doc1);
+    if (doc2) formData.append('docDole', doc2);
+    if (doc3) formData.append('docBir', doc3);
+    if (doc4) formData.append('docMayor', doc4);
 
-    ToastSystem.show('Documents submitted for verification', 'success');
-    closeVerifyAccountModal();
+    const submitBtn = document.querySelector('#verifyAccountModal .btn-save');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Uploading...';
+    submitBtn.disabled = true;
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/upload_company_documents.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                ToastSystem.show(data.message, 'success');
+                closeVerifyAccountModal();
+                // Optionally refresh the "verified" status on UI if the logical business rule implies manual verification by admin later.
+            } else {
+                ToastSystem.show(data.message || "Upload failed", 'error');
+                if (data.errors) {
+                    console.error("Upload errors:", data.errors);
+                }
+            }
+        })
+        .catch(err => {
+            console.error("Upload error:", err);
+            ToastSystem.show("Network error during upload", 'error');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
 }
 
 /**

@@ -134,6 +134,10 @@ if (isset($_SESSION['email'])) {
 
 <body>
     <div class="dashboard-container">
+        <!-- Hidden Inputs for JS -->
+        <input type="hidden" id="company_id" value="<?php echo htmlspecialchars($company_id ?? ''); ?>">
+        <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email ?? ''); ?>">
+
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">

@@ -293,3 +293,18 @@ mysql> DESCRIBE company_activity_log;
 | action_timestamp   | timestamp                        | YES  | MUL | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 | ip_address         | varchar(45)                      | YES  |     | NULL              |                   |
 +--------------------+----------------------------------+------+-----+-------------------+-------------------+
+
+
+mysql> DESCRIBE Company_Documents;
++-------------------+--------------+------+-----+-------------------+-----------------------------------------------+
+| Field             | Type         | Null | Key | Default           | Extra                                         |
++-------------------+--------------+------+-----+-------------------+-----------------------------------------------+
+| doc_id            | int          | NO   | PRI | NULL              | auto_increment                                |
+| company_id        | int          | NO   | MUL | NULL              |                                               |
+| philjobnet_path   | varchar(255) | YES  |     | NULL              |                                               |
+| dole_path         | varchar(255) | YES  |     | NULL              |                                               |
+| bir_path          | varchar(255) | YES  |     | NULL              |                                               |
+| mayor_permit_path | varchar(255) | YES  |     | NULL              |                                               |
+| uploaded_at       | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at        | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------------+--------------+------+-----+-------------------+-----------------------------------------------+
