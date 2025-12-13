@@ -331,41 +331,99 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-[#1a1a1a] text-white pt-20 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-16">
+    <!-- Outro Section -->
+    <section class="py-24 bg-maroon text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('../Landing Page/Images/dhvsu-bg-image.jpg')] opacity-10 bg-cover bg-center mix-blend-overlay"></div>
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight">Ready to Launch Your Career?</h2>
+            <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
+                Join thousands of DHVSU students who have already discovered their dream careers.
+                Whether you're looking for internships, part-time opportunities, or full-time positions,
+                Hirenorian connects you with top employers ready to welcome fresh talent.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="bg-yellow text-gray-900 px-8 py-4 rounded-full text-lg font-bold hover:bg-yellow-dark transition-transform hover:-translate-y-1 shadow-lg shadow-yellow/20">Get Started Now</button>
+                <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-white hover:text-maroon transition-transform hover:-translate-y-1">Learn More</button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 border-t border-white/10 pt-12">
                 <div>
-                    <h2 class="text-3xl font-bold mb-6">Hirenorian</h2>
-                    <p class="text-gray-400 mb-8 max-w-sm">The official career portal for DHVSU students. Bridging talent with opportunity.</p>
-                    <div class="flex gap-6">
-                        <a href="#" class="text-2xl text-gray-400 hover:text-yellow transition-colors"><ion-icon name="logo-facebook"></ion-icon></a>
-                        <a href="#" class="text-2xl text-gray-400 hover:text-yellow transition-colors"><ion-icon name="logo-linkedin"></ion-icon></a>
-                        <a href="#" class="text-2xl text-gray-400 hover:text-yellow transition-colors"><ion-icon name="logo-instagram"></ion-icon></a>
+                    <div class="text-4xl font-bold text-yellow mb-2">500+</div>
+                    <div class="text-sm uppercase tracking-widest opacity-70">Job Postings</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-yellow mb-2">100+</div>
+                    <div class="text-sm uppercase tracking-widest opacity-70">Partner Companies</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-yellow mb-2">1000+</div>
+                    <div class="text-sm uppercase tracking-widest opacity-70">Students Hired</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#1a1a1a] text-white">
+        <!-- Red Bar -->
+        <div class="h-2 bg-maroon w-full"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12">
+                <!-- Brand & Socials -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-4xl font-black text-white mb-8 tracking-wide">Hirenorian</h2>
+                    
+                    <div class="flex gap-4">
+                        <button class="hover:scale-110 transition-transform">
+                            <img src="../Landing Page/Images/fbicon.png" alt="Facebook" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                        </button>
+                        <button class="hover:scale-110 transition-transform">
+                            <img src="../Landing Page/Images/linkedin.png" alt="LinkedIn" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                        </button>
+                        <button class="hover:scale-110 transition-transform">
+                            <img src="../Landing Page/Images/yticon.png" alt="YouTube" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                        </button>
+                        <button class="hover:scale-110 transition-transform">
+                            <img src="../Landing Page/Images/igicon.png" alt="Instagram" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                        </button>
                     </div>
                 </div>
-                <div class="lg:col-span-2 grid grid-cols-2 gap-12">
+
+                <!-- Links Columns -->
+                <div class="lg:col-span-3 grid grid-cols-3 gap-8">
+                    <!-- Column 1 -->
                     <div>
-                        <h4 class="text-yellow font-semibold mb-6">Platform</h4>
+                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Topic</h4>
                         <ul class="space-y-4">
-                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-all">Browse Jobs</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-all">Companies</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-all">Login</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
                         </ul>
                     </div>
+
+                    <!-- Column 2 -->
                     <div>
-                        <h4 class="text-yellow font-semibold mb-6">Support</h4>
+                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Topic</h4>
                         <ul class="space-y-4">
-                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-all">Help Center</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-all">Terms of Service</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-all">Privacy Policy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                        </ul>
+                    </div>
+
+                     <!-- Column 3 -->
+                     <div>
+                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Topic</h4>
+                        <ul class="space-y-4">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
-                <p>&copy; 2025 Hirenorian. All rights reserved.</p>
-            </div>
+            
         </div>
     </footer>
 

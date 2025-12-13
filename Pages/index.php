@@ -122,11 +122,6 @@
                     <span class="page-path">Landing Page/php/landing_page.php</span>
                     <span class="badge badge-main">Public</span>
                 </a>
-                <a href="Landing Page Vanilla/index.php" class="page-link">
-                    <span class="page-name">Landing Page (Vanilla)</span>
-                    <span class="page-path">Landing Page Vanilla/index.php</span>
-                    <span class="badge badge-main">New</span>
-                </a>
                 <a href="Landing Page Tailwind/index.php" class="page-link">
                     <span class="page-name">Landing Page (Tailwind)</span>
                     <span class="page-path">Landing Page Tailwind/index.php</span>
