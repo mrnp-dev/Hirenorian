@@ -368,7 +368,7 @@ if (isset($_SESSION['email'])) {
                                             onclick="openChangePasswordModal()">
                                             <i class="fa-solid fa-key"></i> Change Password
                                         </button>
-                                        <?php if (strtolower($verification ?? '') !== 'verified'): ?>
+                                        <?php if (!$is_verified): ?>
                                             <button class="btn-account-action verify-acc"
                                                 onclick="openVerifyAccountModal()">
                                                 <i class="fa-solid fa-shield-check"></i> Verify Account
