@@ -65,22 +65,24 @@ mysql> DESCRIBE Education;
 | organization | varchar(100) | YES  |     | NULL    |                |
 +--------------+--------------+------+-----+---------+----------------+
 
-mysql> DESCRIBE Job_Details;
-+-------------------+--------------------------------------------+------+-----+------------+-------+
-| Field             | Type                                       | Null | Key | Default    | Extra |
-+-------------------+--------------------------------------------+------+-----+------------+-------+
-| post_id           | int                                        | NO   | PRI | NULL       |       |
-| title             | varchar(255)                               | NO   |     | NULL       |       |
-| province          | varchar(100)                               | YES  |     | NULL       |       |
-| city              | varchar(100)                               | YES  |     | NULL       |       |
-| description       | text                                       | YES  |     | NULL       |       |
-| work_type         | enum('Full-time','Part-time','Internship') | YES  |     | Internship |       |
-| required_document | enum('Resume','Cover-Letter','None')       | YES  |     | Resume     |       |
-| category          | varchar(100)                               | YES  |     | NULL       |       |
-| responsibilities  | text                                       | YES  |     | NULL       |       |
-| qualifications    | text                                       | YES  |     | NULL       |       |
-| skills            | text                                       | YES  |     | NULL       |       |
-+-------------------+--------------------------------------------+------+-----+------------+-------+
+mysql> describe Job_Details;
++------------------+--------------------------------------------+------+-----+------------+-------+
+| Field            | Type                                       | Null | Key | Default    | Extra |
++------------------+--------------------------------------------+------+-----+------------+-------+
+| post_id          | int                                        | NO   | PRI | NULL       |       |
+| title            | varchar(255)                               | NO   |     | NULL       |       |
+| province         | varchar(100)                               | YES  |     | NULL       |       |
+| city             | varchar(100)                               | YES  |     | NULL       |       |
+| description      | text                                       | YES  |     | NULL       |       |
+| work_type        | enum('Full-time','Part-time','Internship') | YES  |     | Internship |       |
+| category         | varchar(100)                               | YES  |     | NULL       |       |
+| resume           | tinyint(1)                                 | YES  |     | 0          |       |
+| cover_letter     | tinyint(1)                                 | YES  |     | 0          |       |
+| responsibilities | text                                       | YES  |     | NULL       |       |
+| qualifications   | text                                       | YES  |     | NULL       |       |
+| skills           | text                                       | YES  |     | NULL       |       |
++------------------+--------------------------------------------+------+-----+------------+-------+
+
 
 mysql> DESCRIBE Job_Posts;
 +-----------------+-------------------------+------+-----+-------------------+-----------------------------------------------+
