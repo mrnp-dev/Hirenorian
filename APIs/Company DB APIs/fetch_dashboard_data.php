@@ -103,7 +103,8 @@ try {
             jp.created_at,
             jp.applicant_limit,
             jd.title,
-            (SELECT COUNT(*) FROM Applicants a WHERE a.post_id = jp.post_id AND a.status = 'Accepted') as applicant_count
+            (SELECT COUNT(*) FROM Applicants a WHERE a.post_id = jp.post_id AND a.status = 'Accepted') as applicant_count,
+            (SELECT COUNT(*) FROM Applicants a WHERE a.post_id = jp.post_id AND a.status = 'Pending') as pending_count
         FROM Job_Posts jp
         JOIN Job_Details jd ON jp.post_id = jd.post_id
         WHERE jp.company_id = :cid
@@ -123,6 +124,7 @@ try {
             "status" => ucfirst($job['status']), // Active or Closed
             "date_posted" => date("M d, Y", strtotime($job['created_at'])),
             "applicant_count" => $job['applicant_count'],
+            "pending_count" => $job['pending_count'],
             "applicant_limit" => $job['applicant_limit']
         ];
     }

@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.length === 0) {
             container.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 30px; color: #999;">
+                    <td colspan="5" style="text-align: center; padding: 30px; color: #999;">
                         No job posts found
                     </td>
                 </tr>
@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Handle potential key variations (snake_case vs camelCase)
             const appCount = post.applicant_count !== undefined ? post.applicant_count : (post.applicants || 0);
+            const pendingCount = post.pending_count !== undefined ? post.pending_count : 0;
             const appLimit = post.applicant_limit !== undefined ? post.applicant_limit : (post.limit || 0); // Handle limit if legacy
             const datePosted = post.date_posted || post.datePosted || 'N/A';
             const displayApplicants = appLimit ? `${appCount}/${appLimit}` : appCount;
@@ -162,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.innerHTML = `
                 <td>${post.title}</td>
                 <td>${displayApplicants}</td>
+                <td>${pendingCount}</td>
                 <td>${datePosted}</td>
                 <td><span class="status-pill ${statusClass}">${post.status}</span></td>
             `;
