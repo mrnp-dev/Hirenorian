@@ -1,0 +1,351 @@
+/* Application Page CSS */
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    height: 100vh;
+    overflow: hidden;
+    /* Prevent body scroll, use inner scrolling */
+    display: flex;
+    font-family: 'Outfit', sans-serif;
+}
+
+.app-wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Sidebar */
+.app-sidebar {
+    width: 300px;
+    background-color: white;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    flex-shrink: 0;
+}
+
+.app-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 50px;
+}
+
+.app-logo img {
+    height: 35px;
+}
+
+.app-logo span {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--primary-maroon);
+}
+
+.progress-steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1;
+    /* Push footer down */
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    transition: all 0.3s ease;
+}
+
+.progress-step.active {
+    color: var(--primary-maroon);
+    background-color: var(--bg-hover);
+}
+
+.progress-step.completed .step-icon {
+    background-color: var(--success-green);
+    border-color: var(--success-green);
+    color: white;
+}
+
+.step-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.progress-step.active .step-icon {
+    border-color: var(--primary-maroon);
+    color: var(--primary-maroon);
+}
+
+.step-text h3 {
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.step-text p {
+    font-size: 0.85rem;
+    margin: 0;
+    opacity: 0.8;
+}
+
+/* Main Content */
+.app-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-color: #f8f9fc;
+    position: relative;
+    overflow-y: auto;
+}
+
+.app-step {
+    background: white;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    display: none;
+    /* Hidden by default */
+    flex-direction: column;
+    min-height: 500px;
+    animation: fadeIn 0.4s ease;
+}
+
+.app-step.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.step-header h1,
+.step-header h2 {
+    color: var(--primary-maroon);
+    margin-bottom: 10px;
+}
+
+.step-header p {
+    color: var(--text-muted);
+}
+
+.step-body {
+    flex: 1;
+    margin-bottom: 30px;
+}
+
+.step-body.center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.step-illustration {
+    max-width: 250px;
+    margin-bottom: 20px;
+}
+
+.step-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.btn-primary,
+.btn-primary-large,
+.btn-secondary,
+.btn-text-only {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary-large {
+    background-color: var(--primary-maroon);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    width: 100%;
+    /* Full width for main actions */
+}
+
+.btn-primary {
+    background-color: var(--primary-maroon);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 6px;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 10px 24px;
+    border-radius: 6px;
+}
+
+.btn-text-only {
+    background: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Upload Zone */
+.upload-zone {
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background-color: #fafafa;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+    border-color: var(--primary-maroon);
+    background-color: #fff9f9;
+}
+
+.upload-zone i {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.upload-zone h3 {
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.upload-zone .browser-link {
+    color: var(--primary-maroon);
+    text-decoration: underline;
+}
+
+/* File Preview */
+.file-preview-card {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.file-icon {
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    margin-right: 15px;
+}
+
+.file-info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.file-info h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-info span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.btn-remove-file {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+}
+
+/* Profile Preview */
+.profile-preview-card {
+    background-color: white;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.profile-field {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-field:last-child {
+    border-bottom: none;
+}
+
+.profile-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.profile-value {
+    font-weight: 500;
+}
+
+.info-alert {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #eef2ff;
+    color: #4f46e5;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 20px;
+}

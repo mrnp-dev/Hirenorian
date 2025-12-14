@@ -297,7 +297,7 @@ export function initJobCards() {
         if (applyNowBtn) {
             applyNowBtn.onclick = () => {
                 if (data.post_id) {
-                    window.location.href = `../../Application Form Page/php/application_form.php?job_id=${data.post_id}`;
+                    window.location.href = `../../Student Application Page New/php/application.php`;
                 } else {
                     alert('Job information is missing. Please select a job again.');
                 }
