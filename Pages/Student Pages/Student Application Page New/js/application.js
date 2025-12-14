@@ -294,21 +294,66 @@ function updateFilePreview(type) {
 function populateReview() {
     const detailsContainer = document.getElementById('reviewJobDetails');
     detailsContainer.innerHTML = `
-        <p><strong>Position:</strong> ${appState.jobDetails.jobTitle}</p>
-        <p><strong>Company:</strong> ${appState.jobDetails.companyName}</p>
-        <p><strong>Location:</strong> ${appState.jobDetails.city}, ${appState.jobDetails.province}</p>
-        <p><strong>Work Type:</strong> ${appState.jobDetails.workType}</p>
+        <div class="review-card">
+            <h3>Position Details</h3>
+            <div class="review-grid">
+                <div class="review-item">
+                    <span class="review-label">Position</span>
+                    <span class="review-value">${appState.jobDetails.jobTitle}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Company</span>
+                    <span class="review-value">${appState.jobDetails.companyName}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Location</span>
+                    <span class="review-value">${appState.jobDetails.city}, ${appState.jobDetails.province}</span>
+                </div>
+                <div class="review-item">
+                    <span class="review-label">Work Type</span>
+                    <span class="review-value">${appState.jobDetails.workType}</span>
+                </div>
+            </div>
+        </div>
     `;
 
     const docsContainer = document.getElementById('reviewDocuments');
+
+    // Helper to generate file card HTML
+    const getFileCard = (type, file, required) => {
+        const icon = type === 'resume' ? 'fa-file-pdf' : 'fa-file-lines';
+        const label = type === 'resume' ? 'Resume' : 'Cover Letter';
+
+        let statusClass = 'missing';
+        let statusText = required ? 'Missing (Required)' : 'Not provided (Optional)';
+        let fileName = 'No file selected';
+
+        if (file) {
+            statusClass = 'attached';
+            statusText = 'Ready for submission';
+            fileName = file.name;
+        }
+
+        return `
+            <div class="doc-review-card">
+                <div class="doc-review-icon">
+                    <i class="fa-solid ${icon}"></i>
+                </div>
+                <div class="doc-review-info">
+                    <span class="doc-review-name">${label}: ${fileName}</span>
+                    <span class="doc-review-status ${statusClass}">${statusText}</span>
+                </div>
+            </div>
+        `;
+    };
+
     docsContainer.innerHTML = `
-        <div class="review-doc-item">
-            <i class="fa-solid fa-file-pdf"></i>
-            <span>Resume: ${appState.files.resume ? appState.files.resume.name : 'Not provided (Optional)'}</span>
-        </div>
-         <div class="review-doc-item">
-            <i class="fa-solid fa-file-lines"></i>
-            <span>Cover Letter: ${appState.files.coverLetter ? appState.files.coverLetter.name : 'Not provided (Optional)'}</span>
+        <div class="review-card">
+            <h3>Attached Documents</h3>
+            <div class="review-documents-list">
+                ${getFileCard('resume', appState.files.resume, appState.requirements.resume)}
+                ${getFileCard('coverLetter', appState.files.coverLetter, appState.requirements.coverLetter)}
+            </div>
         </div>
     `;
 }

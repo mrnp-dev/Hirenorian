@@ -349,3 +349,109 @@ body {
     text-align: center;
     padding: 20px;
 }
+
+/* ENHANCED REVIEW SECTION */
+.review-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.review-card {
+    background-color: #fafafa;
+    /* Slight contrast from white step bg */
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.review-card h3 {
+    margin: 0 0 20px 0;
+    font-size: 1.1rem;
+    color: var(--primary-maroon);
+    border-bottom: 2px solid #eee;
+    /* Subtle divider */
+    padding-bottom: 10px;
+}
+
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* Two columns */
+    gap: 20px;
+}
+
+.review-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.review-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.review-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.review-documents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.doc-review-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    transition: transform 0.2s;
+}
+
+.doc-review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.doc-review-icon {
+    font-size: 1.5rem;
+    color: var(--primary-maroon);
+    margin-right: 15px;
+    width: 40px;
+    height: 40px;
+    background-color: #fef2f2;
+    /* Light maroon tint */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doc-review-info {
+    flex: 1;
+}
+
+.doc-review-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.doc-review-status {
+    font-size: 0.8rem;
+    color: #22c55e;
+    /* Green for attached */
+    font-weight: 500;
+}
+
+.doc-review-status.missing {
+    color: var(--text-muted);
+}
