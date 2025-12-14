@@ -210,6 +210,11 @@
                     <span class="page-path">Student Pages/Student Internship Search Page New/.../internship_search.php</span>
                     <span class="badge badge-student">Search</span>
                 </a>
+                <a href="Student Pages/Student Application Page New/php/application.php" class="page-link">
+                    <span class="page-name">Application Page (New)</span>
+                    <span class="page-path">Student Pages/Student Application Page New/.../application.php</span>
+                    <span class="badge badge-student">Applications</span>
+                </a>
 
             </div>
         </div>

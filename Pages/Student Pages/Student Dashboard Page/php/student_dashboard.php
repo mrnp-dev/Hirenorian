@@ -1,60 +1,12 @@
-<?php
 session_start();
 if (isset($_SESSION['email'])) {
     $student_email = $_SESSION['email'];
     $student_id = $_SESSION['student_id'] ?? null;
     
-    // Fetch student information from API
-    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
-    
-    $ch = curl_init($apiUrl);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        "student_email" => $student_email
-    ]));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-    $response = curl_exec($ch);
-    if ($response === false) {
-        echo "<script>console.error('DEBUG: Curl error: " . curl_error($ch) . "');</script>";
-    }
-    curl_close($ch);
-    
-    // Initialize default values
-    $first_name = "Student";
-    $last_name = "";
-    $profile_picture = "";
-    
-    if ($response !== false) {
-        $data = json_decode($response, true);
-        echo "<script>console.log('DEBUG: Student API Response Status:', '" . ($data['status'] ?? 'unknown') . "');</script>";
-        
-        if (isset($data['status']) && $data['status'] === "success") {
-            $basic_info = $data['data']['basic_info'];
-            $profile = $data['data']['profile'];
-            
-            $first_name = $basic_info['first_name'];
-            $last_name = $basic_info['last_name'];
-            $profile_picture_db = $profile['profile_picture'];
-            
-            // Convert VPS absolute path to HTTP URL
-            if (!empty($profile_picture_db)) {
-                $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
-            }
-
-            // AUTO-RECOVER STUDENT ID
-            if (empty($student_id) && isset($basic_info['student_id'])) {
-                $student_id = $basic_info['student_id'];
-                $_SESSION['student_id'] = $student_id; // persist to session
-                echo "<script>console.log('DEBUG: recovered student_id from API: " . $student_id . "');</script>";
-            }
-        }
-    }
+    // NOTE: Removed blocking cURL call. Student info will be fetched via JS.
 }
 else
 {
-    echo "<script>console.warn('DEBUG: Session email not set. Session ID: " . session_id() . "');</script>";
     // Optional: Redirect if strict login is required
     // header("Location: ../../../Landing Page/php/landing_page.php");
 }
@@ -75,6 +27,29 @@ else
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: #e0e0e0;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            color: transparent !important;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .skeleton-text {
+            height: 1em;
+            width: 100%;
+            border-radius: 4px;
+        }
+        
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -109,8 +84,8 @@ else
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Student" class="user-img">
-                        <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
+                        <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img skeleton" id="headerProfileImg">
+                        <span class="user-name skeleton skeleton-text" id="headerProfileName" style="width: 120px;">Student Name</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -127,7 +102,7 @@ else
                 <div class="hero-section">
                     <div class="hero-content">
                         <div class="hero-main">
-                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight"><?php echo htmlspecialchars($first_name); ?></span>!</h1>
+                            <h1 class="greeting">Good afternoon, <span class="greeting-highlight skeleton skeleton-text" id="heroGreetingName" style="width: 150px; display: inline-block;">Student</span>!</h1>
                             <p class="hero-subtitle">Here's your internship journey at a glance</p>
                             <div class="hero-actions">
                                 <a href="../../Student Internship Search Page New/php/internship_search.php" class="btn-hero primary">

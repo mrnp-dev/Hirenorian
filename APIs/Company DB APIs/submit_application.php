@@ -2,7 +2,14 @@
 // submit_application.php
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // Allow OPTIONS
+header("Access-Control-Allow-Headers: Content-Type"); // Allow Content-Type
+
+// Handle CORS Preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 // Include database connection
 include 'db_con.php';
@@ -11,10 +18,25 @@ $response = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
+    // Check for POST max size overflow
+    if (empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0) {
+        $response['status'] = 'error';
+        $response['message'] = 'The uploaded file exceeds the post_max_size directive in php.ini.';
+        $response['debug_content_length'] = $_SERVER['CONTENT_LENGTH'];
+        echo json_encode($response);
+        exit();
+    }
+
     // Validate required POST data
     if (!isset($_POST['post_id']) || !isset($_POST['student_id']) || !isset($_POST['document_type'])) {
         $response['status'] = 'error';
         $response['message'] = 'Missing required fields: post_id, student_id, or document_type.';
+        
+        // Debugging info
+        $response['debug_post'] = $_POST;
+        $response['debug_files'] = $_FILES;
+        $response['debug_content_type'] = $_SERVER['CONTENT_TYPE'] ?? 'Not Set';
+        
         echo json_encode($response);
         exit();
     }
@@ -91,7 +113,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         ];
         
-        // Process Resume Upload (REQUIRED)
+        // Fetch document requirements from Job_Details
+        $req_query = $conn->prepare("SELECT resume, cover_letter FROM Job_Details WHERE post_id = :post_id");
+        $req_query->execute([':post_id' => $post_id]);
+        $req_row = $req_query->fetch(PDO::FETCH_ASSOC);
+        
+        $resume_required = $req_row ? (bool)$req_row['resume'] : true; // Default to true if not found (safety)
+        $cover_letter_required = $req_row ? (bool)$req_row['cover_letter'] : true;
+
+        // Process Resume Upload
         if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
             $resume = $_FILES['resume'];
             
@@ -134,14 +164,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $resume_encoded_path = str_replace(' ', '%20', $resume_relative_path);
             $resume_path = $vps_base_path . $resume_encoded_path;
         } else {
-            // Resume is required
-            $response['status'] = 'error';
-            $response['message'] = 'Resume file is required.';
-            echo json_encode($response);
-            exit();
+            // Check if required
+            if ($resume_required) {
+                $response['status'] = 'error';
+                $response['message'] = 'Resume file is required.';
+                echo json_encode($response);
+                exit();
+            }
+            // else: resume_path remains null
         }
         
-        // Process Cover Letter Upload (OPTIONAL)
+        // Process Cover Letter Upload
         if (isset($_FILES['cover_letter']) && $_FILES['cover_letter']['error'] === UPLOAD_ERR_OK) {
             $cover_letter = $_FILES['cover_letter'];
             
@@ -183,6 +216,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $cl_relative_path = 'Job_Posts/' . $company_id . '/' . $post_id . '/Applicants/' . $student_id . '/' . $cl_filename;
             $cl_encoded_path = str_replace(' ', '%20', $cl_relative_path);
             $coverletter_path = $vps_base_path . $cl_encoded_path;
+        } else {
+            if ($cover_letter_required) {
+                // If required but not uploaded -> Error
+                 // NOTE: DB definition says cover_letter defaults to 0 (optional).
+                 // But if a company flagged it as 1, we must enforce it.
+                 // However, for consistency with resume, if it IS required, we block.
+                 $response['status'] = 'error';
+                 $response['message'] = 'Cover Letter is required.';
+                 echo json_encode($response);
+                 exit();
+            }
         }
         
         // Insert application into database
