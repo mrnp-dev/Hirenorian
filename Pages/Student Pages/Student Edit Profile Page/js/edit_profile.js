@@ -61,4 +61,23 @@
  */
 
 // This file is intentionally minimal as all functionality has been moved to modules
-console.log('Edit Profile modules loaded successfully');
+// console.log('Edit Profile modules loaded successfully');
+
+// Import the async data loader
+import { initProfileData } from './profile-data.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('%cEdit Profile Loading...', 'color: #3b82f6; font-size: 14px;');
+
+    // Initialize UI-Controls if needed directly or just wait for other events
+    // ui-controls.js might already be running its DOMContentLoaded listeners?
+    // ui-controls.js is a script tag, so it runs immediately.
+
+    // Initialize Async Data
+    const email = window.STUDENT_EMAIL || null;
+    if (email) {
+        initProfileData(email);
+    } else {
+        console.warn('No student email found so cannot fetch profile data.');
+    }
+});
