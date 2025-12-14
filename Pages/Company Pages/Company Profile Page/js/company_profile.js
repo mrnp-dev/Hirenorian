@@ -460,13 +460,26 @@ function openAddModal(section) {
     }
 }
 
-function editListItem(itemId, section) {
+window.editListItem = function (itemId, section) {
     currentEditItem = itemId;
     currentEditSection = section;
 
     // Use currentEditItem to find the element in the EDIT list
-    const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
-    if (!item) return;
+    let item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
+
+    // Fallback if not found in container
+    if (!item) {
+        console.warn(`Item ${itemId} not found in edit container, trying loose search`);
+        const looseItem = document.querySelector(`[data-id="${itemId}"]`);
+        if (looseItem && looseItem.closest('#edit-profile-container')) {
+            item = looseItem;
+        }
+    }
+
+    if (!item) {
+        console.error(`Item ${itemId} not found for editing`);
+        return;
+    }
 
     if (section === 'perks') {
         const text = item.querySelector('span').textContent.trim();
@@ -495,16 +508,90 @@ function editListItem(itemId, section) {
     }
 }
 
-function deleteListItem(itemId, section) {
-    if (!confirm('Are you sure you want to delete this item?')) return;
+// Custom Confirmation Modal Helper
+function showConfirmationModal(title, message, type, onConfirm) {
+    const overlay = document.getElementById('confirmationModalOverlay');
+    const titleEl = document.getElementById('confirmationTitle');
+    const messageEl = document.getElementById('confirmationMessage');
+    const modalEl = document.querySelector('.confirmation-modal');
+    const iconEl = document.getElementById('confirmationIcon');
+    const btnCancel = document.getElementById('btnConfirmCancel');
+    const btnProceed = document.getElementById('btnConfirmProceed');
 
-    // Find item to delete in Edit Container
-    const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
-    if (item) {
-        item.remove();
-        ToastSystem.show('Item deleted', 'info');
+    if (!overlay) {
+        console.error('Confirmation modal overlay not found!');
+        if (confirm(message)) onConfirm(); // Fallback
+        return;
     }
+
+    // Reset state
+    modalEl.classList.remove('danger');
+
+    // Remove old event listeners by cloning
+    const newBtnProceed = btnProceed.cloneNode(true);
+    btnProceed.parentNode.replaceChild(newBtnProceed, btnProceed);
+
+    const newBtnCancel = btnCancel.cloneNode(true);
+    btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+
+    // Set content
+    titleEl.textContent = title;
+    messageEl.innerHTML = message.replace(/\n/g, '<br>');
+
+    // Handle type
+    if (type === 'danger') {
+        modalEl.classList.add('danger');
+        iconEl.className = 'fa-solid fa-trash-can';
+    } else {
+        iconEl.className = 'fa-solid fa-triangle-exclamation';
+    }
+
+    // Show modal
+    overlay.style.display = 'flex';
+
+    // Handlers
+    const close = () => { overlay.style.display = 'none'; };
+
+    newBtnCancel.addEventListener('click', close);
+    newBtnProceed.addEventListener('click', () => {
+        close();
+        onConfirm();
+    });
 }
+
+window.deleteListItem = function (itemId, section) {
+    console.log(`Attempting to delete item: ${itemId} from section: ${section}`);
+
+    showConfirmationModal(
+        'Delete Item',
+        'Are you sure you want to delete this item? This action cannot be undone.',
+        'danger',
+        () => {
+            // Find item to delete in Edit Container
+            let item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
+
+            if (item) {
+                console.log('Item found, removing...', item);
+                item.remove();
+
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Item removed. Click "Save Changes" to apply.', 'info');
+                }
+            } else {
+                console.error(`Item with data-id="${itemId}" not found in #edit-profile-container`);
+                // Fallback: Try searching without container restriction
+                const looseItem = document.querySelector(`[data-id="${itemId}"]`);
+                if (looseItem && looseItem.closest('#edit-profile-container')) {
+                    looseItem.remove();
+                    console.log('Item found with loose search and removed');
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Item removed. Click "Save Changes" to apply.', 'info');
+                    }
+                }
+            }
+        }
+    );
+};
 
 // ========== SAVE LIST ITEMS (INTERNAL TO EDIT CONTAINER) ==========
 

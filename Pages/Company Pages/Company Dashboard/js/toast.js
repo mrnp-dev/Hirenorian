@@ -1,16 +1,21 @@
-const ToastSystem = {
-    container: null,
-    toasts: [],
-    storageKey: 'pendingToast',
+// Guard to prevent duplicate declaration
+if (typeof ToastSystem !== 'undefined') {
+    console.log('ToastSystem already loaded, skipping...');
+} else {
 
-    init() {
-        this.container = document.getElementById('toastContainer');
-        if (!this.container) {
-            this.container = document.createElement('div');
-            this.container.id = 'toastContainer';
-            this.container.className = 'toast-container';
-            // Inline styles matching toast.css
-            const css = `
+    window.ToastSystem = {
+        container: null,
+        toasts: [],
+        storageKey: 'pendingToast',
+
+        init() {
+            this.container = document.getElementById('toastContainer');
+            if (!this.container) {
+                this.container = document.createElement('div');
+                this.container.id = 'toastContainer';
+                this.container.className = 'toast-container';
+                // Inline styles matching toast.css
+                const css = `
         .toast-container {
             position: fixed;
             bottom: 20px;
@@ -96,81 +101,83 @@ const ToastSystem = {
             to { transform: translateX(100%); opacity: 0; }
         }
       `;
-            const style = document.createElement('style');
-            style.textContent = css;
-            document.head.appendChild(style);
-            document.body.appendChild(this.container);
-        }
+                const style = document.createElement('style');
+                style.textContent = css;
+                document.head.appendChild(style);
+                document.body.appendChild(this.container);
+            }
 
-        this.checkForPendingToast();
-    },
+            this.checkForPendingToast();
+        },
 
-    show(message, type = 'info', duration = 3000) {
-        if (!this.container) this.init();
+        show(message, type = 'info', duration = 3000) {
+            if (!this.container) this.init();
 
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
 
-        const icons = {
-            success: '✓',
-            error: '✕',
-            warning: '⚠',
-            info: 'ℹ'
-        };
+            const icons = {
+                success: '✓',
+                error: '✕',
+                warning: '⚠',
+                info: 'ℹ'
+            };
 
-        toast.innerHTML = `
+            toast.innerHTML = `
       <div class="toast-icon">${icons[type] || icons.info}</div>
       <div class="toast-content">${message}</div>
       <button class="toast-close" onclick="ToastSystem.remove(this.parentElement)">×</button>
     `;
 
-        this.container.appendChild(toast);
-        this.toasts.push(toast);
+            this.container.appendChild(toast);
+            this.toasts.push(toast);
 
-        if (duration > 0) {
-            setTimeout(() => this.remove(toast), duration);
-        }
-
-        return toast;
-    },
-
-    remove(toast) {
-        if (!toast || !toast.parentElement) return;
-        toast.classList.add('removing');
-        setTimeout(() => {
-            if (toast.parentElement) {
-                toast.remove();
-                this.toasts = this.toasts.filter(t => t !== toast);
+            if (duration > 0) {
+                setTimeout(() => this.remove(toast), duration);
             }
-        }, 300);
-    },
 
-    storeForNextPage(message, type) {
-        sessionStorage.setItem(this.storageKey, JSON.stringify({
-            message,
-            type,
-            timestamp: Date.now()
-        }));
-    },
+            return toast;
+        },
 
-    checkForPendingToast() {
-        const data = sessionStorage.getItem(this.storageKey);
-        if (data) {
-            try {
-                const toast = JSON.parse(data);
-                if (Date.now() - (toast.timestamp || 0) < 10000) {
-                    setTimeout(() => this.show(toast.message, toast.type), 300);
+        remove(toast) {
+            if (!toast || !toast.parentElement) return;
+            toast.classList.add('removing');
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.remove();
+                    this.toasts = this.toasts.filter(t => t !== toast);
                 }
-                sessionStorage.removeItem(this.storageKey);
-            } catch (e) {
-                sessionStorage.removeItem(this.storageKey);
+            }, 300);
+        },
+
+        storeForNextPage(message, type) {
+            sessionStorage.setItem(this.storageKey, JSON.stringify({
+                message,
+                type,
+                timestamp: Date.now()
+            }));
+        },
+
+        checkForPendingToast() {
+            const data = sessionStorage.getItem(this.storageKey);
+            if (data) {
+                try {
+                    const toast = JSON.parse(data);
+                    if (Date.now() - (toast.timestamp || 0) < 10000) {
+                        setTimeout(() => this.show(toast.message, toast.type), 300);
+                    }
+                    sessionStorage.removeItem(this.storageKey);
+                } catch (e) {
+                    sessionStorage.removeItem(this.storageKey);
+                }
             }
         }
-    }
-};
+    };
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => ToastSystem.init());
-} else {
-    ToastSystem.init();
-}
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => ToastSystem.init());
+    } else {
+        ToastSystem.init();
+    }
+
+} // End of guard else block
