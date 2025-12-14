@@ -1,0 +1,704 @@
+.
+|____composer.lock
+|____README.md
+|____LICENSE
+|____composer.json
+|____.vscode
+| |____settings.json
+|____Pages
+| |____Landing Page Tailwind
+| | |____js
+| | | |____script.js
+| | |____Images
+| | |____index.php
+| |____Admin Page
+| | |____AdminRegister
+| | | |____php
+| | | | |____register.php
+| | | |____css
+| | | | |____register.css
+| | |____AdminCompanyManagement
+| | | |____js
+| | | | |____company_management.js
+| | | |____php
+| | | | |____company_management.php
+| | | | |____editCompanyInfo.php
+| | | |____css
+| | | | |____style.css
+| | |____AdminDashboard
+| | | |____js
+| | | | |____dashboard.js
+| | | |____php
+| | | | |____dashboard.php
+| | | |____css
+| | | | |____dashboard_two.css
+| | |____AdminStudentManagement
+| | | |____js
+| | | | |____student_management.js
+| | | | |____sweetalert.js
+| | | |____php
+| | | | |____editInfo.php
+| | | | |____student_management.php
+| | | |____css
+| | | | |____dashboard.css
+| |____Landing Page
+| | |____js
+| | | |____ElementInitializer.js
+| | | |____HeaderAnimations.js
+| | | |____AnimationObserver.js
+| | | |____ElementUtils.js
+| | |____Images
+| | | |____linkedin.png
+| | | |____Companies
+| | | | |____samsung_logo.png
+| | | | |____cloudstaff_workplace.jpg
+| | | | |____google_workplace.jpeg
+| | | | |____samsung_workplace.webp
+| | | | |____cloudstaff_logo.jpg
+| | | | |____hyundai_workplace.avif
+| | | |____gradpic2.png
+| | | |____igicon.png
+| | | |____yticon.png
+| | | |____dhvsu-bg-image.jpg
+| | | |____Backgrounds
+| | | | |____white-diamond-bg.jpg
+| | | | |____white-hexagon-bg.jpg
+| | | | |____employment-bg.jpg
+| | | | |____white-diamond-stripes-bg.jpg
+| | | | |____ethnic-pattern2-bg.jpg
+| | | | |____workplace-1-bg.jpg
+| | | | |____ethnic-pattern-bg.jpg
+| | | | |____crimson-curvy-bg.jpg
+| | | | |____white-curvy-bg.webp
+| | | | |____ethnic-pattern3-bg.jpg
+| | | |____job.png
+| | | |____dhvsulogo.png
+| | | |____google.jpg
+| | | |____samsung.jpg
+| | | |____fbicon.png
+| | | |____Headlines
+| | | | |____headline_slide_2.png
+| | | | |____headline_slide_1.png
+| | | | |____headline_slide_3.png
+| | | |____hyundai.jpg
+| | |____php
+| | | |____landing_page.php
+| | |____css
+| | | |____landing_main_section3.css
+| | | |____landing_main_section2.css
+| | | |____landing_page.css
+| | | |____main_footer.css
+| | | |____animations.css
+| | | |____landing_main_section4.css
+| | | |____landing_header.css
+| | | |____landing_main_section1.css
+| | | |____responsive_landing.css
+| |____index.php
+| |____Account Registration Pages
+| | |____SR-Duplicate OTP Page
+| | | |____js
+| | | | |____modules
+| | | | | |____api.js
+| | | | | |____auth.js
+| | | | | |____validation.js
+| | | | | |____utils.js
+| | | | | |____main.js
+| | | | | |____globals.js
+| | | | | |____toast.js
+| | | | | |____otp.js
+| | | | | |____tags.js
+| | | | | |____navigation.js
+| | | |____JSON
+| | | | |____departments.json
+| | | | |____courses_tags.json
+| | | | |____campuses.json
+| | | | |____internPositions.json
+| | | | |____organizations.json
+| | | | |____city_province.json
+| | | |____images
+| | | | |____2Book_Orange.png
+| | | | |____background.png
+| | | | |____1User_White.png
+| | | | |____1Briefcase_White.png
+| | | | |____2Briefcase_Orange.png
+| | | | |____1Book_White.png
+| | | | |____2User_Orange.png
+| | | | |____sign-up-icon.svg
+| | | | |____DHVSU-LOGO.png
+| | | |____php
+| | | | |____otp_debug.log
+| | | | |____send_otp.php
+| | | | |____store_cred_session.php
+| | | | |____student_registrationForm.php
+| | | |____css
+| | | | |____toast.css
+| | | | |____Free Python Course by Cisco_ No Prior Experience Necessary!_files
+| | | | | |____adrum-24.2.0.4431.js.download
+| | | | | |____ico_webex1.svg
+| | | | | |____cms-util.js.download
+| | | | | |____Resources.svg
+| | | | | |____gtm.js.download
+| | | | | |____user.svg
+| | | | | |____webex_select.svg
+| | | | | |____collections,_functions,_and_exceptions_49.png
+| | | | | |____levelIcon-n.png
+| | | | | |____main.72264570.css
+| | | | | |____arrow_back_notification.svg
+| | | | | |____main.ea40ac2a.js.download
+| | | | | |____bell_green.svg
+| | | | | |____O_47.png
+| | | | | |____python_essentials_1_50.png
+| | | | | |____Icon-maximize.svg
+| | | | | |____webex-recent-bundle.js.download
+| | | | | |____bell_gray.svg
+| | | | | |____ico_down_arrow_green.svg
+| | | | | |____814.245fd0a9.chunk.css
+| | | | | |____help.svg
+| | | | | |____generic_module.svg
+| | | | | |____goals_icon1.svg
+| | | | | |____logo-dark-python.svg
+| | | | | |____ico_start.svg
+| | | | | |____65.95a01d7b.chunk.css
+| | | | | |____Icon_left_arrow.svg
+| | | | | |____arrow_next_notification.svg
+| | | | | |____globe_green.svg
+| | | | | |____introduction_to_python_and_programming_46.png
+| | | | | |____help_green.svg
+| | | | | |____webex-recent-main.css
+| | | | | |____webex-space-bundle.js.download
+| | | | | |____globe_black.svg
+| | | | | |____deliveryType-instled.svg
+| | | | | |____webex-space-main.css
+| | | | | |____netacad_logo_black.svg
+| | | | | |____control_flow_and_lists_48.png
+| | | | | |____netacad_logo_footer.svg
+| | | | | |____logo.png
+| | | | | |____Icon metro-lab.svg
+| | | | | |____grid_three_black.svg
+| | | | | |____noun-teaching.svg
+| | | | | |____Icons-Unlocked.svg
+| | | | | |____image.png
+| | | | | |____91.0342693d.chunk.css
+| | | | | |____Icons-Clock.svg
+| | | | | |____grid_three_green.svg
+| | | | | |____web-crypto-shim.js.download
+| | | | | |____login-status-iframe.html
+| | | | |____student_registrationForm.css
+| | | | |____Free Python Course by Cisco_ No Prior Experience Necessary!.html
+| | |____Account Selection Page
+| | | |____js
+| | | | |____AccountSelection.js
+| | | |____images
+| | | | |____career (1) 1.png
+| | | | |____contact-removebg-preview.png
+| | | | |____grad_hat (1) 1.png
+| | | | |____arrow 1.png
+| | | | |____build 1.png
+| | | | |____access 1.png
+| | | | |____safe 1.png
+| | | | |____psu_logo-transp-preview.png
+| | | | |____userlogo.png
+| | | | |____booklogo-removebg-preview.png
+| | | | |____Accountselectionbg.png
+| | | | |____boost 1.png
+| | | | |____person 1.png
+| | | | |____appli 1.png
+| | | | |____DHVSU-LOGO.png
+| | | | |____building (1) 1.png
+| | | | |____univ 1.png
+| | | |____company.css
+| | | |____php
+| | | | |____account_selection.php
+| | | |____account_selection.php
+| | | |____css
+| | | | |____student.css
+| | | | |____company.css
+| | | | |____style.css
+| | |____Student Registration Page
+| | | |____js
+| | | | |____email_verification.js
+| | | | |____toast.js
+| | | | |____student_registrationForm.js
+| | | |____JSON
+| | | | |____departments.json
+| | | | |____courses_tags.json
+| | | | |____campuses.json
+| | | | |____internPositions.json
+| | | | |____organizations.json
+| | | | |____city_province.json
+| | | |____images
+| | | | |____2Book_Orange.png
+| | | | |____background.png
+| | | | |____1User_White.png
+| | | | |____1Briefcase_White.png
+| | | | |____2Briefcase_Orange.png
+| | | | |____1Book_White.png
+| | | | |____2User_Orange.png
+| | | | |____sign-up-icon.svg
+| | | | |____DHVSU-LOGO.png
+| | | |____Reset Password UI
+| | | | |____js
+| | | | | |____reset_password.js
+| | | | |____php
+| | | | | |____reset_password.php
+| | | | |____css
+| | | | | |____reset_password.css
+| | | |____php
+| | | | |____student_registrationForm.php.bak
+| | | | |____student_registrationForm.php
+| | | | |____student_registrationForm_part1.tmp
+| | | |____css
+| | | | |____toast.css
+| | | | |____Free Python Course by Cisco_ No Prior Experience Necessary!_files
+| | | | | |____adrum-24.2.0.4431.js.download
+| | | | | |____ico_webex1.svg
+| | | | | |____cms-util.js.download
+| | | | | |____Resources.svg
+| | | | | |____gtm.js.download
+| | | | | |____user.svg
+| | | | | |____webex_select.svg
+| | | | | |____collections,_functions,_and_exceptions_49.png
+| | | | | |____levelIcon-n.png
+| | | | | |____main.72264570.css
+| | | | | |____arrow_back_notification.svg
+| | | | | |____main.ea40ac2a.js.download
+| | | | | |____bell_green.svg
+| | | | | |____O_47.png
+| | | | | |____python_essentials_1_50.png
+| | | | | |____Icon-maximize.svg
+| | | | | |____webex-recent-bundle.js.download
+| | | | | |____bell_gray.svg
+| | | | | |____ico_down_arrow_green.svg
+| | | | | |____814.245fd0a9.chunk.css
+| | | | | |____help.svg
+| | | | | |____generic_module.svg
+| | | | | |____goals_icon1.svg
+| | | | | |____logo-dark-python.svg
+| | | | | |____ico_start.svg
+| | | | | |____65.95a01d7b.chunk.css
+| | | | | |____Icon_left_arrow.svg
+| | | | | |____arrow_next_notification.svg
+| | | | | |____globe_green.svg
+| | | | | |____introduction_to_python_and_programming_46.png
+| | | | | |____help_green.svg
+| | | | | |____webex-recent-main.css
+| | | | | |____webex-space-bundle.js.download
+| | | | | |____globe_black.svg
+| | | | | |____deliveryType-instled.svg
+| | | | | |____webex-space-main.css
+| | | | | |____netacad_logo_black.svg
+| | | | | |____control_flow_and_lists_48.png
+| | | | | |____netacad_logo_footer.svg
+| | | | | |____logo.png
+| | | | | |____Icon metro-lab.svg
+| | | | | |____grid_three_black.svg
+| | | | | |____noun-teaching.svg
+| | | | | |____Icons-Unlocked.svg
+| | | | | |____image.png
+| | | | | |____91.0342693d.chunk.css
+| | | | | |____Icons-Clock.svg
+| | | | | |____grid_three_green.svg
+| | | | | |____web-crypto-shim.js.download
+| | | | | |____login-status-iframe.html
+| | | | |____student_registrationForm.css
+| | | | |____Free Python Course by Cisco_ No Prior Experience Necessary!.html
+| | |____Company Registration Page
+| | | |____js
+| | | | |____email_verification.js
+| | | | |____CompanyRegistrationPage.js
+| | | | |____toast.js
+| | | | |____company_registration.js
+| | | |____json
+| | | | |____industry.json
+| | | | |____CompanyType.json
+| | | |____images
+| | | | |____2Book_Orange.png
+| | | | |____background.png
+| | | | |____image 4.png
+| | | | |____Briefcase.png
+| | | | |____User.png
+| | | | |____Book.png
+| | | | |____1User_White.png
+| | | | |____1Briefcase_White.png
+| | | | |____2Briefcase_Orange.png
+| | | | |____1Book_White.png
+| | | | |____2User_Orange.png
+| | | | |____sign-up-icon.svg
+| | | | |____DHVSU-LOGO.png
+| | | |____Reset Password UI
+| | | | |____js
+| | | | | |____reset_password.js
+| | | | |____php
+| | | | | |____reset_password.php
+| | | | |____css
+| | | | | |____reset_password.css
+| | | |____php
+| | | | |____company_session.php
+| | | | |____send_otp.php
+| | | | |____company.php
+| | | |____css
+| | | | |____toast.css
+| | | | |____company.css
+| | | | |____company_registration.css
+| |____Student Pages
+| | |____Student Application Page New
+| | | |____js
+| | | | |____application.js
+| | | |____php
+| | | | |____application.php
+| | | |____css
+| | | | |____application.css
+| | |____Application Form Page
+| | | |____js
+| | | | |____application_form.js
+| | | |____php
+| | | | |____application_form.php
+| | | |____css
+| | | | |____application_form.css
+| | |____Student Dashboard Page
+| | | |____js
+| | | | |____dashboard.js.old
+| | | | |____modules
+| | | | | |____api.js
+| | | | | |____recommendations.js
+| | | | | |____utils.js
+| | | | | |____main.js
+| | | | | |____ui.js
+| | | | | |____applications.js
+| | | | | |____activity.js
+| | | | | |____stats.js
+| | | |____images
+| | | |____php
+| | | | |____student_dashboard.php
+| | | |____css
+| | | | |____recommendations.css
+| | | | |____variables.css
+| | | | |____audit-log.css
+| | | | |____stats.css
+| | | | |____layout.css
+| | | | |____dashboard-pro.css
+| | | | |____topbar.css
+| | | | |____sidebar.css
+| | |____Internship Search Page
+| | | |____js
+| | | | |____advancedFilters.js
+| | | | |____main.js
+| | | | |____typeFilter.js
+| | | | |____selectedFilters.js
+| | | | |____studentTags.js
+| | | | |____internship_search.js.bak
+| | | | |____activeFilters.js
+| | | | |____locationFilter.js
+| | | | |____applyFilterButton.js
+| | | | |____jobCards.js
+| | | | |____searchInput.js
+| | | |____json
+| | | | |____ph_locations.json
+| | | | |____filters_data.json
+| | | |____php
+| | | | |____internship_search.php
+| | | |____css
+| | | | |____internship_search.css
+| | | |____References
+| | | | |____Filters.md
+| | |____Student Internship Search Page New
+| | | |____js
+| | | | |____advancedFilters.js
+| | | | |____main.js
+| | | | |____typeFilter.js
+| | | | |____selectedFilters.js
+| | | | |____studentTags.js
+| | | | |____internship_search.js.bak
+| | | | |____activeFilters.js
+| | | | |____locationFilter.js
+| | | | |____applyFilterButton.js
+| | | | |____jobCards.js
+| | | | |____searchInput.js
+| | | |____json
+| | | | |____ph_locations.json
+| | | | |____filters_data.json
+| | | |____php
+| | | | |____internship_search.php
+| | | |____css
+| | | | |____internship_search.css
+| | | | |____search-pro.css
+| | | |____References
+| | | | |____Filters.md
+| | |____Student Dashboard Tailwind
+| | | |____js
+| | | | |____dashboard.js
+| | | |____php
+| | | | |____student_dashboard.php
+| | |____Student Profile Page
+| | | |____js
+| | | | |____profile.js
+| | | |____php
+| | | | |____student_profile.php
+| | | |____css
+| | | | |____profile.css
+| | |____Student Edit Profile Page
+| | | |____js
+| | | | |____password-modal.js
+| | | | |____validation.js
+| | | | |____about-modal.js
+| | | | |____toast.js
+| | | | |____personal-modal.js
+| | | | |____photo-modal.js
+| | | | |____edit_profile.js
+| | | | |____skills-modal.js
+| | | | |____ui-controls.js
+| | | | |____confirm.js
+| | | | |____contact-modal.js
+| | | | |____education-modal.js
+| | | | |____experience-modal.js
+| | | |____images
+| | | |____php
+| | | | |____edit_profile.php
+| | | |____css
+| | | | |____edit_profile.css
+| | |____Student Profile Page New
+| | | |____js
+| | | | |____profile.js
+| | | |____php
+| | | | |____student_profile.php
+| | | |____css
+| | | | |____profile-pro.css
+| |____Company Pages
+| | |____Company Edit Profile Page
+| | | |____js
+| | | | |____edit_company_profile.js
+| | | |____php
+| | | | |____edit_company_profile.php
+| | | |____css
+| | | | |____edit_company_profile.css
+| | |____Applicant's Profile Page
+| | | |____js
+| | | | |____profile.js
+| | | |____php
+| | | | |____applicant_profile.php
+| | | |____css
+| | | | |____profile.css
+| | |____Company Dashboard
+| | | |____js
+| | | | |____toast.js
+| | | | |____dashboard.js
+| | | | |____modules
+| | | |____php
+| | | | |____company_dashboard.php
+| | | |____css
+| | | | |____variables.css
+| | | | |____activity-log.css
+| | | | |____dashboard.css
+| | |____Help Page
+| | | |____php
+| | | | |____help.php
+| | |____company_profile_analysis.txt
+| | |____Job Listing Page
+| | | |____js
+| | | | |____api.js
+| | | | |____utils.js
+| | | | |____main.js
+| | | | |____ui.js
+| | | | |____job_listing.js
+| | | | |____state.js
+| | | |____json
+| | | | |____categories_tags.json
+| | | | |____work_types.json
+| | | | |____philippines_locations.json
+| | | |____php
+| | | | |____job_listing.php
+| | | |____css
+| | | | |____job_listing_dropdown.css
+| | | | |____job_listing.css
+| | |____Company Profile Page
+| | | |____js
+| | | | |____company_profile.js
+| | | |____php
+| | | | |____company_session.php
+| | | | |____company_profile.php
+| | | |____css
+| | | | |____company_profile.css
+|____APIs
+| |____Admin DB APIs
+| | |____dbCon.php
+| | |____companyManagementAPIs
+| | | |____update_company_verification.php
+| | | |____updateInfo.php
+| | | |____admin_company_information.php
+| | | |____deleteCompanyInfo.php
+| | | |____update_company_activation.php
+| | |____fetch_audit_logs.php
+| | |____studentManagementAPIs
+| | | |____delete.php
+| | | |____updateInfoStudent.php
+| | | |____update_student_verification.php
+| | | |____admin_student_information.php
+| | | |____audit.php
+| | | |____update_student_activation.php
+| |____Company DB APIs
+| | |____delete_job_post.php
+| | |____db_con.php
+| | |____tables_on_the_database.txt
+| | |____update_job_post.php
+| | |____logout.php
+| | |____check_company_email.php
+| | |____search_jobs.php
+| | |____fetch_activity_log.php
+| | |____company_logout.php
+| | |____company_profile_update.php
+| | |____post_job.php
+| | |____fetch_student_profile.php
+| | |____get_company_id.php
+| | |____batch_update_applicants.php
+| | |____close_job_post.php
+| | |____fetch_dashboard_data.php
+| | |____delete_job_folder.php
+| | |____create_job_folder.php
+| | |____fetch_company_information.php
+| | |____update_company_images.php
+| | |____company_login_process.php
+| | |____company_registration_process.php
+| | |____fetch_applicants.php
+| | |____submit_application.php
+| | |____triggers.txt
+| | |____fetch_company_statistics.php
+| | |____fetch_job_details.php
+| | |____test_submit_application.html
+| | |____fetch_job_posts.php
+| | |____update_applicant_status.php
+| |____Student DB APIs
+| | |____db_con.php
+| | |____test_student_applications.html
+| | |____update_profile_picture.php
+| | |____fetch_student_information.php
+| | |____student_login_process.php
+| | |____fetch_student_application_counts.php
+| | |____sample_response.json
+| | |____fetch_audit_logs.php
+| | |____db_describe_tables.txt
+| | |____test_application_counts.html
+| | |____fetch_student_applications.php
+| | |____add_student_process.php
+| | |____Edit Profile APIs
+| | | |____change_password.php
+| | | |____student_contact_update.php
+| | | |____delete_experience_bg.php
+| | | |____student_personal_update.php
+| | | |____add_experience_bg.php
+| | | |____update_experience_bg.php
+| | | |____update_skills_bg.php
+| | | |____delete_education_bg.php
+| | | |____student_aboutme_update.php
+| | | |____update_education_bg.php
+| | | |____add_education_bg.php
+|____SQL Files
+| |____audit_log_sample_queries.sql
+| |____company_activity_log_setup.sql
+| |____create_audit_triggers.sql
+| |____create_audit_log_table.sql
+|____project_structure.txt
+|____Prototyping
+| |____FileUpload
+| | |____client_viewer.php
+| | |____remote_receiver.php
+| | |____client_sender.php
+| |____EmailTesting
+| | |____otp_debug.log
+| | |____index.html
+| | |____email_test.js
+| | |____send_email.php
+| |____Database Connection
+| | |____dbconnect.php
+| | |____students.php
+| | |____add_student.php
+| | |____add_student_process.php
+|____vendor
+| |____phpmailer
+| | |____phpmailer
+| | | |____get_oauth_token.php
+| | | |____README.md
+| | | |____LICENSE
+| | | |____language
+| | | | |____phpmailer.lang-pt_br.php
+| | | | |____phpmailer.lang-es.php
+| | | | |____phpmailer.lang-hi.php
+| | | | |____phpmailer.lang-bg.php
+| | | | |____phpmailer.lang-eo.php
+| | | | |____phpmailer.lang-vi.php
+| | | | |____phpmailer.lang-af.php
+| | | | |____phpmailer.lang-ja.php
+| | | | |____phpmailer.lang-sl.php
+| | | | |____phpmailer.lang-cs.php
+| | | | |____phpmailer.lang-ar.php
+| | | | |____phpmailer.lang-da.php
+| | | | |____phpmailer.lang-lv.php
+| | | | |____phpmailer.lang-be.php
+| | | | |____phpmailer.lang-mn.php
+| | | | |____phpmailer.lang-ka.php
+| | | | |____phpmailer.lang-pt.php
+| | | | |____phpmailer.lang-ba.php
+| | | | |____phpmailer.lang-sr.php
+| | | | |____phpmailer.lang-fa.php
+| | | | |____phpmailer.lang-hr.php
+| | | | |____phpmailer.lang-nb.php
+| | | | |____phpmailer.lang-zh.php
+| | | | |____phpmailer.lang-sv.php
+| | | | |____phpmailer.lang-de.php
+| | | | |____phpmailer.lang-ko.php
+| | | | |____phpmailer.lang-tr.php
+| | | | |____phpmailer.lang-nl.php
+| | | | |____phpmailer.lang-ru.php
+| | | | |____phpmailer.lang-fr.php
+| | | | |____phpmailer.lang-as.php
+| | | | |____phpmailer.lang-et.php
+| | | | |____phpmailer.lang-el.php
+| | | | |____phpmailer.lang-ku.php
+| | | | |____phpmailer.lang-fi.php
+| | | | |____phpmailer.lang-lt.php
+| | | | |____phpmailer.lang-ro.php
+| | | | |____phpmailer.lang-uk.php
+| | | | |____phpmailer.lang-fo.php
+| | | | |____phpmailer.lang-bn.php
+| | | | |____phpmailer.lang-si.php
+| | | | |____phpmailer.lang-az.php
+| | | | |____phpmailer.lang-hy.php
+| | | | |____phpmailer.lang-ur.php
+| | | | |____phpmailer.lang-he.php
+| | | | |____phpmailer.lang-id.php
+| | | | |____phpmailer.lang-pl.php
+| | | | |____phpmailer.lang-tl.php
+| | | | |____phpmailer.lang-mg.php
+| | | | |____phpmailer.lang-ca.php
+| | | | |____phpmailer.lang-sk.php
+| | | | |____phpmailer.lang-hu.php
+| | | | |____phpmailer.lang-ms.php
+| | | | |____phpmailer.lang-gl.php
+| | | | |____phpmailer.lang-it.php
+| | | | |____phpmailer.lang-sr_latn.php
+| | | | |____phpmailer.lang-zh_cn.php
+| | | |____composer.json
+| | | |____SECURITY.md
+| | | |____VERSION
+| | | |____SMTPUTF8.md
+| | | |____src
+| | | | |____POP3.php
+| | | | |____SMTP.php
+| | | | |____PHPMailer.php
+| | | | |____OAuthTokenProvider.php
+| | | | |____Exception.php
+| | | | |____OAuth.php
+| | | | |____DSNConfigurator.php
+| | | |____COMMITMENT
+| |____autoload.php
+| |____composer
+| | |____LICENSE
+| | |____autoload_static.php
+| | |____platform_check.php
+| | |____autoload_real.php
+| | |____autoload_classmap.php
+| | |____autoload_psr4.php
+| | |____installed.php
+| | |____ClassLoader.php
+| | |____InstalledVersions.php
+| | |____autoload_namespaces.php
+| | |____installed.json
