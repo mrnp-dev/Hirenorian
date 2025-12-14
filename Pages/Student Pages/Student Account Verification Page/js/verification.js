@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // File Inputs
     const fileInputs = document.querySelectorAll('input[type="file"]');
 
+    // Student ID
+    const studentIdInput = document.getElementById('studentId');
+    const studentId = studentIdInput ? studentIdInput.value : '';
+
     // --- Navigation Logic ---
 
     function showStep(stepNumber) {
@@ -60,13 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Type Selection (Step 2)
     typeCards.forEach(card => {
         card.addEventListener('click', () => {
-            // Remove active from others
             typeCards.forEach(c => c.classList.remove('selected'));
-            // Add to current
             card.classList.add('selected');
             studentType = card.dataset.type;
-
-            // Enable Next Button
             updateButtons();
         });
     });
@@ -123,24 +123,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (nextBtn) nextBtn.disabled = !isValid;
-
-        // Also enable submit button if we treat Step 4 as just success
-        // But actually the Submit button is ON Step 3 in this flow or Step 4?
-        // Let's assume Submit is clicked after Uploads.
         if (submitBtn) submitBtn.disabled = !isValid;
     }
 
     // Submit Logic
     if (submitBtn) {
         submitBtn.addEventListener('click', async () => {
-            // Simulate API Call
+            if (!studentId) {
+                alert("Error: Student ID not found. Please relogin.");
+                return;
+            }
+
+            // UI Loading State
+            const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
             submitBtn.disabled = true;
 
-            // Mock delay
-            setTimeout(() => {
-                showStep(4); // Success Step
-            }, 1500);
+            // Prepare Data
+            const formData = new FormData();
+            formData.append('student_id', studentId);
+            formData.append('student_type', studentType); // 'graduate' or 'undergraduate' (lowercase match with API)
+
+            if (studentType === 'graduate') {
+                const torFile = document.getElementById('torFile').files[0];
+                const diplomaFile = document.getElementById('diplomaFile').files[0];
+                if (torFile) formData.append('tor_file', torFile);
+                if (diplomaFile) formData.append('diploma_file', diplomaFile);
+            } else {
+                const idFile = document.getElementById('idFile').files[0];
+                const corFile = document.getElementById('corFile').files[0];
+                if (idFile) formData.append('student_id_file', idFile); // API expects student_id_file
+                if (corFile) formData.append('cor_file', corFile);
+            }
+
+            try {
+                const response = await fetch('http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/upload_verification_docs.php', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    showStep(4); // Success Step
+                } else {
+                    alert('Submission Failed: ' + (result.message || 'Unknown error'));
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('Submission Error:', error);
+                alert('An error occurred while submitting your documents. Please try again.');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         });
     }
 });

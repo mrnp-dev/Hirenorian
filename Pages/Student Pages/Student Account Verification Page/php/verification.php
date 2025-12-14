@@ -31,6 +31,7 @@ if (isset($_SESSION['email'])) {
             
             $first_name = $basic_info['first_name'];
             $last_name = $basic_info['last_name'];
+            $student_id = $basic_info['student_id']; // Added student_id
             $profile_picture_db = $profile['profile_picture'];
             
             // Convert VPS absolute path to HTTP URL
@@ -104,8 +105,7 @@ if (isset($_SESSION['email'])) {
             <!-- Verification Page Content -->
             <main class="verification-body">
                 <div class="verification-container">
-                    
-                    <!-- Step 1: Welcome -->
+                    <input type="hidden" id="studentId" value="<?php echo htmlspecialchars($student_id ?? ''); ?>">                <!-- Step 1: Welcome -->
                     <div class="verification-step active" data-step="1">
                         <div class="step-header">
                             <div class="type-icon">
