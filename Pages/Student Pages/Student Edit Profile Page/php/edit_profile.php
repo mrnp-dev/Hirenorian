@@ -236,27 +236,32 @@ if(isset($_SESSION['email']))
                             <div class="account-actions">
                                 <button class="btn-outline" data-modal-target="#changePasswordModal">Change Password</button>
                                 <?php
-                                $status_label = '';
-                                $btn_attr = "onclick=\"window.location.href='../../Student Account Verification Page/php/verification.php'\"";
-                                $btn_class = "btn-danger";
-                                $btn_text = "Verify Account";
-
+                                $btn_html = '';
+                                
                                 if ($verified_status === 'verified') {
-                                    $status_label = '<span style="color: #2ecc71; font-weight: bold; margin-right: 10px;"><i class="fa-solid fa-circle-check"></i> Verified</span>';
-                                    $btn_attr = "onclick=\"alert('Your account is already verified! You have full access to all features.')\"";
-                                    $btn_class = "btn-secondary"; // Grey out or different style
-                                    $btn_text = "Account Verified";
-                                    // Or disable it: $btn_attr = "disabled";
+                                    // Verified: Green button, Text "Verified"
+                                    $btn_html = '<button class="btn-primary-action" style="background-color: #2ecc71; border-color: #2ecc71; cursor: default;" onclick="return false;"><i class="fa-solid fa-check"></i> Verified</button>';
+                                
                                 } elseif ($verified_status === 'processing') {
-                                    $status_label = '<span style="color: #f1c40f; font-weight: bold; margin-right: 10px;"><i class="fa-solid fa-spinner fa-spin"></i> Processing</span>';
-                                    $btn_attr = "onclick=\"alert('Your verification is currently being processed. Please wait for specific time for approval.')\"";
-                                    $btn_class = "btn-secondary";
-                                    $btn_text = "Processing...";
+                                    // Processing: Button shows alert, Warning specific to processing
+                                    $warning_html = '<span style="color: #f1c40f; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-spinner fa-spin"></i> Verification is being processed</span>';
+                                    
+                                    // Keep button looking like "Verify Account" but click opens alert? Or maybe "Processing..." button?
+                                    // User said "show alert... and warning... should show that verification is being processed"
+                                    // Let's keep button as "Verify Account" but clicking it alerts.
+                                    $btn_html = '<button class="btn-danger" onclick="alert(\'Your verification is currently being processed. Please wait for header/admin approval.\')">Verify Account</button>';
+                                    $btn_html .= $warning_html;
+
+                                } else {
+                                    // Unverified: Red Button + "Verification Required"
+                                    $warning_html = '<span style="color: #e74c3c; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-triangle-exclamation"></i> Verification Required</span>';
+                                    
+                                    $btn_html = '<button class="btn-danger" onclick="window.location.href=\'../../Student Account Verification Page/php/verification.php\'">Verify Account</button>';
+                                    $btn_html .= $warning_html;
                                 }
                                 ?>
-                                <div style="display: flex; align-items: center; gap: 10px;">
-                                    <?php echo $status_label; ?>
-                                    <button class="<?php echo $btn_class; ?>" <?php echo $btn_attr; ?>><?php echo $btn_text; ?></button>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <?php echo $btn_html; ?>
                                 </div>
 
                             </div>
