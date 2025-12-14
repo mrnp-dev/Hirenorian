@@ -53,7 +53,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'docPhilJobNet' => 'PhilJobNet',
         'docDole' => 'DOLE',
         'docBir' => 'BIR',
-        'docMayor' => 'MayorPermit'
+        'docMayor' => 'MayorPermit',
+        'docDti' => 'BusinessType',
+        'docSec' => 'BusinessType',
+        'docCda' => 'BusinessType',
+        'docPea' => 'BusinessType',
+        'docContractor' => 'BusinessType',
+        'docDmw' => 'BusinessType'
     ];
 
     // Database Columns map
@@ -61,7 +67,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'docPhilJobNet' => 'philjobnet_path',
         'docDole' => 'dole_path',
         'docBir' => 'bir_path',
-        'docMayor' => 'mayor_permit_path'
+        'docMayor' => 'mayor_permit_path',
+        'docDti' => 'business_type_doc_path',
+        'docSec' => 'business_type_doc_path',
+        'docCda' => 'business_type_doc_path',
+        'docPea' => 'business_type_doc_path',
+        'docContractor' => 'business_type_doc_path',
+        'docDmw' => 'business_type_doc_path'
     ];
 
     $paths_to_update = [];

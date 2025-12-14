@@ -236,6 +236,10 @@ if (isset($_SESSION['email'])) {
                                             <i class="fa-solid fa-briefcase"></i>
                                             <?php echo $industry ?>
                                         </span>
+                                        <span class="company-industry">
+                                            <i class="fa-solid fa-building"></i>
+                                            <?php echo htmlspecialchars($company_type); ?>
+                                        </span>
                                         <?php if ($is_verified): ?>
                                             <span class="verification-badge-wrapper verified">
                                                 <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=6ee7b7"
@@ -498,15 +502,13 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                     <div class="form-group compact">
                                         <label>Industry</label>
-                                        <select id="editCompanyIndustry">
-                                            <option value="<?php echo $industry ?>" selected><?php echo $industry ?>
-                                            </option>
-                                            <option value="Video game industry">Video game industry</option>
-                                            <option value="Technology">Technology</option>
-                                            <option value="Marketing">Marketing</option>
-                                            <option value="Finance">Finance</option>
-                                            <option value="Healthcare">Healthcare</option>
-                                        </select>
+                                        <input type="text" id="editCompanyIndustry" value="<?php echo $industry; ?>"
+                                            readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                                    </div>
+                                    <div class="form-group compact">
+                                        <label>Company Type</label>
+                                        <input type="text" value="<?php echo htmlspecialchars($company_type); ?>"
+                                            readonly style="background-color: #e9ecef; cursor: not-allowed;">
                                     </div>
                                 </div>
                             </div>
@@ -862,6 +864,12 @@ if (isset($_SESSION['email'])) {
                 <div class="form-group">
                     <label for="docMayor">Mayor's Permit</label>
                     <input type="file" id="docMayor" class="file-input-control">
+                </div>
+                <!-- Dynamic Business Type Document -->
+                <div class="form-group" id="dynamicDocGroup" style="display: none;">
+                    <label id="labelDynamicDoc">Business Registration</label>
+                    <input type="file" id="docDynamic" class="file-input-control">
+                    <input type="hidden" id="company_type" value="<?php echo htmlspecialchars($company_type); ?>">
                 </div>
             </div>
             <div class="modal-footer">

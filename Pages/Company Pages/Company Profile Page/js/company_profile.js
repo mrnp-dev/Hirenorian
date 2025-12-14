@@ -175,7 +175,7 @@ function saveProfileChanges() {
  */
 function updateViewModeUI(basicInfo, details) {
     document.getElementById('viewCompanyName').textContent = basicInfo.name;
-    document.getElementById('viewCompanyIndustry').textContent = basicInfo.industry;
+    document.getElementById('viewCompanyIndustry').innerHTML = `<i class="fa-solid fa-briefcase"></i> ${basicInfo.industry}`;
     document.getElementById('viewContactEmail').textContent = basicInfo.email;
     document.getElementById('viewContactLocation').textContent = basicInfo.address;
     document.getElementById('viewContactPhone').textContent = basicInfo.phoneNumber || "No phone number";
@@ -353,22 +353,58 @@ function resetImagePreview() {
 // File Selection
 document.addEventListener('DOMContentLoaded', function () {
     const fileInput = document.getElementById('imageFileInput');
+    const saveBtn = document.querySelector('#imageUploadModal .btn-save');
 
     fileInput?.addEventListener('change', function (e) {
         const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const preview = document.getElementById('imagePreview');
-                const placeholder = document.getElementById('uploadPlaceholder');
-                preview.src = event.target.result;
-                preview.style.display = 'block';
-                placeholder.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
+        const preview = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+
+        // Reset check
+        if (!file) {
+            saveBtn.disabled = true;
+            return;
         }
+
+        // Validation Constants
+        const MAX_SIZE_MB = 2; // 2MB Limit
+        const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        // Check File Type
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            ToastSystem.show(`Invalid file type: ${file.name}. Please upload a PNG, JPG, GIF, or WEBP image.`, 'error');
+            fileInput.value = ''; // Clear input
+            saveBtn.disabled = true;
+            preview.style.display = 'none';
+            placeholder.style.display = 'flex';
+            return;
+        }
+
+        // Check File Size
+        if (file.size > MAX_SIZE_BYTES) {
+            ToastSystem.show(`File too large: ${file.name}. Max size is ${MAX_SIZE_MB}MB.`, 'error');
+            fileInput.value = ''; // Clear input
+            saveBtn.disabled = true;
+            preview.style.display = 'none';
+            placeholder.style.display = 'flex';
+            return;
+        }
+
+        // If valid
+        saveBtn.disabled = false;
+
+        // Preview Image
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
     });
 });
+
 
 /**
  * Updates the image in the EDIT container.
@@ -1057,50 +1093,88 @@ function closeVerifyAccountModal() {
     closeModal('verifyAccountModal');
 }
 
+
+function openVerifyAccountModal() {
+    updateVerificationRequirement(); // Update label before showing
+    // Assuming showModal is the global helper
+    const modal = document.getElementById('verifyAccountModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        // Trigger generic modal logic if exists, e.g. animation
+        modal.classList.add('show');
+    }
+}
+
+
+function updateVerificationRequirement() {
+    const typeInput = document.getElementById('company_type');
+    const rawType = typeInput ? typeInput.value : '';
+    // Normalize spaces and trim
+    const type = rawType.replace(/\s+/g, ' ').trim().toLowerCase();
+
+    const group = document.getElementById('dynamicDocGroup');
+    const label = document.getElementById('labelDynamicDoc');
+
+    // Map types to labels
+    const map = {
+        'single proprietorship': 'Department of Trade and Industry (DTI) Registration',
+        'partnership or corporation': 'Securities and Exchange Commission (SEC) Registration',
+        'corporation': 'Securities and Exchange Commission (SEC) Registration', // Legacy
+        'partnership': 'Securities and Exchange Commission (SEC) Registration', // Legacy
+        'cooperatives': 'Cooperative Development Authority (CDA) Certificate',
+        'private employment agency (pea)': 'Valid DOLE-issued License',
+        'contractors and subcontractors': 'Valid registration from DOLE',
+        'overseas recruitment and placement agency': 'Department of Migrant Workers (DMW) License'
+    };
+
+    if (map[type]) {
+        label.textContent = map[type];
+        group.style.display = 'block';
+    } else {
+        group.style.display = 'none';
+    }
+}
+
 function submitVerifyDocuments() {
     const doc1 = document.getElementById('docPhilJobNet').files[0];
     const doc2 = document.getElementById('docDole').files[0];
     const doc3 = document.getElementById('docBir').files[0];
     const doc4 = document.getElementById('docMayor').files[0];
+    const doc5 = document.getElementById('docDynamic').files[0];
+
     const companyId = document.getElementById('company_id').value;
     const companyEmail = document.getElementById('company_email').value;
 
-    // Optional: Check if at least one file is selected OR if files already exist? 
-    // User requirement: "submit 4 documents". Strictly speaking, for initial submit, all 4 might be needed.
-    // But for updates, maybe not all? 
-    // Let's assume for now we validate that at least one file is being uploaded OR enforce all if it's strictly "first time".
-    // The prompt says "submit/change", so likely partial updates allowed or re-uploading all.
-    // Let's validate that at least one file is selected to trigger an upload.
-
-
-
-    // Validation Logic:
-    // 1. If company DOES NOT have all 4 documents existing, they MUST upload ALL 4.
-    // 2. If company ALREADY has 4 documents, they can upload AT LEAST 1 to update.
-
-    // Default to 0 if undefined (e.g. fetch failed)
-    const existingCount = window.existingDocCount || 0;
-
-    if (existingCount < 4) {
-        // Must upload ALL missing or just simply ALL 4 if it's considered "first time / incomplete"
-        // Prompt implies: if they don't have "existing documents that been submitted for 4 documents" -> require 4.
-        if (!doc1 || !doc2 || !doc3 || !doc4) {
-            return ToastSystem.show('You must upload ALL 4 documents to proceed with verification.', 'warning');
-        }
-    } else {
-        // Already has 4 docs, just updating. At least 1 is required.
-        if (!doc1 && !doc2 && !doc3 && !doc4) {
-            return ToastSystem.show('Please select at least one document to update.', 'warning');
-        }
+    // Check at least one file
+    if (!doc1 && !doc2 && !doc3 && !doc4 && !doc5) {
+        return ToastSystem.show('Please select at least one document to upload.', 'warning');
     }
 
     const formData = new FormData();
     formData.append('company_id', companyId);
-    formData.append('email', companyEmail); // Fallback
+    formData.append('email', companyEmail);
     if (doc1) formData.append('docPhilJobNet', doc1);
     if (doc2) formData.append('docDole', doc2);
     if (doc3) formData.append('docBir', doc3);
     if (doc4) formData.append('docMayor', doc4);
+
+    // Dynamic Doc Logic
+    if (doc5) {
+        const typeInput = document.getElementById('company_type');
+        const type = typeInput ? typeInput.value.trim().toLowerCase() : '';
+        let key = '';
+
+        if (type === 'single proprietorship') key = 'docDti';
+        else if (type === 'partnership or corporation' || type === 'corporation' || type === 'partnership') key = 'docSec';
+        else if (type === 'cooperatives') key = 'docCda';
+        else if (type === 'private employment agency (pea)') key = 'docPea';
+        else if (type === 'contractors and subcontractors') key = 'docContractor';
+        else if (type === 'overseas recruitment and placement agency') key = 'docDmw';
+
+        if (key) {
+            formData.append(key, doc5);
+        }
+    }
 
     const submitBtn = document.querySelector('#verifyAccountModal .btn-save');
     const originalText = submitBtn.textContent;
