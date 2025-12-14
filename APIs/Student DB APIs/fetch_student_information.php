@@ -24,7 +24,7 @@ $stu_email = $data['student_email'];
 try {
     // 1. Get Student ID (and basic info from Students table if needed, though mostly in Profile now?)
     // Assuming Students table has the email mapping
-    $query = "SELECT student_id, first_name, last_name, middle_initial, suffix, phone_number, student_email FROM Students WHERE student_email = :stu_email";
+    $query = "SELECT * FROM Students WHERE student_email = :stu_email";
     $stmt = $conn->prepare($query);
     $stmt->execute(['stu_email' => $stu_email]);
     $student_basic = $stmt->fetch(PDO::FETCH_ASSOC);
