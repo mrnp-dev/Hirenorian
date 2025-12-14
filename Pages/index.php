@@ -118,9 +118,14 @@
             <h2 class="section-title">Main Pages</h2>
             <div class="link-grid">
                 <a href="Landing Page/php/landing_page.php" class="page-link">
-                    <span class="page-name">Landing Page</span>
+                    <span class="page-name">Landing Page (Original)</span>
                     <span class="page-path">Landing Page/php/landing_page.php</span>
                     <span class="badge badge-main">Public</span>
+                </a>
+                <a href="Landing Page Tailwind/index.php" class="page-link">
+                    <span class="page-name">Landing Page (Tailwind)</span>
+                    <span class="page-path">Landing Page Tailwind/index.php</span>
+                    <span class="badge badge-main">New</span>
                 </a>
             </div>
         </div>
@@ -181,9 +186,14 @@
             <h2 class="section-title">Student Portal</h2>
             <div class="link-grid">
                 <a href="Student Pages/Student Dashboard Page/php/student_dashboard.php" class="page-link">
-                    <span class="page-name">Student Dashboard</span>
+                    <span class="page-name">Student Dashboard (Vanilla)</span>
                     <span class="page-path">Student Pages/.../student_dashboard.php</span>
                     <span class="badge badge-student">Dashboard</span>
+                </a>
+                <a href="Student Pages/Student Dashboard Tailwind/php/student_dashboard.php" class="page-link">
+                    <span class="page-name">Student Dashboard (Tailwind)</span>
+                    <span class="page-path">Student Pages/.../student_dashboard.php</span>
+                    <span class="badge badge-student">New</span>
                 </a>
                 <a href="Student Pages/Student Profile Page/php/student_profile.php" class="page-link">
                     <span class="page-name">Student Profile</span>
@@ -195,10 +205,15 @@
                     <span class="page-path">Student Pages/.../edit_profile.php</span>
                     <span class="badge badge-student">Edit Profile</span>
                 </a>
-                <a href="Student Pages/Internship Search Page/php/internship_search.php" class="page-link">
-                    <span class="page-name">Internship Search</span>
-                    <span class="page-path">Student Pages/.../internship_search.php</span>
+                <a href="Student Pages/Student Internship Search Page New/php/internship_search.php" class="page-link">
+                    <span class="page-name">Internship Search (Redesigned)</span>
+                    <span class="page-path">Student Pages/Student Internship Search Page New/.../internship_search.php</span>
                     <span class="badge badge-student">Search</span>
+                </a>
+                <a href="Student Pages/Student Application Page New/php/application.php" class="page-link">
+                    <span class="page-name">Application Page (New)</span>
+                    <span class="page-path">Student Pages/Student Application Page New/.../application.php</span>
+                    <span class="badge badge-student">Applications</span>
                 </a>
 
             </div>

@@ -46,6 +46,7 @@ if(isset($_SESSION['email']))
         $middle_initial = $basic['middle_initial'] ?? "";
         $suffix = $basic['suffix'] ?? "";
         $suffix = $basic['suffix'] ?? "";
+        $verified_status = $basic['verified_status'] ?? "unverified"; // Added verified_status extraction
         $student_email_val = $basic['student_email'] ?? ""; // logical email
         $personal_email = $basic['personal_email'] ?? "";
         $phone_number = $basic['phone_number'] ?? "";
@@ -78,9 +79,7 @@ if(isset($_SESSION['email']))
         $technical_skills = implode(", ", $tech_arr);
         $soft_skills = implode(", ", $soft_arr);
     }
-}
-else
-{
+} else {
     header("Location: ../../../Landing Page/php/landing_page.php");
     exit();
 }
@@ -125,10 +124,7 @@ else
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Internship Search</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span>Help</span>
-                </a>
+
             </nav>
         </aside>
 
@@ -239,7 +235,34 @@ else
                             </div>
                             <div class="account-actions">
                                 <button class="btn-outline" data-modal-target="#changePasswordModal">Change Password</button>
-                                <button class="btn-danger">Verify Account</button>
+                                <?php
+                                $btn_html = '';
+                                
+                                if ($verified_status === 'verified') {
+                                    // Verified: Green button, Text "Verified"
+                                    $btn_html = '<button class="btn-primary-action" style="background-color: #2ecc71; border-color: #2ecc71; cursor: default;" onclick="return false;"><i class="fa-solid fa-check"></i> Verified</button>';
+                                
+                                } elseif ($verified_status === 'processing') {
+                                    // Processing: Button shows alert, Warning specific to processing
+                                    $warning_html = '<span style="color: #f1c40f; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-spinner fa-spin"></i> Verification is being processed</span>';
+                                    
+                                    // Keep button looking like "Verify Account" but click opens alert? Or maybe "Processing..." button?
+                                    // User said "show alert... and warning... should show that verification is being processed"
+                                    // Let's keep button as "Verify Account" but clicking it alerts.
+                                    $btn_html = '<button class="btn-danger" onclick="alert(\'Your verification is currently being processed. Please wait for header/admin approval.\')">Verify Account</button>';
+                                    $btn_html .= $warning_html;
+
+                                } else {
+                                    // Unverified: Red Button + "Verification Required"
+                                    $warning_html = '<span style="color: #e74c3c; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-triangle-exclamation"></i> Verification Required</span>';
+                                    
+                                    $btn_html = '<button class="btn-danger" onclick="window.location.href=\'../../Student Account Verification Page/php/verification.php\'">Verify Account</button>';
+                                    $btn_html .= $warning_html;
+                                }
+                                ?>
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <?php echo $btn_html; ?>
+                                </div>
 
                             </div>
                         </div>

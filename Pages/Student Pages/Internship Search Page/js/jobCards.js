@@ -106,7 +106,7 @@ export function initJobCards() {
         // Ensure no job card is auto-selected - show placeholder instead
         // Remove any active class from all cards
         jobCards.forEach(card => card.classList.remove('active'));
-        
+
         // Ensure placeholder is visible and details card is hidden
         const placeholder = document.getElementById('jobDetailsPlaceholder');
         const detailsCard = document.getElementById('jobDetailsCard');
@@ -153,8 +153,8 @@ export function initJobCards() {
         const elements = {
             'detail-title': data.title,
             'detail-company': data.company_name,
-            'detail-city': data.city,
-            'detail-province': data.province,
+            'detail-city': data.city || 'N/A',
+            'detail-province': data.province || 'N/A',
             'detail-work-type': data.work_type,
             'detail-category': data.category,
             'detail-posted-date': `Posted ${data.created_at} `,
@@ -181,18 +181,31 @@ export function initJobCards() {
             ).join('');
         }
 
+        // Build document requirements array from boolean flags
+        const documents = [];
+        if (data.resumeRequired || data.resume_required) {
+            documents.push('Resume (Required)');
+        }
+        if (data.coverLetterRequired || data.cover_letter_required) {
+            documents.push('Cover Letter (Required)');
+        }
+        // If neither is required explicitly, show optional message
+        if (documents.length === 0) {
+            documents.push('No specific documents required');
+        }
+
         // Update lists
         updateList('detail-responsibilities', data.responsibilities);
         updateList('detail-qualifications', data.qualifications);
         updateList('detail-skills', data.skills);
-        updateList('detail-documents', data.documents);
+        updateList('detail-documents', documents);
 
         // Add animation
         if (detailsCard) {
             detailsCard.classList.add('fade-in');
             setTimeout(() => detailsCard.classList.remove('fade-in'), 300);
         }
-        
+
         // Store job data for application form
         if (data.post_id) {
             sessionStorage.setItem('applicationJobId', data.post_id);
@@ -202,10 +215,12 @@ export function initJobCards() {
                 city: data.city,
                 province: data.province,
                 work_type: data.work_type,
-                category: data.category
+                category: data.category,
+                resume: data.resumeRequired || data.resume_required || false,
+                cover_letter: data.coverLetterRequired || data.cover_letter_required || false
             }));
         }
-        
+
         // Add Apply Now button handler
         const applyNowBtn = detailsCard?.querySelector('.btn-apply-now');
         if (applyNowBtn) {

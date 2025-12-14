@@ -68,6 +68,12 @@ try {
     $stmtEdu->execute(['stu_id' => $stu_id]);
     $education = $stmtEdu->fetchAll(PDO::FETCH_ASSOC);
 
+    // 7. Fetch Verification Request (1:Latest)
+    $queryVerify = "SELECT * FROM StudentVerificationRequests WHERE student_id = :stu_id ORDER BY request_id DESC LIMIT 1";
+    $stmtVerify = $conn->prepare($queryVerify);
+    $stmtVerify->execute(['stu_id' => $stu_id]);
+    $verification_request = $stmtVerify->fetch(PDO::FETCH_ASSOC);
+
     // Combine all data
     $full_data = [
         "basic_info" => $student_basic,
@@ -75,7 +81,8 @@ try {
         "skills" => $skills,
         "experience" => $experience,
         "education_history" => $education_history,
-        "education" => $education
+        "education" => $education,
+        "verification_request" => $verification_request ? $verification_request : [] // Latest verification request
     ];
 
     echo json_encode([
