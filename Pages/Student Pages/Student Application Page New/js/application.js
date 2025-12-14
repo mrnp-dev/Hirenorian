@@ -21,18 +21,84 @@ const appState = {
     }
 };
 
+// --- Modal Logic ---
+
+const modalState = {
+    onConfirm: null
+};
+
+function initModal() {
+    const modal = document.getElementById('appModal');
+    const cancelBtn = document.getElementById('modalCancelBtn');
+    const confirmBtn = document.getElementById('modalConfirmBtn');
+    const overlay = document.querySelector('.modal-overlay');
+
+    const closeModal = () => {
+        modal.classList.remove('active');
+        modalState.onConfirm = null;
+    };
+
+    [cancelBtn, overlay].forEach(el => el?.addEventListener('click', closeModal));
+
+    confirmBtn?.addEventListener('click', () => {
+        if (modalState.onConfirm) modalState.onConfirm();
+        closeModal();
+    });
+}
+
+function showModal(title, message, type = 'info', onConfirm = null) {
+    const modal = document.getElementById('appModal');
+    const titleEl = document.getElementById('modalTitle');
+    const msgEl = document.getElementById('modalMessage');
+    const iconEl = document.getElementById('modalIcon');
+    const cancelBtn = document.getElementById('modalCancelBtn');
+    const confirmBtn = document.getElementById('modalConfirmBtn');
+
+    titleEl.textContent = title;
+    msgEl.innerHTML = message; // Allow HTML in message
+
+    // Config based on type
+    if (type === 'confirm') {
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-question"></i>';
+        iconEl.style.color = 'var(--primary-maroon)';
+        iconEl.style.backgroundColor = '#eef2ff';
+        cancelBtn.style.display = 'block';
+        confirmBtn.textContent = 'Confirm';
+        modalState.onConfirm = onConfirm;
+    } else if (type === 'error') {
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+        iconEl.style.color = '#dc2626';
+        iconEl.style.backgroundColor = '#fef2f2';
+        cancelBtn.style.display = 'none';
+        confirmBtn.textContent = 'OK';
+        modalState.onConfirm = onConfirm; // Can define action on OK too
+    } else { // info/success
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+        iconEl.style.color = 'var(--primary-maroon)';
+        iconEl.style.backgroundColor = '#eef2ff';
+        cancelBtn.style.display = 'none';
+        confirmBtn.textContent = 'OK';
+        modalState.onConfirm = onConfirm;
+    }
+
+    modal.classList.add('active');
+}
+
 // --- Initialization ---
 
 document.addEventListener('DOMContentLoaded', async () => {
     console.log("[Application Debug] App initialized");
+
+    initModal(); // Init modal listeners
 
     // 1. Get Job ID from URL or Session
     const urlParams = new URLSearchParams(window.location.search);
     appState.jobId = urlParams.get('job_id') || sessionStorage.getItem('applicationJobId');
 
     if (!appState.jobId) {
-        alert("No Job ID found. Redirecting to search.");
-        window.location.href = '../../Student Internship Search Page New/php/internship_search.php';
+        showModal("Error", "No Job ID found. Redirecting to search.", "error", () => {
+            window.location.href = '../../Student Internship Search Page New/php/internship_search.php';
+        });
         return;
     }
 
@@ -166,9 +232,9 @@ function initNavigation() {
 
     // Sidebar Cancel
     document.getElementById('cancelAppBtn').addEventListener('click', () => {
-        if (confirm("Are you sure you want to cancel? Progress will be lost.")) {
+        showModal("Cancel Application?", "Are you sure you want to cancel? Any unsaved progress will be lost.", "confirm", () => {
             window.location.href = '../../Student Internship Search Page New/php/internship_search.php';
-        }
+        });
     });
 
     // Submit Button
@@ -199,13 +265,13 @@ function goToStep(stepNumber) {
 function validateStep(step) {
     if (step === 3) { // Resume Step
         if (appState.requirements.resume && !appState.files.resume) {
-            alert("Resume is required for this application.");
+            showModal("Required Document", "Please upload your <strong>Resume</strong> to proceed.", "error");
             return false;
         }
     }
     if (step === 4) { // Cover Letter
         if (appState.requirements.coverLetter && !appState.files.coverLetter) {
-            alert("Cover Letter is required.");
+            showModal("Required Document", "Please upload your <strong>Cover Letter</strong> to proceed.", "error");
             return false;
         }
     }
@@ -264,7 +330,7 @@ function handleFiles(files, type) {
 
     // Basic Validation
     if (file.size > 10 * 1024 * 1024) { // 10MB
-        alert("File is too large using 10MB max.");
+        showModal("File Too Large", "The selected file exceeds the 10MB limit. Please choose a smaller file.", "error");
         return;
     }
 
@@ -362,6 +428,7 @@ function populateReview() {
 
 async function submitApplication() {
     const btn = document.getElementById('submitAppBtn');
+    const originalText = btn.innerHTML; // Save text
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
     btn.disabled = true;
 
@@ -391,14 +458,14 @@ async function submitApplication() {
         if (result.status === 'success') {
             goToStep(6); // Success Step
         } else {
-            alert(`Application Failed: ${result.message}`);
-            btn.innerHTML = 'Submit Application';
+            showModal("Application Failed", result.message, "error");
+            btn.innerHTML = originalText;
             btn.disabled = false;
         }
     } catch (e) {
         console.error("[Application Debug] Submit Error:", e);
-        alert("An error occurred. Please try again.");
-        btn.innerHTML = 'Submit Application';
+        showModal("System Error", "An error occurred while submitting your application. Please try again later.", "error");
+        btn.innerHTML = originalText;
         btn.disabled = false;
     }
 }

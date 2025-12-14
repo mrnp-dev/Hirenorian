@@ -19,12 +19,13 @@ body {
 /* Sidebar */
 .app-sidebar {
     width: 300px;
-    background-color: white;
+    background-color: var(--primary-maroon);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     padding: 30px;
     flex-shrink: 0;
+    color: white;
 }
 
 .app-logo {
@@ -36,12 +37,17 @@ body {
 
 .app-logo img {
     height: 35px;
+    background: white;
+    /* Add bg for logo visibility */
+    border-radius: 50%;
+    /* Optional circle bg */
+    padding: 2px;
 }
 
 .app-logo span {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--primary-maroon);
+    color: white;
 }
 
 .progress-steps-container {
@@ -58,37 +64,38 @@ body {
     gap: 15px;
     padding: 10px;
     border-radius: 8px;
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.7);
     transition: all 0.3s ease;
 }
 
 .progress-step.active {
-    color: var(--primary-maroon);
-    background-color: var(--bg-hover);
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .progress-step.completed .step-icon {
-    background-color: var(--success-green);
-    border-color: var(--success-green);
-    color: white;
+    background-color: var(--accent-gold);
+    border-color: var(--accent-gold);
+    color: var(--primary-maroon);
 }
 
 .step-icon {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 2px solid #ddd;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     font-size: 0.9rem;
     flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .progress-step.active .step-icon {
-    border-color: var(--primary-maroon);
-    color: var(--primary-maroon);
+    border-color: white;
+    color: white;
 }
 
 .step-text h3 {
@@ -454,4 +461,100 @@ body {
 
 .doc-review-status.missing {
     color: var(--text-muted);
+}
+
+/* CUSTOM MODAL */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-modal.active {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    animation: fadeInOverlay 0.3s forwards;
+}
+
+.modal-container {
+    background: white;
+    width: 90%;
+    max-width: 400px;
+    border-radius: 16px;
+    padding: 25px;
+    position: relative;
+    z-index: 2001;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9);
+    opacity: 0;
+    animation: popInModal 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes fadeInOverlay {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popInModal {
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    margin-bottom: 15px;
+}
+
+.modal-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #eef2ff;
+    color: var(--primary-maroon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 15px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-dark);
+}
+
+.modal-body {
+    margin-bottom: 25px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-footer button {
+    min-width: 100px;
 }

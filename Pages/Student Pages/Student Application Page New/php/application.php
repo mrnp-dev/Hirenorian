@@ -219,6 +219,26 @@ if(!isset($_SESSION['email'])) {
         </main>
     </div>
 
+    <!-- Custom Modal -->
+    <div class="custom-modal" id="appModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <div class="modal-icon" id="modalIcon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+                <h3 id="modalTitle">Notification</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage">Message goes here...</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+                <button class="btn-primary" id="modalConfirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Initialization Data -->
     <script>
         const USER_EMAIL = '<?php echo addslashes($_SESSION['email']); ?>';
