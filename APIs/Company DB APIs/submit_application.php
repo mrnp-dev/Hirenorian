@@ -2,7 +2,14 @@
 // submit_application.php
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST, OPTIONS"); // Allow OPTIONS
+header("Access-Control-Allow-Headers: Content-Type"); // Allow Content-Type
+
+// Handle CORS Preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 // Include database connection
 include 'db_con.php';
@@ -11,10 +18,25 @@ $response = array();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
+    // Check for POST max size overflow
+    if (empty($_POST) && empty($_FILES) && $_SERVER['CONTENT_LENGTH'] > 0) {
+        $response['status'] = 'error';
+        $response['message'] = 'The uploaded file exceeds the post_max_size directive in php.ini.';
+        $response['debug_content_length'] = $_SERVER['CONTENT_LENGTH'];
+        echo json_encode($response);
+        exit();
+    }
+
     // Validate required POST data
     if (!isset($_POST['post_id']) || !isset($_POST['student_id']) || !isset($_POST['document_type'])) {
         $response['status'] = 'error';
         $response['message'] = 'Missing required fields: post_id, student_id, or document_type.';
+        
+        // Debugging info
+        $response['debug_post'] = $_POST;
+        $response['debug_files'] = $_FILES;
+        $response['debug_content_type'] = $_SERVER['CONTENT_TYPE'] ?? 'Not Set';
+        
         echo json_encode($response);
         exit();
     }

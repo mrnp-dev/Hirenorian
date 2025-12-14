@@ -433,10 +433,19 @@ async function submitApplication() {
     btn.disabled = true;
 
     console.log("[Application Debug] Submitting application...");
+    console.log("[Application Debug] Student ID Check:", appState.studentDetails?.basic_info?.student_id);
+    console.log("[Application Debug] Job ID Check:", appState.jobId);
 
     const formData = new FormData();
     formData.append('post_id', appState.jobId);
-    formData.append('student_id', appState.studentDetails.basic_info.student_id);
+
+    // Safety check for student ID
+    if (appState.studentDetails?.basic_info?.student_id) {
+        formData.append('student_id', appState.studentDetails.basic_info.student_id);
+    } else {
+        console.error("[Application Debug] MISSING STUDENT ID in State!");
+    }
+
     formData.append('document_type', 'Standard Application'); // Default type
 
     if (appState.files.resume) {
@@ -444,6 +453,11 @@ async function submitApplication() {
     }
     if (appState.files.coverLetter) {
         formData.append('cover_letter', appState.files.coverLetter);
+    }
+
+    // Debug FormData content
+    for (var pair of formData.entries()) {
+        console.log(`[Application Debug] Form Data: ${pair[0]} = ${pair[1]}`);
     }
 
     try {
