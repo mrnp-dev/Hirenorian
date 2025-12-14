@@ -57,7 +57,7 @@ async function fetchJobDetails(id) {
         console.log(`[Application Debug] Fetching details for Job ${id}...`);
         const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_job_details.php', {
             method: 'POST',
-            body: JSON.stringify({ post_id: id })
+            body: JSON.stringify({ job_id: id })
         });
         const result = await response.json();
 
