@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start buffering to catch any included noise
 // upload_verification_docs.php
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: *");
@@ -135,6 +136,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute($params);
             }
 
+            // Update Students table verified_status to 'processing'
+            $update_student_sql = "UPDATE Students SET verified_status = 'processing' WHERE student_id = :student_id";
+            $stmt_student = $conn->prepare($update_student_sql);
+            $stmt_student->execute([':student_id' => $student_id]);
+
             $response['status'] = 'success';
             $response['message'] = 'Verification documents uploaded successfully.';
             if (!empty($upload_errors)) {
@@ -156,5 +162,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response['message'] = 'Invalid request method.';
 }
 
+ob_end_clean(); // Clean any previous output (warnings, whitespace)
 echo json_encode($response);
-?>
+exit();

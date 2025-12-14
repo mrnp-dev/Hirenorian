@@ -46,6 +46,7 @@ if(isset($_SESSION['email']))
         $middle_initial = $basic['middle_initial'] ?? "";
         $suffix = $basic['suffix'] ?? "";
         $suffix = $basic['suffix'] ?? "";
+        $verified_status = $basic['verified_status'] ?? "unverified"; // Added verified_status extraction
         $student_email_val = $basic['student_email'] ?? ""; // logical email
         $personal_email = $basic['personal_email'] ?? "";
         $phone_number = $basic['phone_number'] ?? "";
@@ -234,7 +235,29 @@ if(isset($_SESSION['email']))
                             </div>
                             <div class="account-actions">
                                 <button class="btn-outline" data-modal-target="#changePasswordModal">Change Password</button>
-                                <button class="btn-danger" onclick="window.location.href='../../Student Account Verification Page/php/verification.php'">Verify Account</button>
+                                <?php
+                                $status_label = '';
+                                $btn_attr = "onclick=\"window.location.href='../../Student Account Verification Page/php/verification.php'\"";
+                                $btn_class = "btn-danger";
+                                $btn_text = "Verify Account";
+
+                                if ($verified_status === 'verified') {
+                                    $status_label = '<span style="color: #2ecc71; font-weight: bold; margin-right: 10px;"><i class="fa-solid fa-circle-check"></i> Verified</span>';
+                                    $btn_attr = "onclick=\"alert('Your account is already verified! You have full access to all features.')\"";
+                                    $btn_class = "btn-secondary"; // Grey out or different style
+                                    $btn_text = "Account Verified";
+                                    // Or disable it: $btn_attr = "disabled";
+                                } elseif ($verified_status === 'processing') {
+                                    $status_label = '<span style="color: #f1c40f; font-weight: bold; margin-right: 10px;"><i class="fa-solid fa-spinner fa-spin"></i> Processing</span>';
+                                    $btn_attr = "onclick=\"alert('Your verification is currently being processed. Please wait for specific time for approval.')\"";
+                                    $btn_class = "btn-secondary";
+                                    $btn_text = "Processing...";
+                                }
+                                ?>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <?php echo $status_label; ?>
+                                    <button class="<?php echo $btn_class; ?>" <?php echo $btn_attr; ?>><?php echo $btn_text; ?></button>
+                                </div>
 
                             </div>
                         </div>
