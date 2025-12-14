@@ -34,11 +34,22 @@ if (isset($_SESSION['email'])) {
         $company_name = $company['company_name'];
         $company_email = $company['email'];
 
+        // Check for boolean true, string "true", or integer 1
+        $verification_val = isset($data['company']['verification']) ? $data['company']['verification'] : false;
+        $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
+
         // --- Images (Icons) ---
-        $company_icon_url = "https://via.placeholder.com/40"; // Default
+        $company_icon_url = "";
         if (!empty($data['icons'])) {
             $url = $data['icons'][0]['icon_url'];
             $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
+        }
+
+        // Default Icon Logic
+        $is_default_icon = false;
+        if (empty($company_icon_url)) {
+            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+            $is_default_icon = true;
         }
     } else {
         $error_message = $data['message'];
@@ -98,6 +109,12 @@ if (isset($_SESSION['email'])) {
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="../../Help Page/php/help.php" class="nav-link">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span class="link-text">Help</span>
+                    </a>
+                </li>
             </ul>
         </aside>
 
@@ -107,9 +124,18 @@ if (isset($_SESSION['email'])) {
             <header class="top-bar">
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
-                        <div class="user-avatar">
+                        <div class="user-avatar-wrapper" style="position: relative; display: inline-block;">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                class="user-avatar <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <?php if ($is_verified): ?>
+                                <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981" alt="Verified"
+                                    class="header-verification-badge verified" title="Verified Account">
+                            <?php else: ?>
+                                <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                    alt="Unverified" class="header-verification-badge unverified"
+                                    title="Unverified Account">
+                            <?php endif; ?>
                         </div>
                         <span class="user-name"><?php echo $company_name; ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
@@ -136,10 +162,20 @@ if (isset($_SESSION['email'])) {
                                 <input type="text" id="jobSearchInput" class="job-search-input"
                                     placeholder="Search job titles...">
                             </div>
-                            <button class="btn-add-job" id="btnAddJob">
-                                <i class="fa-solid fa-plus"></i>
-                                Add Job Posting
-                            </button>
+                            <?php if ($is_verified): ?>
+                                <button class="btn-add-job" id="btnAddJob">
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add Job Posting
+                                </button>
+                            <?php else: ?>
+                                <button class="btn-add-job disabled-unverified" id="btnAddJobUnverified"
+                                    onclick="ToastSystem.show('You must verify your account before posting a job.', 'warning');"
+                                    style="opacity: 0.6; cursor: not-allowed; background-color: #95a5a6;"
+                                    title="Account verification required">
+                                    <i class="fa-solid fa-lock"></i>
+                                    Post a Job (Locked)
+                                </button>
+                            <?php endif; ?>
                         </div>
 
                         <!-- Job Cards Grid -->
@@ -405,10 +441,16 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="input-group">
                         <label for="workTypeSelect">Type of work</label>
-                        <select id="workTypeSelect" name="workType" required>
-                            <option value="">Select work type...</option>
-                            <!-- Populated by JavaScript -->
-                        </select>
+                        <div class="cascading-dropdown" id="workTypeDropdown">
+                            <input type="text" class="dropdown-display" id="workTypeDisplay"
+                                placeholder="Select work type..." readonly>
+                            <div class="dropdown-menu" id="workTypeDropdownMenu">
+                                <div class="simple-dropdown-item" data-value="Full-time">Full-time</div>
+                                <div class="simple-dropdown-item" data-value="Part-time">Part-time</div>
+                                <div class="simple-dropdown-item" data-value="Internship">Internship</div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="workTypeInput" name="workType" required>
                         <p class="error-message" id="workTypeError"></p>
                     </div>
                     <div class="input-group">

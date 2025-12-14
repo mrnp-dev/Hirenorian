@@ -76,6 +76,19 @@ function saveProfileChanges() {
     if (basicInfo.industry !== document.getElementById('viewCompanyIndustry').textContent) hasChanges = true;
     if (basicInfo.address !== document.getElementById('viewContactLocation').textContent) hasChanges = true;
 
+    // Validation: Phone (Optional but if present must be valid)
+    const originalPhone = document.getElementById('viewContactPhone').textContent;
+    const currentPhoneVal = basicInfo.phoneNumber || "No phone number";
+    if (basicInfo.phoneNumber && !PHONE_REGEX.test(basicInfo.phoneNumber)) {
+        // If invalid, revert or warn? For now let's revert to original if invalid format
+        // Ideally we show toast and stop, but fitting into existing pattern:
+        document.getElementById('editContactPhone').value = originalPhone === "No phone number" ? "" : originalPhone;
+        basicInfo.phoneNumber = originalPhone === "No phone number" ? "" : originalPhone;
+        // Optionally alert user?
+        ToastSystem.show('Invalid phone number format. Reverted to previous.', 'warning');
+    }
+    if (currentPhoneVal !== originalPhone) hasChanges = true;
+
     // Check details changes
     if (details.tagline !== document.getElementById('viewCompanyTagline').textContent) hasChanges = true;
 
@@ -162,9 +175,10 @@ function saveProfileChanges() {
  */
 function updateViewModeUI(basicInfo, details) {
     document.getElementById('viewCompanyName').textContent = basicInfo.name;
-    document.getElementById('viewCompanyIndustry').textContent = basicInfo.industry;
+    document.getElementById('viewCompanyIndustry').innerHTML = `<i class="fa-solid fa-briefcase"></i> ${basicInfo.industry}`;
     document.getElementById('viewContactEmail').textContent = basicInfo.email;
     document.getElementById('viewContactLocation').textContent = basicInfo.address;
+    document.getElementById('viewContactPhone').textContent = basicInfo.phoneNumber || "No phone number";
 
     document.getElementById('viewCompanyTagline').textContent = details.tagline || "No tagline provided";
     document.getElementById('viewAboutUsText').textContent = details.aboutUs || "No about us provided";
@@ -234,7 +248,7 @@ function getCompanyBasicInfo() {
         industry: document.getElementById('editCompanyIndustry').value,
         email: document.getElementById('editContactEmail').value.trim(),
         address: document.getElementById('editContactLocation').value.trim(),
-        phoneNumber: "" // Placeholder
+        phoneNumber: document.getElementById('editContactPhone').value.trim()
     };
 }
 
@@ -339,22 +353,58 @@ function resetImagePreview() {
 // File Selection
 document.addEventListener('DOMContentLoaded', function () {
     const fileInput = document.getElementById('imageFileInput');
+    const saveBtn = document.querySelector('#imageUploadModal .btn-save');
 
     fileInput?.addEventListener('change', function (e) {
         const file = e.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const preview = document.getElementById('imagePreview');
-                const placeholder = document.getElementById('uploadPlaceholder');
-                preview.src = event.target.result;
-                preview.style.display = 'block';
-                placeholder.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
+        const preview = document.getElementById('imagePreview');
+        const placeholder = document.getElementById('uploadPlaceholder');
+
+        // Reset check
+        if (!file) {
+            saveBtn.disabled = true;
+            return;
         }
+
+        // Validation Constants
+        const MAX_SIZE_MB = 2; // 2MB Limit
+        const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
+        const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+        // Check File Type
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            ToastSystem.show(`Invalid file type: ${file.name}. Please upload a PNG, JPG, GIF, or WEBP image.`, 'error');
+            fileInput.value = ''; // Clear input
+            saveBtn.disabled = true;
+            preview.style.display = 'none';
+            placeholder.style.display = 'flex';
+            return;
+        }
+
+        // Check File Size
+        if (file.size > MAX_SIZE_BYTES) {
+            ToastSystem.show(`File too large: ${file.name}. Max size is ${MAX_SIZE_MB}MB.`, 'error');
+            fileInput.value = ''; // Clear input
+            saveBtn.disabled = true;
+            preview.style.display = 'none';
+            placeholder.style.display = 'flex';
+            return;
+        }
+
+        // If valid
+        saveBtn.disabled = false;
+
+        // Preview Image
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.style.display = 'block';
+            placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
     });
 });
+
 
 /**
  * Updates the image in the EDIT container.
@@ -446,13 +496,26 @@ function openAddModal(section) {
     }
 }
 
-function editListItem(itemId, section) {
+window.editListItem = function (itemId, section) {
     currentEditItem = itemId;
     currentEditSection = section;
 
     // Use currentEditItem to find the element in the EDIT list
-    const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
-    if (!item) return;
+    let item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
+
+    // Fallback if not found in container
+    if (!item) {
+        console.warn(`Item ${itemId} not found in edit container, trying loose search`);
+        const looseItem = document.querySelector(`[data-id="${itemId}"]`);
+        if (looseItem && looseItem.closest('#edit-profile-container')) {
+            item = looseItem;
+        }
+    }
+
+    if (!item) {
+        console.error(`Item ${itemId} not found for editing`);
+        return;
+    }
 
     if (section === 'perks') {
         const text = item.querySelector('span').textContent.trim();
@@ -481,16 +544,90 @@ function editListItem(itemId, section) {
     }
 }
 
-function deleteListItem(itemId, section) {
-    if (!confirm('Are you sure you want to delete this item?')) return;
+// Custom Confirmation Modal Helper
+function showConfirmationModal(title, message, type, onConfirm) {
+    const overlay = document.getElementById('confirmationModalOverlay');
+    const titleEl = document.getElementById('confirmationTitle');
+    const messageEl = document.getElementById('confirmationMessage');
+    const modalEl = document.querySelector('.confirmation-modal');
+    const iconEl = document.getElementById('confirmationIcon');
+    const btnCancel = document.getElementById('btnConfirmCancel');
+    const btnProceed = document.getElementById('btnConfirmProceed');
 
-    // Find item to delete in Edit Container
-    const item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
-    if (item) {
-        item.remove();
-        ToastSystem.show('Item deleted', 'info');
+    if (!overlay) {
+        console.error('Confirmation modal overlay not found!');
+        if (confirm(message)) onConfirm(); // Fallback
+        return;
     }
+
+    // Reset state
+    modalEl.classList.remove('danger');
+
+    // Remove old event listeners by cloning
+    const newBtnProceed = btnProceed.cloneNode(true);
+    btnProceed.parentNode.replaceChild(newBtnProceed, btnProceed);
+
+    const newBtnCancel = btnCancel.cloneNode(true);
+    btnCancel.parentNode.replaceChild(newBtnCancel, btnCancel);
+
+    // Set content
+    titleEl.textContent = title;
+    messageEl.innerHTML = message.replace(/\n/g, '<br>');
+
+    // Handle type
+    if (type === 'danger') {
+        modalEl.classList.add('danger');
+        iconEl.className = 'fa-solid fa-trash-can';
+    } else {
+        iconEl.className = 'fa-solid fa-triangle-exclamation';
+    }
+
+    // Show modal
+    overlay.style.display = 'flex';
+
+    // Handlers
+    const close = () => { overlay.style.display = 'none'; };
+
+    newBtnCancel.addEventListener('click', close);
+    newBtnProceed.addEventListener('click', () => {
+        close();
+        onConfirm();
+    });
 }
+
+window.deleteListItem = function (itemId, section) {
+    console.log(`Attempting to delete item: ${itemId} from section: ${section}`);
+
+    showConfirmationModal(
+        'Delete Item',
+        'Are you sure you want to delete this item? This action cannot be undone.',
+        'danger',
+        () => {
+            // Find item to delete in Edit Container
+            let item = document.querySelector(`#edit-profile-container [data-id="${itemId}"]`);
+
+            if (item) {
+                console.log('Item found, removing...', item);
+                item.remove();
+
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Item removed. Click "Save Changes" to apply.', 'info');
+                }
+            } else {
+                console.error(`Item with data-id="${itemId}" not found in #edit-profile-container`);
+                // Fallback: Try searching without container restriction
+                const looseItem = document.querySelector(`[data-id="${itemId}"]`);
+                if (looseItem && looseItem.closest('#edit-profile-container')) {
+                    looseItem.remove();
+                    console.log('Item found with loose search and removed');
+                    if (typeof ToastSystem !== 'undefined') {
+                        ToastSystem.show('Item removed. Click "Save Changes" to apply.', 'info');
+                    }
+                }
+            }
+        }
+    );
+};
 
 // ========== SAVE LIST ITEMS (INTERNAL TO EDIT CONTAINER) ==========
 
@@ -751,25 +888,22 @@ document.addEventListener('DOMContentLoaded', function () {
     loadVerificationStatus();
 });
 
-// --- Change Password Modal ---
+// --- Change Password (Used Reuse Reset Password UI) ---
 function openChangePasswordModal() {
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmPassword').value = '';
-    // Reset errors/hints
-    document.querySelectorAll('.error-text').forEach(el => el.classList.remove('show'));
-    const strengthHint = document.getElementById('passwordStrengthHint');
-    strengthHint.textContent = "Min 12 chars, Medium strength required.";
-    strengthHint.style.color = "#666";
-    strengthHint.style.display = "block"; // Ensure it is visible initially
-    // Reset visibility
-    document.querySelectorAll('.toggle-password').forEach(icon => {
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
-    });
-    document.querySelectorAll('.password-wrapper input').forEach(inp => inp.type = 'password');
+    // 1. Get the current user email (from the profile view)
+    const email = document.getElementById('viewContactEmail').textContent.trim();
 
-    showModal('changePasswordModal');
+    // 2. Open the Reset Password UI
+    openResetPasswordUI();
+
+    // 3. Pre-fill the email and lock it
+    const emailInput = document.getElementById('reset-email-input');
+    if (emailInput) {
+        emailInput.value = email;
+        emailInput.readOnly = true; // Prevent editing for security in this context
+        emailInput.style.backgroundColor = "gray";
+        emailInput.style.cursor = "not-allowed";
+    }
 }
 
 function closeChangePasswordModal() {
@@ -843,11 +977,162 @@ function openVerifyAccountModal() {
     document.getElementById('docDole').value = '';
     document.getElementById('docBir').value = '';
     document.getElementById('docMayor').value = '';
+
+    // Clear previous file name displays
+    const labels = ['docPhilJobNet', 'docDole', 'docBir', 'docMayor'];
+    labels.forEach(id => {
+        const label = document.querySelector(`label[for="${id}"]`);
+        const existingSpan = label.querySelector('.current-file');
+        if (existingSpan) existingSpan.remove();
+
+        // Clear input value to ensure change event fires if selecting same file again after error
+        document.getElementById(id).value = '';
+    });
+
+    // Attach validation listeners if not already attached
+    if (!window.hasAttachedDocValidators) {
+        const fileInputs = ['docPhilJobNet', 'docDole', 'docBir', 'docMayor'];
+        fileInputs.forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('change', function () {
+                    if (this.files && this.files[0]) {
+                        const file = this.files[0];
+                        // Validate Size (Max 5MB)
+                        const maxSize = 5 * 1024 * 1024;
+                        if (file.size > maxSize) {
+                            ToastSystem.show(`File "${file.name}" exceeds the 5MB limit.`, 'error');
+                            this.value = ''; // Clear input
+                            return;
+                        }
+
+                        // Validate Type
+                        const allowedTypes = [
+                            'application/pdf',
+                            'application/msword',
+                            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                            'image/jpeg',
+                            'image/png',
+                            'text/plain'
+                        ];
+                        // Also check extension as fallback
+                        const ext = file.name.split('.').pop().toLowerCase();
+                        const allowedExts = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'txt'];
+
+                        if (!allowedTypes.includes(file.type) && !allowedExts.includes(ext)) {
+                            ToastSystem.show(`Invalid file type: "${file.name}". Allowed: PDF, DOC, DOCX, JPG, PNG, TXT.`, 'error');
+                            this.value = '';
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+        window.hasAttachedDocValidators = true;
+    }
+
     showModal('verifyAccountModal');
+
+    // Fetch existing documents
+    const companyId = document.getElementById('company_id').value;
+    const companyEmail = document.getElementById('company_email').value;
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_company_documents.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ company_id: companyId, email: companyEmail })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success' && data.data) {
+                const docs = data.data;
+                // Track existing documents for validation logic
+                let existingCount = 0;
+                if (docs.philjobnet_path) existingCount++;
+                if (docs.dole_path) existingCount++;
+                if (docs.bir_path) existingCount++;
+                if (docs.mayor_permit_path) existingCount++;
+
+                window.existingDocCount = existingCount; // Store globally/on window for submit check
+
+                // Helper to append file name
+                const showFileName = (inputId, fileName) => {
+                    if (!fileName) return; // fileName can be null
+                    const label = document.querySelector(`label[for="${inputId}"]`);
+                    if (label) {
+                        let span = label.querySelector('.current-file');
+                        if (!span) {
+                            span = document.createElement('span');
+                            span.className = 'current-file';
+                            span.style.color = '#2ecc71';
+                            span.style.fontSize = '0.85em';
+                            span.style.marginLeft = '10px';
+                            label.appendChild(span);
+                        }
+                        span.innerHTML = `<i class="fa-solid fa-file-check"></i> Current: ${fileName}`;
+                    }
+                };
+
+                showFileName('docPhilJobNet', docs.philjobnet_path);
+                showFileName('docDole', docs.dole_path); // DB column maps to 'dole_path'
+                showFileName('docBir', docs.bir_path);
+                showFileName('docMayor', docs.mayor_permit_path);
+            } else {
+                window.existingDocCount = 0; // No data means 0 docs
+            }
+        })
+        .catch(err => {
+            console.error("Error fetching docs:", err);
+            window.existingDocCount = 0;
+        });
 }
 
 function closeVerifyAccountModal() {
     closeModal('verifyAccountModal');
+}
+
+
+function openVerifyAccountModal() {
+    updateVerificationRequirement(); // Update label before showing
+    // Assuming showModal is the global helper
+    const modal = document.getElementById('verifyAccountModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        // Trigger generic modal logic if exists, e.g. animation
+        modal.classList.add('show');
+    }
+}
+
+
+function updateVerificationRequirement() {
+    const typeInput = document.getElementById('company_type');
+    const rawType = typeInput ? typeInput.value : '';
+    // Normalize spaces and trim
+    const type = rawType.replace(/\s+/g, ' ').trim().toLowerCase();
+
+    const group = document.getElementById('dynamicDocGroup');
+    const label = document.getElementById('labelDynamicDoc');
+
+    // Map types to labels
+    const map = {
+        'single proprietorship': 'Department of Trade and Industry (DTI) Registration',
+        'partnership or corporation': 'Securities and Exchange Commission (SEC) Registration',
+        'corporation': 'Securities and Exchange Commission (SEC) Registration', // Legacy
+        'partnership': 'Securities and Exchange Commission (SEC) Registration', // Legacy
+        'cooperatives': 'Cooperative Development Authority (CDA) Certificate',
+        'private employment agency (pea)': 'Valid DOLE-issued License',
+        'contractors and subcontractors': 'Valid registration from DOLE',
+        'overseas recruitment and placement agency': 'Department of Migrant Workers (DMW) License'
+    };
+
+    if (map[type]) {
+        label.textContent = map[type];
+        group.style.display = 'block';
+    } else {
+        group.style.display = 'none';
+    }
 }
 
 function submitVerifyDocuments() {
@@ -855,17 +1140,140 @@ function submitVerifyDocuments() {
     const doc2 = document.getElementById('docDole').files[0];
     const doc3 = document.getElementById('docBir').files[0];
     const doc4 = document.getElementById('docMayor').files[0];
+    const doc5 = document.getElementById('docDynamic').files[0];
 
-    if (!doc1 || !doc2 || !doc3 || !doc4) {
-        return ToastSystem.show('Please attach all 4 required documents', 'warning');
+    const companyId = document.getElementById('company_id').value;
+    const companyEmail = document.getElementById('company_email').value;
+
+    // Check at least one file
+    if (!doc1 && !doc2 && !doc3 && !doc4 && !doc5) {
+        return ToastSystem.show('Please select at least one document to upload.', 'warning');
     }
 
-    // Backend Logic Placeholder
-    console.log("Verify Account Documents:", { doc1, doc2, doc3, doc4 });
-    // TODO: Implement backend call here (FormData upload)
+    const formData = new FormData();
+    formData.append('company_id', companyId);
+    formData.append('email', companyEmail);
+    if (doc1) formData.append('docPhilJobNet', doc1);
+    if (doc2) formData.append('docDole', doc2);
+    if (doc3) formData.append('docBir', doc3);
+    if (doc4) formData.append('docMayor', doc4);
 
-    ToastSystem.show('Documents submitted for verification', 'success');
-    closeVerifyAccountModal();
+    // Dynamic Doc Logic
+    if (doc5) {
+        const typeInput = document.getElementById('company_type');
+        const type = typeInput ? typeInput.value.trim().toLowerCase() : '';
+        let key = '';
+
+        if (type === 'single proprietorship') key = 'docDti';
+        else if (type === 'partnership or corporation' || type === 'corporation' || type === 'partnership') key = 'docSec';
+        else if (type === 'cooperatives') key = 'docCda';
+        else if (type === 'private employment agency (pea)') key = 'docPea';
+        else if (type === 'contractors and subcontractors') key = 'docContractor';
+        else if (type === 'overseas recruitment and placement agency') key = 'docDmw';
+
+        if (key) {
+            formData.append(key, doc5);
+        }
+    }
+
+    const submitBtn = document.querySelector('#verifyAccountModal .btn-save');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Uploading...';
+    submitBtn.disabled = true;
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/upload_company_documents.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                ToastSystem.show(data.message, 'success');
+                closeVerifyAccountModal();
+                // Optionally refresh the "verified" status on UI if the logical business rule implies manual verification by admin later.
+            } else {
+                ToastSystem.show(data.message || "Upload failed", 'error');
+                if (data.errors) {
+                    console.error("Upload errors:", data.errors);
+                }
+            }
+        })
+        .catch(err => {
+            console.error("Upload error:", err);
+            ToastSystem.show("Network error during upload", 'error');
+        })
+        .finally(() => {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
+}
+
+function handleImageUpload(fileInput, targetImageId, uploadUrl, type, labelId) {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file); // Assuming the backend expects 'image' as the file field name
+    formData.append('company_id', document.getElementById('company_id').value);
+    formData.append('email', document.getElementById('company_email').value); // Fallback
+
+    const targetImage = document.getElementById(targetImageId);
+    const label = document.getElementById(labelId);
+
+    // Show Loading State
+    const originalLabel = label.innerHTML;
+    label.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+    label.style.pointerEvents = 'none';
+
+    fetch(uploadUrl, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Update the image source with a timestamp to force refresh
+                const newSrc = data.url + '?t=' + new Date().getTime();
+                targetImage.src = newSrc;
+
+                // Sync Header Icon if we just updated the Company Icon
+                if (type === 'icon') {
+                    // Try to find header avatar in Dashboard/Profile layouts
+                    const headerAvatar = document.querySelector('.user-avatar img');
+                    if (headerAvatar) {
+                        headerAvatar.src = newSrc;
+                        // Ensure the default-icon class is removed if it was there
+                        headerAvatar.classList.remove('default-icon');
+                    }
+                    // Also update the hidden input or state if necessary
+                }
+
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Image updated successfully!', 'success');
+                } else {
+                    alert('Image updated successfully!');
+                }
+            } else {
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show('Upload failed: ' + data.message, 'error');
+                } else {
+                    alert('Upload failed: ' + data.message);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (typeof ToastSystem !== 'undefined') {
+                ToastSystem.show('An error occurred during upload.', 'error');
+            } else {
+                alert('An error occurred during upload.');
+            }
+        })
+        .finally(() => {
+            // Restore Label
+            label.innerHTML = originalLabel;
+            label.style.pointerEvents = 'auto';
+        });
 }
 
 /**

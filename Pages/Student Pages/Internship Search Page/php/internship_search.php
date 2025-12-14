@@ -89,25 +89,37 @@ if(!isset($_SESSION['email'])) {
                 <div class="filter-bar">
                     <div class="filter-group search-input">
                         <i class="fa-solid fa-magnifying-glass"></i>
-                        <input type="text" placeholder="Job Title, Keywords...">
+                        <input type="text" id="searchInput" placeholder="Search for job title, company...">
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group location-filter-wrapper">
                         <i class="fa-solid fa-location-dot"></i>
-                        <select>
-                            <option value="">Location: All</option>
-                            <option value="pampanga">Pampanga</option>
-                            <option value="manila">Manila</option>
-                            <option value="remote">Remote</option>
-                        </select>
+                        <div class="location-filter">
+                            <button type="button" class="location-trigger" id="locationTrigger">
+                                <span>Location: All</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="location-dropdown" id="locationDropdown">
+                                <div class="location-option all-option" data-value="">Location: All</div>
+                                <!-- Provinces will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <input type="hidden" name="location" id="locationValue" value="">
                     </div>
-                    <div class="filter-group">
+                    <div class="filter-group type-filter-wrapper">
                         <i class="fa-solid fa-briefcase"></i>
-                        <select>
-                            <option value="">Type: All</option>
-                            <option value="full-time">Full Time</option>
-                            <option value="part-time">Part Time</option>
-                            <option value="internship">Internship</option>
-                        </select>
+                        <div class="type-filter">
+                            <button type="button" class="type-trigger" id="typeTrigger">
+                                <span>Type: All</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+                            <div class="type-dropdown" id="typeDropdown">
+                                <div class="type-option" data-value="">Type: All</div>
+                                <div class="type-option" data-value="full-time">Full Time</div>
+                                <div class="type-option" data-value="part-time">Part Time</div>
+                                <div class="type-option" data-value="internship">Internship</div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="type" id="typeValue" value="">
                     </div>
                     <button class="btn-apply-filter">Apply Filter</button>
                 </div>
@@ -122,86 +134,47 @@ if(!isset($_SESSION['email'])) {
                             <button class="btn-more-filters">More Filters</button>
                         </div>
 
+                        <!-- Active Filters Display -->
+                        <div class="active-filters-display" id="activeFiltersDisplay" style="display: none;">
+                            <div class="active-filters-header">
+                                <span class="active-filters-title">
+                                    <i class="fa-solid fa-filter"></i> Active Filters
+                                </span>
+                                <button class="btn-clear-all-filters" id="btnClearAllFilters">
+                                    <i class="fa-solid fa-xmark"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="active-filters-tags" id="activeFiltersTags">
+                                <!-- Active filter tags will be inserted here -->
+                            </div>
+                        </div>
+
                         <div class="job-list">
-                            <!-- Job Card 1 (Active) -->
-                            <div class="job-card active" data-id="1">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Junior UI/UX Designer</h3>
-                                        <p class="company-name">Cloudstaff</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">We are looking for a young talented designer to help us create stunning websites and apps.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Full Time</span>
-                                    <span class="tag">Design</span>
-                                    <span class="tag">Remote</span>
-                                </div>
-                            </div>
-
-                            <!-- Job Card 2 -->
-                            <div class="job-card" data-id="2">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/google.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Software Engineer Intern</h3>
-                                        <p class="company-name">Google</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">Join our engineering team to build scalable software solutions and learn from the best.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Internship</span>
-                                    <span class="tag">Engineering</span>
-                                    <span class="tag">Hybrid</span>
-                                </div>
-                            </div>
-
-                            <!-- Job Card 3 -->
-                            <div class="job-card" data-id="3">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/samsung.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Data Analyst</h3>
-                                        <p class="company-name">Samsung</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">Analyze complex datasets to drive business decisions and improve product performance.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Full Time</span>
-                                    <span class="tag">Data</span>
-                                    <span class="tag">On-site</span>
-                                </div>
-                            </div>
-
-                             <!-- Job Card 4 -->
-                             <div class="job-card" data-id="4">
-                                <div class="job-card-header">
-                                    <img src="../../../Landing Page/Images/hyundai.jpg" alt="Logo" class="company-logo">
-                                    <div class="job-info">
-                                        <h3>Mechanical Engineering Intern</h3>
-                                        <p class="company-name">Hyundai</p>
-                                    </div>
-                                </div>
-                                <p class="job-snippet">Assist in the design and testing of automotive components in a state-of-the-art facility.</p>
-                                <div class="job-tags">
-                                    <span class="tag">Internship</span>
-                                    <span class="tag">Engineering</span>
-                                    <span class="tag">On-site</span>
-                                </div>
-                            </div>
+                            <!-- Jobs will be loaded dynamically here -->
                         </div>
                     </div>
 
                     <!-- Right Column: Job Details Panel -->
                     <div class="job-details-section">
-                        <div class="job-details-card">
+                        <!-- Placeholder State (Shown when no job is selected) -->
+                        <div class="job-details-placeholder" id="jobDetailsPlaceholder">
+                            <i class="fa-regular fa-folder-open"></i>
+                            <h3>Select a Job</h3>
+                            <p>Click on a job card to view full details</p>
+                        </div>
+
+                        <!-- Job Details Card (Hidden by default) -->
+                        <div class="job-details-card" id="jobDetailsCard" style="display: none;">
                             <div class="details-header">
                                 <div class="header-main">
-                                    <img src="../../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Logo" class="details-logo" id="detail-logo">
+                                    <img src="" alt="Logo" class="details-logo" id="detail-logo">
                                     <div class="header-info">
-                                        <h2 id="detail-title">Junior UI/UX Designer</h2>
-                                        <p id="detail-company">Cloudstaff, Pampanga</p>
+                                        <h2 id="detail-title"></h2>
+                                        <p id="detail-company"></p>
+                                        <p class="detail-location">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                            <span id="detail-city"></span>, <span id="detail-province"></span>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="header-actions">
@@ -210,28 +183,51 @@ if(!isset($_SESSION['email'])) {
                                 </div>
                             </div>
 
-                            <div class="details-body">
-                                <div class="details-section">
-                                    <h3>Job Description</h3>
-                                    <p id="detail-desc">
-                                        We are looking for a talented fresher UI/UX Designer who is passionate about designing custom websites with proficiency in Photoshop. 
-                                        The candidate will work closely with our development and design teams to create visually appealing and user-friendly custom website designs for our clients.
-                                    </p>
+                            <div class="job-meta">
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <span id="detail-work-type"></span>
                                 </div>
+                                <div class="meta-item">
+                                    <i class="fa-solid fa-tag"></i>
+                                    <span id="detail-category"></span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fa-regular fa-clock"></i>
+                                    <span id="detail-posted-date"></span>
+                                </div>
+                            </div>
 
-                                <div class="details-section">
-                                    <h3>Roles & Responsibilities</h3>
-                                    <ul id="detail-roles">
-                                        <li>Gather and evaluate user requirements in collaboration with product managers and engineers</li>
-                                        <li>Illustrate design ideas using storyboards, process flows and sitemaps</li>
-                                        <li>Design graphic user interface elements, like menus, tabs and widgets</li>
-                                        <li>Build page navigation buttons and search fields</li>
-                                        <li>Develop UI mockups and prototypes that clearly illustrate how sites function and look like</li>
-                                        <li>Create original graphic designs (e.g. images, sketches and tables)</li>
-                                        <li>Prepare and present rough drafts to internal teams and key stakeholders</li>
-                                        <li>Identify and troubleshoot UX problems (e.g. responsiveness)</li>
-                                    </ul>
+                            <div class="details-section">
+                                <h3>From the job post</h3>
+                                <p id="detail-description"></p>
+                            </div>
+
+                            <div class="details-section">
+                                <h3>Tags</h3>
+                                <div class="job-tags" id="detail-tags">
+                                    <!-- Tags will be populated here -->
                                 </div>
+                            </div>
+
+                            <div class="details-section">
+                                <h3>Responsibilities</h3>
+                                <ul id="detail-responsibilities"></ul>
+                            </div>
+
+                            <div class="details-section">
+                                <h3>Qualifications</h3>
+                                <ul id="detail-qualifications"></ul>
+                            </div>
+
+                            <div class="details-section">
+                                <h3>Required Skills</h3>
+                                <ul id="detail-skills"></ul>
+                            </div>
+
+                            <div class="details-section">
+                                <h3>Required Documents</h3>
+                                <ul id="detail-documents"></ul>
                             </div>
                         </div>
                     </div>
@@ -242,6 +238,110 @@ if(!isset($_SESSION['email'])) {
         </div>
     </div>
 
-    <script src="../js/internship_search.js"></script>
+    <!-- More Filters Modal -->
+    <div class="filters-modal-overlay" id="filtersModalOverlay">
+        <div class="filters-modal" id="filtersModal">
+            <div class="filters-modal-header">
+                <h2>Advanced Filters</h2>
+                <div class="header-search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="filterSearch" placeholder="Search filters...">
+                </div>
+                <button class="close-modal-btn" id="closeFiltersModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Selected Filters Display -->
+            <div class="selected-filters-bar" id="selectedFiltersBar">
+                <div class="selected-filters-header">
+                    <span class="selected-count">0 filters selected</span>
+                    <button class="btn-clear-selected" id="clearSelectedBtn" style="display: none;">Clear All</button>
+                </div>
+                <div class="selected-filters-tags" id="selectedFiltersTags">
+                    <!-- Selected tags will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div class="filters-loading-overlay" id="filtersLoadingOverlay">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading your preferences...</p>
+                </div>
+            </div>
+            
+            <div class="filters-modal-main">
+                <!-- Sidebar Navigation -->
+                <div class="filters-sidebar">
+                    <div class="sidebar-item active" data-section="student-courses">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>Student Courses</span>
+                    </div>
+                    <div class="sidebar-item" data-section="career-tags">
+                        <i class="fa-solid fa-briefcase"></i>
+                        <span>Career Tags</span>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="filters-content">
+                    <!-- Student Courses View -->
+                    <div class="filter-view active" id="student-courses-view">
+                        <h3>Student Courses</h3>
+                        <div class="filter-categories" id="studentCoursesContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Career Tags View -->
+                    <div class="filter-view" id="career-tags-view">
+                        <h3>Career Tags / Industry</h3>
+                        <div class="filter-categories" id="careerTagsContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters-modal-footer">
+                <button class="btn-clear-filters" id="clearAllFilters">Clear All</button>
+                <div class="footer-actions">
+                    <button class="btn-cancel-filters" id="cancelFilters">Cancel</button>
+                    <button class="btn-apply-filters" id="applyFilters">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Dialog -->
+    <div class="confirm-dialog-overlay" id="confirmDialogOverlay">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog-icon">
+                <i class="fa-solid fa-circle-question"></i>
+            </div>
+            <h3>Apply Filters?</h3>
+            <p id="confirmDialogMessage">You have filters selected. Do you want to apply them before closing?</p>
+            <div class="confirm-dialog-actions">
+                <button class="btn-confirm-apply" id="btnConfirmApply">
+                    <i class="fa-solid fa-check"></i> Apply Filters
+                </button>
+                <button class="btn-confirm-discard" id="btnConfirmDiscard">
+                    <i class="fa-solid fa-xmark"></i> Discard Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pass PHP session data to JavaScript -->
+    <script>
+        // Store session email in sessionStorage for JavaScript modules
+        <?php if(isset($_SESSION['email'])): ?>
+        sessionStorage.setItem('email', '<?php echo addslashes($_SESSION['email']); ?>');
+        console.log('[Session] Email stored in sessionStorage:', sessionStorage.getItem('email'));
+        <?php endif; ?>
+    </script>
+    
+    <script type="module" src="../js/main.js"></script>
 </body>
 </html>

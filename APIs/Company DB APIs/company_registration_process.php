@@ -42,6 +42,16 @@ try {
         ':address' => $Company_Address
     ]);
 
+    // Insert Default Icon
+    $new_company_id = $conn->lastInsertId();
+    $default_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+
+    $icon_query = $conn->prepare("INSERT INTO company_icons (company_id, icon_url) VALUES (:cid, :url)");
+    $icon_query->execute([
+        ':cid' => $new_company_id,
+        ':url' => $default_icon_url
+    ]);
+
     $conn->commit();
     echo json_encode([
         "status" => "success",
