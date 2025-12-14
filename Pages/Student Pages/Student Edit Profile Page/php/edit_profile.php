@@ -234,7 +234,7 @@ if(isset($_SESSION['email']))
                             </div>
                             <div class="account-actions">
                                 <button class="btn-outline" data-modal-target="#changePasswordModal">Change Password</button>
-                                <button class="btn-danger">Verify Account</button>
+                                <button class="btn-danger" onclick="window.location.href='../../Student Account Verification Page/php/verification.php'">Verify Account</button>
 
                             </div>
                         </div>
