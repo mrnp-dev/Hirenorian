@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (studentType === 'graduate') {
             const tor = document.getElementById('torFile').files.length > 0;
             const diploma = document.getElementById('diplomaFile').files.length > 0;
-            isValid = tor && diploma;
+            isValid = tor || diploma;
         } else if (studentType === 'undergraduate') {
             const id = document.getElementById('idFile').files.length > 0;
             const cor = document.getElementById('corFile').files.length > 0;

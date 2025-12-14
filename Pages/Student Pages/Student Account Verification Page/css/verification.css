@@ -14,13 +14,21 @@
     border-radius: 12px;
     box-shadow: var(--card-shadow);
     padding: 40px;
-    min-height: 500px; /* Minimum height for consistency */
+    min-height: 500px;
+    /* Minimum height for consistency */
 }
 
 /* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Steps Logic */
@@ -72,7 +80,7 @@
 
 .type-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     border-color: var(--secondary-yellow);
 }
 
@@ -93,7 +101,7 @@
     justify-content: center;
     font-size: 3rem;
     color: var(--primary-maroon);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .type-card h3 {
@@ -176,7 +184,15 @@
     border-top: 1px solid #eee;
 }
 
-.btn-start, .btn-next, .btn-back, .btn-submit {
+.btn-start,
+.btn-next,
+.btn-back,
+.btn-submit,
+.btn-next-step,
+.btn-back-step,
+.btn-dashboard,
+.btn-primary-action,
+.btn-secondary-action {
     padding: 12px 30px;
     border-radius: 50px;
     font-weight: 600;
@@ -230,9 +246,19 @@
 }
 
 @keyframes bounceIn {
-    0% { transform: scale(0); opacity: 0; }
-    60% { transform: scale(1.1); }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .btn-dashboard {
@@ -244,13 +270,16 @@
     .type-selection-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .step-actions {
         flex-direction: column-reverse;
         gap: 15px;
     }
-    
-    .btn-start, .btn-next, .btn-back, .btn-submit {
+
+    .btn-start,
+    .btn-next,
+    .btn-back,
+    .btn-submit {
         width: 100%;
         justify-content: center;
     }
