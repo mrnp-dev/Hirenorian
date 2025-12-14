@@ -105,6 +105,12 @@ if (isset($_SESSION['email'])) {
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="../../Help Page/php/help.php" class="nav-link">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span class="link-text">Help</span>
+                    </a>
+                </li>
             </ul>
         </aside>
 
