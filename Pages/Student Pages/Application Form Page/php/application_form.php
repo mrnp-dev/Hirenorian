@@ -83,9 +83,9 @@ $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>
-                <a href="../../Internship Search Page/php/internship_search.php" class="nav-item">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Internship Search</span>
+                <a href="../../Student Internship Search Page New/php/internship_search.php" class="nav-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Internships</span>
                 </a>
 
             </nav>
@@ -375,8 +375,8 @@ $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
                                 </ul>
                             </div>
                             <div class="poster-actions">
-                                <a href="../../Internship Search Page/php/internship_search.php" class="btn-primary">
-                                    <i class="fa-solid fa-magnifying-glass"></i> Browse More Jobs
+                                <a href="../../Student Internship Search Page New/php/internship_search.php" class="btn-primary">
+                                    Find Other Jobs
                                 </a>
                                 <a href="../../Student Dashboard Page/php/student_dashboard.php" class="btn-secondary">
                                     <i class="fa-solid fa-table-columns"></i> Go to Dashboard
