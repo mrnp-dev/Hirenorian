@@ -502,13 +502,13 @@ if (isset($_SESSION['email'])) {
                                     </div>
                                     <div class="form-group compact">
                                         <label>Industry</label>
-                                        <input type="text" id="editCompanyIndustry" value="<?php echo $industry; ?>"
-                                            readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                                        <input type="text" id="editCompanyIndustry" class="readonly-input"
+                                            value="<?php echo $industry; ?>" readonly>
                                     </div>
                                     <div class="form-group compact">
                                         <label>Company Type</label>
-                                        <input type="text" value="<?php echo htmlspecialchars($company_type); ?>"
-                                            readonly style="background-color: #e9ecef; cursor: not-allowed;">
+                                        <input type="text" class="readonly-input"
+                                            value="<?php echo htmlspecialchars($company_type); ?>" readonly>
                                     </div>
                                 </div>
                             </div>
