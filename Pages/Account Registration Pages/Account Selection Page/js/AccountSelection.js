@@ -3,7 +3,7 @@ const companyCard = document.getElementById('companyCard');
 
 // Toggles the active class when a card is clicked
 studentCard.addEventListener('click', () => {
-    window.location.href = '../../SR-Duplicate OTP Page/php/student_registrationForm.php';
+    window.location.href = '../../SR-Duplicate%20OTP%20Page/php/student_registrationForm.php';
 });
 
 companyCard.addEventListener('click', () => {
