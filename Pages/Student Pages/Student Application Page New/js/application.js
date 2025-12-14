@@ -170,12 +170,7 @@ function updateUI() {
 
     if (appState.jobDetails.jobTitle) {
         titleEl.textContent = appState.jobDetails.jobTitle;
-        titleEl.classList.remove('skeleton', 'skeleton-text');
-        titleEl.style.width = 'auto'; // Reset width
-
         companyEl.textContent = appState.jobDetails.companyName;
-        companyEl.classList.remove('skeleton', 'skeleton-text');
-        companyEl.style.width = 'auto'; // Reset width
     }
 
     // Profile Preview
