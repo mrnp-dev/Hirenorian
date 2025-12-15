@@ -24,11 +24,11 @@ function toggleTag(tag, element) {
 
     if (index > -1) {
         selectedTags.splice(index, 1);
-        element.classList.remove('chosen');
+        element.classList.remove('selected');
     } else {
         if (selectedTags.length < maxSelection) {
             selectedTags.push(tag);
-            element.classList.add('chosen');
+            element.classList.add('selected');
         } else {
             selectedCount.classList.add("shake");
             setTimeout(() => {

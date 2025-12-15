@@ -45,12 +45,6 @@ async function initiateEmailVerification(emailType) {
         // Check if matches student number
         const studentNumber = document.querySelector('#studNum-input').value.trim();
 
-        // Check availability first
-        const isStudentNumberAvailable = await ifStudentNumber_Exist();
-        if (!isStudentNumberAvailable) {
-            return;
-        }
-
         if (studentNumber) {
             const studentNumber_substr = email.toLowerCase().slice(0, 10);
             if (studentNumber !== studentNumber_substr) {
@@ -59,6 +53,8 @@ async function initiateEmailVerification(emailType) {
             }
         }
 
+        // Show OTP modal immediately without blocking API check
+        // Student number availability will be checked during final form submission
         currentVerifyingEmail = email;
         currentVerifyingEmailType = emailType;
         openOTPModal();
@@ -94,7 +90,7 @@ function openOTPModal() {
 
 function sendOTPToEmail(email) {
     console.log("Sending OTP to:", email);
-    fetch("send_otp.php", {
+    fetch("../../php/send_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })

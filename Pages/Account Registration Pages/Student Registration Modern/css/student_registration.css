@@ -204,8 +204,10 @@ body {
     padding-left: 8rem;
     justify-content: flex-start;
     z-index: 1;
-    overflow-y: hidden;
-    scrollbar-width: none;
+    overflow-y: auto;
+    /* Changed from hidden to auto for scrolling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 184, 0, 0.5) rgba(255, 255, 255, 0.1);
     animation: move 0.6s;
     transition: all 0.6s ease-in-out;
 }
@@ -306,7 +308,8 @@ input.input_InvalidInput {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    /* Reduced from 2rem */
 }
 
 .btn {
@@ -880,12 +883,15 @@ input.input_InvalidInput {
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
+    padding: 1rem;
+    /* Reduced from 1.5rem */
+    margin-bottom: 0.5rem;
+    /* Reduced from 1rem */
 }
 
 .tag-header {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    /* Reduced from 1rem */
 }
 
 .tag-header h3 {
@@ -903,7 +909,8 @@ input.input_InvalidInput {
 .selected-count {
     color: var(--accent-gold);
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    /* Reduced from 1rem */
     font-size: 0.9rem;
 }
 
@@ -911,6 +918,30 @@ input.input_InvalidInput {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+    max-height: 180px;
+    /* Add max-height for scrolling */
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 0.5rem;
+}
+
+/* Custom scrollbar for tags container */
+.tags-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tags-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.tags-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 184, 0, 0.5);
+    border-radius: 10px;
+}
+
+.tags-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 184, 0, 0.7);
 }
 
 .tag {
@@ -922,20 +953,44 @@ input.input_InvalidInput {
     transition: all 0.3s ease;
     font-size: 0.9rem;
     color: white;
+    user-select: none;
 }
 
 .tag:hover {
     border-color: var(--accent-gold);
     transform: translateY(-2px);
+    background: rgba(255, 184, 0, 0.15);
 }
 
 .tag.selected {
     background: var(--accent-gold);
     color: var(--text-dark);
     border-color: var(--accent-gold);
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(255, 184, 0, 0.3);
 }
 
 .tag.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Custom scrollbar for form container */
+.form-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.form-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 184, 0, 0.5);
+    border-radius: 10px;
+}
+
+.form-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 184, 0, 0.7);
 }
