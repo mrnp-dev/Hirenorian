@@ -5,18 +5,39 @@ async function initialFirstInputs_Validations(input) {
 }
 
 async function firstInputsValidation() {
-    const firstInputs = document.querySelectorAll('#firstInputs input');
-    const validations = await Promise.all(
-        Array.from(firstInputs).map(input => {
-            if (input.name == "Password" && input.dataset.strength == "weak") {
-                showError(input, `${input.name}'s strength must be at least medium.`);
-                return false;
-            } else {
-                return checkIfEmpty(input);
-            }
-        })
-    );
-    return validations.every(Boolean);
+    console.log("Starting firstInputsValidation...");
+    try {
+        const firstInputs = document.querySelectorAll('#firstInputs input');
+        const validations = await Promise.all(
+            Array.from(firstInputs).map(async (input) => {
+                try {
+                    // Check for Password Strength Requirement
+                    if (input.name == "Password") {
+                        if (input.dataset.strength == "weak") {
+                            showError(input, `${input.name}'s strength must be at least medium.`);
+                            console.warn("Validation Failed: Weak Password");
+                            return false;
+                        }
+                    }
+
+                    const isValid = await checkIfEmpty(input);
+                    if (!isValid) console.warn(`Validation Failed for ${input.name}`);
+                    return isValid;
+
+                } catch (innerErr) {
+                    console.error(`Error validating input ${input.name}:`, innerErr);
+                    return false;
+                }
+            })
+        );
+
+        const result = validations.every(Boolean);
+        console.log("firstInputsValidation Result:", result);
+        return result;
+    } catch (err) {
+        console.error("firstInputsValidation Critical Error:", err);
+        return false;
+    }
 }
 
 async function checkIfEmpty(input) {
@@ -32,6 +53,9 @@ async function checkIfEmpty(input) {
 async function checkIfValid(input) {
     let isValid = true;
     const name = input.name.trim().toLowerCase();
+
+    // Debug Log
+    // console.log(`Checking validity for: ${name}`);
 
     switch (name) {
         case 'company email':
@@ -51,7 +75,6 @@ async function checkIfValid(input) {
             break;
 
         case 'company name':
-            // Simple non-empty check already passed
             userInformation[input.name] = input.value.trim();
             isValid = true;
             break;
@@ -65,7 +88,6 @@ async function checkIfValid(input) {
             break;
 
         case 'company address':
-            // Simple non-empty check
             userInformation[input.name] = input.value.trim();
             isValid = true;
             break;
@@ -77,15 +99,28 @@ async function checkIfValid(input) {
 
 async function checkEmail(input) {
     const validEmail_RegEx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const email = input.value.trim();
 
-    if (!validEmail_RegEx.test(input.value.trim())) {
+    if (!validEmail_RegEx.test(email)) {
         showError(input, `Invalid Email`);
         return false;
     }
 
+    // Optimization: Skip API check if already verified and unchanged
+    // userInformation['Company Email'] corresponds to the verified email if stored
+    // or we can use currentVerifyingEmail from otp.js if accessible? 
+    // userInformation is updated on successful check/verify.
+    // If state is verified, it means userInformation['Company Email'] contains the valid email.
+    if (typeof emailVerificationState !== 'undefined' &&
+        emailVerificationState.companyEmail === true &&
+        userInformation['Company Email'] === email) {
+        console.log("Email already verified and unchanged. Skipping API check.");
+        return true;
+    }
+
     // Check if email already exists via API
     try {
-        const isAvailable = await checkCompanyEmail(input.value.trim());
+        const isAvailable = await checkCompanyEmail(email);
         if (!isAvailable) {
             showError(input, "Email is already in use.");
             return false;
@@ -94,7 +129,7 @@ async function checkEmail(input) {
         console.error("Email check failed", e);
     }
 
-    userInformation[input.name] = input.value.trim();
+    userInformation[input.name] = email;
     return true;
 }
 
@@ -112,10 +147,12 @@ function checkPhoneNumber(input) {
 async function checkPassword(input) {
     const password_minLength = 12,
         password_maxLength = 64;
-    if (input.value.length < password_minLength) {
+
+    const len = input.value.length;
+    if (len < password_minLength) {
         showError(input, `${input.name} must contain at least 12 characters.`);
         return false;
-    } else if (input.value.length > password_maxLength) {
+    } else if (len > password_maxLength) {
         showError(input, `${input.name} must not exceed 64 characters.`);
         return false;
     } else {
@@ -136,10 +173,19 @@ function checkPasswordStrength(input) {
 function changePasswordStrength_text(element, strength) {
     let valid = true;
     const section = element.closest(".input-wrapper");
-    const strength_P = section.querySelector("p");
+    // Safeguard closest/querySelector
+    if (!section) return false;
+
+    let strength_P = section.querySelector("p");
+
+    // Create span for strength text
     const span = document.createElement('span');
+
+    // Reset state
     strength_P.textContent = "strength: ";
-    strength_P.style.color = "white";
+    strength_P.style.color = "white"; // Reset default color if needed (or inherit)
+
+    // If CSS handles colors via class, prefer classes. But preserving original inline style logic here.
 
     switch (strength) {
         case 1:
@@ -158,6 +204,13 @@ function changePasswordStrength_text(element, strength) {
             span.style.color = "green";
             element.dataset.strength = "strong";
             break;
+        default:
+            // 0 or invalid
+            span.textContent = "weak";
+            span.style.color = "red";
+            element.dataset.strength = "weak";
+            valid = false;
+            break;
     }
 
     strength_P.append(span);
@@ -167,17 +220,30 @@ function changePasswordStrength_text(element, strength) {
 }
 
 function confirmPassword(input) {
-    const password = document.querySelector('#password-input').value;
+    const passwordField = document.querySelector('#password-input');
+    if (!passwordField) {
+        console.error("Password field not found for confirmation");
+        return false;
+    }
+    const password = passwordField.value;
+
     if (input.value !== password) {
         showError(input, `Passwords do not match.`);
         return false;
     } else {
-        input.classList.remove('input_InvalidInput');
+        input.classList.remove('input_InvalidInput'); // removing error class manually if utils doesn't
+
+        // Show success message
         const section = input.closest(".input-wrapper");
-        const p = section.querySelector("p");
-        p.textContent = "Passwords matched";
-        p.style.color = "green";
-        p.style.visibility = 'visible';
+        if (section) {
+            const p = section.querySelector("p");
+            if (p) {
+                p.textContent = "Passwords matched";
+                p.style.color = "green";
+                p.style.visibility = 'visible';
+            }
+        }
+
         userInformation[`Password`] = input.value;
         return true;
     }
@@ -190,14 +256,8 @@ function checkCompanyType(input) {
         showError(input, 'Company Type cannot be empty');
         return false;
     }
-    // Optional: Force selection from list
-    // const isValid = companyTypes.includes(input.value.trim());
-    // if (!isValid) { 
-    //    showError(input, 'Please select from the list'); return false; 
-    // } 
-    // For now, allow free text if desired, or strictly valid. Original checked validity.
-    // Let's assume strict validity if list is loaded.
-    if (companyTypes.length > 0 && !companyTypes.includes(input.value.trim())) {
+    // Strict Check
+    if (typeof companyTypes !== 'undefined' && companyTypes.length > 0 && !companyTypes.includes(input.value.trim())) {
         showError(input, 'Please select a valid company type from the dropdown');
         return false;
     }
@@ -211,7 +271,8 @@ function checkIndustry(input) {
         showError(input, 'Industry cannot be empty');
         return false;
     }
-    if (industries.length > 0 && !industries.includes(input.value.trim())) {
+    // Strict Check
+    if (typeof industries !== 'undefined' && industries.length > 0 && !industries.includes(input.value.trim())) {
         showError(input, 'Please select a valid industry from the dropdown');
         return false;
     }
@@ -229,12 +290,12 @@ async function validateSecondInputs(input) {
                 break;
             case 'Company Type':
                 if (checkIfEmpty_General(input)) {
-                    autoCorrect_Suggestions(input, companyTypes, secondInputs_Validation);
+                    if (typeof companyTypes !== 'undefined') autoCorrect_Suggestions(input, companyTypes, secondInputs_Validation);
                 }
                 break;
             case 'Industry':
                 if (checkIfEmpty_General(input)) {
-                    autoCorrect_Suggestions(input, industries, secondInputs_Validation);
+                    if (typeof industries !== 'undefined') autoCorrect_Suggestions(input, industries, secondInputs_Validation);
                 }
                 break;
             case 'Company Address':
@@ -255,10 +316,6 @@ function checkIfEmpty_General(input) {
 }
 
 function autoCorrect_Suggestions(input, list, validation) {
-    // Basic implementation: if exact match found (case insensitive), fix case.
-    // If no match, it might be valid if we allow free text, but usually dropdowns imply strict choice.
-    // Original company_registration.js enforced strict choice.
-
     const index = list.findIndex(item => item.toLowerCase() === input.value.trim().toLowerCase());
     if (index !== -1) {
         input.value = list[index];
@@ -266,22 +323,9 @@ function autoCorrect_Suggestions(input, list, validation) {
         userInformation[input.name] = input.value;
         if (validation) validation[`is${input.name.replace(/\s/g, '')}Valid`] = true;
     } else {
-        // Only show error if we want to enforce selection
-        // showError(input, `Invalid ${input.name}`);
-        // if(validation) validation[`is${input.name.replace(/\s/g, '')}Valid`] = false;
-
-        // Let's enforce it for now as per original
         if (list.length > 0) {
             showError(input, `Invalid ${input.name}`);
             if (validation) validation[`is${input.name.replace(/\s/g, '')}Valid`] = false;
         }
     }
 }
-
-// Helper: Show/Remove Error (if not in utils.js, but it should be? 
-// Actually utils.js has showError/removeError usually? 
-// Let's check utils.js later. If not, I'll add them here or assume global access. 
-// Original code had them in main.js or locally defined.
-// The student validation.js relied on global `showError`. I'll assume it's available or I need to define it.
-// Wait, `student_registration.js` (original) had them. 
-// In modular version, `utils.js` likely contains them.

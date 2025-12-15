@@ -226,22 +226,32 @@ function LoadSuggestions(input, list) {
 
 // Navigation Functions
 async function goNext(button) {
-    if (await firstInputsValidation()) {
-        // Check if company email is verified
-        if (!emailVerificationState.companyEmail) {
-            const emailInput = document.querySelector('#email-input');
-            showError(emailInput, 'Please verify your email address');
-            if (typeof ToastSystem !== 'undefined') ToastSystem.show("Please verify your email first", "error");
-            return;
+    console.log("goNext Triggered");
+    try {
+        if (await firstInputsValidation()) {
+            console.log("Validation Passed");
+
+            // Check if company email is verified
+            if (!emailVerificationState.companyEmail) {
+                console.warn("Email not verified");
+                const emailInput = document.querySelector('#email-input');
+                showError(emailInput, 'Please verify your email address');
+                if (typeof ToastSystem !== 'undefined') ToastSystem.show("Please verify your email first", "error");
+                return;
+            }
+
+            const firstInputs_Container = document.querySelector('#firstInputs');
+            firstInputs_Container.classList.remove('slide-left');
+            firstInputs_Container.classList.add('slide-right');
+
+            manageSteps('next');
+        } else {
+            console.warn("Validation Failed (goNext)");
+            if (typeof ToastSystem !== 'undefined') ToastSystem.show("Please correct the highlighted fields.", "error");
         }
-
-        const firstInputs_Container = document.querySelector('#firstInputs');
-        firstInputs_Container.classList.remove('slide-left');
-        firstInputs_Container.classList.add('slide-right');
-
-        manageSteps('next');
-    } else {
-        if (typeof ToastSystem !== 'undefined') ToastSystem.show("Please correct the highlighted fields.", "error");
+    } catch (err) {
+        console.error("goNext Critical Error:", err);
+        if (typeof ToastSystem !== 'undefined') ToastSystem.show("An internal error occurred. Check console.", "error");
     }
 }
 
