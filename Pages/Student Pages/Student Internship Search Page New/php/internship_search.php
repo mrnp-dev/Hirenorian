@@ -213,7 +213,6 @@ if (isset($_SESSION['email'])) {
                                 </div>
                                 <div class="details-actions">
                                     <button class="btn-apply-primary btn-apply-now">Apply Now</button>
-                                    <button class="btn-save-secondary btn-save">Save Job</button>
                                 </div>
                             </div>
                             

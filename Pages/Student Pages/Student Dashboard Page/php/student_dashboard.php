@@ -411,7 +411,6 @@ else
                     </div>
                     <div class="details-actions">
                         <button class="btn-apply-primary" id="modal-btn-apply">Apply Now</button>
-                        <button class="btn-save-secondary" id="modal-btn-save">Save Job</button>
                     </div>
                 </div>
                 
