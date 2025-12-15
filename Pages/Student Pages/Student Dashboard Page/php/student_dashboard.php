@@ -25,6 +25,8 @@ if (isset($_SESSION['email'])) {
     $first_name = "Student";
     $last_name = "";
     $profile_picture = "";
+    $profile_score = 0;
+    $suggestions = ["Complete your profile"];
     
     if ($response !== false) {
         $data = json_decode($response, true);
@@ -49,6 +51,82 @@ if (isset($_SESSION['email'])) {
                 $_SESSION['student_id'] = $student_id; // persist to session
                 echo "<script>console.log('DEBUG: recovered student_id from API: " . $student_id . "');</script>";
             }
+
+            // --- PROFILE STRENGTH CALCULATION ---
+            $profile_score = 0;
+            $suggestions = [];
+
+            // 1. Contact Info (20%)
+            // Phone (10%)
+            if (!empty($basic_info['phone_number'])) {
+                $profile_score += 10;
+            } else {
+                $suggestions[] = "Add your phone number";
+            }
+            // Location (10%)
+            if (!empty($profile['location'])) {
+                $profile_score += 10;
+            } else {
+                $suggestions[] = "Add your location";
+            }
+
+            // 2. Profile Picture (15%)
+            if (!empty($profile['profile_picture'])) {
+                $profile_score += 15;
+            } else {
+                $suggestions[] = "Upload a profile picture";
+            }
+
+            // 3. About Me (15%)
+            if (!empty($profile['about_me'])) {
+                $profile_score += 15;
+            } else {
+                $suggestions[] = "Write a short bio (About Me)";
+            }
+
+            // 4. Skills (20%)
+            $tech_found = false;
+            $soft_found = false;
+            $skills_data = $data['data']['skills'] ?? [];
+            if (is_array($skills_data)) {
+                foreach ($skills_data as $s) {
+                    if (isset($s['skill_category'])) {
+                        if ($s['skill_category'] === 'Technical') $tech_found = true;
+                        if (stripos($s['skill_category'], 'Soft') !== false) $soft_found = true;
+                    }
+                }
+            }
+            
+            if ($tech_found) {
+                $profile_score += 10;
+            } else {
+                $suggestions[] = "Add at least one technical skill";
+            }
+            
+            if ($soft_found) {
+                $profile_score += 10;
+            } else {
+                $suggestions[] = "Add at least one soft skill";
+            }
+
+            // 5. Education (15%)
+            $edu_hist = $data['data']['education_history'] ?? [];
+            if (!empty($edu_hist) && count($edu_hist) > 0) {
+                $profile_score += 15;
+            } else {
+                $suggestions[] = "Add your educational background";
+            }
+
+            // 6. Experience (15%)
+            $exp_list = $data['data']['experience'] ?? [];
+            if (!empty($exp_list) && count($exp_list) > 0) {
+                $profile_score += 15;
+            } else {
+                $suggestions[] = "Add work experience or achievements";
+            }
+
+            // Clamp score to 100 just in case
+            if ($profile_score > 100) $profile_score = 100;
         }
     }
 }
@@ -142,10 +220,10 @@ else
                         <div class="profile-completion">
                             <div class="completion-header">
                                 <span class="completion-label">Profile Strength</span>
-                                <span class="completion-percentage">75%</span>
+                                <span class="completion-percentage"><?php echo $profile_score; ?>%</span>
                             </div>
                             <div class="progress-bar-container">
-                                <div class="progress-bar-fill" style="width: 75%"></div>
+                                <div class="progress-bar-fill" style="width: <?php echo $profile_score; ?>%"></div>
                             </div>
                         </div>
                     </div>
@@ -252,16 +330,20 @@ else
                             <div class="strength-meter">
                                 <div class="strength-score">
                                     <span>Your Score</span>
-                                    <span class="strength-value">75%</span>
+                                    <span class="strength-value"><?php echo $profile_score; ?>%</span>
                                 </div>
                                 <div class="strength-bar">
-                                    <div class="strength-fill" style="width: 75%"></div>
+                                    <div class="strength-fill" style="width: <?php echo $profile_score; ?>%"></div>
                                 </div>
                             </div>
                             <ul class="strength-suggestions">
-                                <li><i class="fa-solid fa-lightbulb"></i> Add work experience</li>
-                                <li><i class="fa-solid fa-lightbulb"></i> Complete skills section</li>
-                                <li><i class="fa-solid fa-lightbulb"></i> Upload profile picture</li>
+                                <?php if (!empty($suggestions)): ?>
+                                    <?php foreach (array_slice($suggestions, 0, 3) as $suggestion): ?>
+                                        <li><i class="fa-solid fa-lightbulb"></i> <?php echo htmlspecialchars($suggestion); ?></li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li><i class="fa-solid fa-check-circle"></i> Profile complete! Great job!</li>
+                                <?php endif; ?>
                             </ul>
                         </div>
 
