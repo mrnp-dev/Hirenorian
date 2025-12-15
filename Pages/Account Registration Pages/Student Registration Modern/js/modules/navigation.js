@@ -1,11 +1,9 @@
 // Navigation and Step Management Functions
 
 function goBackToLandingPage() {
-    ToastSystem.show("Redirecting to the landing page.", "info")
-    ToastSystem.storeForNextPage('You’ve returned to the landing page.', 'success');
-    setTimeout(() => {
-        window.location.href = '/Hirenorian/Pages/Landing%20Page/php/landing_page.php';
-    }, 1500)
+    if (confirm('Are you sure you want to go back to the landing page? All entered data will be lost.')) {
+        window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
+    }
 }
 
 function manageSteps(action) {

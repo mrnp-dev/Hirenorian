@@ -158,7 +158,7 @@ async function Register_Student() {
                     ToastSystem.show("Redirecting to the landing page", "info");
                     setTimeout(() => {
                         resetFormState();
-                        window.location.href = "/Hirenorian/Pages/Landing%20Page/php/landing_page.php";
+                        window.location.href = "../../../Landing Page Tailwind/php/landing_page.php";
                     }, 2000);
                 }, 1500);
             } else {
