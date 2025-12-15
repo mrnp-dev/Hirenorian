@@ -72,20 +72,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 // Move File
                 if (move_uploaded_file($file['tmp_name'], $target_path)) {
-                     // Construct Absolute VPS Path for DB
-                    $vps_base_path = '/var/www/html/Hirenorian/API/studentDB_APIs/';
+                     // Construct URL Path for DB
+                    $url_base_path = 'http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/';
                     $relative_path = 'Student Accounts/' . $student_id . '/Verification/' . $folder_name . '/' . $new_filename;
-                    $encoded_path = str_replace(' ', '%20', $relative_path); // Encode spaces if any parent dir has them, though here logic constructs clean paths mostly
                     
-                    // Actually, if 'Student Accounts' has space, it needs encoding for URL but maybe not for file system path? 
-                    // Reference API stores ABSOLUTE FILE SYSTEM PATH in DB or URL? 
-                    // Reference code: $absolute_vps_path = $vps_base_path . $encoded_path;
-                    // It seems to store the URL-ready path appended to base path.
-                    
-                    $db_paths[$db_col] = $vps_base_path . $relative_path; // Storing raw path or encoded? Reference used encoded. Let's use clean path for DB if possible, but existing system seems to prefer encoded.
-                    // Let's stick to raw path for FS operations and simple string for DB, 
-                    // but reference explicitly did `str_replace(' ', '%20', $relative_path)`. I will follow that.
-                    $db_paths[$db_col] = $vps_base_path . str_replace(' ', '%20', $relative_path);
+                    // Store the full HTTP URL in the database
+                    $db_paths[$db_col] = $url_base_path . str_replace(' ', '%20', $relative_path);
 
                 } else {
                     $upload_errors[] = "Failed to move file for $field_name.";
