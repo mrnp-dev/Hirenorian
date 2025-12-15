@@ -387,6 +387,69 @@ else
         window.STUDENT_EMAIL = <?php echo json_encode($student_email ?? null); ?>;
         console.log('DEBUG: window.STUDENT_ID value:', window.STUDENT_ID);
     </script>
+
+    <!-- Job Details Modal -->
+    <div class="job-modal-overlay" id="jobDetailsModal">
+        <div class="job-modal-content">
+            <button class="job-modal-close" id="closeJobModal">&times;</button>
+            <div class="job-details-panel-modal">
+                <div class="details-hero">
+                    <div class="details-hero-content">
+                        <img src="" alt="Logo" class="details-logo-large" id="modal-detail-logo">
+                        <div class="details-title-box">
+                            <h2 id="modal-detail-title">Job Title</h2>
+                            <a href="#" class="details-company-link" id="modal-detail-company">Company Name</a>
+                            <p class="details-location">
+                                <i class="fa-solid fa-location-dot"></i> <span id="modal-detail-city">City</span>, <span id="modal-detail-province">Province</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="job-meta-mini">
+                         <span id="modal-detail-work-type">Full Time</span> &bull; 
+                         <span id="modal-detail-category">Design</span> &bull; 
+                         <span id="modal-detail-posted-date">2 days ago</span>
+                    </div>
+                    <div class="details-actions">
+                        <button class="btn-apply-primary" id="modal-btn-apply">Apply Now</button>
+                        <button class="btn-save-secondary" id="modal-btn-save">Save Job</button>
+                    </div>
+                </div>
+                
+                <div class="details-scroll-content">
+                    <div class="detail-section">
+                        <h3>Job Description</h3>
+                        <p id="modal-detail-description"></p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Tags</h3>
+                        <div class="job-tags-detail" id="modal-detail-tags"></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Responsibilities</h3>
+                        <ul id="modal-detail-responsibilities"></ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Qualifications</h3>
+                        <ul id="modal-detail-qualifications"></ul>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3>Required Skills</h3>
+                        <ul id="modal-detail-skills"></ul>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Required Documents</h3>
+                        <ul id="modal-detail-documents"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="../js/modules/main.js"></script>
 </body>
 </html>
