@@ -1,4 +1,5 @@
 // Email Verification and OTP Functions
+let expectedOTP = null;
 
 async function initiateEmailVerification(emailType) {
     if (emailType === 'personal') {
@@ -86,11 +87,12 @@ function openOTPModal() {
     // call the send_otp.php script here.
 
     sendOTPToEmail(currentVerifyingEmail);
+    startResendCountdown(); // Start timer immediately upon opening
 }
 
 function sendOTPToEmail(email) {
     console.log("Sending OTP to:", email);
-    fetch("../../php/send_otp.php", {
+    fetch("send_otp.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email })
@@ -102,9 +104,12 @@ function sendOTPToEmail(email) {
                 const data = JSON.parse(text);
                 if (data.success) {
                     console.log("OTP sent successfully:", data.otp);
+                    console.log("%c DEBUG OTP: " + data.otp, "background: #222; color: #bada55; font-size: 20px");
+                    expectedOTP = data.otp.toString(); // Store OTP for validation
                     if (typeof ToastSystem !== 'undefined') {
                         ToastSystem.show("OTP sent successfully!", "success");
                     }
+                    // startResendCountdown(); // Timer is now started immediately in UI functions
                 } else {
                     console.error("Error sending OTP:", data.message);
                     if (typeof ToastSystem !== 'undefined') {
@@ -130,7 +135,14 @@ function closeOTPModal() {
     }, 300);
 
     currentVerifyingEmail = null;
+    currentVerifyingEmail = null;
     currentVerifyingEmailType = null;
+
+    // Clear timer when closing
+    if (resendTimer) {
+        clearInterval(resendTimer);
+        resendTimer = null;
+    }
 }
 
 function resetOTPInputs() {
@@ -232,13 +244,16 @@ function verifyOTP() {
         return;
     }
 
-    // For demo: Accept any 6-digit code or implement actual verification
-    // In a real scenario, you'd send this code to the backend to verify.
-    // Since the original code said "For demo: Accept any 6-digit code", we'll stick to that
-    // OR we could implement actual verification if the backend supported it.
-    // Given the user request was to "break down", we keep the logic similar but structured.
+    // Validate OTP
+    if (otpCode !== expectedOTP) {
+        showOTPError('Invalid OTP Code');
+        otpInputs.forEach(input => {
+            input.classList.add('error');
+        });
+        return;
+    }
 
-    // Simulate API call
+    // Success
     setTimeout(() => {
         // Success! Mark email as verified
         markEmailAsVerified(currentVerifyingEmailType);
@@ -276,21 +291,26 @@ function markEmailAsVerified(emailType) {
 }
 
 function resendOTP() {
+    if (resendTimer) {
+        return; // Already counting down
+    }
+    sendOTPToEmail(currentVerifyingEmail);
+    ToastSystem.show('Code resent successfully!', 'info');
+    startResendCountdown(); // Start timer immediately
+}
+
+function startResendCountdown() {
     const resendBtn = document.querySelector('#resendOtpBtn');
     const resendText = document.querySelector('#resendText');
 
     if (resendTimer) {
-        return; // Already counting down
+        clearInterval(resendTimer);
     }
 
-    // Call the send function again
-    sendOTPToEmail(currentVerifyingEmail);
-
-    ToastSystem.show('Code resent successfully!', 'info');
-
-    // Start countdown
-    resendCountdown = 60;
+    // Start countdown - 30 seconds
+    resendCountdown = 30;
     resendBtn.disabled = true;
+    resendText.textContent = `Resend Code (${resendCountdown}s)`;
 
     resendTimer = setInterval(() => {
         resendCountdown--;
