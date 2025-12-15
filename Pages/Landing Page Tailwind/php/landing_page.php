@@ -53,7 +53,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
-                    <img src="../Landing Page/Images/dhvsulogo.png" alt="Hirenorian Logo" class="h-12 w-auto">
+                    <img src="../../Landing Page/Images/dhvsulogo.png" alt="Hirenorian Logo" class="h-12 w-auto">
                     <span class="text-2xl font-extrabold text-maroon uppercase tracking-wide">Hirenorian</span>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
@@ -154,7 +154,7 @@
                         <!-- News 1 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../Landing Page/Images/dhvsu-bg-image.jpg" alt="Dhvsu" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../../Landing Page/Images/dhvsu-bg-image.jpg" alt="Dhvsu" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
                                 <span class="text-sm font-bold text-gray-400 mb-4 block">Oct 24, 2025</span>
@@ -167,7 +167,7 @@
                         <!-- News 2 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../Landing Page/Images/gradpic2.png" alt="Graduation" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../../Landing Page/Images/gradpic2.png" alt="Graduation" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
                                 <span class="text-sm font-bold text-gray-400 mb-4 block">Oct 18, 2025</span>
@@ -180,7 +180,7 @@
                         <!-- News 3 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../Landing Page/Images/job.png" alt="Job" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../../Landing Page/Images/job.png" alt="Job" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
                                 <span class="text-sm font-bold text-gray-400 mb-4 block">Oct 10, 2025</span>
@@ -220,7 +220,7 @@
                     <!-- Card 1 -->
                     <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
                         <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Cloudstaff" class="h-10 w-auto object-contain">
+                            <img src="../../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Cloudstaff" class="h-10 w-auto object-contain">
                             <span class="bg-yellow/20 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase">Internship</span>
                         </div>
                         <div class="mb-6">
@@ -239,7 +239,7 @@
                     <!-- Card 2 -->
                     <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
                         <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/Companies/samsung_logo.png" alt="Samsung" class="h-10 w-auto object-contain">
+                            <img src="../../Landing Page/Images/Companies/samsung_logo.png" alt="Samsung" class="h-10 w-auto object-contain">
                             <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Full Time</span>
                         </div>
                         <div class="mb-6">
@@ -258,7 +258,7 @@
                      <!-- Card 3 -->
                      <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
                         <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/google.jpg" alt="Google" class="h-10 w-auto object-contain">
+                            <img src="../../Landing Page/Images/google.jpg" alt="Google" class="h-10 w-auto object-contain">
                             <span class="bg-yellow/20 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase">Internship</span>
                         </div>
                         <div class="mb-6">
@@ -277,7 +277,7 @@
                      <!-- Card 4 -->
                      <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
                         <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/hyundai.jpg" alt="Hyundai" class="h-10 w-auto object-contain">
+                            <img src="../../Landing Page/Images/hyundai.jpg" alt="Hyundai" class="h-10 w-auto object-contain">
                             <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Part Time</span>
                         </div>
                         <div class="mb-6">
@@ -376,16 +376,16 @@
                     
                     <div class="flex gap-4">
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/fbicon.png" alt="Facebook" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/fbicon.png" alt="Facebook" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/linkedin.png" alt="LinkedIn" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/linkedin.png" alt="LinkedIn" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/yticon.png" alt="YouTube" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/yticon.png" alt="YouTube" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/igicon.png" alt="Instagram" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/igicon.png" alt="Instagram" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                     </div>
                 </div>
@@ -427,6 +427,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>
