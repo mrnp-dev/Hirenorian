@@ -21,6 +21,7 @@ else
     <link rel="stylesheet" href="../css/company_registration.css">
     <link rel="stylesheet" href="../css/otp-modal.css">
     <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../Reset Password UI/css/reset_password.css">
     <title>Company Registration - Hirenorian</title>
 </head>
 
@@ -142,7 +143,7 @@ else
                     <img src="../images/sign-up-icon.svg" alt="">
                     <p>Connect with top talent and grow your team today</p>
                     <div class="toggle-btn-container">
-                        <button id="toggle-signUp-Btn">Sign Up</button>
+                        <button type="button" id="toggle-signUp-Btn">Sign Up</button>
                     </div>
                 </div>
                 <div class="toggle-left shift_inactive">
@@ -159,13 +160,16 @@ else
                         </div>
                     </div>
                     <div class="toggle-btn-container">
-                        <button id="toggle-signIn-Btn">Sign In</button>
+                        <button type="button" id="toggle-signIn-Btn">Sign In</button>
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+
+    <!-- Reset Password UI -->
+    <?php include '../Reset Password UI/php/reset_password.php'; ?>
 
     <!-- OTP Verification Modal -->
     <div class="otp-modal-overlay" id="otpModalOverlay" style="display: none;">
@@ -214,9 +218,10 @@ else
     <script src="../js/modules/validation.js"></script>
     <script src="../js/modules/auth.js"></script>
     <script src="../js/modules/otp.js"></script>
-    <script src="../js/modules/navigation.js"></script>
+
     <script src="../js/modules/main.js"></script>
     <script src="../js/modules/toast.js"></script>
+    <script src="../Reset Password UI/js/reset_password.js"></script>
 </body>
 
 </html>

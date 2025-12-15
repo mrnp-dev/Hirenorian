@@ -1,12 +1,10 @@
-// Main Initialization Script
+// Main Initialization Script (Debug Mode)
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize Data
-    const dropdownData = await loadCompanyTypesAndIndustries();
-    // dropdownData.types and dropdownData.industries are now in globals but we might use local references?
-    // Globals are updated by loadCompanyTypesAndIndustries
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("Main.js: DOMContentLoaded fired");
 
-    // DOM Elements
+    // --- 1. DOM Elements & Listeners Setup (Immediate) ---
+
     const signUp_Inputs = document.querySelectorAll('.sign-in-container input');
     const form = document.querySelector('#signUp-Form');
     const title = document.querySelector('#title');
@@ -21,6 +19,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const signIn_Btn = document.getElementById('toggle-signIn-Btn');
     const signUp_Btn = document.getElementById('toggle-signUp-Btn');
     const suggestionsContainer = document.querySelectorAll('.suggestions');
+
+    console.log("Buttons Found:", { signIn: !!signIn_Btn, signUp: !!signUp_Btn });
 
     // Sign In Inputs Listeners (Login)
     signUp_Inputs.forEach(input => {
@@ -62,15 +62,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Sign Up - Step 2 Inputs Listeners (Company Details)
     secondInputs.forEach(input => {
-
         let list = [];
         input.addEventListener('focus', (e) => {
             switch (input.name) {
                 case 'Company Type':
-                    list = companyTypes;
+                    list = companyTypes; // Depends on loaded data
                     break;
                 case 'Industry':
-                    list = industries;
+                    list = industries; // Depends on loaded data
                     break;
             }
             if (list.length > 0) {
@@ -97,48 +96,65 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (list.length > 0) {
                 LoadList(e.target, list);
-                // Optional: validate selection immediately? Usually wait for click or blur.
-                // inputValidation_SecondSection(input);
             } else {
-                // If no list (Company Name, Address), just ensure non-empty
                 validateSecondInputs(input);
             }
         });
     });
 
     // Animation End Listeners
-    let isGoingBack = false;
+    if (firstInputs_Container) {
+        firstInputs_Container.addEventListener('animationend', e => {
+            if (e.animationName == 'slideRight') {
+                firstInputs_Container.classList.remove('slide-right');
+                firstInputs_Container.style.display = 'none';
+                secondInputs_Container.style.display = 'flex';
+                secondInputs_Container.classList.add('slide-left');
+                secondInputs_Container.classList.add('form-section');
+                title.textContent = 'Brief Background';
+            }
+        });
+    }
 
-    firstInputs_Container.addEventListener('animationend', e => {
-        if (e.animationName == 'slideRight') {
-            firstInputs_Container.classList.remove('slide-right');
-            firstInputs_Container.style.display = 'none';
-            secondInputs_Container.style.display = 'flex';
-            secondInputs_Container.classList.add('slide-left');
-            secondInputs_Container.classList.add('form-section');
-            title.textContent = 'Brief Background';
-        }
-    });
-
-    secondInputs_Container.addEventListener('animationend', e => {
-        if (e.animationName == 'slideRight' && secondInputs_Container.style.display !== 'none') {
-            // This event triggers when sliding OUT to the right (going back to step 1)
-            secondInputs_Container.classList.remove('slide-right');
-            secondInputs_Container.style.display = 'none';
-            firstInputs_Container.style.display = 'flex';
-            firstInputs_Container.classList.add('slide-left');
-            firstInputs_Container.classList.add('form-section');
-            title.textContent = 'Company Profile';
-        }
-    });
+    if (secondInputs_Container) {
+        secondInputs_Container.addEventListener('animationend', e => {
+            if (e.animationName == 'slideRight' && secondInputs_Container.style.display !== 'none') {
+                // This event triggers when sliding OUT to the right (going back to step 1)
+                secondInputs_Container.classList.remove('slide-right');
+                secondInputs_Container.style.display = 'none';
+                firstInputs_Container.style.display = 'flex';
+                firstInputs_Container.classList.add('slide-left');
+                firstInputs_Container.classList.add('form-section');
+                title.textContent = 'Company Profile';
+            }
+        });
+    }
 
 
     // Toggle Panel Buttons
-    signUp_Btn.addEventListener('click', () => panelSwap());
-    signIn_Btn.addEventListener('click', () => panelSwap());
+    if (signUp_Btn) {
+        signUp_Btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log("Sign Up Button Clicked");
+            panelSwap();
+        });
+    } else {
+        console.error("SignUp Button NOT found in DOM");
+    }
+
+    if (signIn_Btn) {
+        signIn_Btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log("Sign In Button Clicked");
+            panelSwap();
+        });
+    } else {
+        console.error("SignIn Button NOT found in DOM");
+    }
 
     // Global Click Listener for Suggestions closing
     document.addEventListener('click', (e) => {
+        if (e.target.closest('#toggle-signUp-Btn') || e.target.closest('#toggle-signIn-Btn')) return; // Ignore toggle buttons
         if (!e.target.closest('.input-wrapper') && !e.target.closest('button')) {
             suggestionsContainer.forEach(c => c.classList.remove('active'));
         }
@@ -158,7 +174,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Initialize Email Edit Listeners (from otp.js/utils.js helper if any)
-    setupEmailEditListeners();
+    if (typeof setupEmailEditListeners === 'function') setupEmailEditListeners();
+
+    // --- 2. Load Data (Async, non-blocking) ---
+    loadCompanyTypesAndIndustries().then(() => {
+        console.log("Dropdown data loaded");
+    }).catch(err => {
+        console.warn("Dropdown data load issue (may be handled in api.js)", err);
+    });
+
 });
 
 // Helper for suggestions loading
@@ -180,12 +204,6 @@ function LoadSuggestions(input, list) {
     suggestionsContainer.innerHTML = '';
 
     if (list.length === 0 || !list) {
-        // Only show no results if there was supposed to be a list
-        // const noItems = document.createElement('div');
-        // noItems.className = 'no-results';
-        // noItems.textContent = 'No matches found';
-        // suggestionsContainer.append(noItems);
-        // suggestionsContainer.classList.add('active');
         suggestionsContainer.classList.remove('active');
     } else {
         list.forEach(item => {
@@ -243,7 +261,6 @@ async function submitTheForm(button) {
     );
 
     if (validations.every(Boolean)) {
-        if (typeof ToastSystem !== 'undefined') ToastSystem.show('Registration form is ready!', 'success');
         Register_Company(button);
     } else {
         if (typeof ToastSystem !== 'undefined') ToastSystem.show("Please correct the highlighted fields.", "error");
@@ -251,7 +268,7 @@ async function submitTheForm(button) {
 }
 
 // Steps Management
-let currentStep = 0;
+// currentStep is defined in globals.js
 function manageSteps(action) {
     const steps = document.querySelectorAll('.step');
     const step_text = document.querySelectorAll('.step-text');
@@ -275,10 +292,16 @@ function manageSteps(action) {
 }
 
 function panelSwap() {
+    console.log("Executing panelSwap");
     const form_container = document.querySelector('.form-container');
     const toggle_container = document.querySelector('.toggle-container');
     const form_children = document.querySelectorAll('.form-container > div');
     const toggle_children = document.querySelectorAll('.toggle > div');
+
+    if (!form_container || !toggle_container) {
+        console.error("Containers not found in panelSwap");
+        return;
+    }
 
     form_container.classList.toggle('signUp');
     form_container.classList.toggle('signIn');
@@ -294,7 +317,7 @@ function panelSwap() {
         child.classList.toggle('shift_inactive');
     });
 
-    closeOTPModal();
+    if (typeof closeOTPModal === 'function') closeOTPModal();
 }
 
 function goBackToLandingPage() {
