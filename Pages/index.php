@@ -117,9 +117,9 @@
         <div class="section">
             <h2 class="section-title">Main Pages</h2>
             <div class="link-grid">
-                <a href="Landing Page/php/landing_page.php" class="page-link">
+                <a href="Landing Page Tailwind/php/landing_page.php" class="page-link">
                     <span class="page-name">Landing Page (Original)</span>
-                    <span class="page-path">Landing Page/php/landing_page.php</span>
+                    <span class="page-path">Landing Page Tailwind/php/landing_page.php</span>
                     <span class="badge badge-main">Public</span>
                 </a>
                 <a href="Landing Page Tailwind/index.php" class="page-link">

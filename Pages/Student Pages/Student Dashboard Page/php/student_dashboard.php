@@ -143,7 +143,7 @@ else
 {
     echo "<script>console.warn('DEBUG: Session email not set. Session ID: " . session_id() . "');</script>";
     // Optional: Redirect if strict login is required
-    // header("Location: ../../../Landing Page/php/landing_page.php");
+    // header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
 }
 ?>
 <!DOCTYPE html>
@@ -168,7 +168,7 @@ else
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 12px; color: inherit;">
+                <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 12px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                     <span class="logo-text">Hirenorian</span>
                 </a>

@@ -46,7 +46,7 @@ if (isset($_SESSION['email'])) {
         }
     }
 } else {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+    header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
     exit();
 }
 ?>
@@ -72,7 +72,7 @@ if (isset($_SESSION['email'])) {
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                     <span class="logo-text">Hirenorian</span>
                 </a>

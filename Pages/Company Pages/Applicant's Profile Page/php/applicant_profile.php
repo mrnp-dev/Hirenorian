@@ -44,7 +44,7 @@ if (isset($_SESSION['email'])) {
         $company_icon_url = "https://via.placeholder.com/40";
     }
 } else {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+    header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
     exit();
 }
 
