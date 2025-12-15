@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const addStudentButton = document.querySelector('.add-new-btn');
     const pageNumbers = document.querySelectorAll('.pagination-nav .page-number');
     const navArrows = document.querySelectorAll('.pagination-nav .nav-arrow');
+    const seeDocuButtons = document.querySelectorAll('.seeDocu-btn');
 
     const activationButtons = document.querySelectorAll('.activation-btn');
     const verificationButtons = document.querySelectorAll('.verification-btn');
@@ -18,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cells = row.cells;
 
                 if (!cells || cells.length < 8) {
-                    console.error('Row does not have enough columns (expected at least 8).', cells);
                     alert('Error: Table structure mismatch. Please refresh the page.');
                     return;
                 }
@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 window.location.href = `editInfo.php?${params.toString()}`;
             } catch (err) {
-                console.error('Error in edit button handler:', err);
                 alert('An error occurred. Check console for details.');
             }
         });
@@ -101,7 +100,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             accountStatusCell.innerHTML = '<span class="badge bg-success">Activated</span>';
 
-                            // Update Button to Suspend
                             actionBtn.classList.remove('activate-btn');
                             actionBtn.classList.add('suspend-btn');
                             actionBtn.setAttribute('title', 'suspend/deactivate');
@@ -136,6 +134,38 @@ document.addEventListener('DOMContentLoaded', function () {
                             swal("Action cancelled.");
                         }
                     });
+            } else if (actionBtn.classList.contains('seeDocu-btn')) {
+                const studentID = row.querySelector('td:first-child').textContent.trim();
+
+                if (studentID) {
+                    const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/fetch_documents.php?student_id=${studentID}`;
+
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success' && data.data) {
+                                const studentType = data.data.student_type;
+
+                                if (studentType === 'Graduate') {
+                                    window.location.href = `ViewStudDocuments.php?id=${studentID}`;
+                                } else if (studentType === 'Undergraduate') {
+                                    window.location.href = `viewStudDocu2.php?id=${studentID}`;
+                                } else {
+                                    console.warn('Unknown student type:', studentType);
+                                    if (!studentType) {
+                                        window.location.href = `ViewStudDocuments.php?id=${studentID}`;
+                                    } else {
+                                        window.location.href = `ViewStudDocuments.php?id=${studentID}`;
+                                    }
+                                }
+                            } else {
+                                swal("Error", "Failed to retrieve student information.", "error");
+                            }
+                        })
+                        .catch(error => {
+                            swal("Error", "An error occurred while fetching student details.", "error");
+                        });
+                }f
             }
         }
     });
@@ -245,14 +275,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    console.log('Verification updated: ' + status);
+                    auditLogs('Update', 'updated verification status for student id: ' + studentId);
                 } else {
-                    console.error('Failed to update verification:', data.message);
                     alert('Error updating verification: ' + (data.message || 'Unknown error'));
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('Error Updating Verification Status');
             });
     }
@@ -296,15 +324,12 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    console.log('Student deleted: ' + studentId);
                     auditLogs('Delete', 'deleted information for student id: ' + studentId);
                 } else {
-                    console.error('Failed to delete student:', data.message);
                     alert('Error deleting student: ' + (data.message || 'Unknown error'));
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('Error Deleting Student');
             });
     }
@@ -330,7 +355,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('Error logging audit log.');
             });
     }

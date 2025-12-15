@@ -29,5 +29,4 @@ $stmt->execute([
     ':verification' => $verification,
 ]);
 
-// Return success even if rowCount is 0 (no changes made), as long as query didn't fail.
 echo json_encode(["status" => "success", "message" => "Student verification updated successfully"]);
