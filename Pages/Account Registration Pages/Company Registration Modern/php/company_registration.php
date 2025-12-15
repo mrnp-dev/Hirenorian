@@ -188,12 +188,12 @@ else
             </div>
 
             <div class="otp-input-container">
-                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-1">
-                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-2">
-                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-3">
-                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-4">
-                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-5">
-                <input type="text" class="otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-6">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-1">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-2">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-3">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-4">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-5">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-6">
             </div>
 
             <div class="otp-error-message" id="otpErrorMessage" style="display: none;">

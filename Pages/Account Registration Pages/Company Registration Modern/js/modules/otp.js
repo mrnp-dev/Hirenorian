@@ -4,6 +4,7 @@ let expectedOTP = null;
 async function initiateEmailVerification(emailType) {
     if (emailType === 'company') {
         const emailInput = document.querySelector('#email-input');
+        const verifyBtn = document.querySelector('#verify-company-email-btn');
         const email = emailInput.value.trim();
 
         // Validate email format and availability first
@@ -12,12 +13,34 @@ async function initiateEmailVerification(emailType) {
             return;
         }
 
-        const isValid = await checkEmail(emailInput);
-        if (!isValid) return;
+        // Add loading state
+        const originalText = verifyBtn.innerHTML;
+        verifyBtn.disabled = true;
+        verifyBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Checking...';
 
-        currentVerifyingEmail = email;
-        currentVerifyingEmailType = emailType;
-        openOTPModal();
+        try {
+            const isValid = await checkEmail(emailInput);
+
+            if (!isValid) {
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = originalText;
+                return;
+            }
+
+            currentVerifyingEmail = email;
+            currentVerifyingEmailType = emailType;
+            openOTPModal();
+
+            // Reset button state (modal is now open)
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = originalText;
+
+        } catch (error) {
+            console.error("Verification error:", error);
+            verifyBtn.disabled = false;
+            verifyBtn.innerHTML = originalText;
+            if (typeof ToastSystem !== 'undefined') ToastSystem.show("An error occurred during verification", "error");
+        }
     }
 }
 
@@ -102,14 +125,14 @@ function resetOTPInputs() {
 }
 
 function setupOTPInputHandlers() {
-    const otpInputs = document.querySelectorAll('.otp-input');
+    const otpInputs = document.querySelectorAll('.company-otp-input');
 
     otpInputs.forEach((input, index) => {
         const newInput = input.cloneNode(true);
         input.parentNode.replaceChild(newInput, input);
     });
 
-    const freshInputs = document.querySelectorAll('.otp-input');
+    const freshInputs = document.querySelectorAll('.company-otp-input');
 
     freshInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
@@ -151,7 +174,7 @@ function setupOTPInputHandlers() {
 }
 
 function verifyOTP() {
-    const otpInputs = document.querySelectorAll('.otp-input');
+    const otpInputs = document.querySelectorAll('.company-otp-input');
     let otpCode = '';
     otpInputs.forEach(input => otpCode += input.value);
 
