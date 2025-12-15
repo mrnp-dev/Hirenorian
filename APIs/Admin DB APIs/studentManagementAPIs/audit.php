@@ -1,19 +1,17 @@
 <?php
 include '../dbCon.php';
 
-// Set JSON response header
+
 header('Content-Type: application/json');
 
 try {
-    // Get JSON input from request body
+
     $json = file_get_contents('php://input');
     $data = json_decode($json, true);
 
-    // Extract parameters from JSON data
     $action         = $data['action_type'] ?? null;
     $description    = $data['description'] ?? null;
 
-    // Validate required fields
     if (!$action || !$description) {
         throw new Exception('Missing required fields');
     }

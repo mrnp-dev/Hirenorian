@@ -743,10 +743,9 @@ body {
    RESPONSIVE STYLES
    ======================================================= */
 
-/* --- Large Tablets / Small Desktops --- */
+
 @media (max-width: 1200px) {
 
-    /* Stack Dashboard 2-col layout */
     .dashboard-content-grid {
         grid-template-columns: 1fr;
     }
@@ -757,10 +756,10 @@ body {
     }
 }
 
-/* --- Mobile --- */
+
 @media (max-width: 768px) {
 
-    /* Sidebar collapse logic */
+
     .main-content {
         margin-left: 70px;
     }
@@ -778,9 +777,7 @@ body {
         justify-content: center;
         padding: 15px;
     }
-
-    /* Layout adjustments */
-    .dashboard-container {
+        .dashboard-container {
         padding-left: 0;
     }
 
@@ -791,13 +788,10 @@ body {
     .dashboard-body {
         padding: 20px 15px;
     }
-
-    /* Stack stats cards */
     .stats-row {
         grid-template-columns: 1fr;
     }
 
-    /* CRUD Table Mobile (Preserved) */
     .crud-table {
         display: block;
         width: 100%;
@@ -824,4 +818,48 @@ body {
         justify-content: center;
         width: 100%;
     }
+}
+
+
+.doc-section-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.doc-section-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.doc-header {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.doc-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.status-badge {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    border-radius: 20px;
 }

@@ -34,11 +34,9 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Company Info - Hirenorian</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <!-- Existing CSS -->
   <link rel="stylesheet" href="../css/style.css">
 
   <style>

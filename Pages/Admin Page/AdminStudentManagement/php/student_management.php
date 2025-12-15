@@ -83,16 +83,28 @@ if ($data && isset($data['status'])) {
         <div class="main-content">
             <header class="top-bar">
                 <div class="top-bar-right">
-                    <div class="user-profile" id="userProfileBtn">
+                    <div class="user-profile" id="userProfileBtn" onclick="document.getElementById('profileDropdown').classList.toggle('show')">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
                         <span class="user-name">Admin</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <?php
+                        include '../../../../APIs/Admin DB APIs/dbCon.php';
+
+                        if (isset($conn)) {
+                            try {
+                                $action = "Log Out";
+                                $description = "Log Out as admin";
+
+                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
+                                $stmt->execute([':action' => $action, ':description' => $description]);
+                            } catch (Exception $e) {
+                            }
+                        }
+                        ?>
                     </div>
-                </div>
             </header>
 
             <main class="dashboard-body">
@@ -149,6 +161,8 @@ if ($data && isset($data['status'])) {
                                         <?php else: ?>
                                             <button type="button" class="action-btn activate-btn" title="Activate" data-id="<?= $student['student_id'] ?>"><i class="fa-solid fa-power-off"></i></button>
                                         <?php endif; ?>
+
+                                        <button type="button" class="action-btn seeDocu-btn" title="View Documents" data-id="<?= $student['student_id'] ?>"><i class="fa-solid fa-file-lines"></i></button>
 
                                         <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
                                     </td>
