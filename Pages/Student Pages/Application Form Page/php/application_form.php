@@ -102,7 +102,7 @@ $job_id = isset($_GET['job_id']) ? $_GET['job_id'] : '';
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <a href="../../logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
