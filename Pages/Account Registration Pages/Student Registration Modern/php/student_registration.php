@@ -89,8 +89,8 @@ else
                             <div class="input-wrapper email-verification-wrapper">
                                 <input type="text" id="email-input" name="Email" placeholder="Personal Email *">
                                 <button type="button" class="verify-btn" id="verify-personal-email-btn"
-                                    onclick="initiateEmailVerification('personal')">
-                                    <i class="fa fa-shield-alt"></i> Verify
+                                    onclick="initiateEmailVerification('personal')" title="Verify Email">
+                                    <i class="fa fa-shield-alt"></i>
                                 </button>
                                 <div class="verified-badge" id="personal-email-verified" style="display: none;">
                                     <i class="fa fa-check-circle"></i>
@@ -156,8 +156,8 @@ else
                                 <input type="text" id="schoolEmail-input" name="School Email"
                                     placeholder="School Email *">
                                 <button type="button" class="verify-btn" id="verify-school-email-btn"
-                                    onclick="initiateEmailVerification('school')">
-                                    <i class="fa fa-shield-alt"></i> Verify
+                                    onclick="initiateEmailVerification('school')" title="Verify Email">
+                                    <i class="fa fa-shield-alt"></i>
                                 </button>
                                 <div class="verified-badge" id="school-email-verified" style="display: none;">
                                     <i class="fa fa-check-circle"></i>

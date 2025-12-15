@@ -831,25 +831,29 @@ input.input_InvalidInput {
 /* Add padding to email inputs when inside verification wrapper - increase specificity */
 .sign-up-container .email-verification-wrapper input,
 .email-verification-wrapper input[type="text"] {
-    padding-right: 5.5rem !important;
-    /* Reduced padding for wider input area */
+    padding-right: 3.5rem !important;
+    /* Reduced padding since button is now icon-only */
 }
 
 .verify-btn {
     position: absolute;
-    right: 0.3rem;
-    top: 0.4rem;
-    padding: 0.45rem 0.9rem;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
     background: var(--primary-maroon);
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.25rem;
     white-space: nowrap;
     z-index: 10;
