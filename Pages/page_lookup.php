@@ -153,6 +153,11 @@
                     <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
                     <span class="badge badge-auth">Dev</span>
                 </a>
+                <a href="Account Registration Pages/Student Registration Modern/php/student_registration.php" class="page-link">
+                    <span class="page-name">Student Registration Modern</span>
+                    <span class="page-path">Account Registration Pages/.../student_registration.php</span>
+                    <span class="badge badge-auth">New ✨</span>
+                </a>
             </div>
         </div>
 
