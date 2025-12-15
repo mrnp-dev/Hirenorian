@@ -148,6 +148,11 @@
                     <span class="page-path">Account Registration Pages/.../company.php</span>
                     <span class="badge badge-company">Company</span>
                 </a>
+                <a href="Account Registration Pages/Company Registration Modern/php/company_registration.php" class="page-link">
+                    <span class="page-name">Company Registration Modern</span>
+                    <span class="page-path">Account Registration Pages/.../company_registration.php</span>
+                    <span class="badge badge-company">New ✨</span>
+                </a>
                 <a href="Account Registration Pages/SR-Duplicate OTP Page/php/student_registrationForm.php" class="page-link">
                     <span class="page-name">SR-Duplicate OTP Page</span>
                     <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>

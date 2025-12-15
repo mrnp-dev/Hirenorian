@@ -1,9 +1,8 @@
 <?php
 session_start();
-if(isset($_SESSION['email']))
+if(isset($_SESSION['company_email']))
 {
-    echo "<script>console.log('email in session');</script>";
-    /* header("Location: ../../../Student Pages/Student Dashboard Page/php/student_dashboard.php"); */
+    echo "<script>console.log('company email in session');</script>";
 }
 else
 {
@@ -19,10 +18,10 @@ else
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/student_registration.css">
+    <link rel="stylesheet" href="../css/company_registration.css">
     <link rel="stylesheet" href="../css/otp-modal.css">
     <link rel="stylesheet" href="../css/toast.css">
-    <title>Student Registration - Hirenorian</title>
+    <title>Company Registration - Hirenorian</title>
 </head>
 
 <body>
@@ -31,9 +30,9 @@ else
             <img src="../images/DHVSU-LOGO.png" alt="Logo">
             <h1>Hirenorian</h1>
         </div>
-        <a href="../../Company Registration Modern/php/company_registration.php" class="switch-registration-btn">
-            <i class="fa fa-building"></i>
-            <span>Company Registration</span>
+        <a href="../../Student Registration Modern/php/student_registration.php" class="switch-registration-btn">
+            <i class="fa fa-user-graduate"></i>
+            <span>Student Registration</span>
         </a>
     </div>
 
@@ -43,11 +42,11 @@ else
                 <form action="">
                     <h1>Sign In</h1>
                     <div class="input-wrapper">
-                        <input type="email" name="Student Email" id="signup-email" placeholder="Student Email">
+                        <input type="email" name="Company Email" id="signin-email" placeholder="Company Email">
                         <p>error</p>
                     </div>
                     <div class="input-wrapper">
-                        <input type="password" name="Password" id="signup-password" placeholder="Password">
+                        <input type="password" name="Password" id="signin-password" placeholder="Password">
                         <p>error</p>
                         <button type="button" class="toggle_show_hide" id="toggleSignInPassword"
                             onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
@@ -58,52 +57,21 @@ else
                 </form>
             </div>
             <div class="sign-up-container shift_inactive">
-                <h1 id="title">Personalize your Profile</h1>
+                <h1 id="title">Company Profile</h1>
                 <form action="" id="signUp-Form">
                     <div class="form-section" id="firstInputs">
-                        <div class="form-row">
-                            <div class="input-wrapper">
-                                <input type="text" id="firstName-input" name="First Name" placeholder="First Name *">
-                                <p>error</p>
+                        <div class="input-wrapper email-verification-wrapper">
+                            <input type="email" id="email-input" name="Company Email" placeholder="Company Email *">
+                            <button type="button" class="verify-btn" id="verify-company-email-btn"
+                                onclick="initiateEmailVerification('company')" title="Verify Email">
+                                <i class="fa fa-shield-alt"></i>
+                            </button>
+                            <div class="verified-badge" id="company-email-verified" style="display: none;">
+                                <i class="fa fa-check-circle"></i>
                             </div>
-
-                            <div class="input-wrapper">
-                                <input type="text" id="lastName-input" name="Last Name" placeholder="Last Name *">
-                                <p>error</p>
-                            </div>
+                            <p>error</p>
                         </div>
 
-                        <div class="form-row">
-                            <div class="input-wrapper">
-                                <input type="text" id="middleInitial-input" name="Middle Initial"
-                                    placeholder="Middle Initial *" minlength="1" maxlength="2">
-                                <p>error</p>
-                            </div>
-
-                            <div class="input-wrapper">
-                                <input type="text" id="suffix-input" name="Suffix" placeholder="Suffix (optional)">
-                                <p>error</p>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="input-wrapper email-verification-wrapper">
-                                <input type="text" id="email-input" name="Email" placeholder="Personal Email *">
-                                <button type="button" class="verify-btn" id="verify-personal-email-btn"
-                                    onclick="initiateEmailVerification('personal')" title="Verify Email">
-                                    <i class="fa fa-shield-alt"></i>
-                                </button>
-                                <div class="verified-badge" id="personal-email-verified" style="display: none;">
-                                    <i class="fa fa-check-circle"></i>
-                                </div>
-                                <p>error</p>
-                            </div>
-
-                            <div class="input-wrapper phone-wrapper">
-                                <input type="text" id="phoneNumber-input" name="Phone Number" placeholder="Phone No *"
-                                    minlength="11" maxlength="13">
-                                <p>error</p>
-                            </div>
-                        </div>
                         <div class="input-wrapper">
                             <input type="password" id="password-input" name="Password" placeholder="Password *">
                             <p>error</p>
@@ -119,6 +87,12 @@ else
                                 onclick="toggleShow_Hide_Password(this)"><i class="fa fa-eye"></i></button>
                         </div>
 
+                        <div class="input-wrapper phone-wrapper">
+                            <input type="tel" id="phoneNumber-input" name="Phone Number" placeholder="Phone Number *"
+                                minlength="11" maxlength="13">
+                            <p>error</p>
+                        </div>
+
                         <div class="button-container">
                             <button type="button" class="btn btn-landing" onclick="goBackToLandingPage()">Back to
                                 Landing</button>
@@ -129,71 +103,28 @@ else
 
                     <div class="form-section" id="secondInputs">
                         <div class="input-wrapper">
-                            <input type="text" id="univ-input" name="University/Campus"
-                                placeholder="University / Campus *">
-                            <div class="suggestions"></div>
+                            <input type="text" id="companyName-input" name="Company Name" placeholder="Company Name *">
                             <p>error</p>
-                        </div>
-                        <div class="form-row">
-                            <div class="input-wrapper">
-                                <input type="text" id="dep-input" name="Department" placeholder="Department *">
-                                <div class="suggestions"></div>
-                                <p>error</p>
-                            </div>
-                            <div class="input-wrapper">
-                                <input type="text" id="course-input" name="Course" placeholder="Course *">
-                                <div class="suggestions"></div>
-                                <p>error</p>
-                            </div>
                         </div>
 
                         <div class="form-row">
-                            <div class="input-wrapper student-num-wrapper">
-                                <input type="text" id="studNum-input" name="Student Number" placeholder="Student No *">
+                            <div class="input-wrapper">
+                                <input type="text" id="companyType-input" name="Company Type"
+                                    placeholder="Company Type *">
+                                <div class="suggestions"></div>
                                 <p>error</p>
                             </div>
-                            <div class="input-wrapper email-verification-wrapper">
-                                <input type="text" id="schoolEmail-input" name="School Email"
-                                    placeholder="School Email *">
-                                <button type="button" class="verify-btn" id="verify-school-email-btn"
-                                    onclick="initiateEmailVerification('school')" title="Verify Email">
-                                    <i class="fa fa-shield-alt"></i>
-                                </button>
-                                <div class="verified-badge" id="school-email-verified" style="display: none;">
-                                    <i class="fa fa-check-circle"></i>
-                                </div>
+                            <div class="input-wrapper">
+                                <input type="text" id="industry-input" name="Industry" placeholder="Industry *">
+                                <div class="suggestions"></div>
                                 <p>error</p>
                             </div>
                         </div>
 
                         <div class="input-wrapper">
-                            <input type="text" id="org-input" name="Organization" placeholder="Organization (optional)">
-                            <div class="suggestions"></div>
+                            <input type="text" id="companyAddress-input" name="Company Address"
+                                placeholder="Company Address *">
                             <p>error</p>
-                        </div>
-
-                        <div class="button-container">
-                            <button type="button" class="btn btn-landing"
-                                onclick="goToPreviousSection(this)">Back</button>
-                            <button type="button" id="second_nextBtn" class="btn btn-next"
-                                onclick="goToLast(this)">Next</button>
-                        </div>
-                    </div>
-                    <div class="form-section" id="thirdInputs">
-                        <div class="input-wrapper">
-                            <input type="text" id="location-input" name="Ideal Location" placeholder="Ideal Location *">
-                            <div class="suggestions"></div>
-                            <p>error</p>
-                        </div>
-
-                        <div class="tag-wrapper">
-                            <div class="tag-header">
-                                <h3>Choose 3 preferred Working Field <span class="optional-text">(optional)</span></h3>
-                            </div>
-                            <div class="selected-count" id="selectedCount">Selected: 0/3</div>
-                            <div class="tags-container">
-
-                            </div>
                         </div>
 
                         <div class="button-container">
@@ -207,28 +138,24 @@ else
         <div class="toggle-container signIn">
             <div class="toggle">
                 <div class="toggle-right shift_active">
-                    <h2>Hello Honorian!</h2>
+                    <h2>Welcome Back!</h2>
                     <img src="../images/sign-up-icon.svg" alt="">
-                    <p>Let us help you find your workplace and grow your career today</p>
+                    <p>Connect with top talent and grow your team today</p>
                     <div class="toggle-btn-container">
                         <button id="toggle-signUp-Btn">Sign Up</button>
                     </div>
                 </div>
                 <div class="toggle-left shift_inactive">
                     <h2>"Connecting students with<br>real-world opportunities"</h2>
-                    <div class=" steps">
+                    <div class="steps">
                         <div class="step active-step">
                             <div class="step-icon left-active-icon"><img src="../images/1User_White.png" alt="Logo">
                             </div>
-                            <span class="step-text left-active-text">Personal Information</span>
+                            <span class="step-text left-active-text">Company Profile</span>
                         </div>
                         <div class="step">
                             <div class="step-icon"><img src="../images/1Book_White.png" alt="Logo"></div>
-                            <span class="step-text">Educational Background</span>
-                        </div>
-                        <div class="step">
-                            <div class="step-icon"><img src="../images/1Briefcase_White.png" alt="Logo"></div>
-                            <span class="step-text">Work Preference</span>
+                            <span class="step-text">Brief Background</span>
                         </div>
                     </div>
                     <div class="toggle-btn-container">
@@ -280,9 +207,9 @@ else
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="../js/modules/globals.js"></script>
     <script src="../js/modules/utils.js"></script>
-    <script src="../js/modules/tags.js"></script>
     <script src="../js/modules/api.js"></script>
     <script src="../js/modules/validation.js"></script>
     <script src="../js/modules/auth.js"></script>
