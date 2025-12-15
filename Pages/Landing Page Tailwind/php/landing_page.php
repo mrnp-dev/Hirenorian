@@ -60,7 +60,7 @@
                     <a href="#" class="text-gray-700 hover:text-maroon font-medium transition-colors">Home</a>
                     <a href="#companies" class="text-gray-700 hover:text-maroon font-medium transition-colors">Companies</a>
                     <a href="#jobs" class="text-gray-700 hover:text-maroon font-medium transition-colors">Jobs</a>
-                    <a href="../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-maroon text-white px-6 py-2.5 rounded-full font-semibold border-2 border-maroon hover:bg-transparent hover:text-maroon transition-all">Sign In</a>
+                    <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-maroon text-white px-6 py-2.5 rounded-full font-semibold border-2 border-maroon hover:bg-transparent hover:text-maroon transition-all">Sign In</a>
                 </div>
                 <div class="md:hidden flex items-center">
                     <button class="text-3xl text-gray-700 focus:outline-none">
@@ -77,13 +77,13 @@
             
             <!-- Slide 1 -->
             <div class="carousel-item active absolute inset-0 w-full h-full bg-cover bg-center" 
-                style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../Landing Page/Images/dhvsu-bg-image.jpg');">
+                style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../../Landing Page/Images/dhvsu-bg-image.jpg');">
                 <div class="max-w-7xl mx-auto px-4 h-full flex items-center text-white">
                     <div class="max-w-2xl pt-20 animate-[fadeUp_1s_ease-out_forwards]">
                         <h1 class="text-5xl md:text-6xl font-black mb-6 drop-shadow-lg leading-tight">Get Hired Today</h1>
                         <p class="text-xl md:text-2xl mb-8 opacity-95 leading-relaxed">Unlock your potential with premium internships and job opportunities exclusively for DHVSU students.</p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Find Your Career</a>
+                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Find Your Career</a>
                             <a href="#how-it-works" class="border-2 border-white text-white px-8 py-3.5 rounded-full text-lg font-bold hover:bg-white hover:text-maroon transition-colors">Learn More</a>
                         </div>
                     </div>
@@ -92,13 +92,13 @@
 
             <!-- Slide 2 -->
             <div class="carousel-item absolute inset-0 w-full h-full bg-cover" 
-                 style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../Landing Page/Images/gradpic2.png'); background-position: center top;">
+                 style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../../Landing Page/Images/gradpic2.png'); background-position: center top;">
                 <div class="max-w-7xl mx-auto px-4 h-full flex items-center text-white">
                     <div class="max-w-2xl pt-20">
                         <h1 class="text-5xl md:text-6xl font-black mb-6 drop-shadow-lg leading-tight">Connect with Top Employers</h1>
                         <p class="text-xl md:text-2xl mb-8 opacity-95 leading-relaxed">Bridge the gap between your academic journey and professional success.</p>
                         <div>
-                            <a href="../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Join Now</a>
+                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Join Now</a>
                         </div>
                     </div>
                 </div>
