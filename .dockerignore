@@ -1,0 +1,8 @@
+.git
+.vscode
+vendor
+*.log
+.DS_Store
+*.md
+LICENSE
+project_structure.txt

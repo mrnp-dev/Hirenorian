@@ -57,6 +57,16 @@ document.addEventListener('DOMContentLoaded', () => {
             child.classList.toggle('shift_active');
             child.classList.toggle('shift_inactive');
         });
+
+        // Cancel Verification Process
+        closeOTPModal();
+        currentVerifyingEmail = null;
+        currentVerifyingEmailType = null;
+        const verifyBtn = document.querySelector('#verify-company-email-btn');
+        if (verifyBtn && verifyBtn.disabled) {
+            verifyBtn.innerHTML = '<i class="fa fa-shield-alt"></i> Verify';
+            verifyBtn.disabled = false;
+        }
     }
 
     setupEmailEditListeners();
@@ -96,6 +106,21 @@ signInInputs.forEach(input => {
     });
 });
 
+// Enable Login Button on Input Change
+const loginBtn = document.querySelector('#signIn_Btn');
+const loginEmailInput = document.querySelector('#signin-email');
+const loginPassInput = document.querySelector('#signin-password');
+
+function enableLoginButton() {
+    if (loginBtn.disabled) {
+        loginBtn.disabled = false;
+        loginBtn.textContent = "Login";
+    }
+}
+
+loginEmailInput.addEventListener('input', enableLoginButton);
+loginPassInput.addEventListener('input', enableLoginButton);
+
 async function check_LogIn_Fields() {
     let isValid = true;
     const emailInput = document.querySelector('#signin-email');
@@ -123,8 +148,13 @@ async function check_LogIn_Fields() {
     if (isValid) {
         const company_email = document.querySelector('#signin-email').value.trim();
         const company_password = document.querySelector('#signin-password').value.trim();
+
+        const loginBtn = document.querySelector('#signIn_Btn');
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Logging in...";
+
         try {
-            const response = await fetch("http://158.69.205.176:8080/Hirenorian/API/companyDB_APIs/company_login_process.php", {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_login_process.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -160,13 +190,22 @@ async function check_LogIn_Fields() {
                     }, 1500);
                 } else {
                     ToastSystem.show('Session storage failed', "error");
+                    const loginBtn = document.querySelector('#signIn_Btn');
+                    loginBtn.disabled = true;
+                    loginBtn.textContent = "Session Failed";
                 }
             } else {
                 ToastSystem.show('Login Failed', "error");
+                const loginBtn = document.querySelector('#signIn_Btn');
+                loginBtn.disabled = true;
+                loginBtn.textContent = "Login Failed";
             }
         } catch (err) {
             console.error("Network error:", err);
             alert("Unable to connect to server");
+            const loginBtn = document.querySelector('#signIn_Btn');
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Connection Error";
         }
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
@@ -325,16 +364,7 @@ async function checkEmail(input) {
         if (result.status === "exists") {
             showError(input, "Email is already in use.");
             return false;
-        } else if (result.status === "error") {
-            console.error("Email check error:", result.message);
-            // Optional: Fail open or show generic error? For now, prevent blocking but log it.
-            // But allowing registration might cause issues later. 
-            // Let's assume server error shouldn't block validation unless critical.
-            // Better UX: Show generic error
-            // showError(input, "Unable to verify email availability.");
-            // return false; 
         }
-
     } catch (error) {
         console.error("Network error checking email:", error);
     }
@@ -748,16 +778,19 @@ async function submitTheForm(button) {
     if (allValid.every(Boolean)) {
         ToastSystem.show('Registration form is ready for backend integration!', 'success');
         console.log('User Information:', userInformation);
-        // TODO: Implement backend submission
-        Register_Company();
+
+        button.disabled = true;
+        button.innerHTML = 'Finishing... <i class="fa fa-spinner fa-spin"></i>';
+
+        Register_Company(button);
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");
     }
 }
 
-async function Register_Company() {
+async function Register_Company(submitBtn) {
     console.log(userInformation);
-    fetch("http://158.69.205.176:8080/Hirenorian/API/companyDB_APIs/company_registration_process.php", {
+    fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/company_registration_process.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userInformation)
@@ -776,10 +809,18 @@ async function Register_Company() {
             } else {
                 ToastSystem.show("Something went wrong, try again later.", "error");
                 console.log(data.message);
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Finish';
+                }
             }
         })
         .catch(err => {
             console.error("Fetch error:", err);
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Finish';
+            }
         });
 }
 // ==================== EMAIL VERIFICATION ====================
@@ -800,9 +841,63 @@ async function initiateEmailVerification(emailType) {
             return;
         }
 
+        // Check if email exists in DB BEFORE sending OTP
+        const btn = document.querySelector('#verify-company-email-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Checking... <i class="fa fa-spinner fa-spin"></i>';
+        btn.disabled = true;
+
+        try {
+            const checkResponse = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/check_company_email.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email })
+            });
+            const checkData = await checkResponse.json();
+
+            if (checkData.status === "exists") {
+                const emailInput = document.querySelector('#email-input');
+                showError(emailInput, "Email is already in use.");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+        } catch (error) {
+            console.error("Error checking email:", error);
+            ToastSystem.show("Network error checking email", "error");
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            return;
+        }
+
         currentVerifyingEmail = email;
         currentVerifyingEmailType = emailType;
-        openOTPModal();
+
+        // Call Backend to Send OTP
+        btn.innerHTML = 'Sending... <i class="fa fa-spinner fa-spin"></i>';
+
+        fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/send_registration_otp.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: email })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    openOTPModal();
+                    ToastSystem.show(`OTP sent to ${email}`, "success");
+                } else {
+                    ToastSystem.show(data.message || "Failed to send OTP", "error");
+                }
+            })
+            .catch(err => {
+                console.error("Error sending OTP:", err);
+                ToastSystem.show("Network error sending OTP", "error");
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
     }
 }
 
@@ -876,18 +971,26 @@ function setupOTPInputHandlers() {
                     freshInputs[index + 1].focus();
                 }
 
-                // Auto-verify when all filled
-                if (index === 5) {
-                    setTimeout(() => verifyOTP(), 300);
-                }
+                // Auto-verify when all filled - REMOVED per user request
+                // if (index === 5) {
+                //    setTimeout(() => verifyOTP(), 300);
+                // }
             } else {
                 e.target.classList.remove('filled');
             }
 
+            // Clear error state from ALL inputs on any change
+            freshInputs.forEach(input => input.classList.remove('error'));
             hideOTPError();
         });
 
         input.addEventListener('keydown', (e) => {
+            // Also clear errors on backspace
+            if (e.key === 'Backspace') {
+                freshInputs.forEach(input => input.classList.remove('error'));
+                hideOTPError();
+            }
+
             if (e.key === 'Backspace' && !e.target.value && index > 0) {
                 freshInputs[index - 1].focus();
             }
@@ -915,7 +1018,8 @@ function setupOTPInputHandlers() {
             });
 
             if (digits.length === 6) {
-                setTimeout(() => verifyOTP(), 300);
+                // Auto-verify removed
+                // setTimeout(() => verifyOTP(), 300);
             }
         });
     });
@@ -931,26 +1035,56 @@ function verifyOTP() {
         return;
     }
 
-    // Demo verification - accepts any 6-digit number
-    if (/^\d{6}$/.test(otp)) {
-        // Success
-        ToastSystem.show('Email verified successfully!', 'success');
+    // Verify OTP via Backend
+    const email = document.querySelector('#verifying-email-display').textContent;
 
-        if (currentVerifyingEmailType === 'company') {
-            emailVerificationState.companyEmail = true;
-            document.querySelector('#verify-company-email-btn').style.display = 'none';
-            document.querySelector('#company-email-verified').style.display = 'flex';
-            userInformation['Company Email Verified'] = true;
+    otpInputs.forEach(input => input.disabled = true);
+    const verifyBtn = document.querySelector('.btn-verify-otp');
+    const originalText = verifyBtn.innerHTML;
+    verifyBtn.innerHTML = 'Verifying... <i class="fa fa-spinner fa-spin"></i>';
+    verifyBtn.disabled = true;
 
-            const emailInput = document.querySelector('#email-input');
-            removeError(emailInput);
-        }
+    fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/verify_otp.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email, otp: otp })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Success
+                ToastSystem.show('Email verified successfully!', 'success');
 
-        closeOTPModal();
-    } else {
-        showOTPError('Invalid OTP format');
-        otpInputs.forEach(input => input.classList.add('error'));
-    }
+                if (currentVerifyingEmailType === 'company') {
+                    emailVerificationState.companyEmail = true;
+                    document.querySelector('#verify-company-email-btn').style.display = 'none';
+                    document.querySelector('#company-email-verified').style.display = 'flex';
+                    userInformation['Company Email Verified'] = true;
+
+                    const emailInput = document.querySelector('#email-input');
+                    removeError(emailInput);
+                }
+
+                closeOTPModal();
+            } else {
+                showOTPError(data.message || 'Invalid OTP');
+                otpInputs.forEach(input => {
+                    input.classList.add('error');
+                    input.disabled = false;
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error verifying OTP:", err);
+            showOTPError("Network error verifying OTP");
+            otpInputs.forEach(input => {
+                input.disabled = false;
+            });
+        })
+        .finally(() => {
+            verifyBtn.innerHTML = originalText;
+            verifyBtn.disabled = false;
+        });
 }
 
 function resendOTP() {
@@ -958,7 +1092,24 @@ function resendOTP() {
         return; // Already counting down
     }
 
-    ToastSystem.show('OTP resent! (Demo mode)', 'info');
+    const email = document.querySelector('#verifying-email-display').textContent;
+
+    ToastSystem.show('Resending OTP...', 'info');
+
+    fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/send_registration_otp.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                ToastSystem.show('OTP resent successfully!', 'success');
+            } else {
+                ToastSystem.show(data.message || 'Failed to resend OTP', 'error');
+            }
+        })
+        .catch(err => ToastSystem.show('Network error resending OTP', 'error'));
 
     // Start countdown
     const resendBtn = document.querySelector('#resendOtpBtn');
