@@ -45,6 +45,7 @@ if (isset($_SESSION['email'])) {
             
             $first_name = $basic_info['first_name'];
             $last_name = $basic_info['last_name'];
+            $verified_status = $basic_info['verified_status'] ?? 'unverified';
             $contact = $basic_info['contact_number'];
             $email = $basic_info['email'];
             
@@ -151,7 +152,12 @@ if (isset($_SESSION['email'])) {
                         <div class="profile-avatar-container">
                             <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture">
                         </div>
-                        <h2 class="student-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></h2>
+                        <h2 class="student-name">
+                            <?php echo htmlspecialchars($first_name . " " . $last_name); ?>
+                            <?php if($verified_status === 'verified'): ?>
+                                <i class="fa-solid fa-circle-check" style="color: #2ecc71; font-size: 0.8em; margin-left: 5px;" title="Verified Account"></i>
+                            <?php endif; ?>
+                        </h2>
                         <p class="student-headline"><?php echo htmlspecialchars($course); ?></p>
                         
                         <div class="profile-stats">

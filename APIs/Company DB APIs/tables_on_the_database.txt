@@ -37,21 +37,20 @@ mysql> Describe Applicants;
 +------------------+---------------------------------------+------+-----+-------------------+-------------------+
 
 mysql> DESCRIBE Company;
-+---------------+---------------------------------+------+-----+------------+----------------+
-| Field         | Type                            | Null | Key | Default    | Extra          |
-+---------------+---------------------------------+------+-----+------------+----------------+
-| company_id    | int                             | NO   | PRI | NULL       | auto_increment |
-| company_name  | varchar(255)                    | NO   |     | NULL       |                |
-| email         | varchar(255)                    | NO   | UNI | NULL       |                |
-| password_hash | varchar(255)                    | NO   |     | NULL       |                |
-| phone_number  | varchar(20)                     | YES  |     | NULL       |                |
-| company_type  | varchar(100)                    | YES  |     | NULL       |                |
-| industry      | varchar(100)                    | YES  |     | NULL       |                |
-| address       | text                            | YES  |     | NULL       |                |
-| verification  | enum('Unverified','Verified')   | NO   |     | Unverified |                |
-| company_icon  | varchar(255)                    | YES  |     | NULL       |                |
-| activation    | enum('Activated','Deactivated') | YES  |     | Activated  |                |
-+---------------+---------------------------------+------+-----+------------+----------------+
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| company_id    | int          | NO   | PRI | NULL    | auto_increment |
+| company_name  | varchar(255) | NO   |     | NULL    |                |
+| email         | varchar(255) | NO   | UNI | NULL    |                |
+| password_hash | varchar(255) | NO   |     | NULL    |                |
+| phone_number  | varchar(20)  | YES  |     | NULL    |                |
+| company_type  | varchar(100) | YES  |     | NULL    |                |
+| industry      | varchar(100) | YES  |     | NULL    |                |
+| address       | text         | YES  |     | NULL    |                |
+| verification  | varchar(15)  | NO   |     | false   |                |
+| activation    | varchar(15)  | YES  |     | true    |                |
++---------------+--------------+------+-----+---------+----------------+
 
 mysql> DESCRIBE Education;
 +--------------+--------------+------+-----+---------+----------------+
@@ -82,7 +81,6 @@ mysql> describe Job_Details;
 | qualifications   | text                                       | YES  |     | NULL       |       |
 | skills           | text                                       | YES  |     | NULL       |       |
 +------------------+--------------------------------------------+------+-----+------------+-------+
-
 
 mysql> DESCRIBE Job_Posts;
 +-----------------+-------------------------+------+-----+-------------------+-----------------------------------------------+
@@ -293,3 +291,18 @@ mysql> DESCRIBE company_activity_log;
 | action_timestamp   | timestamp                        | YES  | MUL | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
 | ip_address         | varchar(45)                      | YES  |     | NULL              |                   |
 +--------------------+----------------------------------+------+-----+-------------------+-------------------+
+
+
+mysql> DESCRIBE Company_Documents;
++-------------------+--------------+------+-----+-------------------+-----------------------------------------------+
+| Field             | Type         | Null | Key | Default           | Extra                                         |
++-------------------+--------------+------+-----+-------------------+-----------------------------------------------+
+| doc_id            | int          | NO   | PRI | NULL              | auto_increment                                |
+| company_id        | int          | NO   | MUL | NULL              |                                               |
+| philjobnet_path   | varchar(255) | YES  |     | NULL              |                                               |
+| dole_path         | varchar(255) | YES  |     | NULL              |                                               |
+| bir_path          | varchar(255) | YES  |     | NULL              |                                               |
+| mayor_permit_path | varchar(255) | YES  |     | NULL              |                                               |
+| uploaded_at       | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED                             |
+| updated_at        | timestamp    | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED on update CURRENT_TIMESTAMP |
++-------------------+--------------+------+-----+-------------------+-----------------------------------------------+

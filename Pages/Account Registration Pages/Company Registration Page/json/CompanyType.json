@@ -1,20 +1,10 @@
 {
     "typesOfCompanies": [
-        "Sole Proprietorship",
-        "Partnership",
-        "Corporation",
-        "Limited Liability Company (LLC)",
-        "Cooperative",
-        "Joint Venture",
-        "Non-profit Organization",
-        "Public Company",
-        "Private Company",
-        "Holding Company",
-        "Subsidiary Company",
-        "Franchise",
-        "Government-owned Corporation",
-        "Multinational Company",
-        "Startup"
+        "single proprietorship",
+        "partnership or corporation",
+        "cooperatives",
+        "Private Employment Agency (PEA)",
+        "Contractors and Subcontractors",
+        "Overseas Recruitment and Placement Agency"
     ]
-
 }
