@@ -56,35 +56,44 @@ if (isset($_SESSION['email'])) {
             $profile_score = 0;
             $suggestions = [];
 
-            // 1. Contact Info (20%)
-            // Phone (10%)
+            // 1. Account Verification (15%)
+            if (isset($basic_info['verified_status']) && $basic_info['verified_status'] === 'verified') {
+                $profile_score += 15;
+            } else {
+                $suggestions[] = "Verify your account";
+            }
+
+            // 2. Contact Info (15%)
+            // Phone (7.5%) - Using 7 for int, will round/sum carefully or just use 7 and 8? 
+            // Let's use 7 and 8 to make 15, or just float logic. 
+            // Let's use integers: Phone (7) + Location (8) = 15.
             if (!empty($basic_info['phone_number'])) {
-                $profile_score += 10;
+                $profile_score += 7;
             } else {
                 $suggestions[] = "Add your phone number";
             }
-            // Location (10%)
+            // Location (8%)
             if (!empty($profile['location'])) {
-                $profile_score += 10;
+                $profile_score += 8;
             } else {
                 $suggestions[] = "Add your location";
             }
 
-            // 2. Profile Picture (15%)
+            // 3. Profile Picture (10%)
             if (!empty($profile['profile_picture'])) {
-                $profile_score += 15;
+                $profile_score += 10;
             } else {
                 $suggestions[] = "Upload a profile picture";
             }
 
-            // 3. About Me (15%)
+            // 4. About Me (10%)
             if (!empty($profile['about_me'])) {
-                $profile_score += 15;
+                $profile_score += 10;
             } else {
                 $suggestions[] = "Write a short bio (About Me)";
             }
 
-            // 4. Skills (20%)
+            // 5. Skills (20%)
             $tech_found = false;
             $soft_found = false;
             $skills_data = $data['data']['skills'] ?? [];
@@ -109,7 +118,7 @@ if (isset($_SESSION['email'])) {
                 $suggestions[] = "Add at least one soft skill";
             }
 
-            // 5. Education (15%)
+            // 6. Education (15%)
             $edu_hist = $data['data']['education_history'] ?? [];
             if (!empty($edu_hist) && count($edu_hist) > 0) {
                 $profile_score += 15;
@@ -117,7 +126,7 @@ if (isset($_SESSION['email'])) {
                 $suggestions[] = "Add your educational background";
             }
 
-            // 6. Experience (15%)
+            // 7. Experience (15%)
             $exp_list = $data['data']['experience'] ?? [];
             if (!empty($exp_list) && count($exp_list) > 0) {
                 $profile_score += 15;
