@@ -403,15 +403,15 @@
                     <h2 class="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 sm:mb-6 md:mb-8 tracking-wide">Hirenorian</h2>
                     
                     <div class="flex gap-4 justify-center md:justify-start">
-                        <button class="hover:scale-110 transition-transform">
+                        <a href="https://www.facebook.com/PampangaStateU" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-transform">
                             <img src="../../Landing Page/Images/fbicon.png" alt="Facebook" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
-                        </button>
+                        </a>
                         <button class="hover:scale-110 transition-transform">
                             <img src="../../Landing Page/Images/linkedin.png" alt="LinkedIn" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
-                        <button class="hover:scale-110 transition-transform">
+                        <a href="https://www.youtube.com/@PampangaStateU" target="_blank" rel="noopener noreferrer" class="hover:scale-110 transition-transform">
                             <img src="../../Landing Page/Images/yticon.png" alt="YouTube" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
-                        </button>
+                        </a>
                         <button class="hover:scale-110 transition-transform">
                             <img src="../../Landing Page/Images/igicon.png" alt="Instagram" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
