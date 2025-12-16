@@ -392,7 +392,7 @@
             });
         });
     </script>
-    <script src='/Hirenorian/Pages/Account Registration Pages/Student Registration Page/js/toast.js'></script>
+    <script src='../../Account Registration Pages/Student Registration Modern/js/toast.js'></script>
 </body>
 
 </html>
