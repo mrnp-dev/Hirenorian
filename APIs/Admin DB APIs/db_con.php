@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-$servername = "158.69.205.176";
+$servername = "localhost";
 $username   = "dbuser";
 $password   = "@09Pampanga09";
 $dbname     = "Hirenorian";
@@ -19,5 +19,8 @@ try {
     $conn = new PDO($dsn, $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
+    error_log($e->getMessage());
+    header('Content-Type: application/json');
+    http_response_code(500);
+    die(json_encode(["status" => "error", "message" => "Database connection failed: " . $e->getMessage()]));
 }

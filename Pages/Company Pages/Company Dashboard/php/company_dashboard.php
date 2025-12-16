@@ -16,36 +16,15 @@ if (isset($_SESSION['email'])) {
 
     if ($response === false) {
         die("Curl error: " . curl_error($ch));
+    } else {
+        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
     }
     curl_close($ch);
 
     $data = json_decode($response, true);
 
-    // Updated to match new API structure
-    if (isset($data['company'])) {
-        $company = $data['company'];
-        $company_id = $company['company_id'];
-        $company_name = $company['company_name'];
-        // Assume API returns 'verification' or similar due to our previous finding
-        // Checking API: fetch_company_information.php
-        // It returns all company columns including 'verification'
-        // Check for boolean true, string "true", or integer 1
-        $verification_val = isset($company['verification']) ? $company['verification'] : false;
-        $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
-
-        $company_icon_url = "https://via.placeholder.com/40"; // Default
-        if (!empty($data['icons'])) {
-            $url = $data['icons'][0]['icon_url'];
-            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
-        }
-
-        // Default Icon Logic (adapted from user's request to fit existing data structure)
-        $is_default_icon = false;
-        if (empty($company_icon_url) || $company_icon_url == "https://via.placeholder.com/40") {
-            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
-            $is_default_icon = true;
-        }
-
+    if ($data['status'] === "success") {
+        echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
     } else {
         $company_name = "Unknown";
         $company_id = 0;
@@ -53,6 +32,11 @@ if (isset($_SESSION['email'])) {
         $is_verified = false;
     }
 
+    $company = $data['data'][0];
+
+    // Students Table
+    $company_id = $company['company_id'];
+    $company_name = $company['company_name'];
 } else {
     header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
 }

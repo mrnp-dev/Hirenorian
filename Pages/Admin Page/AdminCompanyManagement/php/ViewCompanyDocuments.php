@@ -75,10 +75,7 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                                 <div class="info-label">Company ID</div>
                                 <div class="info-value" id="displayCompanyId"><?= htmlspecialchars($company_id) ?></div>
                             </div>
-                            <div>
-                                <div class="info-label">Doc ID</div>
-                                <div class="info-value text-secondary" id="displayDocId">--</div>
-                            </div>
+
                         </div>
                     </div>
 
@@ -95,14 +92,14 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-file-contract me-2 text-primary"></i> PhilJobNet</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-philjobnet">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-philjobnet">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-pdf fa-3x text-secondary" id="icon-philjobnet"></i>
                                     </div>
                                     <div id="action-philjobnet">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -112,14 +109,14 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-landmark me-2 text-primary"></i> DOLE Permit</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-dole">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-dole">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-pdf fa-3x text-secondary" id="icon-dole"></i>
                                     </div>
                                     <div id="action-dole">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -129,14 +126,14 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-money-check-dollar me-2 text-primary"></i> BIR Form 2303</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-bir">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-bir">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-image fa-3x text-secondary" id="icon-bir"></i>
                                     </div>
                                     <div id="action-bir">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -146,14 +143,14 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-city me-2 text-primary"></i> Mayor's Permit</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-mayor">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-mayor">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-image fa-3x text-secondary" id="icon-mayor"></i>
                                     </div>
                                     <div id="action-mayor">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -163,14 +160,14 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-briefcase me-2 text-primary"></i> Business Type Doc</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-businesstype">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-businesstype">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-lines fa-3x text-secondary" id="icon-businesstype"></i>
                                     </div>
                                     <div id="action-businesstype">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -234,7 +231,7 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         });
 
         function fetchDocuments(id) {
-            const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/fetch_company_documents.php?company_id=${id}`;
+            const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_company_documents.php?company_id=${id}`;
 
             fetch(apiUrl)
                 .then(async response => {
@@ -263,18 +260,6 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             updateStatusButtonUI(data.verification_status);
                         } else {
                             updateStatusButtonUI('Pending');
-                        }
-
-
-                        const displayDocId = document.getElementById('displayDocId');
-                        if (displayDocId) {
-                            if (data.data.doc_id) {
-                                displayDocId.textContent = data.data.doc_id;
-                            } else {
-                                displayDocId.textContent = "Not Assigned";
-                                displayDocId.classList.add('text-muted');
-                                displayDocId.style.fontStyle = 'italic';
-                            }
                         }
 
                         updateDocumentCard('philjobnet', data.data.philjobnet_path);
@@ -314,7 +299,7 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         }
 
         function updateVerificationStatus(companyId, newStatus) {
-            const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/update_company_verification.php`;
+            const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_company_verification.php`;
 
             fetch(apiUrl, {
                     method: 'POST',
@@ -372,7 +357,7 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
 
                 icon.classList.add('text-secondary');
 
-                actionDiv.innerHTML = '<button class="btn btn-sm btn-outline-secondary" disabled>Unavailable</button>';
+                actionDiv.innerHTML = '<button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>';
             }
         }
 
