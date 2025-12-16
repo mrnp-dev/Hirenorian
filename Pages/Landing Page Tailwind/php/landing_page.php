@@ -419,34 +419,24 @@
                 </div>
 
                 <!-- Links Columns -->
-                <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center sm:text-left">
-                    <!-- Column 1 -->
+                <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 text-center sm:text-left">
+                    <!-- Column 1: Pampanga State University -->
                     <div>
-                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Topic</h4>
+                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Pampanga State University</h4>
                         <ul class="space-y-4">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="https://www.facebook.com/PampangaStateU" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors text-sm">Don Honorio Ventura Campus</a></li>
+                            <li><a href="https://www.facebook.com/pampangastateuniversityOCS" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors text-sm">Office of Career Services</a></li>
+                            <li><a href="https://www.facebook.com/TrainingServicesOffice.PampangaStateU" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors text-sm">Training Services Office</a></li>
+                            <li><a href="https://www.facebook.com/PampangaStateUniversityOSAD" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors text-sm">Office of Student Affairs and Development</a></li>
                         </ul>
                     </div>
 
-                    <!-- Column 2 -->
+                    <!-- Column 2: Hirenorian -->
                     <div>
-                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Topic</h4>
+                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Hirenorian</h4>
                         <ul class="space-y-4">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                        </ul>
-                    </div>
-
-                     <!-- Column 3 -->
-                     <div>
-                        <h4 class="text-yellow font-bold uppercase tracking-wider mb-6 text-sm">Topic</h4>
-                        <ul class="space-y-4">
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
-                            <li><a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Page</a></li>
+                            <li><a href="../../Account Registration Pages/Student Registration Modern/php/student_registration.php" class="text-gray-400 hover:text-white transition-colors text-sm">Student Login</a></li>
+                            <li><a href="../../Account Registration Pages/Company Registration Modern/php/company_registration.php" class="text-gray-400 hover:text-white transition-colors text-sm">Company Login</a></li>
                         </ul>
                     </div>
                 </div>
