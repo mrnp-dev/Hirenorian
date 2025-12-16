@@ -370,8 +370,7 @@
                 Hirenorian connects you with top employers ready to welcome fresh talent.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
-                <button class="bg-yellow text-gray-900 px-8 py-4 rounded-full text-lg font-bold hover:bg-yellow-dark transition-transform hover:-translate-y-1 shadow-lg shadow-yellow/20">Get Started Now</button>
-                <button class="bg-transparent border-2 border-white text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-white hover:text-maroon transition-transform hover:-translate-y-1">Learn More</button>
+                <a href="../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-4 rounded-full text-lg font-bold hover:bg-yellow-dark transition-transform hover:-translate-y-1 shadow-lg shadow-yellow/20">Get Started Now</a>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 border-t border-white/10 pt-12">
