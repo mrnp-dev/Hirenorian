@@ -58,7 +58,7 @@
                 </div>
                 <!-- Removed Links per request -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-maroon text-white px-6 py-2.5 rounded-full font-semibold border-2 border-maroon hover:bg-transparent hover:text-maroon transition-all">Sign In</a>
+                    <a href="../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="bg-maroon text-white px-6 py-2.5 rounded-full font-semibold border-2 border-maroon hover:bg-transparent hover:text-maroon transition-all">Sign In</a>
                 </div>
                 <div class="md:hidden flex items-center">
                     <button class="text-3xl text-gray-700 focus:outline-none">
@@ -81,7 +81,7 @@
                         <h1 class="text-5xl md:text-6xl font-black mb-6 drop-shadow-lg leading-tight">Get Hired Today</h1>
                         <p class="text-xl md:text-2xl mb-8 opacity-95 leading-relaxed">Unlock your potential with premium internships and job opportunities exclusively for DHVSU students.</p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Find Your Career</a>
+                            <a href="../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Find Your Career</a>
                             <!-- Removed Learn More Button -->
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                         <h1 class="text-5xl md:text-6xl font-black mb-6 drop-shadow-lg leading-tight">Connect with Top Employers</h1>
                         <p class="text-xl md:text-2xl mb-8 opacity-95 leading-relaxed">Bridge the gap between your academic journey and professional success.</p>
                         <div>
-                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Join Now</a>
+                            <a href="../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -272,7 +272,7 @@
                             <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">${job.category || 'General'}</span>
                         </div>
                         <div class="mt-auto">
-                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
+                            <a href="../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
                         </div>
                     </div>
                 `;
