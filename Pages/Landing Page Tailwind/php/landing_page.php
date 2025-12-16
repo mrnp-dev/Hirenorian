@@ -53,14 +53,12 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center gap-3">
-                    <img src="../Landing Page/Images/dhvsulogo.png" alt="Hirenorian Logo" class="h-12 w-auto">
+                    <img src="../../Landing Page/Images/dhvsulogo.png" alt="Hirenorian Logo" class="h-12 w-auto">
                     <span class="text-2xl font-extrabold text-maroon uppercase tracking-wide">Hirenorian</span>
                 </div>
+                <!-- Removed Links per request -->
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-700 hover:text-maroon font-medium transition-colors">Home</a>
-                    <a href="#companies" class="text-gray-700 hover:text-maroon font-medium transition-colors">Companies</a>
-                    <a href="#jobs" class="text-gray-700 hover:text-maroon font-medium transition-colors">Jobs</a>
-                    <a href="../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-maroon text-white px-6 py-2.5 rounded-full font-semibold border-2 border-maroon hover:bg-transparent hover:text-maroon transition-all">Sign In</a>
+                    <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-maroon text-white px-6 py-2.5 rounded-full font-semibold border-2 border-maroon hover:bg-transparent hover:text-maroon transition-all">Sign In</a>
                 </div>
                 <div class="md:hidden flex items-center">
                     <button class="text-3xl text-gray-700 focus:outline-none">
@@ -77,14 +75,14 @@
             
             <!-- Slide 1 -->
             <div class="carousel-item active absolute inset-0 w-full h-full bg-cover bg-center" 
-                style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../Landing Page/Images/dhvsu-bg-image.jpg');">
+                style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../../Landing Page/Images/dhvsu-bg-image.jpg');">
                 <div class="max-w-7xl mx-auto px-4 h-full flex items-center text-white">
                     <div class="max-w-2xl pt-20 animate-[fadeUp_1s_ease-out_forwards]">
                         <h1 class="text-5xl md:text-6xl font-black mb-6 drop-shadow-lg leading-tight">Get Hired Today</h1>
                         <p class="text-xl md:text-2xl mb-8 opacity-95 leading-relaxed">Unlock your potential with premium internships and job opportunities exclusively for DHVSU students.</p>
                         <div class="flex flex-wrap gap-4">
-                            <a href="../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Find Your Career</a>
-                            <a href="#how-it-works" class="border-2 border-white text-white px-8 py-3.5 rounded-full text-lg font-bold hover:bg-white hover:text-maroon transition-colors">Learn More</a>
+                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Find Your Career</a>
+                            <!-- Removed Learn More Button -->
                         </div>
                     </div>
                 </div>
@@ -92,13 +90,13 @@
 
             <!-- Slide 2 -->
             <div class="carousel-item absolute inset-0 w-full h-full bg-cover" 
-                 style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../Landing Page/Images/gradpic2.png'); background-position: center top;">
+                 style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../../Landing Page/Images/gradpic2.png'); background-position: center top;">
                 <div class="max-w-7xl mx-auto px-4 h-full flex items-center text-white">
                     <div class="max-w-2xl pt-20">
                         <h1 class="text-5xl md:text-6xl font-black mb-6 drop-shadow-lg leading-tight">Connect with Top Employers</h1>
                         <p class="text-xl md:text-2xl mb-8 opacity-95 leading-relaxed">Bridge the gap between your academic journey and professional success.</p>
                         <div>
-                            <a href="../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Join Now</a>
+                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="bg-yellow text-gray-900 px-8 py-3.5 rounded-full text-lg font-bold hover:bg-yellow-dark transition-colors">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -154,7 +152,7 @@
                         <!-- News 1 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../Landing Page/Images/dhvsu-bg-image.jpg" alt="Dhvsu" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../../Landing Page/Images/dhvsu-bg-image.jpg" alt="Dhvsu" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
                                 <span class="text-sm font-bold text-gray-400 mb-4 block">Oct 24, 2025</span>
@@ -167,7 +165,7 @@
                         <!-- News 2 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../Landing Page/Images/gradpic2.png" alt="Graduation" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../../Landing Page/Images/gradpic2.png" alt="Graduation" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
                                 <span class="text-sm font-bold text-gray-400 mb-4 block">Oct 18, 2025</span>
@@ -180,7 +178,7 @@
                         <!-- News 3 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../Landing Page/Images/job.png" alt="Job" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../../Landing Page/Images/job.png" alt="Job" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
                                 <span class="text-sm font-bold text-gray-400 mb-4 block">Oct 10, 2025</span>
@@ -211,88 +209,19 @@
             </div>
 
             <div class="relative px-4 md:px-12 group">
-                <button id="recPrev" class="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-maroon hover:bg-maroon hover:text-white transition-all z-10 invisible group-hover:visible translate-x-4 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 duration-300">
+                 <button id="recPrev" class="absolute left-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-maroon hover:bg-maroon hover:text-white transition-all z-10 invisible group-hover:visible translate-x-4 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 duration-300">
                     <ion-icon name="arrow-back-outline" class="text-xl"></ion-icon>
                 </button>
                 
+                <!-- Dynamic Job Container -->
                 <div id="recSlider" class="flex gap-8 overflow-x-auto pb-8 scrollbar-hide snap-x scroll-smooth" style="scrollbar-width: none;">
-                    
-                    <!-- Card 1 -->
-                    <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
-                        <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/Companies/cloudstaff_logo.jpg" alt="Cloudstaff" class="h-10 w-auto object-contain">
-                            <span class="bg-yellow/20 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase">Internship</span>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-1">Creative Design Intern</h3>
-                            <p class="text-gray-500 text-sm">Cloudstaff</p>
-                        </div>
-                        <div class="flex gap-2 mb-6">
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Design</span>
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Multimedia</span>
-                        </div>
-                        <div class="mt-auto">
-                            <a href="#" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
+                    <!-- Jobs will be loaded here via JS -->
+                    <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm flex items-center justify-center">
+                        <div class="animate-pulse flex flex-col items-center">
+                            <div class="h-10 w-32 bg-gray-200 rounded mb-4"></div>
+                            <div class="h-4 w-48 bg-gray-200 rounded"></div>
                         </div>
                     </div>
-
-                    <!-- Card 2 -->
-                    <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
-                        <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/Companies/samsung_logo.png" alt="Samsung" class="h-10 w-auto object-contain">
-                            <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Full Time</span>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-1">Software Engineer</h3>
-                            <p class="text-gray-500 text-sm">Samsung</p>
-                        </div>
-                        <div class="flex gap-2 mb-6">
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Dev</span>
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Java</span>
-                        </div>
-                        <div class="mt-auto">
-                            <a href="#" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
-                        </div>
-                    </div>
-
-                     <!-- Card 3 -->
-                     <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
-                        <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/google.jpg" alt="Google" class="h-10 w-auto object-contain">
-                            <span class="bg-yellow/20 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase">Internship</span>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-1">UX Research Intern</h3>
-                            <p class="text-gray-500 text-sm">Google</p>
-                        </div>
-                        <div class="flex gap-2 mb-6">
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Research</span>
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">UI/UX</span>
-                        </div>
-                        <div class="mt-auto">
-                            <a href="#" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
-                        </div>
-                    </div>
-
-                     <!-- Card 4 -->
-                     <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start">
-                        <div class="flex justify-between items-start mb-6">
-                            <img src="../Landing Page/Images/hyundai.jpg" alt="Hyundai" class="h-10 w-auto object-contain">
-                            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase">Part Time</span>
-                        </div>
-                        <div class="mb-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-1">Mechanical Intern</h3>
-                            <p class="text-gray-500 text-sm">Hyundai</p>
-                        </div>
-                        <div class="flex gap-2 mb-6">
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Engineering</span>
-                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">Auto</span>
-                        </div>
-                        <div class="mt-auto">
-                            <a href="#" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
-                        </div>
-                    </div>
-
                 </div>
 
                 <button id="recNext" class="absolute right-0 top-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-maroon hover:bg-maroon hover:text-white transition-all z-10 invisible group-hover:visible -translate-x-4 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 duration-300">
@@ -301,6 +230,56 @@
             </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchLandingJobs();
+        });
+
+        async function fetchLandingJobs() {
+            try {
+                // Updated URL to point to Company DB APIs
+                const response = await fetch('http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/fetch_landing_jobs.php');
+                const result = await response.json();
+
+                if (result.status === 'success' && result.data.length > 0) {
+                    renderLandingJobs(result.data);
+                } else {
+                    document.getElementById('recSlider').innerHTML = '<p class="text-center w-full text-gray-500">No active jobs found.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+                document.getElementById('recSlider').innerHTML = '<p class="text-center w-full text-red-500">Unable to load jobs.</p>';
+            }
+        }
+
+        function renderLandingJobs(jobs) {
+            const container = document.getElementById('recSlider');
+            container.innerHTML = '';
+
+            jobs.forEach(job => {
+                const jobCard = `
+                    <div class="min-w-[320px] bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border border-transparent hover:border-maroon/10 snap-start flex flex-col">
+                        <div class="flex justify-between items-start mb-6">
+                            <img src="${job.company_icon || '../../Landing Page/Images/default-company.jpg'}" alt="${job.company_name}" class="h-12 w-auto object-contain max-w-[100px]" onerror="this.src='../../Landing Page/Images/default-company.jpg'">
+                            <span class="bg-yellow/20 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full uppercase">${job.work_type}</span>
+                        </div>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-1 line-clamp-2">${job.title}</h3>
+                            <p class="text-gray-500 text-sm font-medium">${job.company_name}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-xs font-medium">${job.category || 'General'}</span>
+                        </div>
+                        <div class="mt-auto">
+                            <a href="../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="inline-flex items-center text-maroon font-semibold text-sm hover:underline">View Details <ion-icon name="arrow-forward-outline" class="ml-1"></ion-icon></a>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += jobCard;
+            });
+        }
+    </script>
 
     <!-- Features Section -->
     <section class="py-24 bg-white" id="features">
@@ -376,16 +355,16 @@
                     
                     <div class="flex gap-4">
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/fbicon.png" alt="Facebook" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/fbicon.png" alt="Facebook" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/linkedin.png" alt="LinkedIn" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/linkedin.png" alt="LinkedIn" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/yticon.png" alt="YouTube" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/yticon.png" alt="YouTube" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                         <button class="hover:scale-110 transition-transform">
-                            <img src="../Landing Page/Images/igicon.png" alt="Instagram" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
+                            <img src="../../Landing Page/Images/igicon.png" alt="Instagram" class="w-10 h-10 object-contain brightness-0 invert hover:brightness-100 hover:invert-0 transition-all">
                         </button>
                     </div>
                 </div>
@@ -427,6 +406,6 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>

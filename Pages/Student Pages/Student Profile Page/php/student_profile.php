@@ -74,7 +74,7 @@ if (isset($_SESSION['email'])) {
 }
 else
 {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+    header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
 }
 ?>
 
@@ -102,7 +102,7 @@ else
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php"
+                <a href="../../../Landing Page Tailwind/php/landing_page.php"
                     style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                     <span class="logo-text">Hirenorian</span>
@@ -136,8 +136,8 @@ else
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <a href="../../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
             </header>

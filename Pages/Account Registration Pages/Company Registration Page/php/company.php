@@ -18,9 +18,8 @@
             <img src="../images/image 4.png" alt="Logo">
             <h1>Hirenorian</h1>
         </div>
-        <a href="../../Student Registration Page/php/student_registrationForm.php" class="switch-registration-btn">
-            <i class="fa fa-user-graduate"></i>
-            <span>Student Registration</span>
+        <a href="../../Student Registration Modern/php/student_registration.php" class="switch-registration-btn">
+            Switch to Student Registration
         </a>
     </div>
 

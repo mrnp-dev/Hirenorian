@@ -54,7 +54,7 @@ if (isset($_SESSION['email'])) {
     }
 
 } else {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+    header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
 }
 ?>
 <!DOCTYPE html>

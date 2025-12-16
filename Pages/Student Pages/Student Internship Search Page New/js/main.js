@@ -7,6 +7,7 @@ import { initAdvancedFilters } from './advancedFilters.js';
 import { initActiveFilters } from './activeFilters.js';
 import { initSearchInput } from './searchInput.js';
 import { initApplyFilterButton } from './applyFilterButton.js';
+import { initProfileDropdown } from './profileDropdown.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all modules
@@ -17,4 +18,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initActiveFilters();
     initSearchInput();
     initApplyFilterButton();
+    initProfileDropdown();
 });

@@ -117,15 +117,10 @@
         <div class="section">
             <h2 class="section-title">Main Pages</h2>
             <div class="link-grid">
-                <a href="Landing Page/php/landing_page.php" class="page-link">
-                    <span class="page-name">Landing Page (Original)</span>
-                    <span class="page-path">Landing Page/php/landing_page.php</span>
-                    <span class="badge badge-main">Public</span>
-                </a>
-                <a href="Landing Page Tailwind/index.php" class="page-link">
+                <a href="Landing Page Tailwind/php/landing_page.php" class="page-link">
                     <span class="page-name">Landing Page (Tailwind)</span>
-                    <span class="page-path">Landing Page Tailwind/index.php</span>
-                    <span class="badge badge-main">New</span>
+                    <span class="page-path">Landing Page Tailwind/php/landing_page.php</span>
+                    <span class="badge badge-main">Public</span>
                 </a>
             </div>
         </div>
@@ -137,6 +132,11 @@
                     <span class="page-name">Account Selection</span>
                     <span class="page-path">Account Registration Pages/.../account_selection.php</span>
                     <span class="badge badge-auth">Auth</span>
+                </a>
+                <a href="Account Registration Pages/Account Selection Modern/php/account_selection.php" class="page-link">
+                    <span class="page-name">Account Selection (Modern)</span>
+                    <span class="page-path">Account Registration Pages/Account Selection Modern/.../account_selection.php</span>
+                    <span class="badge badge-auth">New ✨</span>
                 </a>
                 <a href="Account Registration Pages/Student Registration Page/php/student_registrationForm.php" class="page-link">
                     <span class="page-name">Student Registration</span>
@@ -153,10 +153,20 @@
                     <span class="page-path">Account Registration Pages/.../company.php</span>
                     <span class="badge badge-company">Company</span>
                 </a>
+                <a href="Account Registration Pages/Company Registration Modern/php/company_registration.php" class="page-link">
+                    <span class="page-name">Company Registration Modern</span>
+                    <span class="page-path">Account Registration Pages/.../company_registration.php</span>
+                    <span class="badge badge-company">New ✨</span>
+                </a>
                 <a href="Account Registration Pages/SR-Duplicate OTP Page/php/student_registrationForm.php" class="page-link">
                     <span class="page-name">SR-Duplicate OTP Page</span>
                     <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
                     <span class="badge badge-auth">Dev</span>
+                </a>
+                <a href="Account Registration Pages/Student Registration Modern/php/student_registration.php" class="page-link">
+                    <span class="page-name">Student Registration Modern</span>
+                    <span class="page-path">Account Registration Pages/.../student_registration.php</span>
+                    <span class="badge badge-auth">New ✨</span>
                 </a>
             </div>
         </div>

@@ -54,9 +54,8 @@ if ($data && isset($data['status'])) {
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
-                    <pre> </pre>
+                <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
                     <span>Hirenorian</span>
                 </a>
             </div>
