@@ -4,28 +4,37 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
 
 $students = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
+echo "<script>console.log('[DEBUG] View Student Documents: API URL = " . $apiUrl . "');</script>";
+echo "<script>console.log('[DEBUG] View Student Documents: Fetching data for student ID = " . $student_id . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] View Student Documents: CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] View Student Documents: Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] View Student Documents: API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $students = $data['data'];
+        echo "<script>console.log('[DEBUG] View Student Documents: Students loaded = " . count($students) . "');</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] View Student Documents: API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] View Student Documents: Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 ?>

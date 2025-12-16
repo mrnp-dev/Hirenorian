@@ -24,8 +24,17 @@ body {
     background-repeat: no-repeat;
 
     margin: 0;
-    padding: 20px;
+    padding: 10px;
     font-family: 'Outfit', sans-serif;
+}
+
+/* Ensure proper viewport handling on mobile */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
 }
 
 .selection-container {
@@ -77,6 +86,13 @@ body {
     gap: 2rem;
     width: 100%;
     flex-wrap: wrap;
+}
+
+/* Ensure touch-friendly spacing on mobile */
+@media (max-width: 768px) {
+    .cards-wrapper {
+        gap: 1.25rem;
+    }
 }
 
 /* Card Styles - Large Clean White Look */
@@ -171,6 +187,22 @@ body {
     font-size: 0.75rem;
 }
 
+/* Touch target optimization for mobile */
+@media (max-width: 768px) {
+    .btn-select {
+        min-height: 48px;
+        /* Touch-friendly */
+        padding: 0.85rem 1.75rem;
+        font-size: 1rem;
+    }
+
+    .selection-card {
+        min-height: auto;
+        /* Allow natural height on mobile */
+        padding: 2rem 1.5rem;
+    }
+}
+
 /* Button Imitation - Solid Style */
 .btn-select {
     background: var(--primary-maroon);
@@ -232,5 +264,141 @@ body {
 
     .logo-header h1 {
         font-size: 1.8rem;
+    }
+}
+
+/* Mobile Portrait - Extra Small Screens */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .selection-container {
+        gap: 1.5rem;
+    }
+
+    .logo-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo-header p {
+        font-size: 0.85rem;
+    }
+
+    .brand-logo {
+        width: 70px;
+    }
+
+    .selection-card {
+        max-width: 100%;
+        padding: 1.75rem 1.25rem;
+        border-radius: 20px;
+    }
+
+    .card-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2.5rem;
+    }
+
+    .card-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .card-content p {
+        font-size: 0.85rem;
+    }
+
+    .features-list li {
+        font-size: 0.8rem;
+    }
+}
+
+/* Mobile Landscape Mode - CRITICAL */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 15px;
+    }
+
+    .selection-container {
+        gap: 1.5rem;
+        max-width: 100%;
+    }
+
+    .logo-header {
+        margin-bottom: 0.5rem;
+    }
+
+    .logo-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .logo-header p {
+        font-size: 0.8rem;
+    }
+
+    .brand-logo {
+        width: 60px;
+        margin-bottom: 0.5rem;
+    }
+
+    .cards-wrapper {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .selection-card {
+        width: calc(50% - 0.5rem);
+        max-width: none;
+        min-height: auto;
+        padding: 1.5rem 1rem;
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-content h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-content p {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+        min-height: auto;
+    }
+
+    .features-list {
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+    }
+
+    .features-list li {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .btn-select {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Tablet Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .selection-card {
+        width: 400px;
+        min-height: 550px;
+    }
+
+    .selection-container {
+        max-width: 900px;
     }
 }
