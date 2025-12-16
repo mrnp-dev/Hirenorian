@@ -214,26 +214,26 @@
                         <!-- News 2 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../../Landing Page/Images/gradpic2.png" alt="Graduation" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../Images/news2-image.png" alt="Job Fair 2025" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-6 sm:p-8 md:p-10 lg:p-14 flex flex-col justify-center">
-                                <span class="text-xs sm:text-sm font-bold text-gray-400 mb-2 sm:mb-4 block">Oct 18, 2025</span>
-                                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-maroon mb-3 sm:mb-4 md:mb-6 leading-tight">Resume Writing Workshop</h3>
-                                <p class="text-gray-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">Learn how to craft a winning resume with our expert career counselors. Get tips on formatting, content, and how to stand out.</p>
-                                <a href="#" class="inline-flex items-center text-maroon font-bold text-base uppercase tracking-wide hover:text-maroon-dark hover:underline">Read More <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon></a>
+                                <span class="text-xs sm:text-sm font-bold text-gray-400 mb-2 sm:mb-4 block">November 4, 2025</span>
+                                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-maroon mb-3 sm:mb-4 md:mb-6 leading-tight">Job Fair 2025</h3>
+                                <p class="text-gray-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">Fast-tracking the meeting of students and employers, the Career Services and Job Placement Unit conducts the university-wide Job Fair 2025 Part 2. The all-day event accommodated more than 40 companies and over 500 applicants.</p>
+                                <a href="https://www.facebook.com/share/p/1MkM2k5rhg/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-maroon font-bold text-base uppercase tracking-wide hover:text-maroon-dark hover:underline">Read More <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon></a>
                             </div>
                         </div>
 
                         <!-- News 3 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../../Landing Page/Images/job.png" alt="Job" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../Images/news3-image.png" alt="CDC and PSU Partnership" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-6 sm:p-8 md:p-10 lg:p-14 flex flex-col justify-center">
-                                <span class="text-xs sm:text-sm font-bold text-gray-400 mb-2 sm:mb-4 block">Oct 10, 2025</span>
-                                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-maroon mb-3 sm:mb-4 md:mb-6 leading-tight">New Internship Policies</h3>
-                                <p class="text-gray-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">Important updates regarding internship requirements for the upcoming semester. Make sure you are compliant with the new guidelines.</p>
-                                <a href="#" class="inline-flex items-center text-maroon font-bold text-base uppercase tracking-wide hover:text-maroon-dark hover:underline">Read More <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon></a>
+                                <span class="text-xs sm:text-sm font-bold text-gray-400 mb-2 sm:mb-4 block">July 1, 2025</span>
+                                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-maroon mb-3 sm:mb-4 md:mb-6 leading-tight">CDC and PSU Partnership</h3>
+                                <p class="text-gray-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">Clark Development Corporation (CDC) and Pampanga State University formalized a partnership to provide students with comprehensive on-the-job training programs, helping them develop practical skills and gain exposure to industry practices for workforce success.</p>
+                                <a href="https://pampangastateu.edu.ph/news/cdc-pampanga-state-u-put-immersive-workforce-training-at-core-of-partnership" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-maroon font-bold text-base uppercase tracking-wide hover:text-maroon-dark hover:underline">Read More <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon></a>
                             </div>
                         </div>
 
