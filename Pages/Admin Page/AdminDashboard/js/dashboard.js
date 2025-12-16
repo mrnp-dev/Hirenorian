@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Get data passed from PHP
+
     const data = window.dashboardData || {
         students: { verified: 0, unverified: 0 },
         companies: { verified: 0, unverified: 0 }
     };
 
-    // Debug: Verify data is available
+
     console.log('Chart initialization - Data received:', data);
 
-    // Student Verification Chart
+ 
     const studentChartCanvas = document.getElementById('studentVerificationChart');
     if (studentChartCanvas) {
         new Chart(studentChartCanvas, {
@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     data: [data.students.verified, data.students.unverified],
                     backgroundColor: [
-                        '#10b981', // Modern green
-                        '#ef4444'  // Modern red
+                        '#10b981',
+                        '#ef4444' 
                     ],
                     borderWidth: 0,
                     hoverOffset: 8,
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Company Verification Chart
+
     const companyChartCanvas = document.getElementById('companyVerificationChart');
     if (companyChartCanvas) {
         new Chart(companyChartCanvas, {
@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     data: [data.companies.verified, data.companies.unverified],
                     backgroundColor: [
-                        '#10b981', // Modern green
-                        '#ef4444'  // Modern red
+                        '#10b981', 
+                        '#ef4444'  
                     ],
                     borderWidth: 0,
                     hoverOffset: 8,
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Audit Trail Search Functionality
+
     const auditSearch = document.getElementById('auditSearch');
     const auditTable = document.getElementById('auditTable');
 

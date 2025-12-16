@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const editButtons = document.querySelectorAll('.edit-btn');
+    const viewDocButtons = document.querySelectorAll('.seeDocu-btn');
     const resetPwdButtons = document.querySelectorAll('.reset-pwd-btn');
 
     // --- Edit Company Info ---
@@ -22,7 +23,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             window.location.href = `editCompanyInfo.php?${params.toString()}`;
         });
+
     });
+
+
+
+
 
     document.addEventListener('click', function (e) {
         const actionBtn = e.target.closest('.action-btn');
@@ -53,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             actionBtn.classList.add('activate-btn');
                             actionBtn.setAttribute('title', 'activate');
                             actionBtn.innerHTML = '<i class="fa-solid fa-power-off"></i>';
-                            updateCompanyActivationStatus(companyID, 'false');
+                            updateCompanyActivationStatus(companyID, 'deactivated');
                             auditLogs('Update', 'updated company activation status for company id: ' + companyID);
                         } else {
                             swal("Action cancelled.");
@@ -83,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             actionBtn.classList.add('suspend-btn');
                             actionBtn.setAttribute('title', 'suspend/deactivate');
                             actionBtn.innerHTML = '<i class="fa-solid fa-ban"></i>';
-                            updateCompanyActivationStatus(companyID, 'true');
+                            updateCompanyActivationStatus(companyID, 'activated');
                             auditLogs('Update', 'updated company activation status for company id: ' + companyID);
                         } else {
                             swal("Action cancelled.");
@@ -113,6 +119,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             swal("Action cancelled.");
                         }
                     });
+            } else if (actionBtn.classList.contains('seeDocu-btn')) {
+                const companyID = actionBtn.getAttribute('data-id');
+                if (companyID) {
+                    window.location.href = `ViewCompanyDocuments.php?id=${companyID}`;
+                } else {
+                    console.error("Company ID missing on view document button");
+                }
             }
         }
 

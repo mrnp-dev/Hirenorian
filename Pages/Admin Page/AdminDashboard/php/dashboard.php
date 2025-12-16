@@ -183,12 +183,26 @@ function timeAgo($timestamp)
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <?php
+                        include '../../../../APIs/Admin DB APIs/dbCon.php';
+
+                        if (isset($conn)) {
+                            try {
+                                $action = "Log Out";
+                                $description = "Log Out as admin";
+
+                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
+                                $stmt->execute([':action' => $action, ':description' => $description]);
+                            } catch (Exception $e) {
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </header>
 
             <main class="dashboard-body">
-            
+
                 <nav class="breadcrumb-nav">
                     <i class="fa-solid fa-house"></i>
                     <span class="breadcrumb-separator">/</span>
@@ -197,7 +211,7 @@ function timeAgo($timestamp)
 
                 <h1 class="page-title">Dashboard Overview</h1>
 
-               
+
                 <div class="summary-cards-grid">
                     <div class="summary-card maroon">
                         <div class="summary-card-icon">
