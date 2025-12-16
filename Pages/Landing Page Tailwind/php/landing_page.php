@@ -139,7 +139,7 @@
 
             <!-- Slide 2 -->
             <div class="carousel-item absolute inset-0 w-full h-full bg-cover" 
-                 style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../../Landing Page/Images/gradpic2.png'); background-position: center top;">
+                 style="background-image: linear-gradient(rgba(123, 17, 19, 0.8), rgba(123, 17, 19, 0.6)), url('../Images/hero2_v3.png'); background-position: center top;">
                 <div class="max-w-7xl mx-auto px-4 h-full flex items-center text-white">
                     <div class="hero-content max-w-2xl pt-20 md:pt-20">
                         <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 drop-shadow-lg leading-tight">Connect with Top Employers</h1>
