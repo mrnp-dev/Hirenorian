@@ -8,47 +8,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include("../db_con.php");
-header("Content-type: application/json");
+try {
+    include("db_con.php");
 
-$query = "SELECT 
-           c.company_id,
-           c.company_name,
-           c.email,
-           c.company_type,
-           c.industry,
-           c.verification,
-           c.activation,
-           cp.contact_name
-          FROM Company c
-          LEFT JOIN company_contact_persons cp 
-          ON c.company_id = cp.company_id";
+    $query = "SELECT 
+               c.company_id,
+               c.company_name,
+               c.email,
+               c.company_type,
+               c.industry,
+               c.verification,
+               c.activation,
+               cp.contact_name
+              FROM Company c
+              LEFT JOIN company_contact_persons cp 
+              ON c.company_id = cp.company_id";
 
-$stmt = $conn->prepare($query);
-$stmt->execute();
+    $stmt = $conn->prepare($query);
 
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$verified = 0;
-
-foreach ($data as $row) {
-    if ((trim(strtolower($row['verification'])) == 'true')) {
-        $verified++;
+    if (!$stmt) {
+        throw new Exception("Failed to prepare statement: " . implode(", ", $conn->errorInfo()));
     }
-}
 
-$unverified = 0;
+    $stmt->execute();
 
-foreach ($data as $row) {
-    if ((trim(strtolower($row['verification'])) == 'false')) {
-        $unverified++;
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    
+    $verified = 0;
+   
+    $unverified = 0;
+
+    foreach ($data as $row) {
+        $verificationStr = trim(strtolower((string)$row['verification']));
+
+        if ($verificationStr == 'true' || $row['verification'] == 1) {
+            $verified++;
+        }
+
+        if ($verificationStr == 'false' || $row['verification'] == 0) {
+            $unverified++;
+        }
     }
-}
 
-echo json_encode([
-    "status" => "success",
-    "count" => count($data),
-    "data" => $data,
-    "verified" => $verified,
-    "unverified" => $unverified
-]);
+    // Return success response
+    echo json_encode([
+        "status" => "success",
+        "count" => count($data),
+        "data" => $data,
+        "verified" => $verified,
+        "unverified" => $unverified
+    ]);
+} catch (PDOException $e) {
+    // Database error
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Database error: " . $e->getMessage(),
+        "count" => 0,
+        "data" => [],
+        "verified" => 0,
+        "unverified" => 0
+    ]);
+    error_log("Company API DB Error: " . $e->getMessage());
+} catch (Exception $e) {
+    // General error
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "message" => $e->getMessage(),
+        "count" => 0,
+        "data" => [],
+        "verified" => 0,
+        "unverified" => 0
+    ]);
+    error_log("Company API Error: " . $e->getMessage());
+}
