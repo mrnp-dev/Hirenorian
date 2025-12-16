@@ -133,6 +133,11 @@
                     <span class="page-path">Account Registration Pages/.../account_selection.php</span>
                     <span class="badge badge-auth">Auth</span>
                 </a>
+                <a href="Account Registration Pages/Account Selection Modern/php/account_selection.php" class="page-link">
+                    <span class="page-name">Account Selection (Modern)</span>
+                    <span class="page-path">Account Registration Pages/Account Selection Modern/.../account_selection.php</span>
+                    <span class="badge badge-auth">New ✨</span>
+                </a>
                 <a href="Account Registration Pages/Student Registration Page/php/student_registrationForm.php" class="page-link">
                     <span class="page-name">Student Registration</span>
                     <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
