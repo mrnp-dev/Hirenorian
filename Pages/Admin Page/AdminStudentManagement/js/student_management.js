@@ -4,13 +4,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const addStudentButton = document.querySelector('.add-new-btn');
     const pageNumbers = document.querySelectorAll('.pagination-nav .page-number');
     const navArrows = document.querySelectorAll('.pagination-nav .nav-arrow');
+    const seeDocuButtons = document.querySelectorAll('.seeDocu-btn');
 
     const activationButtons = document.querySelectorAll('.activation-btn');
     const verificationButtons = document.querySelectorAll('.verification-btn');
 
 
-
-    // --- CRUD Actions (Front-end only simulation) ---
     editButtons.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -20,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cells = row.cells;
 
                 if (!cells || cells.length < 8) {
-                    console.error('Row does not have enough columns (expected at least 8).', cells);
                     alert('Error: Table structure mismatch. Please refresh the page.');
                     return;
                 }
@@ -43,29 +41,136 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 window.location.href = `editInfo.php?${params.toString()}`;
             } catch (err) {
-                console.error('Error in edit button handler:', err);
                 alert('An error occurred. Check console for details.');
             }
         });
     });
 
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function () {
-            const row = this.closest('tr');
-            const studentId = row.querySelector('td:first-child').textContent;
+    document.addEventListener('click', function (e) {
+        const actionBtn = e.target.closest('.action-btn');
+        if (actionBtn) {
+            const row = actionBtn.closest('tr');
+            if (!row) return;
 
-            if (confirm('Are you sure you want to delete student ID: ' + studentId + '?')) {
-                row.remove();
-                alert('Student ID ' + studentId + ' deleted (front-end simulation).');
+            const accountStatusCell = row.cells[9];
+
+            if (actionBtn.classList.contains('suspend-btn')) {
+                const studentID = row.querySelector('td:first-child').textContent.trim();
+
+                swal({
+                    title: "Update Activation Status?",
+                    text: "Do you want to proceed with changing the student's activation status?",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willChange) => {
+                        if (willChange) {
+                            swal("Activation status updated!", {
+                                icon: "success",
+                            });
+
+                            accountStatusCell.innerHTML = '<span class="badge bg-danger">Deactivated</span>';
+                            actionBtn.classList.remove('suspend-btn');
+                            actionBtn.classList.add('activate-btn');
+                            actionBtn.setAttribute('title', 'activate');
+                            actionBtn.innerHTML = '<i class="fa-solid fa-power-off"></i>';
+                            updateStudentActivationStatus(studentID, 'false');
+                            auditLogs('Update', 'updated student activation status for student id: ' + studentID);
+                        } else {
+                            swal("Action cancelled.");
+                        }
+                    });
+            } else if (actionBtn.classList.contains('activate-btn')) {
+                const studentID = row.querySelector('td:first-child').textContent.trim();
+
+
+                swal({
+                    title: "Update Activation Status?",
+                    text: "Do you want to proceed with changing the student's activation status?",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willChange) => {
+                        if (willChange) {
+                            swal("Activation status updated!", {
+                                icon: "success",
+                            });
+
+                            accountStatusCell.innerHTML = '<span class="badge bg-success">Activated</span>';
+
+                            actionBtn.classList.remove('activate-btn');
+                            actionBtn.classList.add('suspend-btn');
+                            actionBtn.setAttribute('title', 'suspend/deactivate');
+                            actionBtn.innerHTML = '<i class="fa-solid fa-ban"></i>';
+                            updateStudentActivationStatus(studentID, 'true');
+                            auditLogs('Update', 'updated student activation status for student id: ' + studentID);
+                        } else {
+                            swal("Action cancelled.");
+                        }
+                    });
+
+            } else if (actionBtn.classList.contains('delete-btn')) {
+                const studentID = row.querySelector('td:first-child').textContent.trim();
+
+                swal({
+                    title: "Delete Student?",
+                    text: "Do you want to proceed with deleting the student?",
+                    icon: "info",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            row.remove();
+
+                            deleteStudent(studentID);
+                            auditLogs('Delete', 'deleted student information for student id: ' + studentID);
+                            swal("Student deleted!", {
+                                icon: "success",
+                            });
+                        } else {
+                            swal("Action cancelled.");
+                        }
+                    });
+            } else if (actionBtn.classList.contains('seeDocu-btn')) {
+                const studentID = row.querySelector('td:first-child').textContent.trim();
+
+                if (studentID) {
+                    const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_documents.php?student_id=${studentID}`;
+
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success' && data.data) {
+                                const studentType = data.data.student_type;
+
+                                if (studentType === 'Graduate') {
+                                    window.location.href = `ViewStudDocuments.php?id=${studentID}`;
+                                } else if (studentType === 'Undergraduate') {
+                                    window.location.href = `viewStudDocu2.php?id=${studentID}`;
+                                } else {
+                                    console.warn('Unknown student type:', studentType);
+                                    if (!studentType) {
+                                        window.location.href = `ViewStudDocuments.php?id=${studentID}`;
+                                    } else {
+                                        window.location.href = `ViewStudDocuments.php?id=${studentID}`;
+                                    }
+                                }
+                            } else {
+                                swal("Error", "Failed to retrieve student information.", "error");
+                            }
+                        })
+                        .catch(error => {
+                            swal("Error", "An error occurred while fetching student details.", "error");
+                        });
+                } f
             }
-        });
+        }
     });
 
-    if (addStudentButton) {
-        addStudentButton.addEventListener('click', function () {
-            alert('Opening form to add a new student.');
-        });
-    }
+
 
     document.addEventListener('click', function (e) {
         if (e.target && e.target.classList.contains('verification-btn')) {
@@ -78,35 +183,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 buttons: true,
                 dangerMode: true,
             })
-            .then((willChange) => {
-                if (willChange) {
-                    swal("Verification status updated!", {
-                        icon: "success",
-                    });
+                .then((willChange) => {
+                    if (willChange) {
+                        swal("Verification status updated!", {
+                            icon: "success",
+                        });
 
 
-                    const row = btn.closest('tr');
-                    if (!row) return;
-                    const studentId = row.querySelector('td:first-child').textContent.trim();
+                        const row = btn.closest('tr');
+                        if (!row) return;
+                        const studentId = row.querySelector('td:first-child').textContent.trim();
 
-                    let statusToSend = '';
+                        let statusToSend = '';
 
-                    if (btn.classList.contains('verified')) {
-                        btn.classList.remove('verified');
-                        btn.classList.add('unverified');
-                        btn.textContent = 'unverified';
-                        statusToSend = 'false';
-                    } else {
-                        btn.classList.remove('unverified');
-                        btn.classList.add('verified');
-                        btn.textContent = 'verified';
-                        statusToSend = 'true';
-                    }
+
+                        if (btn.classList.contains('verified')) {
+                            btn.classList.remove('verified');
+                            btn.classList.add('unverified');
+                            btn.textContent = 'unverified';
+                            statusToSend = 'false';
+                        } else {
+                            btn.classList.remove('unverified');
+                            btn.classList.add('verified');
+                            btn.textContent = 'verified';
+                            statusToSend = 'true';
+                        }
                         updateStudentVerificationStatus(studentId, statusToSend);
-                } else {
-                    swal("Action cancelled.");
-                }
-            });
+                        auditLogs('Update', 'updated student verification status for student id: ' + studentId);
+                    } else {
+                        swal("Action cancelled.");
+                    }
+                });
         }
     });
 
@@ -121,67 +228,41 @@ document.addEventListener('DOMContentLoaded', function () {
                 buttons: true,
                 dangerMode: true,
             })
-            .then((willChange) => {
-                if (willChange) {
-                    swal("Activation status updated!", {
-                        icon: "success",
+                .then((willChange) => {
+                    if (willChange) {
+                        swal("Activation status updated!", {
+                            icon: "success",
+                        });
+
+                        const row = btn.closest('tr');
+                        if (!row) return;
+                        const studentId = row.querySelector('td:first-child').textContent.trim();
+
+                        let statusToSend = '';
+
+                        if (btn.classList.contains('activated')) {
+                            btn.classList.remove('activated');
+                            btn.classList.add('deactivated');
+                            btn.textContent = 'deactivated';
+                            statusToSend = 'false';
+                        } else {
+                            btn.classList.remove('deactivated');
+                            btn.classList.add('activated');
+                            btn.textContent = 'activated';
+                            statusToSend = 'true';
+                        }
+                        updateStudentActivationStatus(studentId, statusToSend);;
+                    } else {
+                        swal("Action cancelled.");
+                    }
                 });
-
-                const row = btn.closest('tr');
-                if (!row) return;
-                const studentId = row.querySelector('td:first-child').textContent.trim();
-
-                let statusToSend = '';
-
-                if (btn.classList.contains('activated')) {
-                    btn.classList.remove('activated');
-                    btn.classList.add('deactivated');
-                    btn.textContent = 'deactivated';
-                    statusToSend = 'false';
-                } else {
-                    btn.classList.remove('deactivated');
-                    btn.classList.add('activated');
-                    btn.textContent = 'activated';
-                    statusToSend = 'true';
-                }
-                updateStudentActivationStatus(studentId, statusToSend);
-             } else {
-                    swal("Action cancelled.");
-                }
-            });
         }
     });
 
-    function updateStudentActivationStatus(studentId, status) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/update_student_activation.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                student_id: studentId,
-                activated: status
-            })
-        })
-            //TODO: update dialog notification
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Activation updated: ' + status);
-                } else {
-                    console.error('Failed to update activation:', data.message);
-                    alert('Error updating status: ' + (data.message || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error updating activation status.');
-            });
-    }
 
     function updateStudentVerificationStatus(studentId, status) {
 
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/update_student_verification.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_student_verification.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -191,19 +272,90 @@ document.addEventListener('DOMContentLoaded', function () {
                 verified: status
             })
         })
-            //TODO: update dialog notification
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    console.log('Verification updated: ' + status);
+                    auditLogs('Update', 'updated verification status for student id: ' + studentId);
                 } else {
-                    console.error('Failed to update verification:', data.message);
                     alert('Error updating verification: ' + (data.message || 'Unknown error'));
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
                 alert('Error Updating Verification Status');
+            });
+    }
+
+    function updateStudentActivationStatus(studentID, status) {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_student_activation.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: studentID,
+                activated: status
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Activation updated: ' + status);
+                } else {
+                    console.error('Failed to update activation:', data.message);
+                    alert('Error updating activation: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error updating activation status.');
+            });
+    }
+
+    function deleteStudent(studentId) {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/delete.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                student_id: studentId,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    auditLogs('Delete', 'deleted information for student id: ' + studentId);
+                } else {
+                    alert('Error deleting student: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                alert('Error Deleting Student');
+            });
+    }
+
+    function auditLogs(actionType, decription) {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action_type: actionType,
+                description: decription,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Audit log added successfully');
+                } else {
+                    console.error('Failed to add audit log:', data.message);
+                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                alert('Error logging audit log.');
             });
     }
 

@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const editButtons = document.querySelectorAll('.edit-btn');
+    const viewDocButtons = document.querySelectorAll('.seeDocu-btn');
     const resetPwdButtons = document.querySelectorAll('.reset-pwd-btn');
 
     // --- Edit Company Info ---
@@ -22,7 +23,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             window.location.href = `editCompanyInfo.php?${params.toString()}`;
         });
+
     });
+
+
+
+
 
     document.addEventListener('click', function (e) {
         const actionBtn = e.target.closest('.action-btn');
@@ -31,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!row) return;
 
             const accountStatusCell = row.cells[7];
-            const id = actionBtn.getAttribute('data-id');
 
             if (actionBtn.classList.contains('suspend-btn')) {
                 const companyID = row.querySelector('td:first-child').textContent.trim();
@@ -55,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             actionBtn.setAttribute('title', 'activate');
                             actionBtn.innerHTML = '<i class="fa-solid fa-power-off"></i>';
                             updateCompanyActivationStatus(companyID, 'deactivated');
+                            auditLogs('Update', 'updated company activation status for company id: ' + companyID);
                         } else {
                             swal("Action cancelled.");
                         }
@@ -84,11 +90,42 @@ document.addEventListener('DOMContentLoaded', function () {
                             actionBtn.setAttribute('title', 'suspend/deactivate');
                             actionBtn.innerHTML = '<i class="fa-solid fa-ban"></i>';
                             updateCompanyActivationStatus(companyID, 'activated');
+                            auditLogs('Update', 'updated company activation status for company id: ' + companyID);
                         } else {
                             swal("Action cancelled.");
                         }
                     });
 
+            } else if (actionBtn.classList.contains('delete-btn')) {
+                const companyID = row.querySelector('td:first-child').textContent.trim();
+
+                swal({
+                    title: "Delete Company?",
+                    text: "Do you want to proceed with deleting the company?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            row.remove();
+
+                            deleteCompany(companyID);
+
+                            swal("Company deleted!", {
+                                icon: "success",
+                            });
+                        } else {
+                            swal("Action cancelled.");
+                        }
+                    });
+            } else if (actionBtn.classList.contains('seeDocu-btn')) {
+                const companyID = actionBtn.getAttribute('data-id');
+                if (companyID) {
+                    window.location.href = `ViewCompanyDocuments.php?id=${companyID}`;
+                } else {
+                    console.error("Company ID missing on view document button");
+                }
             }
         }
 
@@ -116,13 +153,14 @@ document.addEventListener('DOMContentLoaded', function () {
                             btn.classList.remove('verified');
                             btn.classList.add('unverified');
                             btn.textContent = 'unverified';
-                            updateCompanyVerificationStatus(companyID, 'unverified');
+                            updateCompanyVerificationStatus(companyID, 'false');
 
                         } else {
                             btn.classList.remove('unverified');
                             btn.classList.add('verified');
                             btn.textContent = 'verified';
-                            updateCompanyVerificationStatus(companyID, 'verified');
+                            updateCompanyVerificationStatus(companyID, 'true');
+                            auditLogs('Update', 'updated company verification status for company id: ' + companyID);
                         }
                     } else {
                         swal("Action cancelled.");
@@ -132,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function updateCompanyVerificationStatus(companyID, status) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/update_company_verification.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_company_verification.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -158,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateCompanyActivationStatus(companyID, status) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/update_company_activation.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_company_activation.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -180,6 +218,61 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error updating activation status.');
+            });
+    }
+
+
+
+
+    function deleteCompany(companyId) {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/deleteCompanyInfo.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                company_id: companyId,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Company deleted: ' + companyId);
+                    auditLogs('Delete', 'deleted company with company id: ' + companyId);
+                } else {
+                    console.error('Failed to delete company:', data.message);
+                    alert('Error deleting company: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error Deleting Company');
+            });
+    }
+
+    function auditLogs(actionType, decription) {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action_type: actionType,
+                description: decription,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Audit log added successfully');
+                } else {
+                    console.error('Failed to add audit log:', data.message);
+                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error logging audit log.');
             });
     }
 

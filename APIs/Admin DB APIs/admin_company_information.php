@@ -8,23 +8,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include("../dbCon.php");
+include("../db_con.php");
 header("Content-type: application/json");
 
 $query = "SELECT 
-            s.student_id, 
-            s.first_name,
-            s.middle_initial,
-            s.last_name,
-            s.suffix,
-            s.student_email, 
-            s.activated,
-            s.verified,
-            e.course, 
-            e.department
-          FROM Students s
-          LEFT JOIN Education e 
-          ON s.student_id = e.student_id";
+           c.company_id,
+           c.company_name,
+           c.email,
+           c.company_type,
+           c.industry,
+           c.verification,
+           c.activation,
+           cp.contact_name
+          FROM Company c
+          LEFT JOIN company_contact_persons cp 
+          ON c.company_id = cp.company_id";
 
 $stmt = $conn->prepare($query);
 $stmt->execute();
@@ -34,7 +32,7 @@ $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $verified = 0;
 
 foreach ($data as $row) {
-    if ($row['verified'] == 'verified') {
+    if ((trim(strtolower($row['verification'])) == 'true')) {
         $verified++;
     }
 }
@@ -42,7 +40,7 @@ foreach ($data as $row) {
 $unverified = 0;
 
 foreach ($data as $row) {
-    if ($row['verified'] == 'unverified') {
+    if ((trim(strtolower($row['verification'])) == 'false')) {
         $unverified++;
     }
 }

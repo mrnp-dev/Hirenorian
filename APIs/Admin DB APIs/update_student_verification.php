@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include '../dbCon.php';
+include '../db_con.php';
 $response = file_get_contents("php://input");
 $data = json_decode($response, true);
 
@@ -17,17 +17,16 @@ if ($data === null) {
 }
 
 $studentId = $data['student_id'];
-$activated = $data['activated'];
+$verification = $data['verified'];
 
 $query = "UPDATE Students
-          SET activated = :activated
-          WHERE student_id = :student_id";
+          SET verified = :verification
+          WHERE student_id = :student_id";  
 
 $stmt = $conn->prepare($query);
 $stmt->execute([
     ':student_id' => $studentId,
-    ':activated' => $activated,
+    ':verification' => $verification,
 ]);
 
-// Return success even if rowCount is 0 (no changes made), as long as query didn't fail.
-echo json_encode(["status" => "success", "message" => "Student activation updated successfully"]);
+echo json_encode(["status" => "success", "message" => "Student verification updated successfully"]);

@@ -1,0 +1,114 @@
+[2025-12-12 03:43:12] Script started.
+[2025-12-12 03:43:12] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:43:12] Raw input: {"email":"kimthea327@gmail.com"}
+[2025-12-12 03:43:12] Generated OTP: 942667 for kimthea327@gmail.com
+[2025-12-12 03:43:12] SMTP configured.
+[2025-12-12 03:43:12] Attempting to send...
+[2025-12-12 03:43:19] Email sent successfully.
+[2025-12-12 03:43:36] Script started.
+[2025-12-12 03:43:36] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:43:36] Raw input: {"email":"kimthea327@gmail.com"}
+[2025-12-12 03:43:36] Generated OTP: 956846 for kimthea327@gmail.com
+[2025-12-12 03:43:36] SMTP configured.
+[2025-12-12 03:43:36] Attempting to send...
+[2025-12-12 03:43:43] Email sent successfully.
+[2025-12-12 03:44:39] Script started.
+[2025-12-12 03:44:39] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:44:39] Raw input: {"email":"kimthea327@gmail.com"}
+[2025-12-12 03:44:39] Generated OTP: 965687 for kimthea327@gmail.com
+[2025-12-12 03:44:39] SMTP configured.
+[2025-12-12 03:44:39] Attempting to send...
+[2025-12-12 03:44:43] Email sent successfully.
+[2025-12-12 03:45:50] Script started.
+[2025-12-12 03:45:50] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:45:50] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 03:45:50] Generated OTP: 408224 for kimtheasantos5@gmail.com
+[2025-12-12 03:45:50] SMTP configured.
+[2025-12-12 03:45:50] Attempting to send...
+[2025-12-12 03:45:54] Email sent successfully.
+[2025-12-12 03:46:07] Script started.
+[2025-12-12 03:46:07] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:46:07] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 03:46:07] Generated OTP: 494054 for kimtheasantos5@gmail.com
+[2025-12-12 03:46:07] SMTP configured.
+[2025-12-12 03:46:07] Attempting to send...
+[2025-12-12 03:46:14] Email sent successfully.
+[2025-12-12 03:46:40] Script started.
+[2025-12-12 03:46:40] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:46:40] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 03:46:40] Generated OTP: 527618 for kimtheasantos5@gmail.com
+[2025-12-12 03:46:40] SMTP configured.
+[2025-12-12 03:46:40] Attempting to send...
+[2025-12-12 03:46:47] Email sent successfully.
+[2025-12-12 03:59:28] Script started.
+[2025-12-12 03:59:28] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 03:59:28] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 03:59:28] Generated OTP: 413915 for kimtheasantos5@gmail.com
+[2025-12-12 03:59:28] SMTP configured.
+[2025-12-12 03:59:28] Attempting to send...
+[2025-12-12 03:59:33] Email sent successfully.
+[2025-12-12 04:02:10] Script started.
+[2025-12-12 04:02:10] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 04:02:10] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 04:02:10] Generated OTP: 872523 for kimtheasantos5@gmail.com
+[2025-12-12 04:02:10] storeOtp response: <br />
+<b>Warning</b>:  Undefined variable $conn in <b>C:\xampp\htdocs\web-projects\Hirenorian-2\APIs\Student DB APIs\otpValidation\insertotp.php</b> on line <b>16</b><br />
+<br />
+<b>Fatal error</b>:  Uncaught Error: Call to a member function exec() on null in C:\xampp\htdocs\web-projects\Hirenorian-2\APIs\Student DB APIs\otpValidation\insertotp.php:16
+Stack trace:
+#0 {main}
+  thrown in <b>C:\xampp\htdocs\web-projects\Hirenorian-2\APIs\Student DB APIs\otpValidation\insertotp.php</b> on line <b>16</b><br />
+
+[2025-12-12 04:02:10] SMTP configured.
+[2025-12-12 04:02:10] Attempting to send...
+[2025-12-12 04:02:16] Email sent successfully.
+[2025-12-12 04:02:16] Script started.
+[2025-12-12 04:02:16] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 04:02:16] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 04:02:16] Generated OTP: 820385 for kimtheasantos5@gmail.com
+[2025-12-12 04:02:16] storeOtp response: <br />
+<b>Warning</b>:  Undefined variable $conn in <b>C:\xampp\htdocs\web-projects\Hirenorian-2\APIs\Student DB APIs\otpValidation\insertotp.php</b> on line <b>16</b><br />
+<br />
+<b>Fatal error</b>:  Uncaught Error: Call to a member function exec() on null in C:\xampp\htdocs\web-projects\Hirenorian-2\APIs\Student DB APIs\otpValidation\insertotp.php:16
+Stack trace:
+#0 {main}
+  thrown in <b>C:\xampp\htdocs\web-projects\Hirenorian-2\APIs\Student DB APIs\otpValidation\insertotp.php</b> on line <b>16</b><br />
+
+[2025-12-12 04:02:16] SMTP configured.
+[2025-12-12 04:02:16] Attempting to send...
+[2025-12-12 04:02:21] Email sent successfully.
+[2025-12-12 04:42:10] Script started.
+[2025-12-12 04:42:10] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 04:42:10] Raw input: {"email":"kimtheasantos5@gmail.com"}
+[2025-12-12 04:42:10] Generated OTP: 632174 for kimtheasantos5@gmail.com
+[2025-12-12 04:42:10] SMTP configured.
+[2025-12-12 04:42:10] Attempting to send...
+[2025-12-12 04:42:18] Email sent successfully.
+[2025-12-12 07:08:21] Script started.
+[2025-12-12 07:08:21] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 07:08:21] Raw input: {"email":"kimthea327@gmail.com"}
+[2025-12-12 07:08:21] Generated OTP: 955869 for kimthea327@gmail.com
+[2025-12-12 07:08:21] SMTP configured.
+[2025-12-12 07:08:21] Attempting to send...
+[2025-12-12 07:08:28] Email sent successfully.
+[2025-12-12 07:09:35] Script started.
+[2025-12-12 07:09:35] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-12 07:09:35] Raw input: {"email":"2023304188@pampangastateu.edu.ph"}
+[2025-12-12 07:09:35] Generated OTP: 626409 for 2023304188@pampangastateu.edu.ph
+[2025-12-12 07:09:35] SMTP configured.
+[2025-12-12 07:09:35] Attempting to send...
+[2025-12-12 07:09:40] Email sent successfully.
+[2025-12-16 11:14:14] Script started.
+[2025-12-16 11:14:14] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-16 11:14:14] Raw input: {"email":"kimthea327@gmail.com"}
+[2025-12-16 11:14:14] Generated OTP: 560381 for kimthea327@gmail.com
+[2025-12-16 11:14:14] SMTP configured.
+[2025-12-16 11:14:14] Attempting to send...
+[2025-12-16 11:14:20] Email sent successfully.
+[2025-12-16 11:15:01] Script started.
+[2025-12-16 11:15:01] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-16 11:15:01] Raw input: {"email":"2023304188@pampangastateu.edu.ph"}
+[2025-12-16 11:15:01] Generated OTP: 784273 for 2023304188@pampangastateu.edu.ph
+[2025-12-16 11:15:01] SMTP configured.
+[2025-12-16 11:15:01] Attempting to send...
+[2025-12-16 11:15:07] Email sent successfully.
