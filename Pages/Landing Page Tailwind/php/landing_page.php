@@ -201,13 +201,13 @@
                         <!-- News 1 -->
                         <div class="min-w-full flex flex-col md:flex-row h-auto md:h-[500px]">
                             <div class="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden">
-                                <img src="../../Landing Page/Images/dhvsu-bg-image.jpg" alt="Dhvsu" class="absolute inset-0 w-full h-full object-cover">
+                                <img src="../Images/news1-image.png" alt="Franchise Your Future Seminar" class="absolute inset-0 w-full h-full object-cover">
                             </div>
                             <div class="w-full md:w-1/2 p-6 sm:p-8 md:p-10 lg:p-14 flex flex-col justify-center">
-                                <span class="text-xs sm:text-sm font-bold text-gray-400 mb-2 sm:mb-4 block">Oct 24, 2025</span>
-                                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-maroon mb-3 sm:mb-4 md:mb-6 leading-tight">DHVSU Career Fair 2025</h3>
-                                <p class="text-gray-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">Join us for the biggest career event of the year. Meet top employers face-to-face and discover opportunities that match your skills.</p>
-                                <a href="#" class="inline-flex items-center text-maroon font-bold text-base uppercase tracking-wide hover:text-maroon-dark hover:underline">Read More <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon></a>
+                                <span class="text-xs sm:text-sm font-bold text-gray-400 mb-2 sm:mb-4 block">December 2, 2025</span>
+                                <h3 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-maroon mb-3 sm:mb-4 md:mb-6 leading-tight">Franchise Your Future Seminar</h3>
+                                <p class="text-gray-600 mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed">Proof that learning doesn't only happen inside the classroom — sometimes, it happens in moments when we dare to dream bigger. This event opened our eyes to possibility, showed us that success begins with an idea, grows through courage, and becomes reality through action.</p>
+                                <a href="https://www.facebook.com/share/p/1ATKRuaeTk/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-maroon font-bold text-base uppercase tracking-wide hover:text-maroon-dark hover:underline">Read More <ion-icon name="arrow-forward-outline" class="ml-2"></ion-icon></a>
                             </div>
                         </div>
 
