@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include("");
+include("db_con.php");
 header("Content-type: application/json");
 
 $query = "SELECT 

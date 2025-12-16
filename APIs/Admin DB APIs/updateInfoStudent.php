@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include '../db_con.php';
+include ("db_con.php");
 $response = file_get_contents("php://input");
 $data = json_decode($response, true);
 
