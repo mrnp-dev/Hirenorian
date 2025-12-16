@@ -71,7 +71,7 @@ async function check_LogIn_Fields() {
                         if (typeof ToastSystem !== 'undefined') ToastSystem.show("Redirecting to Company Dashboard", "info");
                         setTimeout(() => {
                             // Redirect to Company Dashboard
-                            window.location.href = "../../Company Pages/Company Dashboard/php/company_dashboard.php";
+                            window.location.href = "../../../Company Pages/Company Dashboard/php/company_dashboard.php";
                         }, 1500);
                     }, 1500);
                 } else {

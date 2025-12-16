@@ -104,6 +104,8 @@
         .badge-auth { background: #fff3e0; color: #e65100; }
         .badge-student { background: #e8f5e9; color: #1b5e20; }
         .badge-company { background: #fff8e1; color: #f57f17; }
+        .badge-deprecated { background: #ffebee; color: #c62828; }
+        .badge-recommended { background: #c8e6c9; color: #2e7d32; font-weight: 700; }
 
     </style>
 </head>
@@ -129,19 +131,19 @@
             <h2 class="section-title">Authentication</h2>
             <div class="link-grid">
                 <a href="Account Registration Pages/Account Selection Page/php/account_selection.php" class="page-link">
-                    <span class="page-name">Account Selection</span>
+                    <span class="page-name">Account Selection (Legacy)</span>
                     <span class="page-path">Account Registration Pages/.../account_selection.php</span>
-                    <span class="badge badge-auth">Auth</span>
+                    <span class="badge badge-deprecated">Deprecated</span>
                 </a>
                 <a href="Account Registration Pages/Account Selection Modern/php/account_selection.php" class="page-link">
-                    <span class="page-name">Account Selection (Modern)</span>
+                    <span class="page-name">Account Selection Modern</span>
                     <span class="page-path">Account Registration Pages/Account Selection Modern/.../account_selection.php</span>
-                    <span class="badge badge-auth">New ✨</span>
+                    <span class="badge badge-recommended">✓ USE THIS</span>
                 </a>
                 <a href="Account Registration Pages/Student Registration Page/php/student_registrationForm.php" class="page-link">
-                    <span class="page-name">Student Registration</span>
+                    <span class="page-name">Student Registration (Legacy)</span>
                     <span class="page-path">Account Registration Pages/.../student_registrationForm.php</span>
-                    <span class="badge badge-auth">Auth</span>
+                    <span class="badge badge-deprecated">Deprecated</span>
                 </a>
                 <a href="Account Registration Pages/Main Account Register Page/php/main_registration.php" class="page-link">
                     <span class="page-name">Main Account Registration</span>
@@ -149,14 +151,14 @@
                     <span class="badge badge-auth">Auth</span>
                 </a>
                 <a href="Account Registration Pages/Company Registration Page/php/company.php" class="page-link">
-                    <span class="page-name">Company Registration</span>
+                    <span class="page-name">Company Registration (Legacy)</span>
                     <span class="page-path">Account Registration Pages/.../company.php</span>
-                    <span class="badge badge-company">Company</span>
+                    <span class="badge badge-deprecated">Deprecated</span>
                 </a>
                 <a href="Account Registration Pages/Company Registration Modern/php/company_registration.php" class="page-link">
                     <span class="page-name">Company Registration Modern</span>
                     <span class="page-path">Account Registration Pages/.../company_registration.php</span>
-                    <span class="badge badge-company">New ✨</span>
+                    <span class="badge badge-recommended">✓ USE THIS</span>
                 </a>
                 <a href="Account Registration Pages/SR-Duplicate OTP Page/php/student_registrationForm.php" class="page-link">
                     <span class="page-name">SR-Duplicate OTP Page</span>
@@ -166,7 +168,7 @@
                 <a href="Account Registration Pages/Student Registration Modern/php/student_registration.php" class="page-link">
                     <span class="page-name">Student Registration Modern</span>
                     <span class="page-path">Account Registration Pages/.../student_registration.php</span>
-                    <span class="badge badge-auth">New ✨</span>
+                    <span class="badge badge-recommended">✓ USE THIS</span>
                 </a>
             </div>
         </div>
