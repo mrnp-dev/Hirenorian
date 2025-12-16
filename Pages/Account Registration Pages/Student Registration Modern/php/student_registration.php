@@ -22,6 +22,7 @@ else
     <link rel="stylesheet" href="../css/student_registration.css">
     <link rel="stylesheet" href="../css/otp-modal.css">
     <link rel="stylesheet" href="../css/toast.css">
+    <link rel="stylesheet" href="../Reset Password UI/css/reset_password.css">
     <title>Student Registration - Hirenorian</title>
 </head>
 
@@ -280,6 +281,9 @@ else
         </div>
     </div>
 
+    <!-- Reset Password UI -->
+    <?php include '../Reset Password UI/php/reset_password.php'; ?>
+
     <script src="../js/modules/globals.js"></script>
     <script src="../js/modules/utils.js"></script>
     <script src="../js/modules/tags.js"></script>
@@ -290,6 +294,7 @@ else
     <script src="../js/modules/navigation.js"></script>
     <script src="../js/modules/main.js"></script>
     <script src="../js/modules/toast.js"></script>
+    <script src="../Reset Password UI/js/reset_password.js"></script>
 </body>
 
 </html>
