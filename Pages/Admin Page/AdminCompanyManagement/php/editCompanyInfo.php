@@ -3,18 +3,28 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $url = 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/updateInfo.php';
+  echo "<script>console.log('[DEBUG] Edit Company Info: Update API URL = " . $url . "');</script>";
 
   $data = array(
     'company_name' => $_POST['companyName'],
     'email' => $_POST['email'],
     'company_id' => $_POST['id']
   );
+  echo "<script>console.log('[DEBUG] Edit Company Info: Sending data for company ID = " . $_POST['id'] . "');</script>";
 
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($ch);
+  
+  if ($result === false) {
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Edit Company Info: CURL Error = " . addslashes($error) . "');</script>";
+  } else {
+    echo "<script>console.log('[DEBUG] Edit Company Info: Update successful');</script>";
+  }
+  
   curl_close($ch);
 
   header("Location: company_management.php");

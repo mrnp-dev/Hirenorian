@@ -4,28 +4,37 @@ session_start();
 $companies = [];
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_company_information.php";
+echo "<script>console.log('[DEBUG] Company Management: API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Company Management: CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Company Management: Raw API Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Company Management: API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $companies = $data['data'];
+        echo "<script>console.log('[DEBUG] Company Management: Companies loaded = " . count($companies) . "');</script>";
+        echo "<script>console.log('[DEBUG] Company Management: First company data:', " . json_encode($companies[0] ?? null) . ");</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Company Management: API Error Message = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
-
+    echo "<script>console.error('[DEBUG] Company Management: Invalid JSON or empty response');</script>";
+    echo "<script>console.log('[DEBUG] Company Management: Raw response:', " . json_encode(substr($response, 0, 200)) . ");</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -163,8 +172,17 @@ if ($data && isset($data['status'])) {
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
+        console.log('[DEBUG] Company Management: DOM Ready - Initializing DataTable');
+        console.log('[DEBUG] Company Management: Total companies in table = <?= count($companies) ?>');
+        
         $(document).ready(function() {
-            $('#companyTable').DataTable();
+            try {
+                const table = $('#companyTable').DataTable();
+                console.log('[DEBUG] Company Management: DataTable initialized successfully');
+                console.log('[DEBUG] Company Management: DataTable rows = ' + table.rows().count());
+            } catch(error) {
+                console.error('[DEBUG] Company Management: DataTable initialization error:', error);
+            }
         });
     </script>
 

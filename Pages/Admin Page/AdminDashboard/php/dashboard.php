@@ -10,29 +10,37 @@ $studentsVerified = 0;
 $studentsUnverified = 0;
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
+echo "<script>console.log('[DEBUG] Dashboard: Students API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Dashboard: Students CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Dashboard: Students Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Dashboard: Students API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $students = $data['data'];
         $studentsVerified = isset($data['verified']) ? $data['verified'] : 0;
         $studentsUnverified = isset($data['unverified']) ? $data['unverified'] : 0;
+        echo "<script>console.log('[DEBUG] Dashboard: Students loaded = " . count($students) . ", Verified = " . $studentsVerified . ", Unverified = " . $studentsUnverified . "');</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Dashboard: Students API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Dashboard: Students Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -43,29 +51,37 @@ $companiesVerified = 0;
 $companiesUnverified = 0;
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_company_information.php";
+echo "<script>console.log('[DEBUG] Dashboard: Companies API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Dashboard: Companies CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Dashboard: Companies Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Dashboard: Companies API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $companies = $data['data'];
         $companiesVerified = isset($data['verified']) ? $data['verified'] : 0;
         $companiesUnverified = isset($data['unverified']) ? $data['unverified'] : 0;
+        echo "<script>console.log('[DEBUG] Dashboard: Companies loaded = " . count($companies) . ", Verified = " . $companiesVerified . ", Unverified = " . $companiesUnverified . "');</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Dashboard: Companies API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Dashboard: Companies Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -74,27 +90,35 @@ if ($data && isset($data['status'])) {
 $auditLogs = [];
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php";
+echo "<script>console.log('[DEBUG] Dashboard: Audit Logs API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Dashboard: Audit Logs CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Dashboard: Audit Logs Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Dashboard: Audit Logs API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $auditLogs = $data['data'];
+        echo "<script>console.log('[DEBUG] Dashboard: Audit Logs loaded = " . count($auditLogs) . "');</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Dashboard: Audit Logs API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Dashboard: Audit Logs Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 

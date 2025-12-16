@@ -3,6 +3,7 @@ session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $url = 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/updateInfoStudent.php';
+  echo "<script>console.log('[DEBUG] Edit Student Info: Update API URL = " . $url . "');</script>";
 
   $data = array(
     'student_id' => $_POST['id'],
@@ -12,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     'suffix' => $_POST['suffix'],
     'email' => $_POST['email']
   );
+  echo "<script>console.log('[DEBUG] Edit Student Info: Sending data for student ID = " . $_POST['id'] . "');</script>";
 
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
@@ -19,6 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($ch);
 
+  if ($result === false) {
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Edit Student Info: CURL Error = " . addslashes($error) . "');</script>";
+  } else {
+    echo "<script>console.log('[DEBUG] Edit Student Info: Update successful');</script>";
+  }
 
   curl_close($ch);
 

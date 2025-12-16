@@ -11,26 +11,38 @@ $students = [];
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
 
+echo "<script>console.log('[DEBUG] Student Management: API URL = " . $apiUrl . "');</script>";
+
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Student Management: CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
 
+echo "<script>console.log('[DEBUG] Student Management: Raw API Response Length = " . strlen($response) . " bytes');</script>";
+
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Student Management: API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $students = $data['data'];
+        echo "<script>console.log('[DEBUG] Student Management: Students loaded = " . count($students) . "');</script>";
+        echo "<script>console.log('[DEBUG] Student Management: First student data:', " . json_encode($students[0] ?? null) . ");</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Student Management: API Error Message = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Student Management: Invalid JSON or empty response');</script>";
+    echo "<script>console.log('[DEBUG] Student Management: Raw response:', " . json_encode(substr($response, 0, 200)) . ");</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 ?>
@@ -187,8 +199,17 @@ if ($data && isset($data['status'])) {
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
+        console.log('[DEBUG] Student Management: DOM Ready - Initializing DataTable');
+        console.log('[DEBUG] Student Management: Total students in table = <?= count($students) ?>');
+        
         $(document).ready(function() {
-            $('#datatableid').DataTable();
+            try {
+                const table = $('#datatableid').DataTable();
+                console.log('[DEBUG] Student Management: DataTable initialized successfully');
+                console.log('[DEBUG] Student Management: DataTable rows = ' + table.rows().count());
+            } catch(error) {
+                console.error('[DEBUG] Student Management: DataTable initialization error:', error);
+            }
         });
     </script>
 
