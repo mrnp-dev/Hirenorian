@@ -18,7 +18,6 @@ if (isset($_SESSION['email'])) {
         die("Curl error: " . curl_error($ch));
     } else {
         echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
-
     }
     curl_close($ch);
 
@@ -27,7 +26,7 @@ if (isset($_SESSION['email'])) {
 
     if (isset($data['status']) && $data['status'] === "success") {
         echo "<script>console.log('Student ID: " . $data['student_id'] . "');</script>";
-        
+
         $basic_info = $data['data']['basic_info'];
         $profile = $data['data']['profile'];
         $skills_list = $data['data']['skills'];
@@ -54,7 +53,6 @@ if (isset($_SESSION['email'])) {
         $university     = !empty($education_current) ? $education_current[0]['university'] : '';
         $course         = !empty($education_current) ? $education_current[0]['course'] : '';
         $department     = !empty($education_current) ? $education_current[0]['department'] : '';
-            
     } else {
         $error_msg = isset($data['message']) ? $data['message'] : 'Unknown error';
         echo "<script>console.log('Err: " . $error_msg . "');</script>";
@@ -62,9 +60,7 @@ if (isset($_SESSION['email'])) {
         $first_name = $last_name = $middle_initial = $suffix = $location = $about_me = $student_email = $phone_number = $course = $university = "";
         $skills_list = $experience_list = $education_history = $education_current = [];
     }
-}
-else
-{
+} else {
     header("Location: ../../../Landing Page/php/landing_page.php");
 }
 ?>
@@ -184,11 +180,11 @@ else
                             <!-- Skills -->
                             <div class="card skills-card">
                                 <h3>Skills</h3>
-                                <?php 
+                                <?php
                                 // Group skills by category
                                 $technical_skills = [];
                                 $soft_skills = [];
-                                
+
                                 if (!empty($skills_list)) {
                                     foreach ($skills_list as $skill) {
                                         if ($skill['skill_category'] === 'Technical') {
@@ -199,7 +195,7 @@ else
                                     }
                                 }
                                 ?>
-                                
+
                                 <div class="skill-category">
                                     <h4>Technical</h4>
                                     <div class="tags">
@@ -212,7 +208,7 @@ else
                                         <?php endif; ?>
                                     </div>
                                 </div>
-                                
+
                                 <div class="skill-category">
                                     <h4>Soft Skills</h4>
                                     <div class="tags">
@@ -244,15 +240,15 @@ else
                                 <div class="timeline-v2">
                                     <?php if (!empty($experience_list)): ?>
                                         <?php foreach ($experience_list as $exp): ?>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
-                                            <div class="timeline-content">
-                                                <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
-                                                <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
-                                                <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
-                                                <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
+                                            <div class="timeline-item">
+                                                <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                                <div class="timeline-content">
+                                                    <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
+                                                    <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
+                                                    <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
+                                                    <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
+                                                </div>
                                             </div>
-                                        </div>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <p>No experience listed.</p>
@@ -267,31 +263,31 @@ else
                                     <!-- Current Education -->
                                     <?php if (!empty($education_current)): ?>
                                         <?php foreach ($education_current as $edu): ?>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                                            <div class="timeline-content">
-                                                <h3><?php echo htmlspecialchars($edu['course']); ?></h3>
-                                                <p class="institution"><?php echo htmlspecialchars($edu['university']); ?></p>
-                                                <p class="date">Present</p> <!-- Assuming current means present, or add dates if available in table -->
+                                            <div class="timeline-item">
+                                                <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                                <div class="timeline-content">
+                                                    <h3><?php echo htmlspecialchars($edu['course']); ?></h3>
+                                                    <p class="institution"><?php echo htmlspecialchars($edu['university']); ?></p>
+                                                    <p class="date">Present</p> <!-- Assuming current means present, or add dates if available in table -->
+                                                </div>
                                             </div>
-                                        </div>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
 
                                     <!-- Past Education History -->
                                     <?php if (!empty($education_history)): ?>
                                         <?php foreach ($education_history as $hist): ?>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon"><i class="fa-solid fa-school"></i></div>
-                                            <div class="timeline-content">
-                                                <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
-                                                <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
-                                                <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
+                                            <div class="timeline-item">
+                                                <div class="timeline-icon"><i class="fa-solid fa-school"></i></div>
+                                                <div class="timeline-content">
+                                                    <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
+                                                    <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
+                                                    <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
+                                                </div>
                                             </div>
-                                        </div>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
-                                    
+
                                     <?php if (empty($education_current) && empty($education_history)): ?>
                                         <p>No education history available.</p>
                                     <?php endif; ?>

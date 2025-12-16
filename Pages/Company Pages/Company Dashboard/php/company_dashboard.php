@@ -19,7 +19,6 @@ if (isset($_SESSION['email'])) {
         die("Curl error: " . curl_error($ch));
     } else {
         echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
-
     }
     curl_close($ch);
 
@@ -27,7 +26,6 @@ if (isset($_SESSION['email'])) {
 
     if ($data['status'] === "success") {
         echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
-
     } else {
         echo "<script>console.log('Err: " . $data['message'] . "');</script>";
     }
@@ -37,7 +35,6 @@ if (isset($_SESSION['email'])) {
     // Students Table
     $company_id = $company['company_id'];
     $company_name = $company['company_name'];
-
 } else {
     header("Location: ../../../Landing Page/php/landing_page.php");
 }

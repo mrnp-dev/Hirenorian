@@ -1,33 +1,6 @@
 <?php
 session_start();
 $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
-
-$students = [];
-
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
-
-$ch = curl_init($apiUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-$response = curl_exec($ch);
-if ($response === false) {
-    die("Curl error: " . curl_error($ch));
-}
-
-curl_close($ch);
-
-$data = json_decode($response, true);
-
-if ($data && isset($data['status'])) {
-    if ($data['status'] === "success") {
-        $students = $data['data'];
-    } else {
-        $message = isset($data['message']) ? $data['message'] : "Unknown error";
-        echo "<p>Error: $message</p>";
-    }
-} else {
-    echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
-}
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +41,7 @@ if ($data && isset($data['status'])) {
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Management</span>
                 </a>
-                <a href="company_management.php" class="nav-item">
+                <a href="../../AdminCompanyManagement/php/company_management.php" class="nav-item">
                     <i class="fa-solid fa-building"></i>
                     <span>Company Management</span>
                 </a>
@@ -124,14 +97,14 @@ if ($data && isset($data['status'])) {
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-money-check-dollar me-2 text-primary"></i> ID</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-student_id_card">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-student_id_card">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-image fa-3x text-secondary" id="icon-student_id_card"></i>
                                     </div>
                                     <div id="action-student_id_card">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -141,14 +114,14 @@ if ($data && isset($data['status'])) {
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-city me-2 text-primary"></i> COR</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-cor">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-cor">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-image fa-3x text-secondary" id="icon-cor"></i>
                                     </div>
                                     <div id="action-cor">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -212,7 +185,7 @@ if ($data && isset($data['status'])) {
         });
 
         function fetchDocuments(id) {
-            const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/fetch_documents.php?student_id=${id}`;
+            const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_documents.php?student_id=${id}`;
 
             fetch(apiUrl)
                 .then(async response => {
@@ -244,16 +217,7 @@ if ($data && isset($data['status'])) {
                         }
 
 
-                        const displayDocId = document.getElementById('displayDocId');
-                        if (displayDocId) {
-                            if (data.data.doc_id) {
-                                displayDocId.textContent = data.data.doc_id;
-                            } else {
-                                displayDocId.textContent = "Not Assigned";
-                                displayDocId.classList.add('text-muted');
-                                displayDocId.style.fontStyle = 'italic';
-                            }
-                        }
+
 
                         updateDocumentCard('student_id_card', data.data.student_id_file);
                         updateDocumentCard('cor', data.data.cor_file);
@@ -289,7 +253,7 @@ if ($data && isset($data['status'])) {
         }
 
         function updateVerificationStatus(studentId, newStatus) {
-            const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/update_verification_request.php`;
+            const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_verification_request.php`;
 
             fetch(apiUrl, {
                     method: 'POST',
@@ -346,7 +310,7 @@ if ($data && isset($data['status'])) {
 
                 icon.classList.add('text-secondary');
 
-                actionDiv.innerHTML = '<button class="btn btn-sm btn-outline-secondary" disabled>Unavailable</button>';
+                actionDiv.innerHTML = '<button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>';
             }
         }
 
@@ -361,7 +325,7 @@ if ($data && isset($data['status'])) {
 
 
         function auditLogs(actionType, decription) {
-            fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+            fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -9,7 +9,7 @@ $students = [];
 $studentsVerified = 0;
 $studentsUnverified = 0;
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -26,8 +26,18 @@ $data = json_decode($response, true);
 if ($data && isset($data['status'])) {
     if ($data['status'] === "success") {
         $students = $data['data'];
-        $studentsVerified = isset($data['verified']) ? $data['verified'] : 0;
-        $studentsUnverified = isset($data['unverified']) ? $data['unverified'] : 0;
+
+        $studentsVerified = 0;
+        $studentsUnverified = 0;
+
+        foreach ($students as $student) {
+
+            if (isset($student['verified']) && (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1)) {
+                $studentsVerified++;
+            } else {
+                $studentsUnverified++;
+            }
+        }
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
         echo "<p>Error: $message</p>";
@@ -42,7 +52,7 @@ $companies = [];
 $companiesVerified = 0;
 $companiesUnverified = 0;
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/admin_company_information.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_company_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -73,7 +83,7 @@ if ($data && isset($data['status'])) {
 
 $auditLogs = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/fetch_audit_logs.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

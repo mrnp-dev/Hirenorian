@@ -9,7 +9,7 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Company Documents - Hirenorian</title>
+    <title>View Student Documents - Hirenorian</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                     <i class="fa-solid fa-user-graduate"></i>
                     <span>Student Management</span>
                 </a>
-                <a href="company_management.php" class="nav-item">
+                <a href="../../AdminCompanyManagement/php/company_management.php" class="nav-item">
                     <i class="fa-solid fa-building"></i>
                     <span>Company Management</span>
                 </a>
@@ -77,12 +77,18 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             </div>
 
                             <div>
-                                <button type="button" class="status verification-btn 
-                                    <?= (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1) ? 'verified' : 'unverified' ?>">
-                                    <?= (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1) ? 'verified' : 'unverified' ?>
+                                <button type="button" class="btn btn-secondary" id="verificationStatusBtn">
+                                    Pending
                                 </button>
                             </div>
                         </div>
+                    </div>
+
+                    <div id="loadingSpinner" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-secondary">Fetching documents...</p>
                     </div>
 
                     <div id="documentsContainer" class="row g-4" style="display: none;">
@@ -91,14 +97,14 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-file-contract me-2 text-primary"></i> TOR</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-tor">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-tor">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-pdf fa-3x text-secondary" id="icon-tor"></i>
                                     </div>
                                     <div id="action-tor">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
@@ -108,22 +114,24 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                             <div class="doc-section-card h-100">
                                 <div class="doc-header">
                                     <h6 class="m-0"><i class="fa-solid fa-landmark me-2 text-primary"></i> Diploma</h6>
-                                    <span class="status-badge bg-secondary text-white" id="status-diploma">Pending</span>
+                                    <span class="status-badge bg-warning text-dark" id="status-diploma">Not Uploaded</span>
                                 </div>
                                 <div class="doc-body">
                                     <div class="mb-3">
                                         <i class="fa-regular fa-file-pdf fa-3x text-secondary" id="icon-diploma"></i>
                                     </div>
                                     <div id="action-diploma">
-                                        <button class="btn btn-sm btn-outline-secondary" disabled>Not Uploaded</button>
+                                        <button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
-
                     </div>
+
+                    <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
+
+                </div>
 
             </main>
         </div>
@@ -177,7 +185,7 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         });
 
         function fetchDocuments(id) {
-            const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/fetch_documents.php?student_id=${id}`;
+            const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_documents.php?student_id=${id}`;
 
             fetch(apiUrl)
                 .then(async response => {
@@ -200,19 +208,16 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
                         document.getElementById('documentsContainer').style.display = 'flex';
 
                         if (data.student_name) {
-                            document.getElementById('companyNameDisplay').textContent = data.student_name;
+                            document.getElementById('studentNameDisplay').textContent = data.student_name;
                         }
 
-                        const displayDocId = document.getElementById('displayDocId');
-                        if (displayDocId) {
-                            if (data.data.doc_id) {
-                                displayDocId.textContent = data.data.doc_id;
-                            } else {
-                                displayDocId.textContent = "Not Assigned";
-                                displayDocId.classList.add('text-muted');
-                                displayDocId.style.fontStyle = 'italic';
-                            }
+                        if (data.data && data.data.status) {
+                            updateStatusButtonUI(data.data.status);
+                        } else {
+                            updateStatusButtonUI('Pending');
                         }
+
+
 
                         updateDocumentCard('tor', data.data.tor_file);
                         updateDocumentCard('diploma', data.data.diploma_file);
@@ -248,7 +253,7 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         }
 
         function updateVerificationStatus(studentId, newStatus) {
-            const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/update_verification_request.php`;
+            const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_verification_request.php`;
 
             fetch(apiUrl, {
                     method: 'POST',
@@ -305,7 +310,7 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
 
                 icon.classList.add('text-secondary');
 
-                actionDiv.innerHTML = '<button class="btn btn-sm btn-outline-secondary" disabled>Unavailable</button>';
+                actionDiv.innerHTML = '<button class="btn btn-sm btn-unavailable" disabled>Unavailable</button>';
             }
         }
 
@@ -320,7 +325,7 @@ $student_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
 
 
         function auditLogs(actionType, decription) {
-            fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+            fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $url = 'http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/updateInfoStudent.php';
+  $url = 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/updateInfoStudent.php';
 
   $data = array(
     'student_id' => $_POST['id'],
@@ -248,7 +248,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
   <script>
     function auditLogs(actionType, description) {
-      fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+      fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
