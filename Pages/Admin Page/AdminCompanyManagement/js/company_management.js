@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function updateCompanyVerificationStatus(companyID, status) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/update_company_verification.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_company_verification.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateCompanyActivationStatus(companyID, status) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/update_company_activation.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_company_activation.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function deleteCompany(companyId) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/deleteCompanyInfo.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/deleteCompanyInfo.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function auditLogs(actionType, decription) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

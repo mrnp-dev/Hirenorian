@@ -684,4 +684,22 @@ body {
     font-size: 0.8rem;
     padding: 5px 10px;
     border-radius: 20px;
+    font-weight: 500;
+}
+
+.status-badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+}
+
+.btn-unavailable {
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    background-color: transparent;
+    cursor: not-allowed;
+    opacity: 0.8;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    width: 100px;
 }

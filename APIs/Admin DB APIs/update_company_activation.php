@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include '../dbCon.php';
+include '../db_con.php';
 $response = file_get_contents("php://input");
 $data = json_decode($response, true);
 
@@ -17,16 +17,16 @@ if ($data === null) {
 }
 
 $companyID = $data['company_id'];
-$verified = $data['verification'];
+$activation = $data['activation'];
 
 $query = "UPDATE Company
-          SET verification = :verification
+          SET activation = :activation
           WHERE company_id = :company_id";
 
 $stmt = $conn->prepare($query);
 $stmt->execute([
     ':company_id' => $companyID,
-    ':verification' => $verified,
+    ':activation' => $activation,
 ]);
 
-echo json_encode(["status" => "success", "message" => "Company verification updated successfully"]);
+echo json_encode(["status" => "success", "message" => "Company activation updated successfully"]);

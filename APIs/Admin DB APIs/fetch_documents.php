@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include '../dbCon.php';
+include '../db_con.php';
 
 $student_id = isset($_GET['student_id']) ? $_GET['student_id'] : '';
 

@@ -98,3 +98,17 @@ Stack trace:
 [2025-12-12 07:09:35] SMTP configured.
 [2025-12-12 07:09:35] Attempting to send...
 [2025-12-12 07:09:40] Email sent successfully.
+[2025-12-16 11:14:14] Script started.
+[2025-12-16 11:14:14] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-16 11:14:14] Raw input: {"email":"kimthea327@gmail.com"}
+[2025-12-16 11:14:14] Generated OTP: 560381 for kimthea327@gmail.com
+[2025-12-16 11:14:14] SMTP configured.
+[2025-12-16 11:14:14] Attempting to send...
+[2025-12-16 11:14:20] Email sent successfully.
+[2025-12-16 11:15:01] Script started.
+[2025-12-16 11:15:01] Found autoload at: C:\xampp\htdocs\web-projects\Hirenorian-2\Pages\Account Registration Pages\SR-Duplicate OTP Page\php/../../../../vendor/autoload.php
+[2025-12-16 11:15:01] Raw input: {"email":"2023304188@pampangastateu.edu.ph"}
+[2025-12-16 11:15:01] Generated OTP: 784273 for 2023304188@pampangastateu.edu.ph
+[2025-12-16 11:15:01] SMTP configured.
+[2025-12-16 11:15:01] Attempting to send...
+[2025-12-16 11:15:07] Email sent successfully.

@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include '../dbCon.php';
+include '../db_con.php';
 $response = file_get_contents("php://input");
 $data = json_decode($response, true);
 
@@ -16,17 +16,17 @@ if ($data === null) {
     exit();
 }
 
-$companyID = $data['company_id'];
-$activation = $data['activation'];
+$studentId = $data['student_id'];
+$activated = $data['activated'];
 
-$query = "UPDATE Company
-          SET activation = :activation
-          WHERE company_id = :company_id";
+$query = "UPDATE Students
+          SET activated = :activated
+          WHERE student_id = :student_id";
 
 $stmt = $conn->prepare($query);
 $stmt->execute([
-    ':company_id' => $companyID,
-    ':activation' => $activation,
+    ':student_id' => $studentId,
+    ':activated' => $activated,
 ]);
 
-echo json_encode(["status" => "success", "message" => "Company activation updated successfully"]);
+echo json_encode(["status" => "success", "message" => "Student activation updated successfully"]);

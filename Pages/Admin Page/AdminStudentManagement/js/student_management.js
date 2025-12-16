@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const studentID = row.querySelector('td:first-child').textContent.trim();
 
                 if (studentID) {
-                    const apiUrl = `/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/fetch_documents.php?student_id=${studentID}`;
+                    const apiUrl = `http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_documents.php?student_id=${studentID}`;
 
                     fetch(apiUrl)
                         .then(response => response.json())
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         .catch(error => {
                             swal("Error", "An error occurred while fetching student details.", "error");
                         });
-                }f
+                } f
             }
         }
     });
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateStudentVerificationStatus(studentId, status) {
 
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/update_student_verification.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_student_verification.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateStudentActivationStatus(studentID, status) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/update_student_activation.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/update_student_activation.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function deleteStudent(studentId) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/delete.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/delete.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function auditLogs(actionType, decription) {
-        fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

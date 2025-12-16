@@ -11,8 +11,6 @@ $students = [];
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
 
-echo "<script>console.log('[DEBUG] Student Management: API URL = " . $apiUrl . "');</script>";
-
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 

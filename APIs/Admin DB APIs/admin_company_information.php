@@ -14,13 +14,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-try {
-    // Include database connection
-    include("../dbCon.php");
-    
-    // Check if connection exists
-    if (!isset($conn)) {
-        throw new Exception("Database connection failed");
+include("../db_con.php");
+header("Content-type: application/json");
+
+$query = "SELECT 
+           c.company_id,
+           c.company_name,
+           c.email,
+           c.company_type,
+           c.industry,
+           c.verification,
+           c.activation,
+           cp.contact_name
+          FROM Company c
+          LEFT JOIN company_contact_persons cp 
+          ON c.company_id = cp.company_id";
+
+$stmt = $conn->prepare($query);
+$stmt->execute();
+
+$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$verified = 0;
+
+foreach ($data as $row) {
+    if ((trim(strtolower($row['verification'])) == 'true')) {
+        $verified++;
     }
 
     $query = "SELECT 

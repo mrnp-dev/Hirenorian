@@ -10,7 +10,6 @@ $studentsVerified = 0;
 $studentsUnverified = 0;
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
-echo "<script>console.log('[DEBUG] Dashboard: Students API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -31,9 +30,18 @@ if ($data && isset($data['status'])) {
     echo "<script>console.log('[DEBUG] Dashboard: Students API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $students = $data['data'];
-        $studentsVerified = isset($data['verified']) ? $data['verified'] : 0;
-        $studentsUnverified = isset($data['unverified']) ? $data['unverified'] : 0;
-        echo "<script>console.log('[DEBUG] Dashboard: Students loaded = " . count($students) . ", Verified = " . $studentsVerified . ", Unverified = " . $studentsUnverified . "');</script>";
+
+        $studentsVerified = 0;
+        $studentsUnverified = 0;
+
+        foreach ($students as $student) {
+
+            if (isset($student['verified']) && (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1)) {
+                $studentsVerified++;
+            } else {
+                $studentsUnverified++;
+            }
+        }
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
         echo "<script>console.error('[DEBUG] Dashboard: Students API Error = " . addslashes($message) . "');</script>";
@@ -51,7 +59,6 @@ $companiesVerified = 0;
 $companiesUnverified = 0;
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_company_information.php";
-echo "<script>console.log('[DEBUG] Dashboard: Companies API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -90,7 +97,6 @@ if ($data && isset($data['status'])) {
 $auditLogs = [];
 
 $apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php";
-echo "<script>console.log('[DEBUG] Dashboard: Audit Logs API URL = " . $apiUrl . "');</script>";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
