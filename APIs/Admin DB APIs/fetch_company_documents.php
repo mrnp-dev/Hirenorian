@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include '../db_con.php';
+include ("db_con.php");
 
 $company_id = isset($_GET['company_id']) ? $_GET['company_id'] : '';
 

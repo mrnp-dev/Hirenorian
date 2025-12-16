@@ -14,33 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-include("../db_con.php");
-header("Content-type: application/json");
-
-$query = "SELECT 
-           c.company_id,
-           c.company_name,
-           c.email,
-           c.company_type,
-           c.industry,
-           c.verification,
-           c.activation,
-           cp.contact_name
-          FROM Company c
-          LEFT JOIN company_contact_persons cp 
-          ON c.company_id = cp.company_id";
-
-$stmt = $conn->prepare($query);
-$stmt->execute();
-
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-$verified = 0;
-
-foreach ($data as $row) {
-    if ((trim(strtolower($row['verification'])) == 'true')) {
-        $verified++;
-    }
+try {
+    include("db_con.php");
 
     $query = "SELECT 
                c.company_id,
@@ -56,27 +31,28 @@ foreach ($data as $row) {
               ON c.company_id = cp.company_id";
 
     $stmt = $conn->prepare($query);
-    
+
     if (!$stmt) {
         throw new Exception("Failed to prepare statement: " . implode(", ", $conn->errorInfo()));
     }
-    
+
     $stmt->execute();
-    
+
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Count verified companies
+    
     $verified = 0;
+   
+    $unverified = 0;
+
     foreach ($data as $row) {
-        if (trim(strtolower($row['verification'])) == 'true' || $row['verification'] == 1) {
+        $verificationStr = trim(strtolower((string)$row['verification']));
+
+        if ($verificationStr == 'true' || $row['verification'] == 1) {
             $verified++;
         }
-    }
 
-    // Count unverified companies
-    $unverified = 0;
-    foreach ($data as $row) {
-        if (trim(strtolower($row['verification'])) == 'false' || $row['verification'] == 0) {
+        if ($verificationStr == 'false' || $row['verification'] == 0) {
             $unverified++;
         }
     }
@@ -89,7 +65,6 @@ foreach ($data as $row) {
         "verified" => $verified,
         "unverified" => $unverified
     ]);
-
 } catch (PDOException $e) {
     // Database error
     http_response_code(500);
@@ -102,7 +77,6 @@ foreach ($data as $row) {
         "unverified" => 0
     ]);
     error_log("Company API DB Error: " . $e->getMessage());
-    
 } catch (Exception $e) {
     // General error
     http_response_code(500);
@@ -116,4 +90,3 @@ foreach ($data as $row) {
     ]);
     error_log("Company API Error: " . $e->getMessage());
 }
-?>
