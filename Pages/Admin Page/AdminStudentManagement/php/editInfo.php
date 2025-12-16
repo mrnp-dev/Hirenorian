@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $url = 'http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/updateInfoStudent.php';
+  $url = 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/updateInfoStudent.php';
 
   $data = array(
     'student_id' => $_POST['id'],
