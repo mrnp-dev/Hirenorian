@@ -22,7 +22,7 @@
         $valid_pass = "1PSU8Adm6nCode1";
 
         if ($username === $valid_user && $password === $valid_pass) {
-            include 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php';
+            include '../../API/adminDB_APIs/db_con.php';
 
             if (isset($conn)) {
                 try {
@@ -50,7 +50,7 @@
                 <div class="logo-header">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                 </div>
-                <h2 class="form-title-new">Admin Registration</h2>
+                <h2 class="form-title-new">Admin Log In</h2>
                 <form action="" method="POST" class="registration-form">
                     <div class="input-group-new">
                         <label for="username">Username</label>
