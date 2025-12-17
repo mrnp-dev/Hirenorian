@@ -213,7 +213,9 @@ function timeAgo($timestamp)
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket" onclick="auditLogs('Logout', 'Logout as admin')"></i> Logout</a>
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
 
                     </div>
                 </div>
@@ -367,7 +369,7 @@ function timeAgo($timestamp)
         console.log('Students - Verified:', <?= $studentsVerified ?>, 'Unverified:', <?= $studentsUnverified ?>);
         console.log('Companies - Verified:', <?= $companiesVerified ?>, 'Unverified:', <?= $companiesUnverified ?>);
     </script>
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/dashboard.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>

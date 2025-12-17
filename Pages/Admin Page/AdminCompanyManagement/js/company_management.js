@@ -251,15 +251,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function auditLogs(actionType, decription) {
-        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+    function auditLogs(actionType, description) {
+        return fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 action_type: actionType,
-                description: decription,
+                description: description,
             })
         })
             .then(response => response.json())
@@ -268,14 +268,30 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('Audit log added successfully');
                 } else {
                     console.error('Failed to add audit log:', data.message);
-                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+                  
                 }
+                return data;
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error logging audit log.');
+               
             });
     }
 
-
 });
+
+window.handleLogout = function () {
+
+
+    fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action_type: 'Logout', description: 'Logout as admin' })
+    })
+        .then(() => {
+            window.location.href = '../../AdminRegister/php/register.php';
+        })
+        .catch(() => {
+            window.location.href = '../../AdminRegister/php/register.php';
+        });
+};
