@@ -735,6 +735,37 @@ input.input_InvalidInput {
     color: var(--text-dark);
     transition: all .2s ease-in-out;
     margin-top: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.sign-in-container button#signIn_Btn.loading {
+    cursor: wait;
+    opacity: 0.8;
+}
+
+.sign-in-container button#signIn_Btn.loading::after {
+    content: "";
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top-color: rgba(0, 0, 0, 0.4);
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: translateY(-50%) rotate(0deg);
+    }
+
+    to {
+        transform: translateY(-50%) rotate(360deg);
+    }
 }
 
 .sign-in-container button:hover {
