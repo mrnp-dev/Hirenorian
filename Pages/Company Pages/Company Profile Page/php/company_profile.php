@@ -129,9 +129,11 @@ if (isset($_SESSION['email'])) {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="https://dhvsu.edu.ph/images/about_pampanga_state_u/pampanga-state-u-logo-small.png"
-                    alt="Pampanga State University" class="logo-icon">
-                <span class="logo-text">Hirenorian</span>
+                <a href="../../../Landing Page Tailwind/php/landing_page.php"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <span class="logo-text">Hirenorian</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
@@ -349,7 +351,7 @@ if (isset($_SESSION['email'])) {
                                             <i class="fa-solid fa-key"></i> Change Password
                                         </button>
                                         <?php if ($verified_status === 'verified'): ?>
-                                             <div class="account-status verified">
+                                            <div class="account-status verified">
                                                 <i class="fa-solid fa-circle-check"></i> Account Verified
                                             </div>
                                         <?php elseif ($verified_status === 'processing'): ?>
@@ -359,7 +361,8 @@ if (isset($_SESSION['email'])) {
                                         <?php else: ?>
                                             <!-- Default: Unverified (includes 'unverified' and empty) -->
                                             <div class="account-status required-action">
-                                                <span class="status-indicator"><i class="fa-solid fa-circle-exclamation"></i> Required</span>
+                                                <span class="status-indicator"><i
+                                                        class="fa-solid fa-circle-exclamation"></i> Required</span>
                                                 <button class="btn-account-action" onclick="openVerifyAccountModal()">
                                                     <i class="fa-solid fa-shield-halved"></i> Verify Account
                                                 </button>
