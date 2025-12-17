@@ -255,7 +255,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
   <script>
     function auditLogs(actionType, description) {
-      fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php', {
+      fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
