@@ -1,11 +1,8 @@
 <?php
 session_start();
-if(isset($_SESSION['company_email']))
-{
+if (isset($_SESSION['company_email'])) {
     echo "<script>console.log('company email in session');</script>";
-}
-else
-{
+} else {
     echo "<script>console.log('email not in session');</script>";
 }
 ?>
@@ -16,7 +13,8 @@ else
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Outfit:wght@100..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="../css/company_registration.css">
     <link rel="stylesheet" href="../css/otp-modal.css">
@@ -184,16 +182,22 @@ else
                 </div>
                 <h2>Verify Your Email</h2>
                 <p class="otp-instruction">We've sent a 6-digit code to <span id="verifying-email-display"></span></p>
-                <p class="otp-note">(For demo: Enter any 6-digit number)</p>
+                <p class="otp-note"></p>
             </div>
 
             <div class="otp-input-container">
-                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-1">
-                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-2">
-                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-3">
-                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-4">
-                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-5">
-                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric" id="otp-6">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                    id="otp-1">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                    id="otp-2">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                    id="otp-3">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                    id="otp-4">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                    id="otp-5">
+                <input type="text" class="otp-input company-otp-input" maxlength="1" pattern="[0-9]" inputmode="numeric"
+                    id="otp-6">
             </div>
 
             <div class="otp-error-message" id="otpErrorMessage" style="display: none;">

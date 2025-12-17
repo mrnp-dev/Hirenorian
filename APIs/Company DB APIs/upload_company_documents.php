@@ -159,6 +159,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute($params);
             }
 
+            // --- AUTO-UPDATE VERIFIED STATUS to 'processing' ---
+            // When documents are uploaded, we set the status to processing so admin can review.
+            $updateStatus = $conn->prepare("UPDATE Company SET verified_status = 'processing' WHERE company_id = :id");
+            $updateStatus->execute([':id' => $company_id]);
+
             $response['status'] = 'success';
             $response['message'] = 'Documents uploaded successfully.';
             $response['debug'] = $paths_to_update;

@@ -1190,7 +1190,13 @@ function submitVerifyDocuments() {
             if (data.status === 'success') {
                 ToastSystem.show(data.message, 'success');
                 closeVerifyAccountModal();
-                // Optionally refresh the "verified" status on UI if the logical business rule implies manual verification by admin later.
+
+                // Immediate UI Update: Change "Required" to "Processing"
+                const statusContainer = document.querySelector('.account-status');
+                if (statusContainer) {
+                    statusContainer.className = 'account-status pending';
+                    statusContainer.innerHTML = '<i class="fa-solid fa-clock"></i> Verification Processing';
+                }
             } else {
                 ToastSystem.show(data.message || "Upload failed", 'error');
                 if (data.errors) {
