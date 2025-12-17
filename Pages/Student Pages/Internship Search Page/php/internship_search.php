@@ -85,6 +85,10 @@ if (isset($_SESSION['email'])) {
                     <span>Internship Search</span>
                 </a>
 
+                <a href="../../Help Page/php/help.php" class="nav-item">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Help</span>
+                </a>
             </nav>
         </aside>
 
@@ -100,7 +104,7 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="../../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
             </header>
