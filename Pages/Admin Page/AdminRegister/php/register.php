@@ -22,7 +22,7 @@
         $valid_pass = "1PSU8Adm6nCode1";
 
         if ($username === $valid_user && $password === $valid_pass) {
-            include '../../../../APIs/Admin DB APIs/dbCon.php';
+            include 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php';
 
             if (isset($conn)) {
                 try {

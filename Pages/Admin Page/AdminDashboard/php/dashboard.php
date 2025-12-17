@@ -214,7 +214,7 @@ function timeAgo($timestamp)
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         <?php
-                        include '../../../../APIs/Admin DB APIs/dbCon.php';
+                        include 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php';
 
                         if (isset($conn)) {
                             try {
