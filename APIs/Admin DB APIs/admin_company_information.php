@@ -1,7 +1,6 @@
 <?php
-// Enable error logging for debugging
 error_reporting(E_ALL);
-ini_set('display_errors', 0); // Don't display errors in output
+ini_set('display_errors', 0);
 ini_set('log_errors', 1);
 
 header("Access-Control-Allow-Origin: http://localhost");
@@ -23,7 +22,7 @@ try {
                c.email,
                c.company_type,
                c.industry,
-               c.verification,
+               TRIM(c.verified_status) as verified_status,
                c.activation,
                cp.contact_name
               FROM Company c
@@ -37,27 +36,21 @@ try {
     }
 
     $stmt->execute();
-
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    
     $verified = 0;
-   
     $unverified = 0;
 
     foreach ($data as $row) {
-        $verificationStr = trim(strtolower((string)$row['verification']));
+        $verificationStr = trim(strtolower((string)$row['verified_status']));
 
-        if ($verificationStr == 'true' || $row['verification'] == 1) {
+        if ($verificationStr === 'verified') {
             $verified++;
-        }
-
-        if ($verificationStr == 'false' || $row['verification'] == 0) {
+        } else if ($verificationStr === 'unverified') {
             $unverified++;
         }
     }
 
-    // Return success response
     echo json_encode([
         "status" => "success",
         "count" => count($data),
@@ -66,7 +59,6 @@ try {
         "unverified" => $unverified
     ]);
 } catch (PDOException $e) {
-    // Database error
     http_response_code(500);
     echo json_encode([
         "status" => "error",
@@ -78,7 +70,6 @@ try {
     ]);
     error_log("Company API DB Error: " . $e->getMessage());
 } catch (Exception $e) {
-    // General error
     http_response_code(500);
     echo json_encode([
         "status" => "error",
@@ -90,3 +81,4 @@ try {
     ]);
     error_log("Company API Error: " . $e->getMessage());
 }
+?>

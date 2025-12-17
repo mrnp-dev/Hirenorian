@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($ch);
-  
+
   if ($result === false) {
     $error = curl_error($ch);
     echo "<script>console.error('[DEBUG] Edit Company Info: CURL Error = " . addslashes($error) . "');</script>";
   } else {
     echo "<script>console.log('[DEBUG] Edit Company Info: Update successful');</script>";
   }
-  
+
   curl_close($ch);
 
   header("Location: company_management.php");

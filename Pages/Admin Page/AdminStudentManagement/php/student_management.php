@@ -99,21 +99,8 @@ if ($data && isset($data['status'])) {
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <?php
-                        include '../../../../APIs/Admin DB APIs/db_con.php';
+                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket" onclick="auditLogs('Logout', 'Logout as admin')"></i> Logout</a>
 
-                        if (isset($conn)) {
-                            try {
-                                $action = "Log Out";
-                                $description = "Log Out as admin";
-
-                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
-                                $stmt->execute([':action' => $action, ':description' => $description]);
-                            } catch (Exception $e) {
-                            }
-                        }
-                        ?>
                     </div>
             </header>
 
@@ -199,13 +186,13 @@ if ($data && isset($data['status'])) {
     <script>
         console.log('[DEBUG] Student Management: DOM Ready - Initializing DataTable');
         console.log('[DEBUG] Student Management: Total students in table = <?= count($students) ?>');
-        
+
         $(document).ready(function() {
             try {
                 const table = $('#datatableid').DataTable();
                 console.log('[DEBUG] Student Management: DataTable initialized successfully');
                 console.log('[DEBUG] Student Management: DataTable rows = ' + table.rows().count());
-            } catch(error) {
+            } catch (error) {
                 console.error('[DEBUG] Student Management: DataTable initialization error:', error);
             }
         });

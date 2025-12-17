@@ -480,6 +480,11 @@ body {
     white-space: nowrap;
 }
 
+.verification-btn.processing {
+    background-color: #ffc107; 
+    color: #000;
+}
+
 .action-btn {
     background: none;
     border: none;

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     console.log('Chart initialization - Data received:', data);
 
- 
+
     const studentChartCanvas = document.getElementById('studentVerificationChart');
     if (studentChartCanvas) {
         new Chart(studentChartCanvas, {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     data: [data.students.verified, data.students.unverified],
                     backgroundColor: [
                         '#10b981',
-                        '#ef4444' 
+                        '#ef4444'
                     ],
                     borderWidth: 0,
                     hoverOffset: 8,
@@ -74,8 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 datasets: [{
                     data: [data.companies.verified, data.companies.unverified],
                     backgroundColor: [
-                        '#10b981', 
-                        '#ef4444'  
+                        '#10b981',
+                        '#ef4444'
                     ],
                     borderWidth: 0,
                     hoverOffset: 8,
@@ -133,5 +133,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
+    }
+
+
+    function auditLogs(actionType, decription) {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                action_type: actionType,
+                description: decription,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    console.log('Audit log added successfully');
+                } else {
+                    console.error('Failed to add audit log:', data.message);
+                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error logging audit log.');
+            });
     }
 });

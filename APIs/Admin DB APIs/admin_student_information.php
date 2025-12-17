@@ -20,6 +20,7 @@ $query = "SELECT
             s.student_email, 
             s.activated,
             s.verified,
+            s.verified_status,
             e.course, 
             e.department
           FROM Students s
