@@ -241,6 +241,22 @@ export function initJobCards() {
         if (logo) {
             logo.src = data.company_icon || '../../../Landing Page/Images/default-company.jpg';
             logo.onerror = () => logo.src = '../../../Landing Page/Images/default-company.jpg';
+
+            // Make logo clickable
+            if (data.company_id) {
+                logo.style.cursor = 'pointer';
+                logo.onclick = () => {
+                    window.location.href = `../../Company Profile Read Only/php/company_profile_readonly.php?id=${data.company_id}`;
+                };
+            }
+        }
+
+        // Update Company Link
+        const companyLink = document.getElementById('detail-company');
+        if (companyLink && data.company_id) {
+            companyLink.href = `../../Company Profile Read Only/php/company_profile_readonly.php?id=${data.company_id}`;
+        } else if (companyLink) {
+            companyLink.href = "#";
         }
 
         // Update tags
