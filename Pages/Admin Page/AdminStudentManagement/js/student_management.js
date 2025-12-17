@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         .catch(error => {
                             swal("Error", "An error occurred while fetching student details.", "error");
                         });
-                } f
+                } 
             }
         }
     });
@@ -335,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function auditLogs(actionType, decription) {
-        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php', {
+        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
