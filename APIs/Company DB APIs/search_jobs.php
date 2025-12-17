@@ -121,6 +121,7 @@ try {
     $query = "
         SELECT DISTINCT
             jp.post_id,
+            jp.company_id,
             jd.title,
             c.company_name,
             (SELECT icon_url FROM company_icons WHERE company_id = jp.company_id ORDER BY uploaded_at DESC LIMIT 1) AS company_icon,

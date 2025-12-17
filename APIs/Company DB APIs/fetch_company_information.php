@@ -14,16 +14,29 @@ header("Content-type: application/json");
 $response = file_get_contents("php://input");
 $data = json_decode($response, true);
 
-if ($data === null || !isset($data['company_email'])) {
-    echo json_encode(["status" => "error", "message" => "Invalid JSON or missing company_email"]);
+$company_id_input = isset($data['company_id']) ? $data['company_id'] : null;
+$company_email_input = isset($data['company_email']) ? $data['company_email'] : null;
+
+if ($data === null || (!$company_id_input && !$company_email_input)) {
+    echo json_encode(["status" => "error", "message" => "Invalid JSON or missing company_email/company_id"]);
     exit();
 }
 
-$company_email = $data['company_email'];
+$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$stmt = $conn->prepare("SELECT * FROM Company WHERE email = :company_email");
-$stmt->execute([':company_email' => $company_email]);
-$company = $stmt->fetch(PDO::FETCH_ASSOC);
+$company = false;
+
+if ($company_id_input) {
+    // Fetch by ID
+    $stmt = $conn->prepare("SELECT * FROM Company WHERE company_id = :id");
+    $stmt->execute([':id' => $company_id_input]);
+    $company = $stmt->fetch(PDO::FETCH_ASSOC);
+} elseif ($company_email_input) {
+    // Fetch by Email
+    $stmt = $conn->prepare("SELECT * FROM Company WHERE email = :email");
+    $stmt->execute([':email' => $company_email_input]);
+    $company = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 if (!$company) {
     echo json_encode(["status" => "error", "message" => "Company not found"]);
     exit();
