@@ -100,7 +100,7 @@ if(isset($_SESSION['email']))
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="../../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
             </header>
@@ -296,7 +296,7 @@ if(isset($_SESSION['email']))
     </div>
     
     <!-- Scripts -->
-    <script src="../js/ui-controls.js"></script>
+    <!-- <script src="../js/ui-controls.js"></script> -->
     <script>
         // Simple profile dropdown toggle if not covered by included scripts
         const profileBtn = document.getElementById('userProfileBtn');
@@ -305,12 +305,12 @@ if(isset($_SESSION['email']))
         if (profileBtn && profileDropdown) {
             profileBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                profileDropdown.classList.toggle('active');
+                profileDropdown.classList.toggle('show');
             });
             
             document.addEventListener('click', (e) => {
                 if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
-                    profileDropdown.classList.remove('active');
+                    profileDropdown.classList.remove('show');
                 }
             });
         }
