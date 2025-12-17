@@ -194,8 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            // Loading State
+            const submitBtn = passwordForm.querySelector('button[type="submit"]');
+            const originalBtnContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Changing...';
+            submitBtn.disabled = true;
+
             // API Call
-            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/change_password.php", {
+            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/change_password_v2.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -219,6 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(err => {
                     console.error("Fetch error:", err);
                     ToastSystem.show('Network error', 'error');
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = originalBtnContent;
+                    submitBtn.disabled = false;
                 });
         });
     }

@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('aboutMe:', aboutMe);
                 console.log('studentId:', studentId);
 
+                // Loading state
+                const submitBtn = aboutForm.querySelector('button[type="submit"]');
+                const originalBtnContent = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
+                submitBtn.disabled = true;
+
                 fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/student_aboutme_update.php", {
                     method: "POST",
                     headers: {
@@ -51,6 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     .catch(err => {
                         console.error("Fetch error:", err);
                         ToastSystem.show('Network error', "error");
+                    })
+                    .finally(() => {
+                        submitBtn.innerHTML = originalBtnContent;
+                        submitBtn.disabled = false;
                     });
             });
         }

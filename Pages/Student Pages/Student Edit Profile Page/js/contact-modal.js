@@ -224,7 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const location = locationInput.value.trim();
             const studentId = studentIdInput.value;
 
-            // Show loading state if needed, or rely on Toast
+            // Show loading state
+            const originalBtnContent = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
+            saveBtn.disabled = true;
 
             fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/student_contact_update.php", {
                 method: "POST",
@@ -268,6 +271,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(err => {
                     console.error("Fetch error:", err);
                     ToastSystem.show('Network error updating profile', "error");
+                })
+                .finally(() => {
+                    saveBtn.innerHTML = originalBtnContent;
+                    saveBtn.disabled = false;
                 });
         }
     }
