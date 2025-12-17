@@ -155,6 +155,15 @@ async function fetchStudentProfile(email) {
         if (result.status === 'success') {
             appState.studentDetails = result.data;
             console.log("[Application Debug] Student Profile Loaded");
+
+            // Double check verification status here
+            const basic = appState.studentDetails.basic_info;
+            if (basic && basic.verified_status !== 'Verified') {
+                showModal("Access Denied", "Your account must be verified to apply for jobs. Redirecting to dashboard...", "error", () => {
+                    window.location.href = '../../Student Dashboard Page/php/student_dashboard.php';
+                });
+                return;
+            }
         }
     } catch (e) {
         console.error("[Application Debug] Error fetching student profile:", e);
@@ -170,12 +179,7 @@ function updateUI() {
 
     if (appState.jobDetails.jobTitle) {
         titleEl.textContent = appState.jobDetails.jobTitle;
-        titleEl.classList.remove('skeleton', 'skeleton-text');
-        titleEl.style.width = 'auto'; // Reset width
-
         companyEl.textContent = appState.jobDetails.companyName;
-        companyEl.classList.remove('skeleton', 'skeleton-text');
-        companyEl.style.width = 'auto'; // Reset width
     }
 
     // Profile Preview

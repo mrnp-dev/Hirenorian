@@ -3,30 +3,37 @@ session_start();
 
 $companies = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/admin_company_information.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_company_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Company Management: CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Company Management: Raw API Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Company Management: API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $companies = $data['data'];
+        echo "<script>console.log('[DEBUG] Company Management: Companies loaded = " . count($companies) . "');</script>";
+        echo "<script>console.log('[DEBUG] Company Management: First company data:', " . json_encode($companies[0] ?? null) . ");</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Company Management: API Error Message = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
-    // If JSON decode failed, it might be due to spaces/newlines in the output before json_encode
-    // or the URL is returning a 404 HTML page.
+    echo "<script>console.error('[DEBUG] Company Management: Invalid JSON or empty response');</script>";
+    echo "<script>console.log('[DEBUG] Company Management: Raw response:', " . json_encode(substr($response, 0, 200)) . ");</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -55,7 +62,7 @@ if ($data && isset($data['status'])) {
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
                     <span>Hirenorian</span>
                 </a>
@@ -79,14 +86,13 @@ if ($data && isset($data['status'])) {
         <div class="main-content">
             <header class="top-bar">
                 <div class="top-bar-right">
-                    <div class="user-profile" id="userProfileBtn">
+                    <div class="user-profile" id="userProfileBtn" onclick="document.getElementById('profileDropdown').classList.toggle('show')">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
                         <span class="user-name">Admin</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../AdminRegister/php/logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                     </div>
                 </div>
             </header>
@@ -95,9 +101,6 @@ if ($data && isset($data['status'])) {
                 <h1 class="page-title">Company Management</h1>
 
                 <div class="card item-management-card">
-                    <!-- <div class="table-actions">
-                        <button class="add-new-btn"><i class="fa-solid fa-plus"></i> Add New Company</button>
-                    </div> -->
 
                     <table class="crud-table" id="companyTable">
                         <thead>
@@ -130,7 +133,7 @@ if ($data && isset($data['status'])) {
                                     </td>
 
                                     <td>
-                                        <?php if (trim(strtolower($company['activation'])) === 'activated'): ?>
+                                        <?php if (trim(strtolower($company['activation'])) === 'activated' || trim(strtolower($company['activation'])) === 'true'): ?>
                                             <span class="badge bg-success activated">Activated</span>
                                         <?php else: ?>
                                             <span class="badge bg-danger deactivated">Deactivated</span>
@@ -139,13 +142,16 @@ if ($data && isset($data['status'])) {
                                     <td class="action-buttons">
                                         <button type="button" class="action-btn edit-btn" title="Update Info" data-id="<?= $company['company_id'] ?>"><i class="fa-solid fa-pen-to-square"></i></button>
 
-                                        <?php if (trim(strtolower($company['activation'])) === 'activated'): ?>
+                                        <?php if (trim(strtolower($company['activation'])) === 'activated' || trim(strtolower($company['activation'])) === 'true'): ?>
                                             <button type="button" class="action-btn suspend-btn" title="Suspend/Deactivate" data-id="<?= $company['company_name'] ?>"><i class="fa-solid fa-ban"></i></button>
                                         <?php else: ?>
                                             <button type="button" class="action-btn activate-btn" title="Activate" data-id="<?= $company['company_name'] ?>"><i class="fa-solid fa-power-off"></i></button>
                                         <?php endif; ?>
 
+                                        <button type="button" class="action-btn seeDocu-btn" title="View Documents" data-id="<?= $company['company_id'] ?>"><i class="fa-solid fa-file-lines"></i></button>
+
                                         <button type="button" class="action-btn delete-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -165,12 +171,21 @@ if ($data && isset($data['status'])) {
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
+        console.log('[DEBUG] Company Management: DOM Ready - Initializing DataTable');
+        console.log('[DEBUG] Company Management: Total companies in table = <?= count($companies) ?>');
+        
         $(document).ready(function() {
-            $('#companyTable').DataTable();
+            try {
+                const table = $('#companyTable').DataTable();
+                console.log('[DEBUG] Company Management: DataTable initialized successfully');
+                console.log('[DEBUG] Company Management: DataTable rows = ' + table.rows().count());
+            } catch(error) {
+                console.error('[DEBUG] Company Management: DataTable initialization error:', error);
+            }
         });
     </script>
 
-    <script src="../js/company_management.js"></script>
+    <script src="../js/company_management.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>

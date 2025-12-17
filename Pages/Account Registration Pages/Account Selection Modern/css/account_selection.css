@@ -1,0 +1,404 @@
+/* Modern Account Selection Styles - Clean Minimalist Version */
+
+:root {
+    --primary-maroon: #7b1113;
+    --secondary-yellow: #f1c40f;
+    --accent-gold: #ffb800;
+    --text-dark: #333;
+    --text-gray: #666;
+    --card-bg: #ffffff;
+    --body-bg: #f4f6f9;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Exact background from Student Registration Modern */
+    background: linear-gradient(to bottom, var(--accent-gold) 40%, #fff 40%);
+    background-image: url('../../../Landing Page/Images/Backgrounds/white-hexagon-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    margin: 0;
+    padding: 10px;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Ensure proper viewport handling on mobile */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+}
+
+.selection-container {
+    width: 100%;
+    max-width: 1000px;
+    /* Reduced width for tighter look */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+    z-index: 10;
+}
+
+/* Logo Header */
+.logo-header {
+    text-align: center;
+    color: var(--primary-maroon);
+    /* Updated for contrast against Gold bg */
+    margin-bottom: 1rem;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.brand-logo {
+    width: 90px;
+    height: auto;
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.logo-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.logo-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 500;
+    color: var(--primary-maroon);
+    /* Updated color */
+}
+
+/* Cards Wrapper */
+.cards-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Ensure touch-friendly spacing on mobile */
+@media (max-width: 768px) {
+    .cards-wrapper {
+        gap: 1.25rem;
+    }
+}
+
+/* Card Styles - Large Clean White Look */
+.selection-card {
+    background: var(--card-bg);
+    border-radius: 25px;
+    /* Match original radius */
+    padding: 3rem 2.5rem;
+    width: 480px;
+    /* Original Width */
+    min-height: 600px;
+    /* Substantial height similar to original 650px */
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-top: 6px solid transparent;
+}
+
+.selection-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    border-top-color: var(--accent-gold);
+}
+
+.card-icon {
+    font-size: 3rem;
+    /* Smaller icon */
+    margin-bottom: 1.2rem;
+    color: var(--primary-maroon);
+    background: #fff8e1;
+    /* Light yellow bg circle */
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.selection-card:hover .card-icon {
+    background: var(--primary-maroon);
+    color: white;
+    transform: scale(1.05);
+}
+
+.card-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-maroon);
+}
+
+.card-content p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-gray);
+    line-height: 1.5;
+    min-height: 40px;
+}
+
+/* Features List - Simplified */
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    text-align: left;
+    width: 100%;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.features-list li {
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: #555;
+    font-weight: 500;
+}
+
+.features-list li i {
+    color: var(--accent-gold);
+    /* Gold checks */
+    font-size: 0.75rem;
+}
+
+/* Touch target optimization for mobile */
+@media (max-width: 768px) {
+    .btn-select {
+        min-height: 48px;
+        /* Touch-friendly */
+        padding: 0.85rem 1.75rem;
+        font-size: 1rem;
+    }
+
+    .selection-card {
+        min-height: auto;
+        /* Allow natural height on mobile */
+        padding: 2rem 1.5rem;
+    }
+}
+
+/* Button Imitation - Solid Style */
+.btn-select {
+    background: var(--primary-maroon);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: auto;
+    width: 100%;
+    justify-content: center;
+}
+
+.selection-card:hover .btn-select {
+    background: var(--accent-gold);
+    color: var(--primary-maroon);
+    /* Dark text on gold */
+}
+
+.btn-select i {
+    transition: transform 0.3s ease;
+}
+
+.selection-card:hover .btn-select i {
+    transform: translateX(4px);
+}
+
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cards-wrapper {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+    }
+
+    .selection-card {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .logo-header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+/* Mobile Portrait - Extra Small Screens */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .selection-container {
+        gap: 1.5rem;
+    }
+
+    .logo-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .logo-header p {
+        font-size: 0.85rem;
+    }
+
+    .brand-logo {
+        width: 70px;
+    }
+
+    .selection-card {
+        max-width: 100%;
+        padding: 1.75rem 1.25rem;
+        border-radius: 20px;
+    }
+
+    .card-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2.5rem;
+    }
+
+    .card-content h2 {
+        font-size: 1.3rem;
+    }
+
+    .card-content p {
+        font-size: 0.85rem;
+    }
+
+    .features-list li {
+        font-size: 0.8rem;
+    }
+}
+
+/* Mobile Landscape Mode - CRITICAL */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 15px;
+    }
+
+    .selection-container {
+        gap: 1.5rem;
+        max-width: 100%;
+    }
+
+    .logo-header {
+        margin-bottom: 0.5rem;
+    }
+
+    .logo-header h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .logo-header p {
+        font-size: 0.8rem;
+    }
+
+    .brand-logo {
+        width: 60px;
+        margin-bottom: 0.5rem;
+    }
+
+    .cards-wrapper {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .selection-card {
+        width: calc(50% - 0.5rem);
+        max-width: none;
+        min-height: auto;
+        padding: 1.5rem 1rem;
+    }
+
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-content h2 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-content p {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+        min-height: auto;
+    }
+
+    .features-list {
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+    }
+
+    .features-list li {
+        font-size: 0.7rem;
+        margin-bottom: 0.4rem;
+    }
+
+    .btn-select {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Tablet Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .selection-card {
+        width: 400px;
+        min-height: 550px;
+    }
+
+    .selection-container {
+        max-width: 900px;
+    }
+}

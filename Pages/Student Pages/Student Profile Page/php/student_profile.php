@@ -2,10 +2,74 @@
 session_start();
 if (isset($_SESSION['email'])) {
     $student_email = $_SESSION['email'];
-    // Logic removed. ID/Data will be fetched via JS.
+    $apiUrl = "http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/fetch_student_information.php";
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+        "student_email" => $student_email
+    ]));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    if ($response === false) {
+        die("Curl error: " . curl_error($ch));
+    }
+    curl_close($ch);
+
+
+    $data = json_decode($response, true);
+
+    if (isset($data['status']) && $data['status'] === "success") {
+        
+        $basic_info = $data['data']['basic_info'];
+        $profile = $data['data']['profile'];
+        $skills_list = $data['data']['skills'];
+        $experience_list = $data['data']['experience'];
+        $education_history = $data['data']['education_history'];
+        $education_current = $data['data']['education']; // Current university info
+
+        // Basic Info
+        $student_id     = $basic_info['student_id'];
+        $first_name     = $basic_info['first_name'];
+        $last_name      = $basic_info['last_name'];
+        $middle_initial = $basic_info['middle_initial'];
+        $suffix         = $basic_info['suffix'];
+        $personal_email = $basic_info['personal_email'] ?? "Not Provided";
+        $phone_number   = $basic_info['phone_number'];
+        $student_email  = $basic_info['student_email'];
+        $verified_status = $basic_info['verified_status'] ?? 'unverified';
+
+
+        // Profile Info
+        $location       = $profile['location'];
+        $about_me       = $profile['about_me'];
+        $profile_picture_db = $profile['profile_picture']; // Database path
+        
+        // Convert VPS absolute path to HTTP URL
+        if (!empty($profile_picture_db)) {
+            // Path is stored as: /var/www/html/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            // Convert to: http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Student%20Accounts/...
+            $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
+        } else {
+            $profile_picture = "";
+        }
+
+        // Current Education (Assuming one active record for now, or taking the first one)
+        $university     = !empty($education_current) ? $education_current[0]['university'] : '';
+        $course         = !empty($education_current) ? $education_current[0]['course'] : '';
+        $department     = !empty($education_current) ? $education_current[0]['department'] : '';
+    } else {
+        $error_msg = isset($data['message']) ? $data['message'] : 'Unknown error';
+        echo "<script>console.log('Err: " . $error_msg . "');</script>";
+        // Initialize variables to empty strings to prevent PHP warnings
+        $first_name = $last_name = $middle_initial = $suffix = $location = $about_me = $student_email = $phone_number = $course = $university = "";
+        $skills_list = $experience_list = $education_history = $education_current = [];
+        $verified_status = 'unverified';
+    }
 } else {
     header("Location: ../../../Landing Page/php/landing_page.php");
-    exit();
 }
 ?>
 
@@ -26,35 +90,6 @@ if (isset($_SESSION['email'])) {
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
-    <style>
-        /* Skeleton Loading Styles */
-        .skeleton {
-            background: #e0e0e0;
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: skeleton-loading 1.5s infinite;
-            color: transparent !important;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        .skeleton-text {
-            height: 1em;
-            width: 100%;
-            border-radius: 4px;
-        }
-
-        .skeleton-block {
-            width: 100%;
-            height: 100px;
-            border-radius: 8px;
-        }
-        
-        @keyframes skeleton-loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-    </style>
 </head>
 
 <body>
@@ -62,7 +97,7 @@ if (isset($_SESSION['email'])) {
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php"
+                <a href="../../../Landing Page Tailwind/php/landing_page.php"
                     style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                     <span class="logo-text">Hirenorian</span>
@@ -82,6 +117,10 @@ if (isset($_SESSION['email'])) {
                     <span>Internships</span>
                 </a>
 
+                <a href="../../Help Page/php/help.php" class="nav-item">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Help</span>
+                </a>
             </nav>
         </aside>
 
@@ -91,126 +130,187 @@ if (isset($_SESSION['email'])) {
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Student" class="user-img skeleton" id="headerProfileImg">
-                        <span class="user-name skeleton skeleton-text" id="headerProfileName" style="width: 100px;">Student</span>
+                        <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Student" class="user-img">
+                        <span class="user-name"><?php echo htmlspecialchars($first_name . " " . $last_name); ?></span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="#" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <a href="../../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
             </header>
 
             <!-- Profile Content -->
             <main class="dashboard-body">
-                <!-- Cover Banner -->
-                <div class="profile-banner"></div>
+                <!-- Hero Section for Profile -->
+                <div class="profile-hero">
+                    <div class="profile-hero-content">
+                        <div class="profile-avatar-wrapper">
+                             <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture" class="profile-avatar">
+                        </div>
+                        <div class="profile-info-main">
+                             <h1 class="profile-name">
+                                <?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . " " : "") . $last_name . " " . $suffix); ?>
+                                <?php if ($verified_status === 'verified'): ?>
+                                    <span class="verified-badge" title="Verified Student"><i class="fa-solid fa-circle-check"></i> Verified</span>
+                                <?php endif; ?>
+                             </h1>
+                             <p class="profile-headline"><?php echo htmlspecialchars($course); ?></p>
+                             <p class="profile-institution"><i class="fa-solid fa-building-columns"></i> <?php echo htmlspecialchars($university); ?></p>
+                             <p class="profile-location"><i class="fa-solid fa-location-dot"></i> <?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: rgba(255,255,255,0.7);">Not Specified</em>'; ?></p>
+                        </div>
+                        <div class="profile-hero-actions">
+                            <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-profile-edit">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="profile-container">
-                    <!-- Profile Header Card -->
-                    <div class="profile-header-card">
-                        <div class="profile-header-content">
-                            <div class="profile-avatar-wrapper">
-                                <img src="../../../Landing Page/Images/gradpic2.png" alt="Profile Picture" class="profile-avatar skeleton" id="mainProfileAvatar">
+                <div class="content-grid profile-grid-layout">
+                    <!-- Left Sidebar (Sticky) -->
+                    <div class="profile-sidebar">
+                        <!-- Contact Info -->
+                        <div class="widget info-card">
+                            <h3 class="widget-title"><i class="fa-solid fa-address-book"></i> Contact Information</h3>
+                            <div class="info-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <div>
+                                    <div class="info-label">Personal Email</div>
+                                    <div class="info-value"><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></div>
+                                </div>
                             </div>
-                            <div class="profile-info">
-                                <h1 class="profile-name skeleton skeleton-text" id="mainProfileName" style="width: 250px;">Student Name</h1>
-                                <p class="profile-headline skeleton skeleton-text" id="mainProfileHeadline" style="width: 300px; margin-top: 10px;">Student Description</p>
-                                <p class="profile-location" id="mainProfileLocation">
-                                    <i class="fa-solid fa-location-dot"></i> <span class="skeleton skeleton-text" style="width: 100px;">Location</span>
-                                </p>
+                            <div class="info-item">
+                                <i class="fa-solid fa-envelope-open-text"></i>
+                                <div>
+                                    <div class="info-label">Student Email</div>
+                                    <div class="info-value"><?php echo !empty($student_email) ? htmlspecialchars($student_email) : '<em style="color: #999;">Not Provided</em>'; ?></div>
+                                </div>
                             </div>
-                            <div class="profile-actions">
-                                <a href="../../Student Edit Profile Page/php/edit_profile.php" class="btn-primary">
-                                    <i class="fa-solid fa-pen-to-square"></i> Edit Profile
-                                </a>
+                            <div class="info-item">
+                                <i class="fa-solid fa-phone"></i>
+                                <div>
+                                    <div class="info-label">Phone Number</div>
+                                    <div class="info-value"><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Skills -->
+                        <div class="widget skills-card">
+                            <h3 class="widget-title"><i class="fa-solid fa-layer-group"></i> Skills</h3>
+                            <?php
+                            // Group skills by category
+                            $technical_skills = [];
+                            $soft_skills = [];
+
+                            if (!empty($skills_list)) {
+                                foreach ($skills_list as $skill) {
+                                    if ($skill['skill_category'] === 'Technical') {
+                                        $technical_skills[] = $skill['skill_name'];
+                                    } elseif (stripos($skill['skill_category'], 'Soft') !== false) {
+                                        $soft_skills[] = $skill['skill_name'];
+                                    }
+                                }
+                            }
+                            ?>
+
+                            <div class="skill-category">
+                                <h4>Technical</h4>
+                                <div class="tags">
+                                    <?php if (!empty($technical_skills)): ?>
+                                        <?php foreach ($technical_skills as $skill): ?>
+                                            <span><?php echo htmlspecialchars($skill); ?></span>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <span class="empty-skill">No technical skills added</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="skill-category">
+                                <h4>Soft Skills</h4>
+                                <div class="tags">
+                                    <?php if (!empty($soft_skills)): ?>
+                                        <?php foreach ($soft_skills as $skill): ?>
+                                            <span><?php echo htmlspecialchars($skill); ?></span>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <span class="empty-skill">No soft skills added</span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="profile-grid-v2">
-                        <!-- Left Sidebar (Sticky) -->
-                        <div class="profile-sidebar">
-                            <!-- Contact Info -->
-                            <div class="card info-card">
-                                <h3>Contact Information</h3>
-                                <div class="info-item">
-                                    <i class="fa-solid fa-envelope"></i>
-                                    <span id="contactPersonalEmail" class="skeleton skeleton-text" style="width: 150px;">email@example.com</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fa-solid fa-envelope-open-text"></i>
-                                    <span id="contactStudentEmail" class="skeleton skeleton-text" style="width: 150px;">student@school.edu</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fa-solid fa-phone"></i>
-                                    <span id="contactPhone" class="skeleton skeleton-text" style="width: 100px;">09123456789</span>
-                                </div>
-                            </div>
+                    <!-- Main Content -->
+                    <div class="profile-main">
+                        <!-- About Me -->
+                        <div class="widget section-card">
+                            <h2 class="section-title"><i class="fa-solid fa-user-circle"></i> About Me</h2>
+                            <p class="section-text">
+                                <?php echo !empty($about_me) ? nl2br(htmlspecialchars($about_me)) : "Write something about yourself..."; ?>
+                            </p>
+                        </div>
 
-                            <!-- Skills -->
-                            <div class="card skills-card">
-                                <h3>Skills</h3>
-                                
-                                <div class="skill-category">
-                                    <h4>Technical</h4>
-                                    <div class="tags" id="techSkillsContainer">
-                                        <span class="skeleton skeleton-text" style="width: 60px;"></span>
-                                        <span class="skeleton skeleton-text" style="width: 80px;"></span>
-                                        <span class="skeleton skeleton-text" style="width: 50px;"></span>
-                                    </div>
-                                </div>
-                                
-                                <div class="skill-category">
-                                    <h4>Soft Skills</h4>
-                                    <div class="tags" id="softSkillsContainer">
-                                        <span class="skeleton skeleton-text" style="width: 70px;"></span>
-                                        <span class="skeleton skeleton-text" style="width: 60px;"></span>
-                                    </div>
-                                </div>
+                        <!-- Experience -->
+                        <div class="widget section-card">
+                            <h2 class="section-title"><i class="fa-solid fa-briefcase"></i> Experience</h2>
+                            <div class="timeline-v2">
+                                <?php if (!empty($experience_list)): ?>
+                                    <?php foreach ($experience_list as $exp): ?>
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
+                                            <div class="timeline-content">
+                                                <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
+                                                <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
+                                                <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
+                                                <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <div class="empty-state">No experience listed.</div>
+                                <?php endif; ?>
                             </div>
                         </div>
 
-                        <!-- Main Content -->
-                        <div class="profile-main">
-                            <!-- About Me -->
-                            <div class="card section-card">
-                                <h2>About Me</h2>
-                                <p class="section-text skeleton skeleton-block" id="aboutMeContent">
-                                    <!-- Content will be injected -->
-                                </p>
-                            </div>
-
-                            <!-- Experience -->
-                            <div class="card section-card">
-                                <h2>Experience</h2>
-                                <div class="timeline-v2" id="experienceTimeline">
-                                    <!-- Skeleton Item -->
-                                    <div class="timeline-item">
-                                        <div class="timeline-icon skeleton"></div>
-                                        <div class="timeline-content">
-                                            <h3 class="skeleton skeleton-text" style="width: 200px;">Job Title</h3>
-                                            <p class="skeleton skeleton-text" style="width: 150px; margin-top:5px;"></p>
-                                            <p class="skeleton skeleton-block" style="height: 60px; margin-top:10px;"></p>
+                        <!-- Education -->
+                        <div class="widget section-card">
+                            <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+                            <div class="timeline-v2">
+                                <!-- Current Education -->
+                                <?php if (!empty($education_current)): ?>
+                                    <?php foreach ($education_current as $edu): ?>
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                            <div class="timeline-content">
+                                                <h3><?php echo htmlspecialchars($edu['course']); ?></h3>
+                                                <p class="institution"><?php echo htmlspecialchars($edu['university']); ?></p>
+                                                <p class="date">Present</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
 
-                            <!-- Education -->
-                            <div class="card section-card">
-                                <h2>Education</h2>
-                                <div class="timeline-v2" id="educationTimeline">
-                                     <!-- Skeleton Item -->
-                                     <div class="timeline-item">
-                                        <div class="timeline-icon skeleton"></div>
-                                        <div class="timeline-content">
-                                            <h3 class="skeleton skeleton-text" style="width: 200px;">Degree</h3>
-                                            <p class="skeleton skeleton-text" style="width: 150px; margin-top:5px;"></p>
+                                <!-- Past Education History -->
+                                <?php if (!empty($education_history)): ?>
+                                    <?php foreach ($education_history as $hist): ?>
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon"><i class="fa-solid fa-school"></i></div>
+                                            <div class="timeline-content">
+                                                <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
+                                                <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
+                                                <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+
+                                <?php if (empty($education_current) && empty($education_history)): ?>
+                                    <div class="empty-state">No education history available.</div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -218,11 +318,8 @@ if (isset($_SESSION['email'])) {
             </main>
         </div>
     </div>
-    
-    <script>
-        window.STUDENT_EMAIL = "<?php echo $student_email; ?>";
-    </script>
-    <script type="module" src="../js/profile.js"></script>
+
+    <script src="../js/profile.js"></script>
 </body>
 
 </html>

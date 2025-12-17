@@ -11,7 +11,7 @@
     margin-bottom: 32px;
     position: relative;
     overflow: hidden;
-    box-shadow: 
+    box-shadow:
         0 20px 60px rgba(123, 17, 19, 0.3),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
@@ -43,9 +43,19 @@
 }
 
 @keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(30px, -30px) rotate(120deg); }
-    66% { transform: translate(-20px, 20px) rotate(240deg); }
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    33% {
+        transform: translate(30px, -30px) rotate(120deg);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) rotate(240deg);
+    }
 }
 
 .hero-content {
@@ -74,7 +84,7 @@
 
 .greeting-highlight {
     color: #f1c40f;
-    text-shadow: 
+    text-shadow:
         0 0 20px rgba(241, 196, 15, 0.5),
         0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -131,14 +141,14 @@
 .btn-hero.primary {
     background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
     color: #5a0c0e;
-    box-shadow: 
+    box-shadow:
         0 8px 24px rgba(241, 196, 15, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.2) inset;
 }
 
 .btn-hero.primary:hover {
     transform: translateY(-3px);
-    box-shadow: 
+    box-shadow:
         0 12px 32px rgba(241, 196, 15, 0.5),
         0 0 0 1px rgba(255, 255, 255, 0.3) inset;
 }
@@ -191,11 +201,9 @@
 
 /* Enhanced Profile Completion Widget with Glassmorphism */
 .profile-completion {
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.15) 0%,
-        rgba(255, 255, 255, 0.08) 100%
-    );
+    background: linear-gradient(135deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.08) 100%);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     padding: 28px;
@@ -203,7 +211,7 @@
     min-width: 240px;
     max-width: 280px;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 
+    box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.2),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     transition: all 0.3s ease;
@@ -211,13 +219,13 @@
 
 .profile-completion:hover {
     transform: translateY(-4px);
-    box-shadow: 
+    box-shadow:
         0 12px 40px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(255, 255, 255, 0.15) inset;
 }
 
 .completion-header {
-   display: flex;
+    display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
@@ -254,17 +262,21 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, 
-        transparent 0%,
-        rgba(255, 255, 255, 0.1) 50%,
-        transparent 100%
-    );
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            transparent 100%);
     animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 .progress-bar-fill {
@@ -272,7 +284,7 @@
     background: linear-gradient(90deg, #f1c40f 0%, #f39c12 50%, #e67e22 100%);
     border-radius: 12px;
     transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 
+    box-shadow:
         0 0 10px rgba(241, 196, 15, 0.6),
         0 0 20px rgba(241, 196, 15, 0.3) inset;
     position: relative;
@@ -285,10 +297,9 @@
     left: 0;
     right: 0;
     height: 50%;
-    background: linear-gradient(180deg, 
-        rgba(255, 255, 255, 0.3) 0%,
-        transparent 100%
-    );
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.3) 0%,
+            transparent 100%);
     border-radius: 12px 12px 0 0;
 }
 
@@ -709,21 +720,55 @@
 .recommendations-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    gap: 24px;
 }
 
 .recommendation-card {
     background: white;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
     border: 1px solid #e5e7eb;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    cursor: pointer;
+}
+
+.recommendation-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #7b1113 0%, #f1c40f 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.recommendation-card:hover::before {
+    opacity: 1;
+}
+
+.recommendation-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(123, 17, 19, 0.02) 0%, rgba(241, 196, 15, 0.02) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.recommendation-card:hover::after {
+    opacity: 1;
 }
 
 .recommendation-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(123, 17, 19, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 32px rgba(123, 17, 19, 0.15);
     border-color: #7b1113;
 }
 
@@ -733,48 +778,79 @@
 
 .recommendation-image {
     width: 100%;
-    height: 150px;
+    height: 180px;
     object-fit: cover;
+    position: relative;
 }
 
 .recommendation-content {
-    padding: 20px;
+    padding: 24px;
+    position: relative;
+    z-index: 1;
 }
 
 .recommendation-content h3 {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: #1f2937;
     margin-bottom: 8px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .recommendation-content p {
-    font-size: 0.9rem;
-    color: #6b7280;
-    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #7b1113;
+    margin-bottom: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.recommendation-content p::before {
+    content: '\f1ad';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 0.85rem;
+    color: #f1c40f;
 }
 
 .recommendation-tags {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
+    min-height: 28px;
 }
 
 .rec-tag {
-    padding: 4px 10px;
-    background: #f3f4f6;
-    border-radius: 12px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+    border-radius: 20px;
     font-size: 0.75rem;
     color: #4b5563;
+    font-weight: 600;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.recommendation-card:hover .rec-tag {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #f59e0b;
+    color: #92400e;
+    transform: translateY(-2px);
 }
 
 .recommendation-footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid #e5e7eb;
+    padding: 0;
+    border: none;
 }
 
 .deadline {
@@ -782,11 +858,12 @@
 }
 
 .btn-quick-apply {
-    padding: 8px 20px;
-    background: #7b1113;
+    width: 100%;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #7b1113 0%, #9b1517 100%);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;

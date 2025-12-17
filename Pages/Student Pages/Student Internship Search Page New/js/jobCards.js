@@ -297,23 +297,32 @@ export function initJobCards() {
         if (applyNowBtn) {
             applyNowBtn.onclick = () => {
                 if (data.post_id) {
-                    window.location.href = `../../Student Application Page New/php/application.php`;
+                    // Check Verification Status
+                    const verifiedStatus = sessionStorage.getItem('verifiedStatus');
+                    console.log('[JobCards] Student Verification Status:', verifiedStatus);
+
+                    if (verifiedStatus && verifiedStatus.toLowerCase() === 'verified') {
+                        window.location.href = `../../Student Application Page New/php/application.php`;
+                    } else {
+                        // Not verified - show alert
+                        alert('Your account is not verified. Please verify your account to apply for jobs.');
+                    }
                 } else {
                     alert('Job information is missing. Please select a job again.');
                 }
-            };
+            }
         }
-    }
 
-    function updateList(elementId, items) {
-        const list = document.getElementById(elementId);
-        if (!list) return;
+        function updateList(elementId, items) {
+            const list = document.getElementById(elementId);
+            if (!list) return;
 
-        list.innerHTML = '';
-        items.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            list.appendChild(li);
-        });
+            list.innerHTML = '';
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                list.appendChild(li);
+            });
+        }
     }
 }

@@ -1,0 +1,223 @@
+/* Help Page Specific Styles */
+
+/* Layout Container */
+.help-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 40px;
+    align-items: start;
+}
+
+/* Sticky Navigation Sidebar */
+.help-sidebar {
+    position: sticky;
+    top: 100px;
+    /* Accounts for Top Bar */
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+}
+
+.help-nav-title {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-left: 12px;
+}
+
+.help-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.help-nav-item {
+    margin-bottom: 4px;
+}
+
+.help-nav-link {
+    display: block;
+    padding: 10px 16px;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 0.95rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.help-nav-link:hover {
+    background: #f8f9fa;
+    color: var(--primary-maroon);
+}
+
+.help-nav-link.active {
+    background: #fff5f5;
+    color: var(--primary-maroon);
+    border-left-color: var(--primary-maroon);
+    font-weight: 500;
+}
+
+/* Main Content Area */
+.help-content {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.help-section {
+    margin-bottom: 60px;
+    scroll-margin-top: 100px;
+    /* For smooth scroll offset */
+    padding-bottom: 40px;
+    border-bottom: 1px solid #eee;
+}
+
+.help-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Typography & Elements */
+.help-title {
+    font-size: 2rem;
+    color: var(--primary-maroon);
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.help-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.help-section h2 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.help-section h2 i {
+    color: #a0a0a0;
+    /* Muted icon color */
+    font-size: 1.2rem;
+}
+
+.help-section h3 {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin: 24px 0 12px;
+    font-weight: 600;
+}
+
+.help-section p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+.help-section ul,
+.help-section ol {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    color: #555;
+}
+
+.help-section li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Information Box / Tips */
+.info-box {
+    background: #f8f9fa;
+    border-left: 4px solid var(--primary-maroon);
+    padding: 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 24px 0;
+}
+
+.info-box strong {
+    color: var(--primary-maroon);
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Step Diagram */
+.step-diagram {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+    position: relative;
+    padding: 0 10px;
+}
+
+.step-diagram::before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: #eee;
+    z-index: 1;
+}
+
+.step-item {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 80px;
+}
+
+.step-circle {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border: 2px solid var(--primary-maroon);
+    color: var(--primary-maroon);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin: 0 auto 12px;
+    font-size: 1.1rem;
+}
+
+.step-label {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .help-container {
+        grid-template-columns: 1fr;
+    }
+
+    .help-sidebar {
+        display: none;
+        /* Hide sidebar on mobile for now, or make collapsible */
+    }
+}

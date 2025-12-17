@@ -8,7 +8,6 @@ import { initActivityLogs } from './activity.js';
 import { initApplicationCounts } from './stats.js';
 import { initRecommendations } from './recommendations.js';
 import { initApplicationHistory } from './applications.js';
-import { initStudentProfile } from './profile.js'; // Import new module
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('%c🎓 Student Dashboard Loading...', 'color: #3b82f6; font-size: 14px; font-weight: bold;');
@@ -19,11 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get Student ID and Email from global scope
     const studentId = window.STUDENT_ID || null;
     const studentEmail = window.STUDENT_EMAIL || null;
-
-    // Immediate Profile Load (Async)
-    if (studentEmail) {
-        initStudentProfile(studentEmail);
-    }
 
     if (studentId) {
         // Initialize Data Components

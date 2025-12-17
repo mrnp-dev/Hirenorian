@@ -18,9 +18,9 @@
             <img src="../images/DHVSU-LOGO.png" alt="Logo">
             <h1>Hirenorian</h1>
         </div>
-        <a href="../../Company Registration Page/php/company.php" class="switch-registration-btn">
+        <a href="../../Company Registration Modern/php/company_registration.php" class="switch-registration-btn">
             <i class="fa fa-building"></i>
-            <span>Company Registration</span>
+            <span>Switch to Company Registration</span>
         </a>
     </div>
 

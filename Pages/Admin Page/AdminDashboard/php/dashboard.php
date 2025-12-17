@@ -9,30 +9,46 @@ $students = [];
 $studentsVerified = 0;
 $studentsUnverified = 0;
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/admin_student_information.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_student_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Dashboard: Students CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Dashboard: Students Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Dashboard: Students API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $students = $data['data'];
-        $studentsVerified = isset($data['verified']) ? $data['verified'] : 0;
-        $studentsUnverified = isset($data['unverified']) ? $data['unverified'] : 0;
+
+        $studentsVerified = 0;
+        $studentsUnverified = 0;
+
+        foreach ($students as $student) {
+
+            if (isset($student['verified']) && (trim(strtolower($student['verified'])) === 'true' || $student['verified'] == 1)) {
+                $studentsVerified++;
+            } else {
+                $studentsUnverified++;
+            }
+        }
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Dashboard: Students API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Dashboard: Students Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -42,30 +58,37 @@ $companies = [];
 $companiesVerified = 0;
 $companiesUnverified = 0;
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/admin_company_information.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/admin_company_information.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Dashboard: Companies CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Dashboard: Companies Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Dashboard: Companies API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $companies = $data['data'];
         $companiesVerified = isset($data['verified']) ? $data['verified'] : 0;
         $companiesUnverified = isset($data['unverified']) ? $data['unverified'] : 0;
+        echo "<script>console.log('[DEBUG] Dashboard: Companies loaded = " . count($companies) . ", Verified = " . $companiesVerified . ", Unverified = " . $companiesUnverified . "');</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Dashboard: Companies API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Dashboard: Companies Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -73,28 +96,35 @@ if ($data && isset($data['status'])) {
 
 $auditLogs = [];
 
-$apiUrl = "http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/fetch_audit_logs.php";
+$apiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php";
 
 $ch = curl_init($apiUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $response = curl_exec($ch);
 if ($response === false) {
-    die("Curl error: " . curl_error($ch));
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Dashboard: Audit Logs CURL Error = " . addslashes($error) . "');</script>";
+    die("Curl error: " . $error);
 }
 
 curl_close($ch);
+echo "<script>console.log('[DEBUG] Dashboard: Audit Logs Response Length = " . strlen($response) . " bytes');</script>";
 
 $data = json_decode($response, true);
 
 if ($data && isset($data['status'])) {
+    echo "<script>console.log('[DEBUG] Dashboard: Audit Logs API Status = " . $data['status'] . "');</script>";
     if ($data['status'] === "success") {
         $auditLogs = $data['data'];
+        echo "<script>console.log('[DEBUG] Dashboard: Audit Logs loaded = " . count($auditLogs) . "');</script>";
     } else {
         $message = isset($data['message']) ? $data['message'] : "Unknown error";
+        echo "<script>console.error('[DEBUG] Dashboard: Audit Logs API Error = " . addslashes($message) . "');</script>";
         echo "<p>Error: $message</p>";
     }
 } else {
+    echo "<script>console.error('[DEBUG] Dashboard: Audit Logs Invalid JSON or empty response');</script>";
     echo "<p>Error: API did not return valid JSON or response is empty. Response was: " . htmlspecialchars($response) . "</p>";
 }
 
@@ -152,7 +182,7 @@ function timeAgo($timestamp)
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
                     <span>Hirenorian</span>
                 </a>
@@ -183,12 +213,26 @@ function timeAgo($timestamp)
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <?php
+                        include '../../../../APIs/Admin DB APIs/dbCon.php';
+
+                        if (isset($conn)) {
+                            try {
+                                $action = "Log Out";
+                                $description = "Log Out as admin";
+
+                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
+                                $stmt->execute([':action' => $action, ':description' => $description]);
+                            } catch (Exception $e) {
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </header>
 
             <main class="dashboard-body">
-            
+
                 <nav class="breadcrumb-nav">
                     <i class="fa-solid fa-house"></i>
                     <span class="breadcrumb-separator">/</span>
@@ -197,7 +241,7 @@ function timeAgo($timestamp)
 
                 <h1 class="page-title">Dashboard Overview</h1>
 
-               
+
                 <div class="summary-cards-grid">
                     <div class="summary-card maroon">
                         <div class="summary-card-icon">

@@ -2,19 +2,28 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $url = 'http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/companyManagementAPIs/updateInfo.php';
+  $url = 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/updateInfo.php';
 
   $data = array(
     'company_name' => $_POST['companyName'],
     'email' => $_POST['email'],
     'company_id' => $_POST['id']
   );
+  echo "<script>console.log('[DEBUG] Edit Company Info: Sending data for company ID = " . $_POST['id'] . "');</script>";
 
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($ch);
+  
+  if ($result === false) {
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Edit Company Info: CURL Error = " . addslashes($error) . "');</script>";
+  } else {
+    echo "<script>console.log('[DEBUG] Edit Company Info: Update successful');</script>";
+  }
+  
   curl_close($ch);
 
   header("Location: company_management.php");
@@ -34,11 +43,9 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Company Info - Hirenorian</title>
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <!-- Existing CSS -->
   <link rel="stylesheet" href="../css/style.css">
 
   <style>
@@ -212,7 +219,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
   <script>
     function auditLogs(actionType, decription) {
-      fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+      fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

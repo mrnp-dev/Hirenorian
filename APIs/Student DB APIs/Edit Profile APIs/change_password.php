@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost");
+header("Access-Control-Allow-Origin: *"); // Changed to * for debugging
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -18,37 +18,37 @@ if ($data === null) {
     exit();
 }
 
-$studentId = $data['studentId'];
-$currentPassword = $data['current_password'];
-$newPassword = $data['new_password'];
+$studentId = $data['studentId'] ?? '';
+$newPassword = $data['new_password'] ?? '';
 
-if (empty($currentPassword) || empty($newPassword)) {
-    echo json_encode(["status" => "error", "message" => "All fields are required"]);
+// Debug log (optional, disable in prod)
+// error_log("ChangePassword: ID=$studentId, NewPW=" . (empty($newPassword) ? 'EMPTY' : 'SET'));
+
+if (empty($newPassword)) {
+    echo json_encode(["status" => "error", "message" => "New password is required"]);
+    exit();
+}
+
+if (empty($studentId)) {
+    echo json_encode(["status" => "error", "message" => "Student ID is missing"]);
     exit();
 }
 
 try {
-    // 1. Fetch current password hash
-    $query = "SELECT password_hash FROM Students WHERE student_id = :studentId";
+    // 1. (Optional) Check if user exists
+    $query = "SELECT student_id FROM Students WHERE student_id = :studentId";
     $stmt = $conn->prepare($query);
     $stmt->execute([':studentId' => $studentId]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$user) {
+    
+    if (!$stmt->fetch()) {
         echo json_encode(["status" => "error", "message" => "User not found"]);
         exit();
     }
 
-    // 2. Verify current password
-    if (!password_verify($currentPassword, $user['password_hash'])) {
-        echo json_encode(["status" => "error", "message" => "Incorrect current password"]);
-        exit();
-    }
-
-    // 3. Hash new password
+    // 2. Hash new password
     $newHash = password_hash($newPassword, PASSWORD_DEFAULT);
 
-    // 4. Update password
+    // 3. Update password
     $updateQuery = "UPDATE Students SET password_hash = :newHash WHERE student_id = :studentId";
     $updateStmt = $conn->prepare($updateQuery);
     $updateStmt->execute([

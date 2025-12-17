@@ -20,7 +20,7 @@
         <!-- Left Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <a href="../../../Landing Page/php/landing_page.php"
+                <a href="../../../Landing Page Tailwind/php/landing_page.php"
                     style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
                     <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
                     <span class="logo-text">Hirenorian</span>
@@ -49,7 +49,18 @@
             <header class="top-bar">
                 <div class="top-bar-right">
                     <div class="user-profile" id="userProfileBtn">
-                        <img src="https://logo.clearbit.com/riotgames.com" alt="Company" class="user-img">
+                        <div class="user-avatar-wrapper" style="position: relative; display: inline-block;">
+                            <img src="<?php echo $company_icon_url; ?>" alt="Company"
+                                class="user-img <?php echo $is_default_icon ? 'default-icon' : ''; ?>">
+                            <?php if ($is_verified): ?>
+                                <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981" alt="Verified"
+                                    class="header-verification-badge verified" title="Verified Account">
+                            <?php else: ?>
+                                <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                    alt="Unverified" class="header-verification-badge unverified"
+                                    title="Unverified Account">
+                            <?php endif; ?>
+                        </div>
                         <span class="user-name">Company Name</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>

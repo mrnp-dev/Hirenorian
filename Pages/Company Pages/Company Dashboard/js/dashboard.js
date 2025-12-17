@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.length === 0) {
             container.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align: center; padding: 30px; color: #999;">
+                    <td colspan="5" style="text-align: center; padding: 30px; color: #999;">
                         No job posts found
                     </td>
                 </tr>
@@ -153,12 +153,27 @@ document.addEventListener('DOMContentLoaded', () => {
             // Determine status class for styling
             const statusClass = post.status.toLowerCase(); // 'active' or 'closed'
 
+            // Handle potential key variations (snake_case vs camelCase)
+            const appCount = post.applicant_count !== undefined ? post.applicant_count : (post.applicants || 0);
+            const pendingCount = post.pending_count !== undefined ? post.pending_count : 0;
+            const appLimit = post.applicant_limit !== undefined ? post.applicant_limit : (post.limit || 0); // Handle limit if legacy
+            const datePosted = post.date_posted || post.datePosted || 'N/A';
+            const displayApplicants = appLimit ? `${appCount}/${appLimit}` : appCount;
+
             row.innerHTML = `
                 <td>${post.title}</td>
-                <td>${post.applicants}</td>
-                <td>${post.datePosted}</td>
+                <td>${displayApplicants}</td>
+                <td>${pendingCount}</td>
+                <td>${datePosted}</td>
                 <td><span class="status-pill ${statusClass}">${post.status}</span></td>
             `;
+
+            // Add click redirect
+            row.style.cursor = 'pointer';
+            row.addEventListener('click', () => {
+                window.location.href = `../../Job Listing Page/php/job_listing.php?post_id=${post.id}&view=detail`;
+            });
+
             container.appendChild(row);
         });
     }
@@ -307,32 +322,56 @@ document.addEventListener('DOMContentLoaded', () => {
             if (result.status === "success") {
                 const data = result.data;
 
-                // 1. Update Recruitment Analytics
-                window.updateRecruitmentAnalytics({
-                    total: data.stats.total_applicants,
-                    accepted: data.stats.accepted,
-                    rejected: data.stats.rejected
-                });
-
-                // 2. Update Post Status Chart
+                // 1. Update Post Status Chart and Counts
                 window.updatePostsChart(data.post_stats.active_count, data.post_stats.closed_count);
 
-                // Update Total Center Count
+                // Update Total Center Count (if element exists)
                 const totalPostsEl = document.getElementById('totalPostsCount');
                 if (totalPostsEl) {
                     totalPostsEl.textContent = data.post_stats.total_posts;
                 }
 
-                // 3. Update Job Listings
-                // Map backend fields to frontend expected format
+                // 2. Update Job Listings Table
                 const tableData = data.recent_jobs.map(job => ({
+                    id: job.id,
                     title: job.title,
                     applicants: `${job.applicant_count}/${job.applicant_limit}`,
                     datePosted: job.date_posted,
-                    status: job.status
+                    status: job.status,
+                    pending_count: job.pending_count
                 }));
 
                 window.updateJobListings(tableData);
+
+                // ========================================
+                // 3. UPDATE HERO SECTION QUICK STATS
+                // ========================================
+                const heroOpenJobs = document.getElementById('heroOpenJobs');
+                const heroPending = document.getElementById('heroPending');
+
+                if (heroOpenJobs) {
+                    animateNumber(heroOpenJobs, data.stats.open_slots || 0);
+                }
+                if (heroPending) {
+                    animateNumber(heroPending, data.stats.pending || 0);
+                }
+
+                // ========================================
+                // 4. UPDATE NEW METRICS GRID (Recruitment Stats)
+                // ========================================
+                const metricTotalApplicants = document.getElementById('metricTotalApplicants');
+                const metricAccepted = document.getElementById('metricAccepted');
+                const metricRejected = document.getElementById('metricRejected');
+
+                if (metricTotalApplicants) {
+                    animateNumber(metricTotalApplicants, data.stats.total_applicants);
+                }
+                if (metricAccepted) {
+                    animateNumber(metricAccepted, data.stats.accepted);
+                }
+                if (metricRejected) {
+                    animateNumber(metricRejected, data.stats.rejected);
+                }
 
             } else {
                 console.error('API Error:', result.message);

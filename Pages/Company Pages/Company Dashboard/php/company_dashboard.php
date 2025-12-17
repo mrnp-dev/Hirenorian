@@ -16,31 +16,29 @@ if (isset($_SESSION['email'])) {
 
     if ($response === false) {
         die("Curl error: " . curl_error($ch));
+    } else {
+        echo "<script>console.log('Response: " . addslashes($response) . "');</script>";
     }
     curl_close($ch);
 
     $data = json_decode($response, true);
 
-    // Updated to match new API structure
-    if (isset($data['company'])) {
-        $company = $data['company'];
-        $company_id = $company['company_id'];
-        $company_name = $company['company_name'];
-
-        $company_icon_url = "https://via.placeholder.com/40"; // Default
-        if (!empty($data['icons'])) {
-            $url = $data['icons'][0]['icon_url'];
-            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $url);
-        }
-
+    if ($data['status'] === "success") {
+        echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
     } else {
         $company_name = "Unknown";
         $company_id = 0;
-        $company_icon_url = "https://via.placeholder.com/40";
+        $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000"; // Default icon for unknown company
+        $is_verified = false;
     }
 
+    $company = $data['data'][0];
+
+    // Students Table
+    $company_id = $company['company_id'];
+    $company_name = $company['company_name'];
 } else {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+    header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
 }
 ?>
 <!DOCTYPE html>
@@ -91,6 +89,12 @@ if (isset($_SESSION['email'])) {
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="../../Help Page/php/help.php" class="nav-link">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span class="link-text">Help</span>
+                    </a>
+                </li>
             </ul>
         </aside>
 
@@ -100,11 +104,21 @@ if (isset($_SESSION['email'])) {
             <header class="top-bar">
                 <div class="user-profile" id="userProfile">
                     <div class="user-info">
-                        <div class="user-avatar">
+                        <div class="user-avatar-wrapper" style="position: relative; display: inline-block;">
                             <img src="<?php echo $company_icon_url; ?>" alt="Profile"
+                                class="user-avatar <?php echo $is_default_icon ? 'default-icon' : ''; ?>"
                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <?php if ($is_verified): ?>
+                                <img src="https://img.icons8.com/?size=100&id=84992&format=png&color=10b981" alt="Verified"
+                                    class="header-verification-badge verified" title="Verified Account">
+                            <?php else: ?>
+                                <img src="https://img.icons8.com/?size=100&id=85083&format=png&color=ef4444"
+                                    alt="Unverified" class="header-verification-badge unverified"
+                                    title="Unverified Account">
+                            <?php endif; ?>
                         </div>
-                        <span class="user-name" id="headerCompanyName"><?php echo $company_name; ?></span>
+                        <span class="user-name"
+                            id="headerCompanyName"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
@@ -114,14 +128,123 @@ if (isset($_SESSION['email'])) {
             </header>
 
             <div class="content-wrapper">
-                <div class="page-title">
-                    <h1>Dashboard</h1>
-                </div>
                 <!-- Hidden Input for JS -->
                 <input type="hidden" id="company_email" value="<?php echo htmlspecialchars($company_email); ?>">
+                <input type="hidden" id="company_id" value="<?php echo htmlspecialchars($company_id); ?>">
 
                 <!-- Dashboard Section -->
                 <section id="dashboard-section" class="content-section active">
+
+                    <!-- Hero Section - Student Dashboard Inspired -->
+                    <div class="hero-section">
+                        <div class="hero-content">
+                            <div class="hero-main">
+                                <h1 class="greeting">Welcome back, <span
+                                        class="greeting-highlight"><?php echo htmlspecialchars($company_name); ?></span>!
+                                </h1>
+                                <p class="hero-subtitle">Manage your job postings and find your next great team members
+                                </p>
+                                <div class="hero-actions">
+                                    <a href="../../Job Listing Page/php/job_listing.php" class="btn-hero primary">
+                                        <i class="fa-solid fa-plus"></i>
+                                        <span>Add New Job</span>
+                                    </a>
+                                    <a href="../../Company Profile Page/php/company_profile.php"
+                                        class="btn-hero secondary">
+                                        <i class="fa-solid fa-building"></i>
+                                        <span>Company Profile</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="quick-stats-widget">
+                                <div class="widget-title">
+                                    <i class="fa-solid fa-chart-simple"></i>
+                                    Quick Overview
+                                </div>
+                                <div class="stats-row">
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="heroOpenJobs">-</span>
+                                        <span class="stat-label">Open Jobs</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value" id="heroPending">-</span>
+                                        <span class="stat-label">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid - Recruitment Stats -->
+                    <div class="metrics-grid">
+                        <div class="metric-card-new total-apps">
+                            <div class="metric-header">
+                                <div class="metric-icon">
+                                    <i class="fa-solid fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="metric-body">
+                                <div class="metric-value" id="metricTotalApplicants">0</div>
+                                <div class="metric-label">Total Applicants</div>
+                            </div>
+                        </div>
+                        <div class="metric-card-new accepted">
+                            <div class="metric-header">
+                                <div class="metric-icon">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                            </div>
+                            <div class="metric-body">
+                                <div class="metric-value" id="metricAccepted">0</div>
+                                <div class="metric-label">Accepted</div>
+                            </div>
+                        </div>
+                        <div class="metric-card-new rejected">
+                            <div class="metric-header">
+                                <div class="metric-icon">
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                </div>
+                            </div>
+                            <div class="metric-body">
+                                <div class="metric-value" id="metricRejected">0</div>
+                                <div class="metric-label">Rejected</div>
+                            </div>
+                        </div>
+                        <!-- Post Status Card with Mini Chart -->
+                        <div class="metric-card-new post-status">
+                            <div class="metric-header">
+                                <div class="metric-icon">
+                                    <i class="fa-solid fa-chart-pie"></i>
+                                </div>
+                                <h4 class="post-status-title">Posts Statistics</h4>
+                            </div>
+                            <div class="metric-body post-status-body">
+
+                                <div class="post-status-wrapper">
+                                    <div class="mini-chart-container">
+                                        <canvas id="postsChart"></canvas>
+                                    </div>
+                                    <div class="post-status-info">
+                                        <div class="status-row">
+                                            <div class="label-group">
+                                                <span class="dot active"></span>
+                                                <span>Active</span>
+                                            </div>
+                                            <span class="count" id="activePostCount">0</span>
+                                        </div>
+                                        <div class="status-row">
+                                            <div class="label-group">
+                                                <span class="dot closed"></span>
+                                                <span>Closed</span>
+                                            </div>
+                                            <span class="count" id="closedPostCount">0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Modern 2-Column Dashboard Layout -->
                     <div class="dashboard-main-container">
                         <!-- Left Column: Job Listings (75% width) -->
@@ -139,6 +262,7 @@ if (isset($_SESSION['email'])) {
                                         <tr>
                                             <th>JOB TITLE</th>
                                             <th>APPLICANTS</th>
+                                            <th>PENDING</th>
                                             <th>DATE POSTED</th>
                                             <th>STATUS</th>
                                         </tr>
@@ -150,88 +274,14 @@ if (isset($_SESSION['email'])) {
                             </div>
                         </div>
 
-                        <!-- Right Column: Analytics Panel (25% width) -->
-                        <div class="analytics-panel">
-                            <!-- Top Section: Pie Chart (35% height) -->
-                            <div class="pie-chart-section">
-                                <h3>Posts Status</h3>
-                                <div class="chart-content-wrapper">
-                                    <!-- Left: Stats Cards -->
-                                    <div class="chart-stats">
-                                        <div class="stat-card active-card">
-                                            <div class="stat-indicator active-indicator"></div>
-                                            <div class="stat-details">
-                                                <span class="stat-label">Active Posts</span>
-                                                <span class="stat-number" id="activePostCount">0</span>
-                                            </div>
-                                        </div>
-                                        <div class="stat-card closed-card">
-                                            <div class="stat-indicator closed-indicator"></div>
-                                            <div class="stat-details">
-                                                <span class="stat-label">Closed Posts</span>
-                                                <span class="stat-number" id="closedPostCount">0</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Donut Chart with Center Total -->
-                                    <div class="chart-display">
-                                        <div class="chart-container">
-                                            <canvas id="postsChart"></canvas>
-                                            <div class="chart-center-label">
-                                                <span class="center-number" id="totalPostsCount">0</span>
-                                                <span class="center-text">Total</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Section: Recruitment Analytics (65% height) -->
-                            <div class="recruitment-metrics-section">
-                                <h3>Recruitment Analytics</h3>
-                                <div class="metrics-cards-vertical">
-                                    <div class="metric-card total">
-                                        <div class="metric-icon">
-                                            <i class="fa-solid fa-briefcase"></i>
-                                        </div>
-                                        <div class="metric-content">
-                                            <span class="metric-label">Total Applications</span>
-                                            <span class="metric-number" id="totalApplications">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="metric-card accepted">
-                                        <div class="metric-icon">
-                                            <i class="fa-solid fa-circle-check"></i>
-                                        </div>
-                                        <div class="metric-content">
-                                            <span class="metric-label">Accepted</span>
-                                            <span class="metric-number" id="acceptedApplications">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="metric-card rejected">
-                                        <div class="metric-icon">
-                                            <i class="fa-solid fa-circle-xmark"></i>
-                                        </div>
-                                        <div class="metric-content">
-                                            <span class="metric-label">Rejected</span>
-                                            <span class="metric-number" id="rejectedApplications">0</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Activity Log Section -->
-                    <section class="audit-log-section">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2>
+                        <!-- Right Column: Recent Activity Widget -->
+                        <div class="activity-widget-panel">
+                            <div class="widget-header">
+                                <h3>
                                     <i class="fa-solid fa-clock-rotate-left"></i>
                                     Recent Activity
-                                    <span class="log-count" id="logCount">0</span>
-                                </h2>
+                                </h3>
+                                <span class="log-count" id="logCount">0</span>
                             </div>
                             <div class="audit-log-container">
                                 <div class="audit-log-timeline" id="activityLogTimeline">
@@ -243,7 +293,7 @@ if (isset($_SESSION['email'])) {
                                 </div>
                             </div>
                         </div>
-                    </section>
+                    </div>
                 </section>
             </div>
         </main>

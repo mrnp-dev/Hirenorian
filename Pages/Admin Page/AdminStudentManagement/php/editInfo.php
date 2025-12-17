@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $url = 'http://localhost/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/updateInfoStudent.php';
+  $url = 'http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/updateInfoStudent.php';
 
   $data = array(
     'student_id' => $_POST['id'],
@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     'suffix' => $_POST['suffix'],
     'email' => $_POST['email']
   );
+  echo "<script>console.log('[DEBUG] Edit Student Info: Sending data for student ID = " . $_POST['id'] . "');</script>";
 
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
@@ -19,6 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   $result = curl_exec($ch);
 
+  if ($result === false) {
+    $error = curl_error($ch);
+    echo "<script>console.error('[DEBUG] Edit Student Info: CURL Error = " . addslashes($error) . "');</script>";
+  } else {
+    echo "<script>console.log('[DEBUG] Edit Student Info: Update successful');</script>";
+  }
 
   curl_close($ch);
 
@@ -248,7 +255,7 @@ $email = isset($_GET['email']) ? htmlspecialchars($_GET['email']) : '';
 
   <script>
     function auditLogs(actionType, description) {
-      fetch('/web-projects/Hirenorian-2/APIs/Admin%20DB%20APIs/studentManagementAPIs/audit.php', {
+      fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/fetch_audit_logs.php', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

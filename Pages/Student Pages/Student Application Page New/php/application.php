@@ -1,7 +1,7 @@
 <?php
 session_start();
 if(!isset($_SESSION['email'])) {
-    header("Location: ../../../Landing Page/php/landing_page.php");
+    header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
     exit();
 }
 ?>
@@ -85,7 +85,7 @@ if(!isset($_SESSION['email'])) {
             <div class="app-step active" id="step-1">
                 <div class="step-header">
                     <h1>Ready to Apply?</h1>
-                    <p>You are applying for the position of <strong id="jobTitleDisplay" class="skeleton skeleton-text" style="width: 150px; display: inline-block; vertical-align: middle;">Loading...</strong> at <strong id="companyNameDisplay" class="skeleton skeleton-text" style="width: 150px; display: inline-block; vertical-align: middle;">Loading...</strong></p>
+                    <p>You are applying for the position of <strong id="jobTitleDisplay">...</strong> at <strong id="companyNameDisplay">...</strong></p>
                 </div>
                 <div class="step-body center-content">
                     <img src="../../../Landing Page/Images/resume-folder.svg" alt="Apply" class="step-illustration" onerror="this.style.display='none'">
