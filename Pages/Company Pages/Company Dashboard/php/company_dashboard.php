@@ -326,6 +326,7 @@ if (isset($_SESSION['email'])) {
                         <tr>
                             <th>JOB TITLE</th>
                             <th>APPLICANTS</th>
+                            <th>PENDING</th>
                             <th>DATE POSTED</th>
                             <th>STATUS</th>
                         </tr>
