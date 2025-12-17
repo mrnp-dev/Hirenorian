@@ -437,20 +437,45 @@ if(isset($_SESSION['email']))
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST" id="passwordForm">
-                <input type="hidden" name="student_id" id="studentIdPassword" value="<?php echo htmlspecialchars($student_id); ?>">
+            <!-- Hidden Fields -->
+            <input type="hidden" id="otp_student_email" value="<?php echo htmlspecialchars($student_email_val); ?>">
+            <input type="hidden" id="otp_student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+
+            <!-- Step 1: Security Verification (OTP) -->
+             <div id="password-step-otp">
+                <div class="text-center" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Security Verification</h4>
+                    <div style="margin-bottom: 15px;">
+                       <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--primary-maroon);"></i>
+                    </div>
+                    <p style="color: #666; font-size: 0.9em;">To protect your account, we've sent a verification code to your student email: <strong id="password-otp-email-display"><?php echo htmlspecialchars($student_email_val); ?></strong></p>
+                    <p id="password-otp-status" style="font-size: 0.8em; color: #888; margin-top: 5px;"><i class="fa fa-spinner fa-spin"></i> Sending code...</p>
+                </div>
                 
                 <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <div class="input-wrapper" style="position: relative;">
-                        <input type="password" id="currentPassword" name="current_password" required style="padding-right: 40px;">
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <p class="error-text" style="color: red; font-size: 0.8em; margin-top: 5px; visibility: hidden;">Error message</p>
+                    <div class="otp-input-container">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
                     </div>
+                    <p id="password-otp-error" style="color: red; text-align: center; font-size: 0.9em; display: none;">Invalid OTP</p>
                 </div>
 
+                <div class="modal-footer" style="justify-content: center;">
+                    <button type="button" class="btn-primary" id="btn-verify-password-otp">Verify Code</button>
+                    <!-- <button type="button" class="btn-secondary" id="btn-resend-password-otp" style="font-size: 0.8rem; margin-top: 10px;">Resend Code</button> -->
+                </div>
+            </div>
+
+            <!-- Step 2: Change Password Form (Hidden initially) -->
+            <form action="" method="POST" id="passwordForm" style="display: none;">
+                <input type="hidden" name="student_id" id="studentIdPassword" value="<?php echo htmlspecialchars($student_id); ?>">
+                
+                <!-- Current Password Field Removed as per user request (OTP used instead) -->
+                
                 <div class="form-group">
                     <label for="newPassword">New Password</label>
                     <div class="input-wrapper" style="position: relative;">
@@ -488,27 +513,70 @@ if(isset($_SESSION['email']))
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST">
-            <input type="hidden" name="student_id" id="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
-            <div class="form-group">
-                <label for="personalEmail">Personal Email</label>
-                <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
-            </div>
-                <div class="form-group">
-                    <label for="studentEmail">Student Email <small style="color: #999; font-weight: normal;">(Not Editable)</small></label>
-                    <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" disabled>
+            <form action="" method="POST" id="contactForm">
+                <input type="hidden" name="student_id" id="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+                
+                <!-- Step 1: Input Details -->
+                <div id="contact-step-1">
+                    <div class="form-group">
+                        <label for="personalEmail">Personal Email</label>
+                        <div class="email-verification-wrapper">
+                            <input type="hidden" id="originalPersonalEmail" value="<?php echo htmlspecialchars($personal_email); ?>">
+                            <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
+                            
+                            <!-- Verify Button (Hidden by default, shown when email changes) -->
+                            <button type="button" class="verify-btn" id="verify-personal-email-btn" style="display: none;" title="Verify Email">
+                                <i class="fa fa-shield-alt"></i>
+                            </button>
+                            
+                            <!-- Verified Badge (Shown by default) -->
+                            <div class="input-verified-badge" id="personal-email-verified">
+                                <i class="fa fa-circle-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentEmail">Student Email <small style="color: #999; font-weight: normal;">(Not Editable)</small></label>
+                        <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($phone_number); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($location); ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" data-close-button>Cancel</button>
+                        <button type="submit" class="btn-primary" id="btn-save-contact">Save Changes</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($phone_number); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($location); ?>">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" data-close-button>Cancel</button>
-                    <button type="submit" class="btn-primary">Save Changes</button>
+
+                <!-- Step 2: OTP Verification (Hidden initially) -->
+                <div id="contact-step-2" style="display: none;">
+                    <div class="text-center" style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">Verify Email</h4>
+                        <p style="color: #666; font-size: 0.9em;">We sent a verification code to <strong id="verify-email-display"></strong></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enter 6-Digit Code</label>
+                        <div class="otp-input-container">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        </div>
+                        <p id="otp-error" style="color: red; text-align: center; font-size: 0.9em; display: none;">Invalid OTP</p>
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: space-between;">
+                        <button type="button" class="btn-secondary" id="btn-back-contact">Back</button>
+                        <button type="button" class="btn-primary" id="btn-verify-contact">Verify & Save</button>
+                    </div>
                 </div>
             </form>
         </div>

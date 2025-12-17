@@ -805,3 +805,110 @@
     font-weight: 500;
     color: #333;
 }
+
+/* OTP Input Styles */
+.otp-input-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.otp-digit,
+.password-otp-digit {
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    padding: 0;
+    /* Remove default padding */
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    transition: all 0.2s;
+    color: var(--text-dark);
+}
+
+.otp-digit:focus,
+.password-otp-digit:focus {
+    outline: none;
+    border-color: var(--primary-maroon);
+    background: white;
+    box-shadow: 0 4px 12px rgba(123, 17, 19, 0.15);
+    transform: translateY(-2px);
+}
+
+.otp-digit.filled,
+.password-otp-digit.filled {
+    border-color: #d1d5db;
+    background: white;
+}
+
+/* Validation Styles */
+.input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2;
+}
+
+.error-text {
+    font-size: 0.85rem;
+    margin-top: 6px;
+    display: block;
+}
+
+.error-text.visible {
+    visibility: visible;
+}
+
+/* Email Verification Styles */
+.email-verification-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.email-verification-wrapper input {
+    padding-right: 3.5rem !important;
+    /* Make space for button/icon */
+}
+
+.verify-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--primary-maroon);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+.verify-btn:hover {
+    background: #5a0c0e;
+    transform: translateY(-50%) scale(1.05);
+    /* fix transform since we use translateY(-50%) on parent */
+}
+
+.input-verified-badge {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #2ecc71;
+    /* Matching existing green */
+    font-size: 1.5rem;
+    z-index: 10;
+}
