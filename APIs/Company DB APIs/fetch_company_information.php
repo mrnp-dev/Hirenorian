@@ -98,6 +98,22 @@ $stmt = $conn->prepare("SELECT * FROM company_perks_benefits WHERE company_id = 
 $stmt->execute([':company_id' => $company_id]);
 $perks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+// Check for Submitted Documents
+// We check if at least one document column is NOT NULL and NOT EMPTY
+$docQuery = "SELECT COUNT(*) as count FROM Company_Documents 
+             WHERE company_id = :company_id 
+             AND (
+                (philjobnet_path IS NOT NULL AND philjobnet_path != '') OR 
+                (dole_path IS NOT NULL AND dole_path != '') OR 
+                (bir_path IS NOT NULL AND bir_path != '') OR 
+                (mayor_permit_path IS NOT NULL AND mayor_permit_path != '') OR
+                (business_type_doc_path IS NOT NULL AND business_type_doc_path != '')
+             )";
+$stmt = $conn->prepare($docQuery);
+$stmt->execute([':company_id' => $company_id]);
+$doc_count = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
+$documents_submitted = ($doc_count > 0);
+
 
 echo json_encode([
     "status" => "success",
@@ -109,6 +125,7 @@ echo json_encode([
     "perks" => $perks,
     "icons" => $icons, // Added icons
     "banners" => $banners, // Added banners
+    "documents_submitted" => $documents_submitted, // Added document status
     "company_id" => $company_id,
     "company_name" => $company_name
 ], JSON_PRETTY_PRINT);
