@@ -51,10 +51,15 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
         <div class="main-content">
             <header class="top-bar">
                 <div class="top-bar-right">
-                    <div class="user-profile">
+                    <div class="user-profile" id="userProfileBtn" onclick="document.getElementById('profileDropdown').classList.toggle('show')">
                         <img src="../../../Landing Page/Images/gradpic2.png" alt="Admin" class="user-img">
                         <span class="user-name">Admin</span>
                         <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
                     </div>
                 </div>
             </header>
@@ -366,6 +371,25 @@ $company_id = isset($_GET['id']) ? htmlspecialchars($_GET['id']) : '';
             errorDiv.textContent = msg;
             errorDiv.style.display = 'block';
             document.getElementById('loadingSpinner').style.display = 'none';
+        }
+
+        function handleLogout() {
+            fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action_type: 'Logout',
+                        description: 'Logout as admin'
+                    })
+                })
+                .then(() => {
+                    window.location.href = '../../AdminRegister/php/register.php';
+                })
+                .catch(() => {
+                    window.location.href = '../../AdminRegister/php/register.php';
+                });
         }
     </script>
 </body>

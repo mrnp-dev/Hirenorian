@@ -22,18 +22,22 @@
         $valid_pass = "1PSU8Adm6nCode1";
 
         if ($username === $valid_user && $password === $valid_pass) {
-            include 'https://mrnp.site.com/API/adminDB_APIs/db_con.php';
+           
+            $auditApiUrl = "http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php";
+            $auditData = [
+                'action_type' => 'Log In',
+                'description' => 'Log In as admin'
+            ];
 
-            if (isset($conn)) {
-                try {
-                    $action = "Log In";
-                    $description = "Log In as admin";
+            $ch = curl_init($auditApiUrl);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($auditData));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
-                    $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
-                    $stmt->execute([':action' => $action, ':description' => $description]);
-                } catch (Exception $e) {
-                }
-            }
+            
+            $response = curl_exec($ch);
+            curl_close($ch);
 
             header("Location: ../../AdminDashboard/php/dashboard.php");
             exit();

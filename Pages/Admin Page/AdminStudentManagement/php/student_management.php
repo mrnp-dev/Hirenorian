@@ -99,7 +99,9 @@ if ($data && isset($data['status'])) {
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket" onclick="auditLogs('Logout', 'Logout as admin')"></i> Logout</a>
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
 
                     </div>
             </header>

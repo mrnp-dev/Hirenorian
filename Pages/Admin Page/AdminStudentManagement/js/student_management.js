@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function auditLogs(actionType, description) {
-    fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+    return fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -349,11 +349,23 @@ function auditLogs(actionType, description) {
                 console.log('Audit log added successfully');
             } else {
                 console.error('Failed to add audit log:', data.message);
-                alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+               
             }
+            return data;
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Error logging audit log.');
+           
         });
 }
+
+window.handleLogout = function () {
+    auditLogs('Logout', 'Logout as admin')
+        .then(() => {
+            window.location.href = '../../AdminRegister/php/register.php';
+        })
+        .catch(() => {
+            
+            window.location.href = '../../AdminRegister/php/register.php';
+        });
+};
