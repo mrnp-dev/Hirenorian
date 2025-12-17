@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (hasResume && hasCoverLetter) {
             // Stacked format for both documents
             return `
-                <div class="doc-stack">
+    < div class="doc-stack" >
                     <div class="doc-item">
                         <span class="doc-label">Resume</span>
                         <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
@@ -269,21 +269,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span class="doc-label">Cover Letter</span>
                         <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
                     </div>
-                </div>
-            `;
+                </div >
+    `;
         }
 
         if (hasResume) {
             return `
-                <span class="doc-label">Resume</span>
-                <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
-            `;
+    < span class="doc-label" > Resume</span >
+        <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
+`;
         }
 
         return `
-            <span class="doc-label">Cover Letter</span>
-            <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
-        `;
+    < span class="doc-label" > Cover Letter</span >
+        <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
+`;
     }
 
     /**
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Wait for all fetches to complete
             await Promise.all(fetchPromises);
 
-            console.log(`✅ Pre-loaded accepted counts for ${jobPostsData.length} jobs:`, acceptedCountsCache);
+            console.log(`✅ Pre - loaded accepted counts for ${jobPostsData.length} jobs: `, acceptedCountsCache);
         } catch (error) {
             console.error('Error pre-loading applicants:', error);
         }
@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             return `
-                <div class="job-card" data-job-id="${job.id}">
+    < div class="job-card" data - job - id="${job.id}" >
                     <div class="job-card-header">
                         <img src="${iconUrl}" alt="Company Logo" class="card-company-icon ${isDefault ? 'default-icon' : ''}">
                         <span class="card-company-name">${companyName}</span>
@@ -491,8 +491,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <div class="card-applicant-status">${acceptedCount}/${job.applicantLimit}</div>
                     <p class="job-card-description">${job.jobDescription}</p>
-                </div>
-            `;
+                </div >
+    `;
         }).join('');
 
         // Add click handlers to cards
@@ -580,7 +580,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Update meta information
         const locationText = jobDetails.province && jobDetails.city
-            ? `${jobDetails.province}, ${jobDetails.city}`
+            ? `${jobDetails.province}, ${jobDetails.city} `
             : (jobDetails.location || 'N/A');
         document.getElementById('detailLocation').textContent = locationText;
         document.getElementById('detailWorkType').textContent = jobDetails.workType;
@@ -655,7 +655,213 @@ document.addEventListener('DOMContentLoaded', async () => {
     const batchActionsToolbar = document.getElementById('batchActionsToolbar');
     const selectedCountEl = document.getElementById('selectedCount');
 
+
     // ========================================
+    // BATCH ACTIONS & SELECTION LOGIC
+    // ========================================
+
+    // Handle Individual Checkbox Toggle
+    if (applicantsList) {
+        applicantsList.addEventListener('change', (e) => {
+            if (e.target.classList.contains('applicant-checkbox')) {
+                const applicantId = e.target.dataset.id;
+                if (e.target.checked) {
+                    selectedApplicants.add(applicantId);
+                } else {
+                    selectedApplicants.delete(applicantId);
+                }
+                updateBatchUI();
+            }
+        });
+    }
+
+    // Handle Select All Toggle
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            const visibleCheckboxes = document.querySelectorAll('.applicant-checkbox');
+
+            visibleCheckboxes.forEach(checkbox => {
+                checkbox.checked = isChecked;
+                const applicantId = checkbox.dataset.id;
+                if (isChecked) {
+                    selectedApplicants.add(applicantId);
+                } else {
+                    selectedApplicants.delete(applicantId);
+                }
+            });
+            updateBatchUI();
+        });
+    }
+
+    // Update UI based on selection
+    function updateBatchUI() {
+        const count = selectedApplicants.size;
+
+        // Update Select All state
+        const visibleCheckboxes = document.querySelectorAll('.applicant-checkbox');
+        const allChecked = visibleCheckboxes.length > 0 && Array.from(visibleCheckboxes).every(cb => cb.checked);
+        const someChecked = visibleCheckboxes.length > 0 && Array.from(visibleCheckboxes).some(cb => cb.checked);
+
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = allChecked;
+            selectAllCheckbox.indeterminate = someChecked && !allChecked;
+        }
+
+        // Show/Hide Toolbar
+        if (count > 0) {
+            if (batchActionsToolbar) batchActionsToolbar.style.display = 'flex';
+            if (selectedCountEl) selectedCountEl.textContent = `${count} selected`;
+        } else {
+            if (batchActionsToolbar) batchActionsToolbar.style.display = 'none';
+        }
+    }
+
+    // Batch Accept Button
+    if (batchActionsToolbar) {
+        // Use event delegation or check if buttons exist
+        const acceptBtn = document.getElementById('batchAcceptBtn');
+        const rejectBtn = document.getElementById('batchRejectBtn');
+        const cancelBtn = document.getElementById('batchCancelBtn');
+
+        if (acceptBtn) {
+            acceptBtn.addEventListener('click', () => {
+                showConfirmationModal(
+                    'Accept Applicants',
+                    `Are you sure you want to accept ${selectedApplicants.size} applicant(s)?\nThis will update their status to Accepted.`,
+                    'normal',
+                    () => performBatchUpdate('accepted')
+                );
+            });
+        }
+
+        if (rejectBtn) {
+            rejectBtn.addEventListener('click', () => {
+                showConfirmationModal(
+                    'Reject Applicants',
+                    `Are you sure you want to reject ${selectedApplicants.size} applicant(s)?\nThis action cannot be easily undone.`,
+                    'danger',
+                    () => performBatchUpdate('rejected')
+                );
+            });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                selectedApplicants.clear();
+                const visibleCheckboxes = document.querySelectorAll('.applicant-checkbox');
+                visibleCheckboxes.forEach(cb => cb.checked = false);
+                updateBatchUI();
+            });
+        }
+    }
+
+    // ========================================
+    // ACTION HANDLERS (SINGLE & BATCH)
+    // ========================================
+
+    // Event Delegation for Single Actions
+    applicantsList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn-accept')) {
+            const id = e.target.dataset.id;
+            const applicant = applicantsData.find(a => a.id == id);
+            showConfirmationModal(
+                'Accept Applicant',
+                `Accept application for <strong>${applicant ? applicant.name : 'this applicant'}</strong>?`,
+                'normal',
+                () => performSingleUpdate(id, 'accepted')
+            );
+        } else if (e.target.classList.contains('btn-reject')) {
+            const id = e.target.dataset.id;
+            const applicant = applicantsData.find(a => a.id == id);
+            showConfirmationModal(
+                'Reject Applicant',
+                `Reject application for <strong>${applicant ? applicant.name : 'this applicant'}</strong>?`,
+                'danger',
+                () => performSingleUpdate(id, 'rejected')
+            );
+        }
+    });
+
+    // Perform Single Update
+    async function performSingleUpdate(applicantId, status) {
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/update_applicant_status.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ applicant_id: applicantId, status: status })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show(`Applicant ${status} successfully!`, 'success');
+                }
+                // Refresh data
+                await fetchApplicants(selectedJobId);
+                fetchJobDetails(selectedJobId, true); // Refresh metrics
+                updateStatistics();
+                renderApplicants();
+            } else {
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show(result.message || 'Update failed', 'error');
+                } else {
+                    alert(result.message || 'Update failed');
+                }
+            }
+        } catch (error) {
+            console.error('Update error:', error);
+            if (typeof ToastSystem !== 'undefined') {
+                ToastSystem.show('An error occurred. Please try again.', 'error');
+            }
+        }
+    }
+
+    // Perform Batch Update
+    async function performBatchUpdate(status) {
+        const ids = Array.from(selectedApplicants);
+        try {
+            const response = await fetch("http://mrnp.site:8080/Hirenorian/API/companyDB_APIs/batch_update_applicants.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ applicant_ids: ids, status: status })
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show(`Batch update complete! ${result.updated_count} applicants updated.`, 'success');
+                }
+
+                // Clear selection
+                selectedApplicants.clear();
+                updateBatchUI();
+
+                // Refresh data
+                await fetchApplicants(selectedJobId);
+                fetchJobDetails(selectedJobId, true); // Refresh metrics
+                updateStatistics();
+                renderApplicants();
+            } else {
+                if (typeof ToastSystem !== 'undefined') {
+                    ToastSystem.show(result.message || 'Batch update failed', 'error');
+                } else {
+                    alert(result.message || 'Batch update failed');
+                }
+            }
+        } catch (error) {
+            console.error('Batch update error:', error);
+            if (typeof ToastSystem !== 'undefined') {
+                ToastSystem.show('An error occurred during batch update.', 'error');
+            }
+        }
+    }
+
+
+    // ========================================
+
     // STATISTICS CALCULATION & UPDATE
     // ========================================
     function getApplicantsForJob(jobId) {
@@ -764,7 +970,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.innerHTML = `
             <div class="applicant-row">
                 <div class="cell checkbox-cell">
-                    ${showCheckbox ? `<input type="checkbox" class="applicant-checkbox" data-id="${applicant.id}">` : ''}
+                    ${showCheckbox ? `<input type="checkbox" class="applicant-checkbox" data-id="${applicant.id}" ${selectedApplicants.has(String(applicant.id)) ? 'checked' : ''}>` : ''}
                 </div>
                 <div class="cell name-cell">
                     <div class="applicant-avatar">${initials}</div>
@@ -807,40 +1013,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const row = card.querySelector('.applicant-row');
         row.addEventListener('click', (e) => {
             // Don't expand if clicking on checkbox or action buttons
-            if (e.target.closest('.checkbox-cell') || e.target.closest('.action-btn')) {
+            if (e.target.closest('.checkbox-cell') || e.target.closest('.action-btn') || e.target.closest('.applicant-checkbox')) {
                 return;
             }
             card.classList.toggle('expanded');
         });
 
-        // Add checkbox event only if checkbox exists
-        if (showCheckbox) {
-            const checkbox = card.querySelector('.applicant-checkbox');
-            if (checkbox) {
-                checkbox.addEventListener('change', (e) => {
-                    e.stopPropagation();
-                    handleCheckboxChange(applicant.id, checkbox.checked);
-                });
-            }
-        }
-
-        // Add action button events
-        const acceptBtn = card.querySelector('.btn-accept');
-        const rejectBtn = card.querySelector('.btn-reject');
-
-        if (acceptBtn) {
-            acceptBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                acceptApplicant(applicant.id);
-            });
-        }
-
-        if (rejectBtn) {
-            rejectBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                rejectApplicant(applicant.id);
-            });
-        }
 
         return card;
     }
