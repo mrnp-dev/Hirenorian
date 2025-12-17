@@ -120,11 +120,15 @@ if(isset($_SESSION['email']))
                     <i class="fa-solid fa-user"></i>
                     <span>Profile</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Internship Search</span>
+                <a href="../../Student Internship Search Page New/php/internship_search.php" class="nav-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Internships</span>
                 </a>
 
+                <a href="../../Help Page/php/help.php" class="nav-item">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Help</span>
+                </a>
             </nav>
         </aside>
 
@@ -140,191 +144,153 @@ if(isset($_SESSION['email']))
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="../../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
             </header>
 
             <!-- Profile Content -->
             <main class="dashboard-body">
-                <h1 class="page-title">My Profile</h1>
+                
+                <!-- Hero Section (Edit Mode) -->
+                <div class="profile-hero edit-mode">
+                    <div class="profile-hero-content">
+                        <div class="profile-avatar-wrapper">
+                             <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture" class="profile-avatar">
+                             <button class="edit-photo-btn" data-modal-target="#editPhotoModal" title="Change Photo"><i class="fa-solid fa-camera"></i></button>
+                        </div>
+                        <div class="profile-info-main">
+                             <h1 class="profile-name">
+                                <span id="display-full-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></span>
+                                <button class="btn-icon-edit-hero" data-modal-target="#editPersonalModal" title="Edit Name"><i class="fa-solid fa-pen"></i></button>
+                             </h1>
+                             <p class="profile-headline"><?php echo htmlspecialchars($course); ?></p>
+                             <p class="profile-institution"><?php echo htmlspecialchars($university); ?></p>
+                             
+                             <div class="hero-verification-status">
+                                <?php
+                                if ($verified_status === 'verified') {
+                                    echo '<span class="verified-badge"><i class="fa-solid fa-circle-check"></i> Account Verified</span>';
+                                } elseif ($verified_status === 'processing') {
+                                    echo '<span class="processing-badge"><i class="fa-solid fa-spinner fa-spin"></i> Verification Processing</span>';
+                                } else {
+                                    echo '<span class="unverified-badge"><i class="fa-solid fa-circle-exclamation"></i> Verification Required</span>';
+                                }
+                                ?>
+                             </div>
+                        </div>
+                        <div class="profile-hero-actions">
+                            <!-- Account Actions -->
+                            <button class="btn-profile-password" data-modal-target="#changePasswordModal">
+                                <i class="fa-solid fa-key"></i> Password
+                            </button>
+                            <?php
+                            if ($verified_status === 'unverified') {
+                                echo '<button class="btn-profile-verify" onclick="window.location.href=\'../../Student Account Verification Page/php/verification.php\'"><i class="fa-solid fa-shield-halved"></i> Verify Now</button>';
+                            } elseif ($verified_status === 'processing') {
+                                echo '<button class="btn-profile-processing" onclick="alert(\'Verification is pending review.\')"><i class="fa-solid fa-clock"></i> Pending...</button>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="profile-grid">
-                    <!-- Left Column: Profile Card & Contact -->
-                    <div class="profile-left">
-                        <!-- Profile Card -->
-                        <div class="card profile-card">
-                            <div class="profile-header">
-                                <div class="profile-img-container">
-                                    <img src="<?php echo !empty($profile_picture) ? htmlspecialchars($profile_picture) : '../../../Landing Page/Images/gradpic2.png'; ?>" alt="Profile Picture">
-                                    <button class="edit-photo-btn" data-modal-target="#editPhotoModal"><i class="fa-solid fa-camera"></i></button>
-                                </div>
-                                <h2 class="profile-name">
-                                    <span id="display-full-name"><?php echo htmlspecialchars($first_name . " " . ($middle_initial ? $middle_initial . ". " : "") . $last_name . " " . $suffix); ?></span>
-                                    <button class="icon-btn" data-modal-target="#editPersonalModal" style="font-size: 0.8em; margin-left: 10px;"><i class="fa-solid fa-pen"></i></button>
-                                </h2>
-                                <p class="profile-role"><?php echo htmlspecialchars($course); ?></p>
-                                <p class="profile-university"><?php echo htmlspecialchars($university); ?></p>
+
+                <div class="content-grid profile-grid-layout">
+                    <!-- Left Sidebar (Sticky) -->
+                    <div class="profile-sidebar">
+                        
+                        <!-- Contact Info -->
+                        <div class="widget info-card">
+                            <div class="widget-header-row">
+                                <h3 class="widget-title"><i class="fa-solid fa-address-book"></i> Contact</h3>
+                                <button class="icon-btn-edit" data-modal-target="#editContactModal"><i class="fa-solid fa-pen"></i></button>
                             </div>
-                            <div class="profile-contact">
-                                <div class="contact-header">
-                                    <h3>Contact Information</h3>
-                                    <button class="icon-btn" data-modal-target="#editContactModal"><i class="fa-solid fa-pen"></i></button>
+                            <div class="info-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <div>
+                                    <div class="info-label">Personal Email</div>
+                                    <div class="info-value" id="display-personal-email"><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></div>
                                 </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-envelope"></i>
-                                    <span id="display-personal-email"><?php echo !empty($personal_email) ? htmlspecialchars($personal_email) : '<em style="color: #999;">Not Provided</em>'; ?></span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-envelope-open-text"></i>
+                                <div>
+                                    <div class="info-label">Student Email</div>
+                                    <div class="info-value"><?php echo !empty($student_email_val) ? htmlspecialchars($student_email_val) : '<em style="color: #999;">Not Provided</em>'; ?></div>
                                 </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-envelope-open-text"></i>
-                                    <span><?php echo !empty($student_email_val) ? htmlspecialchars($student_email_val) : '<em style="color: #999;">Not Provided</em>'; ?></span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-phone"></i>
+                                <div>
+                                    <div class="info-label">Phone Number</div>
+                                    <div class="info-value" id="display-phone"><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></div>
                                 </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-phone"></i>
-                                    <span id="display-phone"><?php echo !empty($phone_number) ? htmlspecialchars($phone_number) : '<em style="color: #999;">Not Provided</em>'; ?></span>
-                                </div>
-                                <div class="contact-item">
-                                    <i class="fa-solid fa-location-dot"></i>
-                                    <span id="display-location"><?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: #999;">Not Specified</em>'; ?></span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <div>
+                                    <div class="info-label">Location</div>
+                                    <div class="info-value" id="display-location"><?php echo !empty($location) ? htmlspecialchars($location) : '<em style="color: #999;">Not Specified</em>'; ?></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Skills Section -->
-                        <div class="card skills-section">
-                            <div class="card-header">
-                                <h2>Skills</h2>
-                                <button class="icon-btn" data-modal-target="#editSkillsModal"><i class="fa-solid fa-pen"></i></button>
+                        <!-- Skills -->
+                        <div class="widget skills-card">
+                            <div class="widget-header-row">
+                                <h3 class="widget-title"><i class="fa-solid fa-layer-group"></i> Skills</h3>
+                                <button class="icon-btn-edit" data-modal-target="#editSkillsModal"><i class="fa-solid fa-pen"></i></button>
                             </div>
-                            <div class="skills-category">
-                                <h3>Technical</h3>
+
+                            <div class="skill-category">
+                                <h4>Technical</h4>
                                 <div class="tags" id="technical-skills-display">
                                     <?php if(!empty($tech_arr)): foreach($tech_arr as $skill): ?>
                                     <span><?php echo htmlspecialchars($skill); ?></span>
-                                    <?php endforeach; else: echo "<span>No technical skills added</span>"; endif; ?>
+                                    <?php endforeach; else: echo "<span class='empty-skill'>No technical skills</span>"; endif; ?>
                                 </div>
                             </div>
-                            <div class="skills-category">
-                                <h3>Soft Skills</h3>
+
+                            <div class="skill-category">
+                                <h4>Soft Skills</h4>
                                 <div class="tags" id="soft-skills-display">
                                     <?php if(!empty($soft_arr)): foreach($soft_arr as $skill): ?>
                                     <span><?php echo htmlspecialchars($skill); ?></span>
-                                    <?php endforeach; else: echo "<span>No soft skills added</span>"; endif; ?>
+                                    <?php endforeach; else: echo "<span class='empty-skill'>No soft skills</span>"; endif; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right Column: Details -->
-                    <div class="profile-right">
+                    <!-- Main Content -->
+                    <div class="profile-main">
                         <!-- About Me -->
-                        <div class="card about-section">
-                            <div class="card-header">
-                                <h2>About Me</h2>
-                                <button class="icon-btn" data-modal-target="#editAboutModal"><i class="fa-solid fa-pen"></i></button>
+                        <div class="widget section-card">
+                            <div class="widget-header-row">
+                                <h2 class="section-title"><i class="fa-solid fa-user-circle"></i> About Me</h2>
+                                <button class="icon-btn-edit" data-modal-target="#editAboutModal"><i class="fa-solid fa-pen"></i></button>
                             </div>
-                            <p class="about-text" id="display-about-me">
+                            <p class="section-text" id="display-about-me">
                                 <?php echo !empty($about_me) ? nl2br(htmlspecialchars($about_me)) : "No bio added yet."; ?>
                             </p>
                         </div>
 
-                        <!-- Account Manager -->
-                        <div class="card account-manager-section">
-                            <div class="card-header">
-                                <h2>Account Manager</h2>
+                        <!-- Experience -->
+                        <div class="widget section-card">
+                            <div class="widget-header-row">
+                                <h2 class="section-title"><i class="fa-solid fa-briefcase"></i> Experience</h2>
+                                <button class="icon-btn-add" data-modal-target="#addExperienceModal"><i class="fa-solid fa-plus"></i></button>
                             </div>
-                            <div class="account-actions">
-                                <button class="btn-outline" data-modal-target="#changePasswordModal">Change Password</button>
-                                <?php
-                                $btn_html = '';
-                                
-                                if ($verified_status === 'verified') {
-                                    // Verified: Green button, Text "Verified"
-                                    $btn_html = '<button class="btn-primary-action" style="background-color: #2ecc71; border-color: #2ecc71; cursor: default;" onclick="return false;"><i class="fa-solid fa-check"></i> Verified</button>';
-                                
-                                } elseif ($verified_status === 'processing') {
-                                    // Processing: Button shows alert, Warning specific to processing
-                                    $warning_html = '<span style="color: #f1c40f; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-spinner fa-spin"></i> Verification is being processed</span>';
-                                    
-                                    // Keep button looking like "Verify Account" but click opens alert? Or maybe "Processing..." button?
-                                    // User said "show alert... and warning... should show that verification is being processed"
-                                    // Let's keep button as "Verify Account" but clicking it alerts.
-                                    $btn_html = '<button class="btn-danger" onclick="alert(\'Your verification is currently being processed. Please wait for header/admin approval.\')">Verify Account</button>';
-                                    $btn_html .= $warning_html;
-
-                                } else {
-                                    // Unverified: Red Button + "Verification Required"
-                                    $warning_html = '<span style="color: #e74c3c; font-size: 0.9rem; font-weight: 500;"><i class="fa-solid fa-triangle-exclamation"></i> Verification Required</span>';
-                                    
-                                    $btn_html = '<button class="btn-danger" onclick="window.location.href=\'../../Student Account Verification Page/php/verification.php\'">Verify Account</button>';
-                                    $btn_html .= $warning_html;
-                                }
-                                ?>
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <?php echo $btn_html; ?>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- Educational Background -->
-                        <div class="card education-section">
-                            <div class="card-header">
-                                <h2>Educational Background</h2>
-                                <button class="icon-btn" data-modal-target="#addEducationModal"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                            <div class="timeline">
-                                <?php if(!empty($education_history)): foreach($education_history as $hist): ?>
-                                <div class="timeline-item" data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-content">
-                                        <div class="timeline-header">
-                                            <div class="timeline-info">
-                                                <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
-                                                <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
-                                                <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
-                                            </div>
-                                            <div class="timeline-actions">
-                                                <button class="icon-btn-sm edit-education-btn" 
-                                                    data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>"
-                                                    data-degree="<?php echo htmlspecialchars($hist['degree']); ?>"
-                                                    data-institution="<?php echo htmlspecialchars($hist['institution']); ?>"
-                                                    data-start-year="<?php echo htmlspecialchars($hist['start_year']); ?>"
-                                                    data-end-year="<?php echo htmlspecialchars($hist['end_year']); ?>">
-                                                    <i class="fa-solid fa-pen"></i>
-                                                </button>
-                                                <button class="icon-btn-sm delete-education-btn" 
-                                                    data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php endforeach; else: echo "<p>No education history added.</p>"; endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- Experience & Achievements -->
-                        <div class="card experience-section">
-                            <div class="card-header">
-                                <h2>Experience & Achievements</h2>
-                                <button class="icon-btn" data-modal-target="#addExperienceModal"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-                            <div class="timeline">
+                            <div class="timeline-v2">
                                 <?php if(!empty($experience_list)): foreach($experience_list as $exp): ?>
                                 <div class="timeline-item" data-exp-id="<?php echo htmlspecialchars($exp['exp_id']); ?>">
-                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-icon"><i class="fa-solid fa-briefcase"></i></div>
                                     <div class="timeline-content">
-                                        <div class="timeline-header">
-                                            <div class="timeline-info">
-                                                <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
-                                                <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
-                                                <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
-                                                <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
-                                            </div>
-                                            <div class="timeline-actions">
-                                                <button class="icon-btn-sm edit-experience-btn" 
+                                        <div class="flex-between">
+                                            <h3><?php echo htmlspecialchars($exp['job_title']); ?></h3>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit edit-experience-btn" 
                                                     data-exp-id="<?php echo htmlspecialchars($exp['exp_id']); ?>"
                                                     data-job-title="<?php echo htmlspecialchars($exp['job_title']); ?>"
                                                     data-company="<?php echo htmlspecialchars($exp['company_name']); ?>"
@@ -333,15 +299,72 @@ if(isset($_SESSION['email']))
                                                     data-description="<?php echo htmlspecialchars($exp['description']); ?>">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </button>
-                                                <button class="icon-btn-sm delete-experience-btn" 
+                                                <button class="action-btn delete delete-experience-btn" 
                                                     data-exp-id="<?php echo htmlspecialchars($exp['exp_id']); ?>">
                                                     <i class="fa-solid fa-trash"></i>
                                                 </button>
                                             </div>
                                         </div>
+                                        <p class="institution"><?php echo htmlspecialchars($exp['company_name']); ?></p>
+                                        <p class="date"><?php echo htmlspecialchars($exp['start_date']) . " - " . htmlspecialchars($exp['end_date']); ?></p>
+                                        <p class="description"><?php echo htmlspecialchars($exp['description']); ?></p>
                                     </div>
                                 </div>
-                                <?php endforeach; else: echo "<p>No experience added.</p>"; endif; ?>
+                                <?php endforeach; else: echo "<div class='empty-state'>No experience listed.</div>"; endif; ?>
+                            </div>
+                        </div>
+
+                        <!-- Education -->
+                        <div class="widget section-card">
+                            <div class="widget-header-row">
+                                <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Education</h2>
+                                <button class="icon-btn-add" data-modal-target="#addEducationModal"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <div class="timeline-v2">
+                                <!-- Current Education (Usually not editable here manually unless part of history, let's keep it display only or add edit if desired, but typical user flow is history editting) -->
+                                <?php if (!empty($education_current)): ?>
+                                    <?php foreach ($education_current as $edu): ?>
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                            <div class="timeline-content">
+                                                <h3><?php echo htmlspecialchars($edu['course']); ?></h3>
+                                                <p class="institution"><?php echo htmlspecialchars($edu['university']); ?></p>
+                                                <p class="date">Present</p>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+
+                                <?php if(!empty($education_history)): foreach($education_history as $hist): ?>
+                                <div class="timeline-item" data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>">
+                                    <div class="timeline-icon"><i class="fa-solid fa-school"></i></div>
+                                    <div class="timeline-content">
+                                        <div class="flex-between">
+                                            <h3><?php echo htmlspecialchars($hist['degree']); ?></h3>
+                                            <div class="item-actions">
+                                                <button class="action-btn edit edit-education-btn" 
+                                                    data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>"
+                                                    data-degree="<?php echo htmlspecialchars($hist['degree']); ?>"
+                                                    data-institution="<?php echo htmlspecialchars($hist['institution']); ?>"
+                                                    data-start-year="<?php echo htmlspecialchars($hist['start_year']); ?>"
+                                                    data-end-year="<?php echo htmlspecialchars($hist['end_year']); ?>">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                                <button class="action-btn delete delete-education-btn" 
+                                                    data-edu-id="<?php echo htmlspecialchars($hist['edu_hist_id']); ?>">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <p class="institution"><?php echo htmlspecialchars($hist['institution']); ?></p>
+                                        <p class="date"><?php echo htmlspecialchars($hist['start_year']) . " - " . htmlspecialchars($hist['end_year']); ?></p>
+                                    </div>
+                                </div>
+                                <?php endforeach; endif; ?>
+                                
+                                <?php if (empty($education_current) && empty($education_history)): ?>
+                                    <div class="empty-state">No education history available.</div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -418,20 +441,45 @@ if(isset($_SESSION['email']))
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST" id="passwordForm">
-                <input type="hidden" name="student_id" id="studentIdPassword" value="<?php echo htmlspecialchars($student_id); ?>">
+            <!-- Hidden Fields -->
+            <input type="hidden" id="otp_student_email" value="<?php echo htmlspecialchars($student_email_val); ?>">
+            <input type="hidden" id="otp_student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+
+            <!-- Step 1: Security Verification (OTP) -->
+             <div id="password-step-otp">
+                <div class="text-center" style="margin-bottom: 20px;">
+                    <h4 style="margin-bottom: 10px;">Security Verification</h4>
+                    <div style="margin-bottom: 15px;">
+                       <i class="fa-solid fa-shield-halved" style="font-size: 3rem; color: var(--primary-maroon);"></i>
+                    </div>
+                    <p style="color: #666; font-size: 0.9em;">To protect your account, we've sent a verification code to your student email: <strong id="password-otp-email-display"><?php echo htmlspecialchars($student_email_val); ?></strong></p>
+                    <p id="password-otp-status" style="font-size: 0.8em; color: #888; margin-top: 5px;"><i class="fa fa-spinner fa-spin"></i> Sending code...</p>
+                </div>
                 
                 <div class="form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <div class="input-wrapper" style="position: relative;">
-                        <input type="password" id="currentPassword" name="current_password" required style="padding-right: 40px;">
-                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <p class="error-text" style="color: red; font-size: 0.8em; margin-top: 5px; visibility: hidden;">Error message</p>
+                    <div class="otp-input-container">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        <input type="text" class="password-otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
                     </div>
+                    <p id="password-otp-error" style="color: red; text-align: center; font-size: 0.9em; display: none;">Invalid OTP</p>
                 </div>
 
+                <div class="modal-footer" style="justify-content: center;">
+                    <button type="button" class="btn-primary" id="btn-verify-password-otp">Verify Code</button>
+                    <!-- <button type="button" class="btn-secondary" id="btn-resend-password-otp" style="font-size: 0.8rem; margin-top: 10px;">Resend Code</button> -->
+                </div>
+            </div>
+
+            <!-- Step 2: Change Password Form (Hidden initially) -->
+            <form action="" method="POST" id="passwordForm" style="display: none;">
+                <input type="hidden" name="student_id" id="studentIdPassword" value="<?php echo htmlspecialchars($student_id); ?>">
+                
+                <!-- Current Password Field Removed as per user request (OTP used instead) -->
+                
                 <div class="form-group">
                     <label for="newPassword">New Password</label>
                     <div class="input-wrapper" style="position: relative;">
@@ -469,27 +517,70 @@ if(isset($_SESSION['email']))
             <button class="close-modal" data-close-button>&times;</button>
         </div>
         <div class="modal-body">
-            <form action="" method="POST">
-            <input type="hidden" name="student_id" id="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
-            <div class="form-group">
-                <label for="personalEmail">Personal Email</label>
-                <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
-            </div>
-                <div class="form-group">
-                    <label for="studentEmail">Student Email <small style="color: #999; font-weight: normal;">(Not Editable)</small></label>
-                    <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" disabled>
+            <form action="" method="POST" id="contactForm">
+                <input type="hidden" name="student_id" id="student_id" value="<?php echo htmlspecialchars($student_id); ?>">
+                
+                <!-- Step 1: Input Details -->
+                <div id="contact-step-1">
+                    <div class="form-group">
+                        <label for="personalEmail">Personal Email</label>
+                        <div class="email-verification-wrapper">
+                            <input type="hidden" id="originalPersonalEmail" value="<?php echo htmlspecialchars($personal_email); ?>">
+                            <input type="email" id="personalEmail" name="personal_email" value="<?php echo htmlspecialchars($personal_email); ?>">
+                            
+                            <!-- Verify Button (Hidden by default, shown when email changes) -->
+                            <button type="button" class="verify-btn" id="verify-personal-email-btn" style="display: none;" title="Verify Email">
+                                <i class="fa fa-shield-alt"></i>
+                            </button>
+                            
+                            <!-- Verified Badge (Shown by default) -->
+                            <div class="input-verified-badge" id="personal-email-verified">
+                                <i class="fa fa-circle-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentEmail">Student Email <small style="color: #999; font-weight: normal;">(Not Editable)</small></label>
+                        <input type="email" id="studentEmail" name="student_email" value="<?php echo htmlspecialchars($student_email_val); ?>" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($phone_number); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($location); ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary" data-close-button>Cancel</button>
+                        <button type="submit" class="btn-primary" id="btn-save-contact">Save Changes</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($phone_number); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="location">Location</label>
-                    <input type="text" id="location" name="location" value="<?php echo htmlspecialchars($location); ?>">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-secondary" data-close-button>Cancel</button>
-                    <button type="submit" class="btn-primary">Save Changes</button>
+
+                <!-- Step 2: OTP Verification (Hidden initially) -->
+                <div id="contact-step-2" style="display: none;">
+                    <div class="text-center" style="margin-bottom: 20px;">
+                        <h4 style="margin-bottom: 10px;">Verify Email</h4>
+                        <p style="color: #666; font-size: 0.9em;">We sent a verification code to <strong id="verify-email-display"></strong></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enter 6-Digit Code</label>
+                        <div class="otp-input-container">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        </div>
+                        <p id="otp-error" style="color: red; text-align: center; font-size: 0.9em; display: none;">Invalid OTP</p>
+                    </div>
+
+                    <div class="modal-footer" style="justify-content: space-between;">
+                        <button type="button" class="btn-secondary" id="btn-back-contact">Back</button>
+                        <button type="button" class="btn-primary" id="btn-verify-contact">Verify & Save</button>
+                    </div>
                 </div>
             </form>
         </div>

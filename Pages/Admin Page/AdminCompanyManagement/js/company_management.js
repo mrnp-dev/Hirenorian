@@ -154,6 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             btn.classList.add('unverified');
                             btn.textContent = 'unverified';
                             updateCompanyVerificationStatus(companyID, 'false');
+                            auditLogs('Update', 'updated company verification status for company id: ' + companyID);
 
                         } else {
                             btn.classList.remove('unverified');

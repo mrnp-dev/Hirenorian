@@ -92,7 +92,21 @@ if ($data && isset($data['status'])) {
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="../../AdminRegister/php/logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                        <?php
+                        include '../../../../APIs/Admin DB APIs/db_con.php';
+
+                        if (isset($conn)) {
+                            try {
+                                $action = "Log Out";
+                                $description = "Log Out as admin";
+
+                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
+                                $stmt->execute([':action' => $action, ':description' => $description]);
+                            } catch (Exception $e) {
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
             </header>

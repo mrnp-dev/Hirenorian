@@ -1,0 +1,57 @@
+.help-container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    color: var(--text-main);
+}
+
+.help-container h1 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1rem;
+}
+
+.help-container h2 {
+    font-size: 1.8rem;
+    color: var(--text-main);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.help-container p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.help-container ul,
+.help-container ol {
+    margin-bottom: 1.5rem;
+    padding-left: 2rem;
+}
+
+.help-container li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.help-container strong {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+.help-section {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.faq-answer {
+    margin-bottom: 2rem;
+}

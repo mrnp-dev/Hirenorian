@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *"); // Changed to * for debugging
+header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -21,9 +21,7 @@ if ($data === null) {
 $studentId = $data['studentId'] ?? '';
 $newPassword = $data['new_password'] ?? '';
 
-// Debug log (optional, disable in prod)
-// error_log("ChangePassword: ID=$studentId, NewPW=" . (empty($newPassword) ? 'EMPTY' : 'SET'));
-
+// Validation
 if (empty($newPassword)) {
     echo json_encode(["status" => "error", "message" => "New password is required"]);
     exit();

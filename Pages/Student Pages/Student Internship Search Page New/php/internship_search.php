@@ -39,6 +39,9 @@ if (isset($_SESSION['email'])) {
             if (!empty($basic_info['tag2'])) $student_tags[] = $basic_info['tag2'];
             if (!empty($basic_info['tag3'])) $student_tags[] = $basic_info['tag3'];
 
+            // Verified Status
+            $verified_status = $basic_info['verified_status'] ?? 'unverified';
+
             // Convert VPS absolute path to HTTP URL
             if (!empty($profile_picture_db)) {
                 $profile_picture = str_replace('/var/www/html/', 'http://mrnp.site:8080/', $profile_picture_db);
@@ -90,6 +93,10 @@ if (isset($_SESSION['email'])) {
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <span>Internship Search</span>
                 </a>
+                <a href="../../Help Page/php/help.php" class="nav-item">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Help</span>
+                </a>
             </nav>
         </aside>
 
@@ -105,7 +112,7 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../logout.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <a href="../../../Account Registration Pages/Account Selection Page/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
+                        <a href="../../../Account Registration Pages/Account Selection Modern/php/account_selection.php" class="dropdown-item"><i class="fa-solid fa-users"></i> Switch Account</a>
                     </div>
                 </div>
             </header>
@@ -355,6 +362,7 @@ if (isset($_SESSION['email'])) {
     <script>
         <?php if(isset($_SESSION['email'])): ?>
         sessionStorage.setItem('email', '<?php echo addslashes($_SESSION['email']); ?>');
+        sessionStorage.setItem('verifiedStatus', '<?php echo addslashes($verified_status); ?>');
         <?php if (!empty($student_tags)): ?>
         sessionStorage.setItem('studentTags', JSON.stringify(<?php echo json_encode($student_tags); ?>));
         <?php endif; ?>

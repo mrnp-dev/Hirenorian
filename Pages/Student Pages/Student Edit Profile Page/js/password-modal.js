@@ -26,9 +26,144 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (passwordForm) {
+        // Elements for Multi-step
+        const stepOtp = document.getElementById('password-step-otp');
+        const stepForm = document.getElementById('passwordForm'); // The form IS step 2
+        const otpEmailInput = document.getElementById('otp_student_email');
+        const verifyOtpBtn = document.getElementById('btn-verify-password-otp');
+        const otpStatus = document.getElementById('password-otp-status');
+        const otpError = document.getElementById('password-otp-error');
+        const otpInputs = document.querySelectorAll('.password-otp-digit');
+
+        let generatedPasswordOTP = null;
+
+        // Hook into the open button to trigger OTP
+        const openBtn = document.querySelector('[data-modal-target="#changePasswordModal"]');
+        if (openBtn) {
+            openBtn.addEventListener('click', () => {
+                // Reset State
+                stepOtp.style.display = 'block';
+                stepForm.style.display = 'none';
+                otpInputs.forEach(i => i.value = '');
+                otpError.style.display = 'none';
+
+                // Send OTP
+                const email = otpEmailInput.value;
+                if (email) {
+                    sendPasswordOTP(email);
+                } else {
+                    otpStatus.innerHTML = "<span style='color:red'>Error: Student email not found.</span>";
+                }
+            });
+        }
+
+        async function sendPasswordOTP(email) {
+            otpStatus.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending verification code...';
+            verifyOtpBtn.disabled = true;
+
+            try {
+                // Using existing send_reset_otp.php (assuming it works for this purpose)
+                // It sends to 'email' param.
+                const response = await fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/send_reset_otp.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: email })
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    generatedPasswordOTP = data.otp.toString();
+                    console.log("DEBUG: Password OTP Sent:", generatedPasswordOTP);
+                    otpStatus.innerHTML = '<span style="color: green;"><i class="fa fa-check"></i> Code sent successfully!</span>';
+                    verifyOtpBtn.disabled = false;
+                    setTimeout(() => otpInputs[0].focus(), 500);
+                } else {
+                    otpStatus.innerHTML = `<span style='color:red'>Failed: ${data.message}</span>`;
+                }
+            } catch (err) {
+                console.error(err);
+                otpStatus.innerHTML = "<span style='color:red'>Network error sending OTP.</span>";
+            }
+        }
+
+        // OTP Input Logic (Auto-focus & Navigation)
+        otpInputs.forEach((input, index) => {
+            // Handle Input (Typing)
+            input.addEventListener('input', (e) => {
+                // Ensure number only
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
+                if (e.target.value.length === 1) {
+                    // Move to next input
+                    if (index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                }
+            });
+
+            // Handle Navigation (Backspace, Arrows)
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value) {
+                    // Move to previous input
+                    if (index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                }
+                if (e.key === 'ArrowLeft' && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+                if (e.key === 'ArrowRight' && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+
+            // Select value on focus for easy overwrite
+            input.addEventListener('focus', (e) => {
+                e.target.select();
+            });
+
+            // Handle Paste
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const data = e.clipboardData.getData('text').replace(/[^0-9]/g, '').slice(0, 6).split('');
+                data.forEach((char, i) => {
+                    if (otpInputs[index + i]) {
+                        otpInputs[index + i].value = char;
+                        // Focus the last filled input or the next empty one
+                        if (i === data.length - 1) {
+                            if (index + i < otpInputs.length - 1) {
+                                otpInputs[index + i + 1].focus();
+                            } else {
+                                otpInputs[index + i].focus();
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        // Verify OTP Logic
+        if (verifyOtpBtn) {
+            verifyOtpBtn.addEventListener('click', () => {
+                const otp = Array.from(otpInputs).map(i => i.value).join('');
+
+                if (otp === generatedPasswordOTP) {
+                    // Success
+                    otpError.style.display = 'none';
+                    stepOtp.style.display = 'none';
+                    stepForm.style.display = 'block'; // Show the actual form
+                } else {
+                    otpError.textContent = "Invalid OTP";
+                    otpError.style.display = 'block';
+                    otpInputs.forEach(i => i.value = '');
+                    otpInputs[0].focus();
+                }
+            });
+        }
+
         const newPasswordInput = document.getElementById('newPassword');
         const confirmPasswordInput = document.getElementById('confirmPassword');
-        const currentPasswordInput = document.getElementById('currentPassword');
 
         // Real-time validation for New Password
         newPasswordInput.addEventListener('input', () => {
@@ -44,43 +179,35 @@ document.addEventListener('DOMContentLoaded', () => {
             checkConfirmPassword(confirmPasswordInput, newPasswordInput.value);
         });
 
-        // Remove error on input for current password
-        currentPasswordInput.addEventListener('input', () => {
-            if (currentPasswordInput.value.trim() !== '') {
-                removeError(currentPasswordInput);
-            }
-        });
-
         passwordForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
             const studentId = document.getElementById('studentIdPassword').value;
-            const currentPassword = currentPasswordInput.value.trim();
             const newPassword = newPasswordInput.value;
 
             // Final Validation Check
             const isNewPasswordValid = checkPassword(newPasswordInput);
             const isConfirmPasswordValid = checkConfirmPassword(confirmPasswordInput, newPassword);
 
-            if (!currentPassword) {
-                showError(currentPasswordInput, 'Current Password is required');
-                return;
-            }
-
             if (!isNewPasswordValid || !isConfirmPasswordValid) {
                 // ToastSystem.show('Please correct the highlighted errors', 'warning');
                 return;
             }
 
+            // Loading State
+            const submitBtn = passwordForm.querySelector('button[type="submit"]');
+            const originalBtnContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Changing...';
+            submitBtn.disabled = true;
+
             // API Call
-            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/change_password.php", {
+            fetch("http://mrnp.site:8080/Hirenorian/API/studentDB_APIs/Edit%20Profile%20APIs/change_password_v2.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     studentId,
-                    current_password: currentPassword,
                     new_password: newPassword
                 })
             })
@@ -98,6 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(err => {
                     console.error("Fetch error:", err);
                     ToastSystem.show('Network error', 'error');
+                })
+                .finally(() => {
+                    submitBtn.innerHTML = originalBtnContent;
+                    submitBtn.disabled = false;
                 });
         });
     }
@@ -246,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // No, we want strength to stay visible.
         // We only hide if we strictly want to clear it. 
         // For current password, we want to clear 'Required'.
-        if (input.id === 'currentPassword' && p) {
+        if (p) {
             p.style.visibility = 'hidden';
         }
     }
