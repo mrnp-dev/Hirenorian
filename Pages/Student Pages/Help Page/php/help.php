@@ -116,6 +116,7 @@ if(isset($_SESSION['email']))
                         <li class="help-nav-item"><a href="#profile" class="help-nav-link">Profile & Security</a></li>
                         <li class="help-nav-item"><a href="#search" class="help-nav-link">Internship Search</a></li>
                         <li class="help-nav-item"><a href="#application" class="help-nav-link">Application Process</a></li>
+                        <li class="help-nav-item"><a href="#safety" class="help-nav-link">Safety & Guidelines</a></li>
                         <li class="help-nav-item"><a href="#faqs" class="help-nav-link">FAQs</a></li>
                     </ul>
                 </aside>
@@ -163,6 +164,9 @@ if(isset($_SESSION['email']))
 
                         <h3>Account Security (OTP)</h3>
                         <p>For your security, critical actions like <strong>changing your password</strong> or updating contact info now require a One-Time Password (OTP) sent to your registered email.</p>
+
+                        <h3>Deactivating Your Account</h3>
+                        <p>Students cannot deactivate their accounts manually. If you wish to deactivate or delete your account, please contact the administrator or support team at <code>Hirenorian_customersupport@gmail.com</code> for assistance.</p>
                     </section>
                     
                     <!-- 3. Search -->
@@ -223,9 +227,47 @@ if(isset($_SESSION['email']))
                         </div>
                     </section>
 
-                    <!-- 5. FAQs -->
+                    <!-- 5. Safety -->
+                    <section id="safety" class="help-section">
+                        <h2><i class="fa-solid fa-shield-halved"></i> Safety & Guidelines</h2>
+                        <p>Your safety is our priority. Here is how we protect you and how you can stay safe.</p>
+
+                        <h3>Identifying Legitimate Jobs</h3>
+                        <ul>
+                            <li>All companies are verified by admins before posting.</li>
+                            <li>Legitimate posts stay professional and never ask for payment or sensitive personal info (like bank details) upfront.</li>
+                            <li>If you spot something suspicious, report it to <code>Hirenorian_customersupport@gmail.com</code>.</li>
+                        </ul>
+
+                        <h3>Data Privacy</h3>
+                        <p>Your data is protected by strict privacy rules:</p>
+                        <ol>
+                            <li><strong>Private until you apply:</strong> Companies cannot see your contact details until you submit an application.</li>
+                            <li><strong>Student-to-Company only:</strong> Other students cannot search for or view your profile.</li>
+                            <li><strong>Verified Access:</strong> Only approved employers can view applicant data.</li>
+                        </ol>
+                    </section>
+
+                    <!-- 6. FAQs -->
                     <section id="faqs" class="help-section">
                         <h2><i class="fa-solid fa-circle-question"></i> FAQs</h2>
+                        
+                        <h3>Why was my account not verified?</h3>
+                        <p>Verification ensures safety. Common rejection reasons include:</p>
+                        <ul>
+                            <li>Blurry or incorrect academic documents (COR/ID).</li>
+                            <li>Unclear Diploma for graduates.</li>
+                        </ul>
+                        <p>If rejected, simply update your documents in the Edit Profile page and we will review it again.</p>
+
+                        <h3>Why can’t I submit my resume?</h3>
+                        <ul>
+                            <li><strong>File Size/Format:</strong> Ensure it is a PDF or DOCX file handling and under the size limit.</li>
+                            <li><strong>Browser Issue:</strong> Try refreshing or clearing your cache.</li>
+                        </ul>
+
+                        <h3>How long before companies respond?</h3>
+                        <p>Response times vary. Some reply in days, others take longer depending on applicant volume. Checking your status to see if it moves from "Pending" to "Accepted" is the best way to track progress.</p>
                         
                         <h3>Why can't I click "Apply Now"?</h3>
                         <p>The button is disabled for unverified accounts. Please ensure your account status is verified.</p>
