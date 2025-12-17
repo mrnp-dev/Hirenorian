@@ -153,14 +153,14 @@ document.addEventListener('DOMContentLoaded', function () {
                             btn.classList.remove('verified');
                             btn.classList.add('unverified');
                             btn.textContent = 'unverified';
-                            updateCompanyVerificationStatus(companyID, 'false');
+                            updateCompanyVerificationStatus(companyID, 'unverified');
                             auditLogs('Update', 'updated company verification status for company id: ' + companyID);
 
                         } else {
                             btn.classList.remove('unverified');
                             btn.classList.add('verified');
                             btn.textContent = 'verified';
-                            updateCompanyVerificationStatus(companyID, 'true');
+                            updateCompanyVerificationStatus(companyID, 'verified');
                             auditLogs('Update', 'updated company verification status for company id: ' + companyID);
                         }
                     } else {
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({
                 company_id: companyID,
-                verification: status
+                verified_status: status
             })
         })
             .then(response => response.json())

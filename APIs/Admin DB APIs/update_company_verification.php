@@ -17,16 +17,16 @@ if ($data === null) {
 }
 
 $companyID = $data['company_id'];
-$verified = $data['verification'];
+$verified = $data['verified_status'];
 
 $query = "UPDATE Company
-          SET verification = :verification
+          SET verified_status = :verified_status
           WHERE company_id = :company_id";
 
 $stmt = $conn->prepare($query);
 $stmt->execute([
     ':company_id' => $companyID,
-    ':verification' => $verified,
+    ':verified_status' => $verified,
 ]);
 
 echo json_encode(["status" => "success", "message" => "Company verification updated successfully"]);

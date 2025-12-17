@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         .catch(error => {
                             swal("Error", "An error occurred while fetching student details.", "error");
                         });
-                } 
+                }
             }
         }
     });
@@ -175,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('click', function (e) {
         if (e.target && e.target.classList.contains('verification-btn')) {
             const btn = e.target;
+            const row = btn.closest('tr');
+            if (!row) return; // Safety check
 
             swal({
                 title: "Update Verification Status?",
@@ -189,13 +191,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             icon: "success",
                         });
 
-
-                        const row = btn.closest('tr');
-                        if (!row) return;
                         const studentId = row.querySelector('td:first-child').textContent.trim();
-
                         let statusToSend = '';
-
 
                         if (btn.classList.contains('verified')) {
                             btn.classList.remove('verified');
@@ -209,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             statusToSend = 'true';
                         }
                         updateStudentVerificationStatus(studentId, statusToSend);
-                        auditLogs('Update', 'updated student verification status for student id: ' + studentId);
                     } else {
                         swal("Action cancelled.");
                     }
@@ -275,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    auditLogs('Update', 'updated verification status for student id: ' + studentId);
+                    auditLogs('Update', 'updated student verification status for student id: ' + studentId);
                 } else {
                     alert('Error updating verification: ' + (data.message || 'Unknown error'));
                 }
@@ -334,29 +330,30 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    function auditLogs(actionType, decription) {
-        fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                action_type: actionType,
-                description: decription,
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Audit log added successfully');
-                } else {
-                    console.error('Failed to add audit log:', data.message);
-                    alert('Error adding audit log: ' + (data.message || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                alert('Error logging audit log.');
-            });
-    }
-
 });
+
+function auditLogs(actionType, description) {
+    fetch('http://mrnp.site:8080/Hirenorian/API/adminDB_APIs/audit.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            action_type: actionType,
+            description: description,
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log('Audit log added successfully');
+            } else {
+                console.error('Failed to add audit log:', data.message);
+                alert('Error adding audit log: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error logging audit log.');
+        });
+}

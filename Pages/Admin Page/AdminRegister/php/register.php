@@ -22,7 +22,7 @@
         $valid_pass = "1PSU8Adm6nCode1";
 
         if ($username === $valid_user && $password === $valid_pass) {
-            include '../../../../APIs/Admin DB APIs/db_con.php';
+            include 'https://mrnp.site.com/API/adminDB_APIs/db_con.php';
 
             if (isset($conn)) {
                 try {
@@ -32,7 +32,6 @@
                     $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
                     $stmt->execute([':action' => $action, ':description' => $description]);
                 } catch (Exception $e) {
-
                 }
             }
 
