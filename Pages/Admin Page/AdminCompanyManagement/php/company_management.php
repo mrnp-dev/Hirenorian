@@ -94,7 +94,7 @@ if ($data && isset($data['status'])) {
                     <div class="dropdown-menu" id="profileDropdown">
                         <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         <?php
-                        include '../../API/adminDB_APIs/db_con.php';
+                        include '../../../../APIs/Admin DB APIs/db_con.php';
 
                         if (isset($conn)) {
                             try {
