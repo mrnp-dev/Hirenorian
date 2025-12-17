@@ -187,6 +187,10 @@ else
                     <span>Internships</span>
                 </a>
 
+                <a href="../../Help Page/php/help.php" class="nav-item">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span>Help</span>
+                </a>
             </nav>
         </aside>
 
