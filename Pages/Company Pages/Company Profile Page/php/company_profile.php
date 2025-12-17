@@ -37,9 +37,11 @@ if (isset($_SESSION['email'])) {
         $company_type = $company['company_type'];
         $address = $company['address'];
         $industry = $company['industry'];
-        // Check for boolean true, string "true", or integer 1
         $verification_val = isset($company['verification']) ? $company['verification'] : false;
         $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
+
+        // New Verified Status Enum: 'unverified' | 'processing' | 'verified'
+        $verified_status = isset($company['verified_status']) ? $company['verified_status'] : 'unverified';
 
         // --- Statistics (dynamic record) ---
         if (!empty($data['statistics'])) {
@@ -346,10 +348,22 @@ if (isset($_SESSION['email'])) {
                                         <button class="btn-account-action" onclick="openChangePasswordModal()">
                                             <i class="fa-solid fa-key"></i> Change Password
                                         </button>
-                                        <?php if (!$is_verified): ?>
-                                            <button class="btn-account-action" onclick="openVerifyAccountModal()">
-                                                <i class="fa-solid fa-shield-halved"></i> Verify Account
-                                            </button>
+                                        <?php if ($verified_status === 'verified'): ?>
+                                             <div class="account-status verified">
+                                                <i class="fa-solid fa-circle-check"></i> Account Verified
+                                            </div>
+                                        <?php elseif ($verified_status === 'processing'): ?>
+                                            <div class="account-status pending">
+                                                <i class="fa-solid fa-clock"></i> Verification Processing
+                                            </div>
+                                        <?php else: ?>
+                                            <!-- Default: Unverified (includes 'unverified' and empty) -->
+                                            <div class="account-status required-action">
+                                                <span class="status-indicator"><i class="fa-solid fa-circle-exclamation"></i> Required</span>
+                                                <button class="btn-account-action" onclick="openVerifyAccountModal()">
+                                                    <i class="fa-solid fa-shield-halved"></i> Verify Account
+                                                </button>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>

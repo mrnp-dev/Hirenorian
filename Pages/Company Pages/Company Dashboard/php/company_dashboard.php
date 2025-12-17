@@ -24,19 +24,33 @@ if (isset($_SESSION['email'])) {
     $data = json_decode($response, true);
 
     if ($data['status'] === "success") {
-        echo "<script>console.log('Company ID: " . $data['company_id'] . "');</script>";
+        $company = $data['company'];
+        $company_id = $company['company_id'];
+        $company_name = $company['company_name'];
+        // Check for boolean true, string "true", or integer 1
+        $verification_val = isset($company['verification']) ? $company['verification'] : false;
+        $is_verified = ($verification_val === true || $verification_val === 'true' || $verification_val == 1);
+
+        // --- Images (Icons) ---
+        $company_icon_url = "";
+        if (!empty($data['icons'])) {
+            $company_icon_url = $data['icons'][0]['icon_url'];
+            $company_icon_url = str_replace('/var/www/html', 'http://mrnp.site:8080', $company_icon_url);
+        }
+
+        // Default Icon Logic
+        $is_default_icon = false;
+        if (empty($company_icon_url)) {
+            $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000";
+            $is_default_icon = true;
+        }
     } else {
         $company_name = "Unknown";
         $company_id = 0;
         $company_icon_url = "https://img.icons8.com/?size=100&id=85050&format=png&color=FF0000"; // Default icon for unknown company
+        $is_default_icon = true;
         $is_verified = false;
     }
-
-    $company = $data['data'][0];
-
-    // Students Table
-    $company_id = $company['company_id'];
-    $company_name = $company['company_name'];
 } else {
     header("Location: ../../../Landing Page Tailwind/php/landing_page.php");
 }

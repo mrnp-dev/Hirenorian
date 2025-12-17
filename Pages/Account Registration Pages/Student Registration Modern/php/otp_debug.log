@@ -1,0 +1,21 @@
+[2025-12-17 06:38:44] Script started.
+[2025-12-17 06:38:44] Found autoload at: D:\xampp\htdocs\Hirenorian\Pages\Account Registration Pages\Student Registration Modern\php/../../../../vendor/autoload.php
+[2025-12-17 06:38:44] Raw input: {"email":"clarencecastro267@gmail.com"}
+[2025-12-17 06:38:44] Generated OTP: 253883 for clarencecastro267@gmail.com
+[2025-12-17 06:38:44] SMTP configured.
+[2025-12-17 06:38:44] Attempting to send...
+[2025-12-17 06:38:47] Email sent successfully.
+[2025-12-17 06:39:14] Script started.
+[2025-12-17 06:39:14] Found autoload at: D:\xampp\htdocs\Hirenorian\Pages\Account Registration Pages\Student Registration Modern\php/../../../../vendor/autoload.php
+[2025-12-17 06:39:14] Raw input: {"email":"clarencecastro1426@gmail.com"}
+[2025-12-17 06:39:14] Generated OTP: 272247 for clarencecastro1426@gmail.com
+[2025-12-17 06:39:14] SMTP configured.
+[2025-12-17 06:39:14] Attempting to send...
+[2025-12-17 06:39:18] Email sent successfully.
+[2025-12-17 06:40:09] Script started.
+[2025-12-17 06:40:09] Found autoload at: D:\xampp\htdocs\Hirenorian\Pages\Account Registration Pages\Student Registration Modern\php/../../../../vendor/autoload.php
+[2025-12-17 06:40:09] Raw input: {"email":"2023304069@pampangastateu.edu.ph"}
+[2025-12-17 06:40:09] Generated OTP: 995365 for 2023304069@pampangastateu.edu.ph
+[2025-12-17 06:40:09] SMTP configured.
+[2025-12-17 06:40:09] Attempting to send...
+[2025-12-17 06:40:13] Email sent successfully.

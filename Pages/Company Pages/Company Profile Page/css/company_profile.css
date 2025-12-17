@@ -1665,3 +1665,61 @@
 .confirmation-modal.danger .btn-confirm-proceed:hover {
     background: #b91c1c;
 }
+
+/* New Verification Status Styles */
+.account-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.account-status.required-action {
+    background-color: #fff1f2;
+    /* Light red/pink bg */
+    border: 1px solid #fda4af;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #be123c;
+    gap: 1rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.account-status.pending {
+    background-color: #fff7ed;
+    /* Light orange */
+    border: 1px solid #fed7aa;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #c2410c;
+    justify-content: center;
+    font-weight: 600;
+    gap: 0.5rem;
+}
+
+.account-status.verified {
+    background-color: #ecfdf5;
+    /* Light green */
+    border: 1px solid #6ee7b7;
+    padding: 1rem;
+    border-radius: 8px;
+    color: #047857;
+    justify-content: center;
+    font-weight: 600;
+    gap: 0.5rem;
+}
+
+/* Adjust button inside status container */
+.account-status .btn-account-action {
+    width: auto;
+    margin-top: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
