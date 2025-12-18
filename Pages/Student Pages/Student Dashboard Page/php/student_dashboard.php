@@ -389,6 +389,7 @@ else
         // Pass student_id from PHP to JavaScript
         window.STUDENT_ID = <?php echo json_encode($student_id ?? null); ?>;
         window.STUDENT_EMAIL = <?php echo json_encode($student_email ?? null); ?>;
+        window.STUDENT_VERIFIED_STATUS = <?php echo json_encode($basic_info['verified_status'] ?? 'unverified'); ?>;
         console.log('DEBUG: window.STUDENT_ID value:', window.STUDENT_ID);
     </script>
 
@@ -449,6 +450,22 @@ else
                         <ul id="modal-detail-documents"></ul>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="confirm-dialog-overlay" id="infoModalOverlay">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog-icon" id="infoModalIcon">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 id="infoModalTitle">Notification</h3>
+            <p id="infoModalMessage">Message goes here...</p>
+            <div class="confirm-dialog-actions">
+                <button class="btn-confirm-apply" id="btnInfoOk" style="width: 100%;">
+                    OK
+                </button>
             </div>
         </div>
     </div>

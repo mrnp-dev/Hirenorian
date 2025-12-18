@@ -320,8 +320,12 @@ export function initJobCards() {
                     if (verifiedStatus && verifiedStatus.toLowerCase() === 'verified') {
                         window.location.href = `../../Student Application Page New/php/application.php`;
                     } else {
-                        // Not verified - show alert
-                        alert('Your account is not verified. Please verify your account to apply for jobs.');
+                        // Not verified - show modal
+                        showInfoModal(
+                            "Account Not Verified",
+                            "Your account is currently <strong>unverified</strong>. Please verify your account to apply for jobs.<br><br>Check your Profile settings or contact support.",
+                            "error"
+                        );
                     }
                 } else {
                     alert('Job information is missing. Please select a job again.');
@@ -341,4 +345,43 @@ export function initJobCards() {
             });
         }
     }
+}
+
+// Info Modal Helper
+function showInfoModal(title, message, type = 'info') {
+    const overlay = document.getElementById('infoModalOverlay');
+    const titleEl = document.getElementById('infoModalTitle');
+    const msgEl = document.getElementById('infoModalMessage');
+    const iconEl = document.getElementById('infoModalIcon');
+    const btnOk = document.getElementById('btnInfoOk');
+
+    if (!overlay || !titleEl || !msgEl) return;
+
+    titleEl.textContent = title;
+    msgEl.innerHTML = message;
+
+    // Customize Icon based on type
+    if (type === 'error') {
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+        iconEl.style.color = '#dc2626';
+        iconEl.style.backgroundColor = '#fef2f2';
+    } else {
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+        iconEl.style.color = 'var(--primary-maroon)';
+        iconEl.style.backgroundColor = '#eef2ff';
+    }
+
+    overlay.classList.add('active');
+
+    // Close handlers
+    const close = () => {
+        overlay.classList.remove('active');
+    };
+
+    btnOk.onclick = close;
+
+    // Close on click outside
+    overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+    };
 }

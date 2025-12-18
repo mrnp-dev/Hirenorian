@@ -86,7 +86,16 @@ function openJobModal(job) {
     // Apply Button
     if (applyBtn) {
         applyBtn.onclick = () => {
-            window.location.href = `../../Application Form Page/php/application_form.php?job_id=${job.post_id}`;
+            // Verification Check
+            if (window.STUDENT_VERIFIED_STATUS && window.STUDENT_VERIFIED_STATUS.toLowerCase() === 'verified') {
+                window.location.href = `../../Application Form Page/php/application_form.php?job_id=${job.post_id}`;
+            } else {
+                showInfoModal(
+                    "Account Not Verified",
+                    "Your account is currently <strong>unverified</strong>. Please verify your account to apply for jobs.<br><br>Check your Profile settings or contact support.",
+                    "error"
+                );
+            }
         };
     }
 
@@ -139,7 +148,16 @@ function createRecommendationCard(job) {
     if (applyBtn) {
         applyBtn.addEventListener('click', (e) => {
             e.stopPropagation(); // Prevent card click
-            window.location.href = `../../Application Form Page/php/application_form.php?job_id=${job.post_id}`;
+            // Verification Check
+            if (window.STUDENT_VERIFIED_STATUS && window.STUDENT_VERIFIED_STATUS.toLowerCase() === 'verified') {
+                window.location.href = `../../Application Form Page/php/application_form.php?job_id=${job.post_id}`;
+            } else {
+                showInfoModal(
+                    "Account Not Verified",
+                    "Your account is currently <strong>unverified</strong>. Please verify your account to apply for jobs.<br><br>Check your Profile settings or contact support.",
+                    "error"
+                );
+            }
         });
     }
 
@@ -197,4 +215,43 @@ export async function initRecommendations(studentEmail) {
     } catch (error) {
         console.error('[Dashboard] Error initializing recommendations:', error);
     }
+}
+
+// Info Modal Helper
+function showInfoModal(title, message, type = 'info') {
+    const overlay = document.getElementById('infoModalOverlay');
+    const titleEl = document.getElementById('infoModalTitle');
+    const msgEl = document.getElementById('infoModalMessage');
+    const iconEl = document.getElementById('infoModalIcon');
+    const btnOk = document.getElementById('btnInfoOk');
+
+    if (!overlay || !titleEl || !msgEl) return;
+
+    titleEl.textContent = title;
+    msgEl.innerHTML = message;
+
+    // Customize Icon based on type
+    if (type === 'error') {
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
+        iconEl.style.color = '#dc2626';
+        iconEl.style.backgroundColor = '#fef2f2';
+    } else {
+        iconEl.innerHTML = '<i class="fa-solid fa-circle-info"></i>';
+        iconEl.style.color = 'var(--primary-maroon)';
+        iconEl.style.backgroundColor = '#eef2ff';
+    }
+
+    overlay.classList.add('active');
+
+    // Close handlers
+    const close = () => {
+        overlay.classList.remove('active');
+    };
+
+    btnOk.onclick = close;
+
+    // Close on click outside
+    overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+    };
 }
