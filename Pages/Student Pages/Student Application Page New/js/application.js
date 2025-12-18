@@ -158,7 +158,11 @@ async function fetchStudentProfile(email) {
 
             // Double check verification status here
             const basic = appState.studentDetails.basic_info;
-            if (basic && basic.verified_status !== 'verified') {
+            console.log("[Application Debug] Verification Status:", basic?.verified_status);
+
+            const status = basic && basic.verified_status ? basic.verified_status.toLowerCase() : '';
+
+            if (status !== 'verified') {
                 showModal("Access Denied", "Your account must be verified to apply for jobs. Redirecting to dashboard...", "error", () => {
                     window.location.href = '../../Student Dashboard Page/php/student_dashboard.php';
                 });
