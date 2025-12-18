@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             return `
-    < div class="job-card" data - job - id="${job.id}" >
+                <div class="job-card" data-job-id="${job.id}">
                     <div class="job-card-header">
                         <img src="${iconUrl}" alt="Company Logo" class="card-company-icon ${isDefault ? 'default-icon' : ''}">
                         <span class="card-company-name">${companyName}</span>
@@ -491,8 +491,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                     <div class="card-applicant-status">${acceptedCount}/${job.applicantLimit}</div>
                     <p class="job-card-description">${job.jobDescription}</p>
-                </div >
-    `;
+                </div>
+            `;
         }).join('');
 
         // Add click handlers to cards
