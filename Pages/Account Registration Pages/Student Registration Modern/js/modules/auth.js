@@ -2,6 +2,7 @@
 
 async function check_LogIn_Fields() {
     const signUp_Inputs = document.querySelectorAll('.sign-in-container input');
+    const loginBtn = document.getElementById('signIn_Btn');
     let isValid = true;
     signUp_Inputs.forEach(input => {
         if (input.value.trim() == "") {
@@ -13,6 +14,16 @@ async function check_LogIn_Fields() {
     });
 
     if (isValid) {
+        // Show loading state on login button
+        if (loginBtn) {
+            loginBtn.disabled = true;
+            loginBtn.classList.add('loading');
+            if (!loginBtn.dataset.originalText) {
+                loginBtn.dataset.originalText = loginBtn.textContent.trim();
+            }
+            loginBtn.textContent = 'Logging in...';
+        }
+
         const email = document.querySelector('#signup-email').value.trim();
         const password = document.querySelector('#signup-password').value.trim();
         try {
@@ -59,6 +70,15 @@ async function check_LogIn_Fields() {
         } catch (err) {
             console.error("Network error:", err);
             alert("Unable to connect to server");
+        } finally {
+            // Hide loading state if still on the page
+            if (loginBtn) {
+                loginBtn.disabled = false;
+                loginBtn.classList.remove('loading');
+                if (loginBtn.dataset.originalText) {
+                    loginBtn.textContent = loginBtn.dataset.originalText;
+                }
+            }
         }
     } else {
         ToastSystem.show("Please correct the highlighted fields.", "error");

@@ -358,6 +358,23 @@ if (isset($_SESSION['email'])) {
         </div>
     </div>
     
+    
+    <!-- Info Modal -->
+    <div class="confirm-dialog-overlay" id="infoModalOverlay">
+        <div class="confirm-dialog">
+            <div class="confirm-dialog-icon" id="infoModalIcon">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 id="infoModalTitle">Notification</h3>
+            <p id="infoModalMessage">Message goes here...</p>
+            <div class="confirm-dialog-actions">
+                <button class="btn-confirm-apply" id="btnInfoOk" style="width: 100%;">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <!-- Pass PHP session data to JavaScript -->
     <script>
         <?php if(isset($_SESSION['email'])): ?>

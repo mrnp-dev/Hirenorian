@@ -183,7 +183,8 @@ function timeAgo($timestamp)
         <aside class="sidebar">
             <div class="logo-container">
                 <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <pre> </pre>
                     <span>Hirenorian</span>
                 </a>
             </div>
@@ -212,21 +213,10 @@ function timeAgo($timestamp)
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <?php
-                        include '../../../../APIs/Admin DB APIs/db_con.php';
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
 
-                        if (isset($conn)) {
-                            try {
-                                $action = "Log Out";
-                                $description = "Log Out as admin";
-
-                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
-                                $stmt->execute([':action' => $action, ':description' => $description]);
-                            } catch (Exception $e) {
-                            }
-                        }
-                        ?>
                     </div>
                 </div>
             </header>
@@ -379,7 +369,7 @@ function timeAgo($timestamp)
         console.log('Students - Verified:', <?= $studentsVerified ?>, 'Unverified:', <?= $studentsUnverified ?>);
         console.log('Companies - Verified:', <?= $companiesVerified ?>, 'Unverified:', <?= $companiesUnverified ?>);
     </script>
-    <script src="../js/dashboard.js"></script>
+    <script src="../js/dashboard.js?v=<?php echo time(); ?>"></script>
 </body>
 
 </html>

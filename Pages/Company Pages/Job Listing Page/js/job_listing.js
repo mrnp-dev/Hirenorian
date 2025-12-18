@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (hasResume && hasCoverLetter) {
             // Stacked format for both documents
             return `
-    < div class="doc-stack" >
+                <div class="doc-stack">
                     <div class="doc-item">
                         <span class="doc-label">Resume</span>
                         <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
@@ -269,21 +269,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span class="doc-label">Cover Letter</span>
                         <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
                     </div>
-                </div >
-    `;
+                </div>
+            `;
         }
 
         if (hasResume) {
             return `
-    < span class="doc-label" > Resume</span >
-        <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
-`;
+                <span class="doc-label">Resume</span>
+                <a href="${resumeUrl}" class="doc-view-link" target="_blank">View</a>
+            `;
         }
 
         return `
-    < span class="doc-label" > Cover Letter</span >
-        <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
-`;
+            <span class="doc-label">Cover Letter</span>
+            <a href="${coverLetterUrl}" class="doc-view-link" target="_blank">View</a>
+        `;
     }
 
     /**

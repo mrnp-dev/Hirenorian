@@ -63,7 +63,8 @@ if ($data && isset($data['status'])) {
         <aside class="sidebar">
             <div class="logo-container">
                 <a href="../../../Landing Page Tailwind/php/landing_page.php" style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
-                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo"><pre> </pre>
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <pre> </pre>
                     <span>Hirenorian</span>
                 </a>
             </div>
@@ -92,21 +93,10 @@ if ($data && isset($data['status'])) {
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">
-                        <a href="../../AdminRegister/php/register.php" class="dropdown-item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        <?php
-                        include '../../../../APIs/Admin DB APIs/db_con.php';
+                        <a href="#" class="dropdown-item" onclick="handleLogout()">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
 
-                        if (isset($conn)) {
-                            try {
-                                $action = "Log Out";
-                                $description = "Log Out as admin";
-
-                                $stmt = $conn->prepare("INSERT INTO adminAuditLog (role, action, description) VALUES ('admin', :action, :description)");
-                                $stmt->execute([':action' => $action, ':description' => $description]);
-                            } catch (Exception $e) {
-                            }
-                        }
-                        ?>
                     </div>
                 </div>
             </header>
@@ -141,8 +131,8 @@ if ($data && isset($data['status'])) {
                                     <td><?= $company['email'] ?></td>
                                     <td>
                                         <button type="button" class="status verification-btn 
-                                           <?= (trim(strtolower($company['verification'])) === 'true' || $company['verification'] == 1) ? 'verified' : 'unverified' ?>">
-                                            <?= (trim(strtolower($company['verification'])) === 'true' || $company['verification'] == 1) ? 'verified' : 'unverified' ?>
+                                            <?= (trim(strtolower($company['verified_status'] ?? '')) === 'verified') ? 'verified' : 'unverified' ?>">
+                                            <?= (trim(strtolower($company['verified_status'] ?? '')) === 'verified') ? 'verified' : 'unverified' ?>
                                         </button>
                                     </td>
 
@@ -187,13 +177,13 @@ if ($data && isset($data['status'])) {
     <script>
         console.log('[DEBUG] Company Management: DOM Ready - Initializing DataTable');
         console.log('[DEBUG] Company Management: Total companies in table = <?= count($companies) ?>');
-        
+
         $(document).ready(function() {
             try {
                 const table = $('#companyTable').DataTable();
                 console.log('[DEBUG] Company Management: DataTable initialized successfully');
                 console.log('[DEBUG] Company Management: DataTable rows = ' + table.rows().count());
-            } catch(error) {
+            } catch (error) {
                 console.error('[DEBUG] Company Management: DataTable initialization error:', error);
             }
         });
