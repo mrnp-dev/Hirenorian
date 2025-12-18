@@ -865,7 +865,6 @@ input.input_InvalidInput {
 
 .verify-btn:hover {
     background: #9b0000;
-    transform: translateY(-1px);
 }
 
 .verified-badge {

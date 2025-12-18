@@ -80,9 +80,11 @@ if (isset($_SESSION['email'])) {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="https://dhvsu.edu.ph/images/about_pampanga_state_u/pampanga-state-u-logo-small.png"
-                    alt="Pampanga State University" class="logo-icon">
-                <span class="logo-text">Hirenorian</span>
+                <a href="../../../Landing Page Tailwind/php/landing_page.php"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <span class="logo-text">Hirenorian</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
@@ -131,7 +133,8 @@ if (isset($_SESSION['email'])) {
                                     title="Unverified Account">
                             <?php endif; ?>
                         </div>
-                        <span class="user-name" id="headerCompanyName"><?php echo htmlspecialchars($company_name); ?></span>
+                        <span class="user-name"
+                            id="headerCompanyName"><?php echo htmlspecialchars($company_name); ?></span>
                         <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                     </div>
                     <div class="dropdown-menu" id="profileDropdown">

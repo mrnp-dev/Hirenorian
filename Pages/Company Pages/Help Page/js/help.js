@@ -14,14 +14,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const wrapperRect = contentWrapper.getBoundingClientRect();
 
-        sections.forEach(section => {
-            const sectionRect = section.getBoundingClientRect();
-
-            // Check if section top is near the top of the wrapper
-            if (sectionRect.top <= wrapperRect.top + headerOffset + 50) {
-                currentSection = section.getAttribute('id');
+        // Check if we've reached the bottom of the content
+        // If (scrollTop + clientHeight) is close to scrollHeight, activate the last section
+        if (contentWrapper.scrollTop + contentWrapper.clientHeight >= contentWrapper.scrollHeight - 20) {
+            if (sections.length > 0) {
+                currentSection = sections[sections.length - 1].getAttribute('id');
             }
-        });
+        } else {
+            // Standard ScrollSpy Logic
+            sections.forEach(section => {
+                const sectionRect = section.getBoundingClientRect();
+
+                // Check if section top is near the top of the wrapper
+                if (sectionRect.top <= wrapperRect.top + headerOffset + 50) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+        }
 
         // If no section is found (e.g., at the very top), default to the first one
         if (!currentSection && sections.length > 0) {
