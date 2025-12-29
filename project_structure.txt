@@ -82,7 +82,7 @@
 | | | | |____headline_slide_3.png
 | | | |____hyundai.jpg
 | | |____php
-| | | |____landing_page.php
+| | | |____index.php
 | | |____css
 | | | |____landing_main_section3.css
 | | | |____landing_main_section2.css

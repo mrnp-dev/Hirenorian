@@ -60,7 +60,7 @@ async function Register_Company(button) {
                     ToastSystem.show("Redirecting to the landing page", "info");
                     setTimeout(() => {
                         // Reset form or clear session if needed
-                        window.location.href = "../../../Landing Page Tailwind/php/landing_page.php";
+                        window.location.href = "../../../Landing Page Tailwind/php/index.php";
                     }, 2000);
                 }, 1500);
             } else {

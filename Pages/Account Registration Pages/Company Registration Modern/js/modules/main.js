@@ -333,6 +333,6 @@ function panelSwap() {
 function goBackToLandingPage() {
     if (typeof ToastSystem !== 'undefined') ToastSystem.show("Redirecting to the landing page.", "info");
     setTimeout(() => {
-        window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
+        window.location.href = '../../../Landing Page Tailwind/php/index.php';
     }, 1500);
 }
