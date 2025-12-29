@@ -765,7 +765,7 @@ function goBackToLandingPage() {
     ToastSystem.show("Redirecting to the landing page.", "info");
     ToastSystem.storeForNextPage('You\'ve returned to the landing page.', 'success');
     setTimeout(() => {
-        window.location.href = '/Hirenorian/Pages/Landing%20Page/php/landing_page.php';
+        window.location.href = '/Hirenorian/Pages/Landing%20Page/php/index.php';
     }, 1500);
 }
 

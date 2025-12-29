@@ -23,6 +23,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to the Landing Page
-header("Location: ../../Pages/Landing Page/php/landing_page.php");
+header("Location: ../../Pages/Landing Page/php/index.php");
 exit();
 ?>

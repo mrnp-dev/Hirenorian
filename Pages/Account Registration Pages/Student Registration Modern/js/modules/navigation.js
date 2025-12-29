@@ -2,7 +2,7 @@
 
 function goBackToLandingPage() {
     if (confirm('Are you sure you want to go back to the landing page? All entered data will be lost.')) {
-        window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
+        window.location.href = '../../../Landing Page Tailwind/php/index.php';
     }
 }
 
