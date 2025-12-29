@@ -623,12 +623,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (result.status === 'success') {
                     // Redirect to landing page
-                    window.location.href = '../../../Landing Page/php/landing_page.php';
+                    window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
                 }
             } catch (error) {
                 console.error('Logout error:', error);
                 // Still redirect even if API fails
-                window.location.href = '../../../Landing Page/php/landing_page.php';
+                window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
             }
         });
     }

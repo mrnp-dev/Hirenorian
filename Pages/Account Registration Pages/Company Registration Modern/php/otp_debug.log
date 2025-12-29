@@ -61,3 +61,24 @@
 [2025-12-17 06:32:47] SMTP configured.
 [2025-12-17 06:32:47] Attempting to send...
 [2025-12-17 06:32:51] Email sent successfully.
+[2025-12-17 09:59:46] Script started.
+[2025-12-17 09:59:46] Found autoload at: D:\xampp\htdocs\Hirenorian\Pages\Account Registration Pages\Company Registration Modern\php/../../../../vendor/autoload.php
+[2025-12-17 09:59:46] Raw input: {"email":"clarence.jheden.r.castro@gmail.com"}
+[2025-12-17 09:59:46] Generated OTP: 317946 for clarence.jheden.r.castro@gmail.com
+[2025-12-17 09:59:46] SMTP configured.
+[2025-12-17 09:59:46] Attempting to send...
+[2025-12-17 09:59:52] Email sent successfully.
+[2025-12-17 10:01:37] Script started.
+[2025-12-17 10:01:37] Found autoload at: D:\xampp\htdocs\Hirenorian\Pages\Account Registration Pages\Company Registration Modern\php/../../../../vendor/autoload.php
+[2025-12-17 10:01:37] Raw input: {"email":"clarencec.jheden.r.castro@gmail.com"}
+[2025-12-17 10:01:37] Generated OTP: 810128 for clarencec.jheden.r.castro@gmail.com
+[2025-12-17 10:01:37] SMTP configured.
+[2025-12-17 10:01:37] Attempting to send...
+[2025-12-17 10:01:42] Email sent successfully.
+[2025-12-17 10:06:09] Script started.
+[2025-12-17 10:06:09] Found autoload at: D:\xampp\htdocs\Hirenorian\Pages\Account Registration Pages\Company Registration Modern\php/../../../../vendor/autoload.php
+[2025-12-17 10:06:09] Raw input: {"email":"clarence.jheden.r.castro@gmail.com"}
+[2025-12-17 10:06:09] Generated OTP: 249623 for clarence.jheden.r.castro@gmail.com
+[2025-12-17 10:06:09] SMTP configured.
+[2025-12-17 10:06:09] Attempting to send...
+[2025-12-17 10:06:12] Email sent successfully.

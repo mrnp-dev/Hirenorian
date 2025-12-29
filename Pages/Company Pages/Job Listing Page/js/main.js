@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    window.location.href = '../../../Landing Page/php/landing_page.php';
+                    window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
                 }
             } catch (error) {
                 console.error('Logout error:', error);
-                window.location.href = '../../../Landing Page/php/landing_page.php';
+                window.location.href = '../../../Landing Page Tailwind/php/landing_page.php';
             }
         });
     }

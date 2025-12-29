@@ -78,10 +78,11 @@ if (isset($_SESSION['email'])) {
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo-container">
-                <img src="https://dhvsu.edu.ph/images/about_pampanga_state_u/pampanga-state-u-logo-small.png"
-                    alt="Pampanga State University" class="logo-icon">
-                <!-- Placeholder path -->
-                <span class="logo-text">Hirenorian</span>
+                <a href="../../../Landing Page Tailwind/php/landing_page.php"
+                    style="text-decoration: none; display: flex; align-items: center; gap: 10px; color: inherit;">
+                    <img src="../../../Landing Page/Images/dhvsulogo.png" alt="University Logo" class="logo">
+                    <span class="logo-text">Hirenorian</span>
+                </a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item active">
@@ -326,6 +327,7 @@ if (isset($_SESSION['email'])) {
                         <tr>
                             <th>JOB TITLE</th>
                             <th>APPLICANTS</th>
+                            <th>PENDING</th>
                             <th>DATE POSTED</th>
                             <th>STATUS</th>
                         </tr>
